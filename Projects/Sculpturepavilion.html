@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sculpture Pavilion - Inayat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #14b8a6;
+            --accent-light: #2dd4bf;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --gradient-1: #14b8a6;
+            --gradient-2: #06b6d4;
+            --gradient-3: #0891b2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            z-index: 1000;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .project-hero {
+            padding: 10rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-hero::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--gradient-1) 0%, transparent 70%);
+            filter: blur(120px);
+            opacity: 0.4;
+            z-index: 0;
+        }
+
+        .project-hero-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 3rem;
+            transition: gap 0.3s ease;
+        }
+
+        .back-button:hover {
+            gap: 1rem;
+        }
+
+        .hero-content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            text-align: left;
+        }
+
+        .project-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 50%, var(--gradient-3) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .project-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .hero-image {
+            width: 100%;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Content Container */
+        .project-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .content-section {
+            margin-bottom: 6rem;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            text-align: left;
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            text-align: left;
+            max-width: 100%;
+        }
+
+        .section-description strong {
+            color: var(--text-primary);
+        }
+
+        /* Meta Info Grid */
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+            text-align: left;
+        }
+
+        .meta-item h3 {
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .meta-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Info Cards */
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .info-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2.5rem;
+            text-align: left;
+        }
+
+        .info-card h3 {
+            font-size: 1.5rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .info-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Design Highlight */
+        .design-highlight {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 3rem;
+            margin: 3rem 0;
+            text-align: left;
+        }
+
+        .design-highlight h3 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        /* Lists */
+        .content-list {
+            margin: 2rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .content-list li {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .content-list li strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Step Sections */
+        .step-section {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .step-section h4 {
+            font-size: 1.3rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        /* Image Showcase */
+        .showcase-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 2rem 0;
+        }
+
+        .showcase-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(20, 184, 166, 0.2);
+        }
+
+        /* Image Grid */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        /* Learning Grid */
+        .learning-grid {
+            display: grid;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .learning-item {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        .learning-item h4 {
+            font-size: 1.3rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+
+        .footer-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .hero-content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .hero-text {
+                text-align: center;
+            }
+
+            .meta-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .image-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 10, 10, 0.95);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+                transition: transform 0.3s ease, opacity 0.3s ease;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .project-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Inayat</a>
+            <ul class="nav-links">
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/About.html">About</a></li>
+                <li><a href="/Projects.html">Projects</a></li>
+                <li><a href="/Resume.html">Resume</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="project-hero">
+        <div class="project-hero-container">
+            <a href="/Projects.html" class="back-button">
+                ← Back to Projects
+            </a>
+            
+            <div class="hero-content-wrapper">
+                <div class="hero-text">
+                    <h1 class="project-title">Sculpture Pavilion</h1>
+                    <p class="project-subtitle">
+                        Spatial Design: A Conceptual Architectural Exhibition Space
+                    </p>
+                </div>
+                
+                <div class="hero-image">
+                    <img src="https://framerusercontent.com/images/I93FjO3d5qAuHQIx3N77npWzEk.png?width=1534&height=1082" alt="Sculpture Pavilion">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Content -->
+    <div class="project-content">
+        
+        <!-- Meta Info -->
+        <div class="meta-grid">
+            <div class="meta-item">
+                <h3>Timeline</h3>
+                <p>Feb '24 - Mar '24</p>
+            </div>
+            <div class="meta-item">
+                <h3>Project Type</h3>
+                <p>Solo Architectural Design</p>
+            </div>
+            <div class="meta-item">
+                <h3>Software</h3>
+                <p>Rhino 3D, Adobe Creative Suite</p>
+            </div>
+        </div>
+
+        <!-- Overview -->
+        <section class="content-section">
+            <h2 class="section-title">Overview</h2>
+            <p class="section-description">
+                The <strong>Sculpture Pavilion</strong> is a conceptual architectural design that serves as an interactive exhibition space for sculptures. The project focuses on <strong>layered panelling, spatial hierarchy, and dynamic light interactions</strong>, offering visitors a unique sensory experience as they navigate the pavilion.
+            </p>
+        </section>
+
+        <!-- Project Goals -->
+        <section class="content-section">
+            <h2 class="section-title">Project Goals</h2>
+            <ul class="content-list">
+                <li>Create an <strong>immersive, multi-level exhibition space</strong> for sculpture displays</li>
+                <li>Integrate <strong>light and shadow dynamics</strong> to enhance spatial engagement</li>
+                <li>Design <strong>clear navigation pathways</strong> to ensure fluid visitor movement</li>
+                <li>Apply <strong>layered architecture principles</strong> to balance aesthetics with functionality</li>
+            </ul>
+        </section>
+
+        <!-- Challenges & Solutions -->
+        <section class="content-section">
+            <h2 class="section-title">Challenges & Solutions</h2>
+            
+            <div class="info-cards">
+                <div class="info-card">
+                    <h3>Challenge 1</h3>
+                    <p><strong>Ensuring fluid navigation through an open space</strong></p>
+                    <p style="margin-top: 1rem;"><em>Solution:</em> Defined pathways using layered panels and clear entry/exit points</p>
+                </div>
+                <div class="info-card">
+                    <h3>Challenge 2</h3>
+                    <p><strong>Balancing structural integrity with an open design</strong></p>
+                    <p style="margin-top: 1rem;"><em>Solution:</em> Used staggered and intersecting panels to maintain form while enhancing openness</p>
+                </div>
+                <div class="info-card">
+                    <h3>Challenge 3</h3>
+                    <p><strong>Maximizing light interaction without overwhelming the space</strong></p>
+                    <p style="margin-top: 1rem;"><em>Solution:</em> Placed voids in key areas to allow controlled natural light penetration</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Design Process -->
+        <section class="content-section">
+            <h2 class="section-title">Design Process</h2>
+
+            <!-- Step 1 -->
+            <div class="step-section">
+                <h4>Step 1: Initial Sketch & Conceptualization</h4>
+                <p class="section-description">
+                    The initial design envisioned a <strong>two-story structure with an inclined roof</strong>, emphasizing symmetry and balance. However, early explorations in Rhino revealed the potential for <strong>enhancing spatial generosity</strong> and refining movement pathways.
+                </p>
+            </div>
+
+            <img src="https://framerusercontent.com/images/yVted8lSMPDbRA290eo8v2MQkg.png?width=748&height=424" alt="Initial Sketch" class="showcase-image">
+
+            <!-- Step 2 -->
+            <div class="step-section">
+                <h4>Step 2: Refining Structure & Layout</h4>
+                <p class="section-description">
+                    Using <strong>Rules 1 and 3 of layered architecture</strong>, panels were designed to:
+                </p>
+                <ul class="content-list">
+                    <li>Overlap and intersect, creating <strong>depth and rhythm</strong></li>
+                    <li>Open voids for <strong>natural light penetration</strong> and visual contrast</li>
+                    <li>Establish a <strong>structured yet flexible navigation system</strong> for visitors</li>
+                </ul>
+            </div>
+
+            <img src="https://framerusercontent.com/images/5cgr89Pul2eLN94YJaoPOwraE.png?width=1894&height=1382" alt="Structure Layout" class="showcase-image">
+
+            <!-- Step 3 -->
+            <div class="step-section">
+                <h4>Step 3: Circulation & Interaction Design</h4>
+                <p class="section-description">
+                    <strong>Dual staircases</strong> offer two movement pathways:
+                </p>
+                <ul class="content-list">
+                    <li>Visitors can ascend from the right, following a structured route through sculptures</li>
+                    <li>Alternatively, they can start at the upper level, enjoying <strong>a bird's-eye view</strong> before descending</li>
+                </ul>
+            </div>
+
+            <img src="https://framerusercontent.com/images/xL2cduvC3QyNNyKUc8l0ehOJvjY.png?width=1854&height=1454" alt="Circulation Design" class="showcase-image">
+
+            <!-- Step 4 -->
+            <div class="step-section">
+                <h4>Step 4: Light & Shadow Experimentation</h4>
+                <p class="section-description">
+                    By positioning panels at strategic angles, the design creates a <strong>rhythmic interplay of light and shadow</strong>, dynamically shifting throughout the day. This enhances the sculptures' visual prominence while providing a changing visitor experience.
+                </p>
+            </div>
+        </section>
+
+        <!-- Final Visuals -->
+        <section class="content-section">
+            <h2 class="section-title">Final Sketches & Digital Views</h2>
+            
+            <div class="image-grid">
+                <img src="https://framerusercontent.com/images/LspBAKIJMj9r5XnYPczQ2NT6g.png?width=1706&height=970" alt="Final View 1" class="showcase-image">
+                <img src="https://framerusercontent.com/images/j8PDcvGiaopcK5RcXLVN9rKsTyY.png?width=1212&height=690" alt="Final View 2" class="showcase-image">
+            </div>
+
+            <img src="https://framerusercontent.com/images/rOpxniQTOjRXTQ9eVZWycs5N4.png?width=2108&height=628" alt="Rendered Perspective" class="showcase-image">
+
+            <div class="design-highlight">
+                <h3>Rendered Perspective</h3>
+                <p class="section-description">
+                    Examines how natural light <strong>filters through the layers</strong>, creating a dynamic spatial experience.
+                </p>
+            </div>
+        </section>
+
+        <!-- Final Outcome -->
+        <section class="content-section">
+            <h2 class="section-title">Final Outcome</h2>
+            <ul class="content-list">
+                <li><strong>A visually engaging pavilion</strong> that seamlessly blends art with architecture</li>
+                <li><strong>A multi-pathway exploration experience</strong> allowing visitors to engage with sculptures from different perspectives</li>
+                <li><strong>A rhythmic, light-sensitive environment</strong> where movement through the space changes how art is perceived</li>
+            </ul>
+        </section>
+
+        <!-- Key Takeaways -->
+        <section class="content-section">
+            <h2 class="section-title">Key Takeaways</h2>
+            
+            <div class="learning-grid">
+                <div class="learning-item">
+                    <h4>Spatial Hierarchy and Layered Architecture</h4>
+                    <p class="section-description">
+                        Enhance both function and form through thoughtful organization of space and materials.
+                    </p>
+                </div>
+
+                <div class="learning-item">
+                    <h4>Interactivity Through Circulation</h4>
+                    <p class="section-description">
+                        Perspective shifts improve visitor engagement and create dynamic experiences.
+                    </p>
+                </div>
+
+                <div class="learning-item">
+                    <h4>Light as an Architectural Element</h4>
+                    <p class="section-description">
+                        Can elevate a space from static to dynamic, transforming how visitors perceive art.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Inayat. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

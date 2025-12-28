@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume - Inayat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #ffffff;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #14b8a6;
+            --accent-light: #2dd4bf;
+            --accent-dark: #0d9488;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --gradient-1: #14b8a6;
+            --gradient-2: #06b6d4;
+            --gradient-3: #0891b2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            z-index: 1000;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            animation: slideDown 0.6s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        /* Resume Container */
+        .resume-wrapper {
+            min-height: 100vh;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated blur orbs */
+        .resume-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--gradient-1) 0%, transparent 70%);
+            filter: blur(100px);
+            opacity: 0.3;
+            animation: float 20s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        .resume-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--gradient-2) 0%, transparent 70%);
+            filter: blur(100px);
+            opacity: 0.25;
+            animation: float 15s ease-in-out infinite reverse;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+        }
+
+        .resume-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header Section */
+        .resume-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .resume-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-light), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .resume-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2));
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(20, 184, 166, 0.4);
+        }
+
+        /* Section Styling */
+        .resume-section {
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .resume-section:nth-child(2) { animation-delay: 0.1s; }
+        .resume-section:nth-child(3) { animation-delay: 0.2s; }
+        .resume-section:nth-child(4) { animation-delay: 0.3s; }
+        .resume-section:nth-child(5) { animation-delay: 0.4s; }
+        .resume-section:nth-child(6) { animation-delay: 0.5s; }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: var(--accent);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+        }
+
+        /* Experience & Education Items */
+        .resume-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resume-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent), var(--gradient-2));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .resume-item:hover::before {
+            opacity: 1;
+        }
+
+        .resume-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent);
+            transform: translateX(8px);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .item-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .item-company {
+            font-size: 1.1rem;
+            color: var(--accent-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .item-date {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            background: rgba(20, 184, 166, 0.1);
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .item-description {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .item-description ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 1rem;
+        }
+
+        .item-description li {
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .item-description li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-category {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .skill-category:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .skill-category-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .skill-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(20, 184, 166, 0.1);
+            border: 1px solid rgba(20, 184, 166, 0.2);
+            border-radius: 20px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            background: rgba(20, 184, 166, 0.2);
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        /* Contact Info Section */
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .contact-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--gradient-2));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .contact-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .contact-details {
+            flex: 1;
+        }
+
+        .contact-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                background: rgba(10, 10, 10, 0.95);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                transition: left 0.3s ease;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .resume-wrapper {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            .resume-title {
+                font-size: 2.5rem;
+            }
+
+            .resume-subtitle {
+                font-size: 1rem;
+            }
+
+            .item-header {
+                flex-direction: column;
+            }
+
+            .item-date {
+                align-self: flex-start;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(7px, 7px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Inayat</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="About.html">About</a></li>
+                <li><a href="Projects.html">Projects</a></li>
+                <li><a href="Resume.html" class="active">Resume</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Resume Content -->
+    <div class="resume-wrapper">
+        <div class="resume-container">
+            <!-- Header -->
+            <div class="resume-header">
+                <h1 class="resume-title">Resume</h1>
+                <p class="resume-subtitle">UI/UX Designer & Creative Technologist</p>
+                <a href="https://acrobat.adobe.com/id/urn:aaid:sc:US:6bf5f02f-11da-441d-a7e6-93ca51062689" class="download-btn" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    View Full Resume
+                </a>
+            </div>
+
+            <!-- Summary -->
+            <div class="resume-section">
+                <h2 class="section-title">Profile</h2>
+                <div class="resume-item">
+                    <p class="item-description">
+                        Creative and results-driven Interactive Arts and Technology student specializing in UX/UI design, 
+                        interactive development, and user-centred solutions. Proven ability to leverage design tools and 
+                        programming expertise to create innovative, functional, and engaging digital experiences. Skilled 
+                        in analyzing user needs and delivering solutions that improve usability, accessibility, and overall satisfaction.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Experience -->
+            <div class="resume-section">
+                <h2 class="section-title">Professional Experience</h2>
+                
+                <div class="resume-item">
+                    <div class="item-header">
+                        <div>
+                            <h3 class="item-title">Workplace Experience UX/UI Specialist Intern</h3>
+                            <p class="item-company">DMS x Mastercard - Vancouver, BC, Canada</p>
+                        </div>
+                        <span class="item-date">May 2025 - Aug 2025</span>
+                    </div>
+                    <div class="item-description">
+                        <ul>
+                            <li>Conducted interviews with internal stakeholders across departments to identify employee needs and workplace pain points that informed UX decisions</li>
+                            <li>Created employee personas and end-to-end journey maps to identify opportunities for improving internal tools and experiences</li>
+                            <li>Contributed to the information architecture and content design of Mastercard's internal SharePoint platform to improve usability and clarity</li>
+                            <li>Collaborated with cross-functional teams to align UX strategy with Mastercard's global Workplace Experience goals</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="resume-item">
+                    <div class="item-header">
+                        <div>
+                            <h3 class="item-title">Retail Sales Associate</h3>
+                            <p class="item-company">Bath & Body Works, Metropolis at Metrotown, BC, Canada</p>
+                        </div>
+                        <span class="item-date">Sep 2023 - Feb 2024</span>
+                    </div>
+                    <div class="item-description">
+                        <ul>
+                            <li>Managed over 50 customer interactions daily, resolving issues efficiently while maintaining a positive customer experience</li>
+                            <li>Streamlined inventory management for 100+ products, ensuring 100% transaction accuracy</li>
+                            <li>Collaborated with team members to solve complex customer service issues, improving overall team efficiency and earning recognition from management for outstanding teamwork and problem-solving capabilities</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Experience -->
+            <div class="resume-section">
+                <h2 class="section-title">Related Experience</h2>
+                
+                <div class="resume-item">
+                    <div class="item-header">
+                        <div>
+                            <h3 class="item-title">UX/UI Designer and App Developer</h3>
+                            <p class="item-company">Chemtrails - All in One Travel App, Simon Fraser University</p>
+                        </div>
+                        <span class="item-date">Oct 07 - Dec 02, 2025</span>
+                    </div>
+                    <div class="item-description">
+                        <ul>
+                            <li>Designed a mobile travel planning app to help users discover places, plan trips, and document experiences in one platform</li>
+                            <li>Conducted user research and competitive analysis to inform feature prioritization and UX decisions</li>
+                            <li>Created user flows, wireframes, and high-fidelity prototypes in Figma, focusing on intuitive navigation and clarity</li>
+                            <li>Implemented core features such as trip planning, wishlists, and travel journals, refining the interface through usability testing and feedback</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="resume-item">
+                    <div class="item-header">
+                        <div>
+                            <h3 class="item-title">Game Developer</h3>
+                            <p class="item-company">Panda Adventure Game, Simon Fraser University</p>
+                        </div>
+                        <span class="item-date">Jul 20 - Aug 05, 2024</span>
+                    </div>
+                    <div class="item-description">
+                        <ul>
+                            <li>Designed and developed a responsive e-commerce website showcasing anime-inspired sticker illustrations with a strong visual identity</li>
+                            <li>Created user flows, wireframes, and high-fidelity designs focused on discoverability, visual hierarchy, and intuitive navigation</li>
+                            <li>Implemented the website using HTML, CSS, and JavaScript, ensuring responsive layouts and consistent interactions across devices</li>
+                            <li>Applied UX principles and usability testing to refine layout, product presentation, and overall browsing experience</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="resume-item">
+                    <div class="item-header">
+                        <div>
+                            <h3 class="item-title">UX/UI Designer</h3>
+                            <p class="item-company">Isola Design District, Simon Fraser University</p>
+                        </div>
+                        <span class="item-date">Oct 03 - Dec 04, 2023</span>
+                    </div>
+                    <div class="item-description">
+                        <ul>
+                            <li>Collaborated with a team to design an interactive website for locating exhibitions and nearby places in the Isola Design District</li>
+                            <li>Researched the Isola District and its exhibitions to ensure accurate and relevant content representation</li>
+                            <li>Developed functionality for videos and images to pop up dynamically when hovering over location dots, enhancing user engagement and interactivity</li>
+                            <li>Contributed to creating prototypes in Figma, refining user flows, and optimizing the interface for a seamless user experience</li>
+                            <li>Led usability testing sessions with 10 participants, synthesizing feedback to iteratively improve navigation, content clarity, and overall user satisfaction (achieved a 90% satisfaction rate)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Education -->
+            <div class="resume-section">
+                <h2 class="section-title">Education</h2>
+                
+                <div class="resume-item">
+                    <div class="item-header">
+                        <div>
+                            <h3 class="item-title">Bachelor of Arts in Interactive Arts and Technology</h3>
+                            <p class="item-company">Simon Fraser University, Burnaby, BC</p>
+                        </div>
+                        <span class="item-date">Expected Graduation: Fall 2026</span>
+                    </div>
+                    <div class="item-description">
+                        <p>Specialization in UX/UI Design, Game Development, and Website Design & Development</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills -->
+            <div class="resume-section">
+                <h2 class="section-title">Technical Skills</h2>
+                
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h3 class="skill-category-title">3D Modelling & CAD</h3>
+                        <div class="skill-list">
+                            <span class="skill-tag">Rhino</span>
+                            <span class="skill-tag">SketchUp</span>
+                            <span class="skill-tag">OnShape</span>
+                            <span class="skill-tag">AutoCAD</span>
+                            <span class="skill-tag">Revit</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category">
+                        <h3 class="skill-category-title">Design & Prototyping</h3>
+                        <div class="skill-list">
+                            <span class="skill-tag">Figma</span>
+                            <span class="skill-tag">Adobe Illustrator</span>
+                            <span class="skill-tag">Photoshop</span>
+                            <span class="skill-tag">InDesign</span>
+                            <span class="skill-tag">After Effects</span>
+                            <span class="skill-tag">Framer</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category">
+                        <h3 class="skill-category-title">Programming</h3>
+                        <div class="skill-list">
+                            <span class="skill-tag">JavaScript (p5.js)</span>
+                            <span class="skill-tag">Java</span>
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">HTML</span>
+                            <span class="skill-tag">CSS</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category">
+                        <h3 class="skill-category-title">UX/UI Specialties</h3>
+                        <div class="skill-list">
+                            <span class="skill-tag">User Research</span>
+                            <span class="skill-tag">Wireframing</span>
+                            <span class="skill-tag">Prototyping</span>
+                            <span class="skill-tag">Usability Testing</span>
+                            <span class="skill-tag">Journey Mapping</span>
+                            <span class="skill-tag">Information Architecture</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interests -->
+            <div class="resume-section">
+                <h2 class="section-title">Interests</h2>
+                <div class="resume-item">
+                    <div class="item-description">
+                        <ul>
+                            <li>UX/UI Design, Game Development, and Website Design & Development</li>
+                            <li>Sketching architectural forms and exploring human-centred technologies</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="resume-section">
+                <h2 class="section-title">Contact Information</h2>
+                
+                <div class="contact-info">
+                    <a href="mailto:inayat_inayat@sfu.ca" class="contact-item">
+                        <div class="contact-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                <path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.779l5.513-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z"/>
+                            </svg>
+                        </div>
+                        <div class="contact-details">
+                            <span class="contact-label">Email</span>
+                            <span class="contact-value">inayat_inayat@sfu.ca</span>
+                        </div>
+                    </a>
+
+                    <a href="tel:+17789175291" class="contact-item">
+                        <div class="contact-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                <path d="M20 22.621l-3.521-6.795c-.008.004-1.974.97-2.064 1.011-2.24 1.086-6.799-7.82-4.609-8.994l2.083-1.026-3.493-6.817-2.106 1.039c-7.202 3.755 4.233 25.982 11.6 22.615.121-.055 2.102-1.029 2.11-1.033z"/>
+                            </svg>
+                        </div>
+                        <div class="contact-details">
+                            <span class="contact-label">Phone</span>
+                            <span class="contact-value">778-917-5291</span>
+                        </div>
+                    </a>
+
+                    <a href="https://www.linkedin.com/in/inayat-inayat" target="_blank" class="contact-item">
+                        <div class="contact-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                            </svg>
+                        </div>
+                        <div class="contact-details">
+                            <span class="contact-label">LinkedIn</span>
+                            <span class="contact-value">Connect with me</span>
+                        </div>
+                    </a>
+
+                    <a href="https://inayat.framer.website" target="_blank" class="contact-item">
+                        <div class="contact-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                            </svg>
+                        </div>
+                        <div class="contact-details">
+                            <span class="contact-label">Portfolio</span>
+                            <span class="contact-value">inayat.framer.website</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Inayat. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Mobile Navigation Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
