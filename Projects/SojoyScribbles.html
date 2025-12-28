@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sojoy Scribbles - Inayat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #14b8a6;
+            --accent-light: #2dd4bf;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --gradient-1: #14b8a6;
+            --gradient-2: #06b6d4;
+            --gradient-3: #0891b2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            z-index: 1000;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .project-hero {
+            padding: 10rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-hero::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--gradient-1) 0%, transparent 70%);
+            filter: blur(120px);
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .project-hero-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 3rem;
+            transition: gap 0.3s ease;
+        }
+
+        .back-button:hover {
+            gap: 1rem;
+        }
+
+        .hero-content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            text-align: left;
+        }
+
+        .project-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 50%, var(--gradient-3) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .project-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Video Container */
+        .hero-video {
+            width: 100%;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .hero-video video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Content Container */
+        .project-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .content-section {
+            margin-bottom: 6rem;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            text-align: left;
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            text-align: left;
+            max-width: 100%;
+        }
+
+        .section-description strong {
+            color: var(--text-primary);
+        }
+
+        /* Meta Info Grid */
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+            text-align: left;
+        }
+
+        .meta-item h3 {
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .meta-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Design Highlight */
+        .design-highlight {
+            background: linear-gradient(135deg, rgba(255, 184, 214, 0.2) 0%, rgba(184, 224, 255, 0.15) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 3rem;
+            margin: 3rem 0;
+            text-align: left;
+        }
+
+        .design-highlight h3 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        /* Lists */
+        .content-list {
+            margin: 2rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .content-list li {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .content-list li strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Page Cards */
+        .page-grid {
+            display: grid;
+            gap: 3rem;
+            margin: 3rem 0;
+        }
+
+        .page-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .page-card h4 {
+            font-size: 1.5rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .page-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .page-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        /* Contribution Section */
+        .contribution-section {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .contribution-section h4 {
+            font-size: 1.3rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        /* Image Showcase */
+        .showcase-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 2rem 0;
+        }
+
+        .showcase-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(20, 184, 166, 0.2);
+        }
+
+        /* Feature Showcase Grid */
+        .feature-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            margin: 3rem 0;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .feature-showcase.reverse {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .feature-showcase.reverse .feature-image {
+            order: 2;
+        }
+
+        .feature-showcase.reverse .feature-text {
+            order: 1;
+        }
+
+        .feature-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .feature-text h4 {
+            font-size: 1.5rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .feature-text p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Live Site Button */
+        .live-site-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 100%);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .live-site-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(20, 184, 166, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+
+        .footer-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .hero-content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .hero-text {
+                text-align: center;
+            }
+
+            .meta-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .feature-showcase {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-showcase.reverse .feature-image {
+                order: 1;
+            }
+
+            .feature-showcase.reverse .feature-text {
+                order: 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+                transition: transform 0.3s ease, opacity 0.3s ease;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .project-title {
+                font-size: 2.5rem;
+            }
+
+            .meta-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Inayat</a>
+            <ul class="nav-links">
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/About.html">About</a></li>
+                <li><a href="/Projects.html">Projects</a></li>
+                <li><a href="/Resume.html">Resume</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="project-hero">
+        <div class="project-hero-container">
+            <a href="/Projects.html" class="back-button">
+                ← Back to Projects
+            </a>
+            
+            <div class="hero-content-wrapper">
+                <div class="hero-text">
+                    <h1 class="project-title">Sojoy Scribbles</h1>
+                    <p class="project-subtitle">
+                        A Whimsical Sticker Shop: E-Commerce UX/UI Design & Front-End Development
+                    </p>
+                </div>
+                
+                <div class="hero-video">
+                    <video autoplay loop muted playsinline>
+                        <source src="https://framerusercontent.com/assets/e3ld9onE19lfw32wlrNKnVae4ps.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Content -->
+    <div class="project-content">
+        
+        <!-- Meta Info -->
+        <div class="meta-grid">
+            <div class="meta-item">
+                <h3>Timeline</h3>
+                <p>Spring 2025</p>
+            </div>
+            <div class="meta-item">
+                <h3>Role</h3>
+                <p>UX/UI Designer & Front-End Developer</p>
+            </div>
+            <div class="meta-item">
+                <h3>Team</h3>
+                <p>Inayat Inayat, Md. Kashfi Or Rashid Pranta</p>
+            </div>
+            <div class="meta-item">
+                <h3>Tools</h3>
+                <p>HTML5, CSS, JavaScript, GitHub, VS Code</p>
+            </div>
+        </div>
+
+        <!-- Project Overview -->
+        <section class="content-section">
+            <h2 class="section-title">Project Overview</h2>
+            <p class="section-description">
+                <strong>Sojoy Scribbles</strong> is a playful, anime-inspired online sticker store designed to deliver a joyful shopping experience through hand-drawn artwork and clean, accessible UI. The website allows users to browse, customize, and purchase creative sticker products while emphasizing ease of navigation and visual storytelling.
+            </p>
+            <p class="section-description">
+                Our goal was to create a <strong>fully responsive, multi-page e-commerce site</strong> that reflects our brand personality — bright, expressive, and user-friendly — while meeting accessibility and interaction standards.
+            </p>
+        </section>
+
+        <!-- Design Concept -->
+        <section class="content-section">
+            <h2 class="section-title">Design Concept</h2>
+            <div class="design-highlight">
+                <h3>"Crafting joy, one scribble at a time"</h3>
+                <p class="section-description">
+                    We wanted each page to feel personal and handcrafted — echoing the unique nature of the stickers themselves.
+                </p>
+            </div>
+
+            <p class="section-description">The visual system uses:</p>
+            <ul class="content-list">
+                <li>A <strong>soft pastel palette and friendly typography</strong> for warmth and approachability</li>
+                <li><strong>Illustrated icons and imagery</strong> for a cohesive art-centric identity</li>
+                <li><strong>Grid-based layouts</strong> to maintain balance and readability across pages</li>
+            </ul>
+
+            <p class="section-description">
+                I contributed to the layout design, page structuring, and interaction styling across all major pages — ensuring consistency between the homepage, product listing, and checkout experience.
+            </p>
+        </section>
+
+        <!-- Site Architecture -->
+        <section class="content-section">
+            <h2 class="section-title">Site Architecture</h2>
+            <p class="section-description">
+                The website includes <strong>five major pages</strong>:
+            </p>
+
+            <div class="page-grid">
+                <div class="page-card">
+                    <h4>Home Page</h4>
+                    <p>Introduces the brand with a hero section, artist story, and message form</p>
+                    <img src="https://framerusercontent.com/images/BIKsQjiFLhMIvZyvZDgVURq5Org.png?width=2046&height=120" alt="Hero Section">
+                    <p style="margin-top: 1rem;"><strong>Hero Section:</strong> Engaging tagline and CTA for browsing stickers</p>
+                    <img src="https://framerusercontent.com/images/VLWpHvbPt2aOwf3WG003G2rfWwU.png?width=2072&height=1384" alt="About Section" style="margin-top: 1.5rem;">
+                    <p style="margin-top: 1rem;"><strong>About Section:</strong> Personal narrative and anime-inspired imagery for relatability</p>
+                </div>
+
+                <div class="page-card">
+                    <h4>Products Page</h4>
+                    <p>Displays sticker categories (Limited Edition & New Arrivals) with add-to-cart functionality</p>
+                    <img src="https://framerusercontent.com/images/QCmZgL7oiu4lHY8L3cRnFevj9xM.png?width=2880&height=1558" alt="Product Grid">
+                    <p style="margin-top: 1rem;"><strong>Product Grid:</strong> Visual-first display with hover animations and clear pricing</p>
+                </div>
+
+                <div class="page-card">
+                    <h4>Cart Page</h4>
+                    <p>Shows selected items with dynamic quantity controls and order summary</p>
+                    <img src="https://framerusercontent.com/images/kViceANsixK2GDYIRyb4Xk.png?width=2046&height=1216" alt="Cart Page">
+                    <img src="https://framerusercontent.com/images/XkHwGZFkvr62Ds9SjWkAkF8q4.png?width=1422&height=456" alt="Cart Interaction" style="margin-top: 1.5rem;">
+                    <p style="margin-top: 1rem;"><strong>Cart Interaction:</strong> Dynamic quantity controls and live order summary</p>
+                </div>
+
+                <div class="page-card">
+                    <h4>Billing Page</h4>
+                    <p>Collects user shipping and payment details in a clean, structured layout</p>
+                    <img src="https://framerusercontent.com/images/nTfIpzyA2oXaqKzBDjH1u164aKc.png?width=2334&height=1132" alt="Billing Form">
+                    <p style="margin-top: 1rem;"><strong>Billing Form:</strong> Structured, intuitive input fields with clear visual hierarchy</p>
+                </div>
+
+                <div class="page-card">
+                    <h4>Order Confirmation Page</h4>
+                    <p>Confirms purchases with delivery details and order summary</p>
+                    <img src="https://framerusercontent.com/images/3oeqFU2AYT0r9VWjvWVfxHafztA.png?width=2408&height=1210" alt="Confirmation Page">
+                    <p style="margin-top: 1rem;"><strong>Confirmation Page:</strong> Friendly, trust-building order summary</p>
+                </div>
+            </div>
+
+            <p class="section-description" style="font-style: italic; margin-top: 2rem;">
+                All pages utilize a shared header/footer system for consistency and ease of navigation.
+            </p>
+        </section>
+
+        <!-- My Contributions -->
+        <section class="content-section">
+            <h2 class="section-title">My Contributions</h2>
+            <p class="section-description">
+                As the <strong>team leader</strong>, I handled both design and implementation tasks:
+            </p>
+
+            <div class="contribution-section">
+                <h4>Visual & Layout Design</h4>
+                <p class="section-description">
+                    Designed page structures using a responsive grid system (grid.css) and ensured visual consistency across all breakpoints.
+                </p>
+            </div>
+
+            <div class="contribution-section">
+                <h4>Front-End Development</h4>
+                <p class="section-description">
+                    Implemented HTML5 semantic structure and CSS3 styling for all main pages (index.html, product.html, billing.html, cart.html, and order-confirmation.html).
+                </p>
+            </div>
+
+            <div class="contribution-section">
+                <h4>Accessibility & Responsiveness</h4>
+                <p class="section-description">
+                    Optimized buttons, labels, and form fields with ARIA standards and mobile-friendly layouts.
+                </p>
+            </div>
+
+            <div class="contribution-section">
+                <h4>Interactivity</h4>
+                <p class="section-description">
+                    Integrated simple JavaScript behaviors (like quantity adjustment and form validation) to enhance usability.
+                </p>
+            </div>
+
+            <div class="contribution-section">
+                <h4>Testing & Debugging</h4>
+                <p class="section-description">
+                    Conducted browser and device testing to ensure cross-platform consistency.
+                </p>
+            </div>
+        </section>
+
+        <!-- Development Process -->
+        <section class="content-section">
+            <h2 class="section-title">Development Process</h2>
+            <p class="section-description">
+                Our workflow was <strong>collaborative and iterative</strong>:
+            </p>
+
+            <ul class="content-list">
+                <li><strong>Setup:</strong> Repository initialized with .gitignore and .gitattributes for clean version control</li>
+                <li><strong>Division of Tasks:</strong>
+                    <ul style="margin-top: 0.5rem; padding-left: 2rem;">
+                        <li><strong>Inayat:</strong> All pages design, layout and interactive features, handling VS Code</li>
+                        <li><strong>Kashfi:</strong> Repository management, CSS setup, and documentation</li>
+                    </ul>
+                </li>
+                <li><strong>Version Control:</strong> We worked on separate branches (addingIndex, updatingReadme) and merged updates after code review</li>
+                <li><strong>Final Testing:</strong> Verified layout integrity, image optimization, and checkout flow before submission</li>
+            </ul>
+
+            <img src="https://framerusercontent.com/images/PfmDi0MF9yMs99BBqL4L176NRqw.png?width=2056&height=1372" alt="Development Process" class="showcase-image">
+        </section>
+
+        <!-- Design Features -->
+        <section class="content-section">
+            <h2 class="section-title">Design Features</h2>
+
+            <div class="feature-showcase">
+                <div class="feature-image">
+                    <img src="https://framerusercontent.com/images/S7FexivFhfWJkymzJg0A1TxbJ8.png?width=2054&height=1366" alt="Product Display">
+                </div>
+                <div class="feature-text">
+                    <h4>Product Catalog</h4>
+                    <p>A clean, organized product page showcasing sticker collections with category filters and seamless navigation. The layout prioritizes visual discovery while maintaining easy access to product details and pricing.</p>
+                </div>
+            </div>
+
+            <div class="feature-showcase reverse">
+                <div class="feature-image">
+                    <img src="https://framerusercontent.com/images/AGCgsWNfkJ0jYZThFUrzFy2B8.png?width=948&height=1202" alt="Product Grid Detail">
+                </div>
+                <div class="feature-text">
+                    <h4>Interactive Product Grid</h4>
+                    <p>Visual-first display featuring hover animations that reveal product information. Each card includes clear pricing, product names, and smooth transitions that enhance the browsing experience without overwhelming the user.</p>
+                </div>
+            </div>
+
+            <div class="feature-showcase">
+                <div class="feature-image">
+                    <img src="https://framerusercontent.com/images/zkSk2oD6bXeF22XWrdgqEKqFxbc.png?width=2880&height=1560" alt="Billing Page">
+                </div>
+                <div class="feature-text">
+                    <h4>Streamlined Checkout</h4>
+                    <p>A user-friendly billing interface with clearly structured form fields, visual hierarchy, and intuitive input validation. The design reduces checkout friction by grouping related information and providing real-time feedback.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reflection -->
+        <section class="content-section">
+            <h2 class="section-title">Reflection</h2>
+            <p class="section-description">
+                This project deepened my understanding of <strong>web design systems, user flow consistency, and front-end accessibility practices</strong>.
+            </p>
+            <p class="section-description">
+                Working collaboratively strengthened my ability to translate design principles into code while balancing aesthetic expression with technical precision.
+            </p>
+
+            <div class="design-highlight">
+                <h3>Future Iterations</h3>
+                <p class="section-description">If I were to iterate further, I'd add:</p>
+                <ul class="content-list">
+                    <li>A responsive <strong>search bar or filter system</strong> for better product discovery</li>
+                    <li><strong>Local storage-based cart persistence</strong></li>
+                    <li><strong>Light/Dark mode toggle</strong> for inclusive design</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- View Live Site -->
+        <section class="content-section">
+            <div class="design-highlight" style="text-align: center;">
+                <h3>View Live Website</h3>
+                <p class="section-description">
+                    Experience the interactive sticker shop and explore the complete user flow from browsing to checkout.
+                </p>
+                <p>"/Users/inayatgulati/Desktop/Co-op/Sojoy-Scribbles-P2-" </p>
+              
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Inayat. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

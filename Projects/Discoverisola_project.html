@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover Isola - Inayat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #14b8a6;
+            --accent-light: #2dd4bf;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --gradient-1: #14b8a6;
+            --gradient-2: #06b6d4;
+            --gradient-3: #0891b2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            z-index: 1000;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .project-hero {
+            padding: 10rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-hero::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--gradient-1) 0%, transparent 70%);
+            filter: blur(120px);
+            opacity: 0.4;
+            z-index: 0;
+        }
+
+        .project-hero-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 3rem;
+            transition: gap 0.3s ease;
+        }
+
+        .back-button:hover {
+            gap: 1rem;
+        }
+
+        .hero-content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            text-align: left;
+        }
+
+        .project-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 50%, var(--gradient-3) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .project-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Video Container */
+        .hero-video {
+            width: 100%;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .hero-video video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Content Container */
+        .project-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .content-section {
+            margin-bottom: 6rem;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            text-align: left;
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            text-align: left;
+            max-width: 100%;
+        }
+
+        .section-description strong {
+            color: var(--text-primary);
+        }
+
+        /* Meta Info Grid */
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+            text-align: left;
+        }
+
+        .meta-item h3 {
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .meta-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Info Cards */
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .info-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2.5rem;
+            text-align: left;
+        }
+
+        .info-card h3 {
+            font-size: 1.5rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .info-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Goals List */
+        .goals-list {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+        }
+
+        .goals-list ol {
+            list-style-position: inside;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 2;
+        }
+
+        .goals-list ol li {
+            margin-bottom: 0.8rem;
+        }
+
+        /* Design Highlight */
+        .design-highlight {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 3rem;
+            margin: 3rem 0;
+            text-align: left;
+        }
+
+        .design-highlight h3 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        /* Lists */
+        .content-list {
+            margin: 2rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .content-list li {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .content-list li strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Challenge Sections */
+        .challenge-grid {
+            display: grid;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .challenge-item {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        .challenge-item h4 {
+            font-size: 1.3rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        /* Image Showcase */
+        .showcase-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 2rem 0;
+        }
+
+        .showcase-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(20, 184, 166, 0.2);
+        }
+
+        /* Image Grid */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .image-grid.three-col {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        /* Learning Grid */
+        .learning-grid {
+            display: grid;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .learning-item {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        .learning-item h4 {
+            font-size: 1.3rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+
+        .footer-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .hero-content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .hero-text {
+                text-align: center;
+            }
+
+            .meta-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .image-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .image-grid.three-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 10, 10, 0.95);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+                transition: transform 0.3s ease, opacity 0.3s ease;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .project-title {
+                font-size: 2.5rem;
+            }
+
+            .meta-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Inayat</a>
+            <ul class="nav-links">
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/About.html">About</a></li>
+                <li><a href="/Projects.html">Projects</a></li>
+                <li><a href="/Resume.html">Resume</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="project-hero">
+        <div class="project-hero-container">
+            <a href="/Projects.html" class="back-button">
+                ← Back to Projects
+            </a>
+            
+            <div class="hero-content-wrapper">
+                <div class="hero-text">
+                    <h1 class="project-title">Discover Isola</h1>
+                    <p class="project-subtitle">
+                        UX Experience / Graphic Design - Interactive Exhibition Locator for Milan's Isola Design District
+                    </p>
+                </div>
+                
+                <div class="hero-video">
+                    <video autoplay loop muted playsinline>
+                        <source src="https://framerusercontent.com/assets/RwpA4gvZogiuA4rlry0jmyMPWI.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Content -->
+    <div class="project-content">
+        
+        <!-- Meta Info -->
+        <div class="meta-grid">
+            <div class="meta-item">
+                <h3>Timeline</h3>
+                <p>Nov '23 - Dec '23</p>
+            </div>
+            <div class="meta-item">
+                <h3>Role</h3>
+                <p>UX/UI Designer</p>
+            </div>
+            <div class="meta-item">
+                <h3>Client</h3>
+                <p>Fuorisalone Design Festival</p>
+            </div>
+            <div class="meta-item">
+                <h3>Team</h3>
+                <p>Collaborative Design Project</p>
+            </div>
+        </div>
+
+        <!-- Project Overview -->
+        <section class="content-section">
+            <h2 class="section-title">Project Overview</h2>
+            <p class="section-description">
+                In this collaborative design project, I specialized in developing the interactive elements for the <strong>Isola Design District microsite</strong>. Our client was the <strong>Fuorisalone Design Festival</strong>, and our mission was to create an engaging digital platform that would enhance the exploration of <strong>Milan's vibrant Isola Design District</strong> while promoting local tourism and art exhibitions.
+            </p>
+        </section>
+
+        <!-- Project Goals -->
+        <section class="content-section">
+            <h2 class="section-title">Project Goals</h2>
+            <div class="goals-list">
+                <ol>
+                    <li>Create an intuitive wayfinding system for district visitors</li>
+                    <li>Showcase local art exhibitions and venues</li>
+                    <li>Provide an engaging user experience that encourages exploration</li>
+                    <li>Integrate practical navigation with interactive elements</li>
+                    <li>Represent the district's vibrant creative culture through both print and digital design</li>
+                    <li>Ensure seamless transition between poster and microsite experiences</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Integrated Design Approach -->
+        <section class="content-section">
+            <h2 class="section-title">Integrated Design Approach</h2>
+            
+            <div class="design-highlight">
+                <h3>Interactive Microsite</h3>
+                <p class="section-description">
+                    The project centred on creating an intuitive interface where users could:
+                </p>
+                <ul class="content-list">
+                    <li>Navigate through the district using an interactive guide map</li>
+                    <li>Discover art exhibitions and local attractions</li>
+                    <li>Experience the district's atmosphere through preview videos</li>
+                    <li>Calculate distances between locations</li>
+                    <li>Access information about venues and events</li>
+                </ul>
+            </div>
+
+            <img src="https://framerusercontent.com/images/HUaa0HUx0GrTDk9osIOxwvHQhY.png?width=774&height=1086" alt="Interactive Map Interface" class="showcase-image">
+
+            <div class="design-highlight">
+                <h3>Poster Design</h3>
+                <ul class="content-list">
+                    <li><strong>Visual Sync:</strong> Sliding bars mirroring microsite loading</li>
+                    <li><strong>Color Palette:</strong> Pink, purple, lime green</li>
+                    <li><strong>Layout:</strong> Dynamic grid with district imagery</li>
+                    <li><strong>Interactivity:</strong> Static-to-digital transition</li>
+                    <li><strong>Typography:</strong> Suisse Int'l Bold, IBM Plex Mono</li>
+                    <li><strong>Consistency:</strong> Unified colors, geometric elements</li>
+                    <li><strong>Engagement:</strong> Print-to-digital visual flow</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Design System Images -->
+        <section class="content-section">
+            <h2 class="section-title">Design System</h2>
+            <div class="image-grid">
+                <img src="https://framerusercontent.com/images/MBQM5eJgPjJo6MrxjTsPfUSm0i8.png?width=1156&height=748" alt="Design System 1" class="showcase-image">
+                <img src="https://framerusercontent.com/images/iLhai8smOLlTUbBVp52E7lS88ZQ.png?width=2608&height=1698" alt="Design System 2" class="showcase-image">
+            </div>
+            <img src="https://framerusercontent.com/images/ZtumSL7BtKXUw3iaoNv7JjGviMk.png?width=2662&height=1712" alt="Full Design System" class="showcase-image">
+        </section>
+
+        <!-- Integration Strategy -->
+        <section class="content-section">
+            <h2 class="section-title">Integration Strategy</h2>
+            <p class="section-description">
+                The design system was carefully crafted to ensure that:
+            </p>
+            <ul class="content-list">
+                <li>Visual elements from the poster could be animated in the digital space</li>
+                <li>Color schemes remained vibrant and engaging across both mediums</li>
+                <li>Maintain readability while supporting the design aesthetic</li>
+                <li>Grid layouts could flex between static and dynamic presentations</li>
+            </ul>
+
+            <img src="https://framerusercontent.com/images/Rs8uaZGhauqfAZkXRynKMlmCdM.png?width=1278&height=822" alt="Integration Example" class="showcase-image">
+        </section>
+
+        <!-- Tools & Technologies -->
+        <section class="content-section">
+            <h2 class="section-title">Tools & Technologies</h2>
+            <div class="info-cards">
+                <div class="info-card">
+                    <h3>Design & Prototyping</h3>
+                    <p>Figma for prototyping and poster design</p>
+                </div>
+                <div class="info-card">
+                    <h3>Animation</h3>
+                    <p>After Effects for smooth transitions</p>
+                </div>
+                <div class="info-card">
+                    <h3>Mapping</h3>
+                    <p>Geographic Information Systems for journey mapping</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Challenges -->
+        <section class="content-section">
+            <h2 class="section-title">Challenges</h2>
+            
+            <div class="challenge-grid">
+                <div class="challenge-item">
+                    <h4>Visual Integration</h4>
+                    <ul class="content-list">
+                        <li>Finding the perfect imagery that resonates with both Isola and Milan's character</li>
+                        <li>Creating a cohesive visual language that works across print and digital formats</li>
+                        <li>Maintaining text contrast and readability against vibrant color schemes</li>
+                    </ul>
+                </div>
+
+                <div class="challenge-item">
+                    <h4>Technical Implementation</h4>
+                    <ul class="content-list">
+                        <li>Developing smooth transitions between different interactive states</li>
+                        <li>Integrating the guide map functionality with location previews</li>
+                        <li>Ensuring consistent performance across different devices and screen sizes</li>
+                    </ul>
+                </div>
+
+                <div class="challenge-item">
+                    <h4>Design Balance</h4>
+                    <ul class="content-list">
+                        <li>Harmonizing the vibrant color palette across all elements</li>
+                        <li>Creating engaging interactions without overwhelming users</li>
+                        <li>Maintaining visual hierarchy while incorporating dynamic elements</li>
+                    </ul>
+                </div>
+            </div>
+
+            <img src="https://framerusercontent.com/images/BHu0QIsaGS7LP7JACfPPmAXjik.jpg?width=1920&height=1080" alt="Final Design" class="showcase-image">
+        </section>
+
+        <!-- Learning Outcomes -->
+        <section class="content-section">
+            <h2 class="section-title">Learning Outcomes</h2>
+            
+            <div class="learning-grid">
+                <div class="learning-item">
+                    <h4>UX/UI Mastery</h4>
+                    <ul class="content-list">
+                        <li>Developed expertise in creating interactive experiences for specific audience needs</li>
+                        <li>Learned to balance aesthetic appeal with functional navigation</li>
+                        <li>Gained proficiency in collaborative design environments</li>
+                    </ul>
+                </div>
+
+                <div class="learning-item">
+                    <h4>Technical Skills</h4>
+                    <ul class="content-list">
+                        <li>Mastered prototyping complex interactions in Figma</li>
+                        <li>Advanced understanding of transition design in After Effects</li>
+                        <li>Improved skills in geographic information system integration</li>
+                    </ul>
+                </div>
+
+                <div class="learning-item">
+                    <h4>Design Principles</h4>
+                    <ul class="content-list">
+                        <li>Strengthened understanding of typography in both print and digital contexts</li>
+                        <li>Developed expertise in color theory and practical application</li>
+                        <li>Learned to effectively use white space and visual hierarchy</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Inayat. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

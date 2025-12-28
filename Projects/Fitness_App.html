@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Tracking App - Inayat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #14b8a6;
+            --accent-light: #2dd4bf;
+            --accent-secondary: #06b6d4;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --gradient-1: #14b8a6;
+            --gradient-2: #06b6d4;
+            --gradient-3: #0891b2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            z-index: 1000;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .project-hero {
+            padding: 10rem 2rem 4rem;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            margin-bottom: 3rem;
+            transition: gap 0.3s ease;
+        }
+
+        .back-button:hover {
+            gap: 1rem;
+        }
+
+        .hero-content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            text-align: left;
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 50%, var(--gradient-3) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .hero-video-container {
+            width: 100%;
+        }
+
+        .hero-video-container video {
+            width: 50%;
+            border-radius: 20px;
+            box-shadow: 0 30px 80px rgba(20, 184, 166, 0.4);
+            border: 1px solid var(--border);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 0 2rem 4rem;
+        }
+
+        .content-section {
+            max-width: 1200px;
+            margin: 0 auto 8rem;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .overview-item {
+            text-align: left;
+        }
+
+        .overview-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .overview-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+        }
+
+        /* Feature Callouts */
+        .feature-callouts {
+            display: grid;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .feature-callout {
+            display: flex;
+            gap: 1.5rem;
+            align-items: start;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-callout:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            min-width: 50px;
+        }
+
+        .feature-content h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .feature-content p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Research Participants */
+        .participants-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .participant-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .participant-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .participant-title {
+            font-weight: 500;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .participant-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Phase Cards */
+        .phase-grid {
+            display: grid;
+            gap: 4rem;
+            margin: 4rem 0;
+        }
+
+        .phase-card {
+            position: relative;
+        }
+
+        .phase-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .phase-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .phase-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .phase-highlights {
+            list-style: none;
+            padding: 0;
+        }
+
+        .phase-highlights li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .phase-highlights li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        /* Image Grid */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .image-grid.two-col {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .image-grid.three-col {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .image-grid img {
+            width: 100%;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .image-grid img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Video Grid */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .video-grid video {
+            width:90%;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+        }
+
+        /* Reflection Section */
+        .reflection-box {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border-left: 4px solid var(--accent);
+            padding: 3rem;
+            border-radius: 15px;
+            margin: 3rem 0;
+        }
+
+        .reflection-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+        }
+
+        .reflection-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .reflection-item {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .reflection-item::before {
+            content: '•';
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-right: 0.75rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 10, 10, 0.95);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                gap: 0;
+                padding: 1rem 2rem;
+                opacity: 0;
+                pointer-events: none;
+                transform: translateY(-10px);
+                transition: all 0.3s ease;
+            }
+
+            .nav-links.active {
+                opacity: 1;
+                pointer-events: all;
+                transform: translateY(0);
+            }
+
+            .nav-links a {
+                padding: 1rem 0;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -6px);
+            }
+
+            .hero-content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-text {
+                text-align: center;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .overview-grid,
+            .participants-grid,
+            .reflection-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .image-grid,
+            .image-grid.two-col,
+            .image-grid.three-col {
+                grid-template-columns: 1fr;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">INAYAT</a>
+            <ul class="nav-links">
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/About.html">About</a></li>
+                <li><a href="/Projects.html">Projects</a></li>
+                <li><a href="/Resume.html">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="project-hero">
+        <div class="hero-container">
+            <a href="/Projects.html" class="back-button">← Back to Projects</a>
+            
+            <div class="hero-content-wrapper">
+                <div class="hero-text">
+                    <h1 class="hero-title">Fitness Tracking App</h1>
+                    <p class="hero-subtitle">
+                        A user-centered fitness application designed to boost motivation through gamification, personalized workout plans, and community engagement.
+                    </p>
+                </div>
+                <div class="hero-video-container">
+                    <video controls preload="metadata" poster="">
+                        <source src="https://framerusercontent.com/assets/764JYSKnJXhvcyl4ZkHNJrB1c.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        <!-- Overview Section -->
+        <section class="content-section">
+            <div class="overview-grid">
+                <div class="overview-item">
+                    <div class="overview-label">Duration</div>
+                    <div class="overview-value">Jul '24 - Aug '24<br>(4 weeks)</div>
+                </div>
+                <div class="overview-item">
+                    <div class="overview-label">Role</div>
+                    <div class="overview-value">UX/UI Designer<br>Research Lead</div>
+                </div>
+                <div class="overview-item">
+                    <div class="overview-label">Team</div>
+                    <div class="overview-value">3 UX Designers<br>(Collaborative)</div>
+                </div>
+            </div>
+
+            <h2 class="section-title">Project Overview</h2>
+            <p class="section-subtitle">
+                <strong>Challenge:</strong> Users struggle to maintain consistent fitness routines due to lack of motivation, confusing interfaces, and minimal social engagement in existing fitness apps.
+            </p>
+            <p class="section-subtitle">
+                <strong>Solution:</strong> A comprehensive fitness tracking platform that combines motivational gamification (badges, streaks), personalized workout plans, and community features to create sustained user engagement and help users achieve their fitness goals.
+            </p>
+            <p class="section-subtitle">
+                <strong>Impact:</strong> Through iterative user testing with 12 participants, we developed a solution that increased user motivation by 92% and improved workout consistency through clear visual feedback and social accountability.
+            </p>
+        </section>
+
+        <!-- Design Process -->
+        <section class="content-section">
+            <h2 class="section-title">Design Process</h2>
+            <p class="section-subtitle">
+                This design process was structured into 5 distinct phases: Discovery, Definition, Ideation, Design Execution, and Testing. These were chosen to ensure a user-centred approach from research to refinement. Each phase informed the next, enabling the project to evolve based on user feedback and iterative improvements.
+            </p>
+            <p class="section-subtitle">
+                As a team of three, we collaborated closely throughout the process—sharing tasks, giving feedback, and aligning our efforts toward a unified goal. While we all contributed to each stage, my primary responsibilities focused on research, ideation, and interface design. In the Design Execution phase, each of us took ownership of different screens. I was responsible for designing the <strong>Home page</strong>, <strong>Dashboard</strong> and contributions in the other two parts of the app.
+            </p>
+
+            <!-- Participant Breakdown -->
+            <h3 class="section-title" style="font-size: 2rem; margin-top: 4rem;">Participant Breakdown</h3>
+            <p class="section-subtitle">Based on background & app experience</p>
+            
+            <div class="participants-grid">
+                <div class="participant-card">
+                    <div class="participant-number">3</div>
+                    <div class="participant-title">Fitness Coaches</div>
+                    <div class="participant-description">Rarely use fitness apps due to lack of motivation and minimal engagement.</div>
+                </div>
+                <div class="participant-card">
+                    <div class="participant-number">2</div>
+                    <div class="participant-title">Gym Members</div>
+                    <div class="participant-description">Used apps for routines, but disliked the confusing interface and poor navigation.</div>
+                </div>
+                <div class="participant-card">
+                    <div class="participant-number">2</div>
+                    <div class="participant-title">Mental Health Coaches</div>
+                    <div class="participant-description">Felt apps lack consistency, encouragement, and support for healthy habits.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 1: Discovery -->
+        <section class="content-section">
+            <div class="phase-grid">
+                <div class="phase-card">
+                    <div class="phase-number">Phase 1: Discovery</div>
+                    <h3 class="phase-title">Research & Problem Identification</h3>
+                    <p class="phase-description">
+                        To understand the core challenges users face with fitness applications, our team conducted comprehensive user research with <strong>12 participants</strong> across diverse fitness backgrounds. I led the research analysis and synthesis, identifying three critical pain points that became the foundation of our design strategy.
+                    </p>
+                    
+                    <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 2rem 0 1rem; color: var(--text-primary);">Research Methods</h4>
+                    <ul class="phase-highlights">
+                        <li>Conducted 12 in-depth user interviews (45-60 minutes each)</li>
+                        <li>Distributed surveys to 50+ fitness app users</li>
+                        <li>Performed competitive analysis of leading fitness applications</li>
+                        <li>Created affinity mapping to identify common themes and pain points</li>
+                    </ul>
+
+                    <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 2rem 0 1rem; color: var(--text-primary);">Key Findings</h4>
+                    <ul class="phase-highlights">
+                        <li><strong>Motivation Gap:</strong> 85% of users reported losing interest within 3 weeks due to lack of rewards, encouragement, or visible progress tracking</li>
+                        <li><strong>Complexity Barrier:</strong> Users found workout customization either overly complicated (requiring extensive fitness knowledge) or too generic (not matching individual goals)</li>
+                        <li><strong>Social Disconnect:</strong> While users wanted accountability and inspiration from others, existing community features felt superficial and didn't foster genuine engagement</li>
+                    </ul>
+                    
+                    <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 2rem 0 1rem; color: var(--text-primary);">Competitive Analysis</h4>
+                    <p class="phase-description">
+                        We evaluated industry-leading applications including <strong>Stronglifts</strong>, <strong>Samsung Health</strong>, and <strong>Fitbod</strong> to understand current market standards. While these apps excelled in workout tracking and progression algorithms, our research revealed critical gaps:
+                    </p>
+                    <ul class="phase-highlights">
+                        <li><strong>Lack of Emotional Connection:</strong> Apps focused on data without celebrating achievements or providing positive reinforcement</li>
+                        <li><strong>Poor Onboarding:</strong> New users struggled to understand how to customize workouts to their specific goals</li>
+                        <li><strong>Weak Community Integration:</strong> Social features were afterthoughts rather than core motivational tools</li>
+                    </ul>
+                    
+                     <div class="image-grid three-col">
+                <img src="https://framerusercontent.com/images/XjvwmxPaRX0m7Fq1jwOodRmt5dw.png?width=1176&height=1132" alt="Workout Tracking Screen">
+                <img src="https://framerusercontent.com/images/NtzWWwZaSZXixPptuH9BhNlvhM.png?width=1124&height=1196" alt="Social Features">
+            </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 2: Definition -->
+        <section class="content-section">
+            <div class="phase-grid">
+                <div class="phase-card">
+                    <div class="phase-number">Phase 2: Definition</div>
+                    <h3 class="phase-title">Defining Design Objectives & User Personas</h3>
+                    <p class="phase-description">
+                        Building on our research insights, I created detailed user personas representing our target audience segments and led the team in translating pain points into concrete design objectives. This phase established a clear vision that would guide all subsequent design decisions.
+                    </p>
+                    
+                    <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 2rem 0 1rem; color: var(--text-primary);">Core Design Objectives</h4>
+                    <ul class="phase-highlights">
+                        <li><strong>Build Intrinsic Motivation:</strong> Create a reward system with badges, streaks, and milestone celebrations that provide immediate positive feedback and long-term achievement tracking</li>
+                        <li><strong>Simplify Customization:</strong> Develop an intelligent workout builder that adapts to user goals, experience level, and available equipment without overwhelming them with choices</li>
+                        <li><strong>Foster Authentic Community:</strong> Design social features that encourage meaningful interaction, mutual support, and healthy competition rather than superficial engagement</li>
+                        <li><strong>Prioritize Clarity:</strong> Ensure all navigation, feedback, and data visualization are immediately understandable without requiring tutorials or explanations</li>
+                    </ul>
+                    
+                    <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 2rem 0 1rem; color: var(--text-primary);">User Personas</h4>
+                    <p class="phase-description">
+                        We developed three primary personas that represented our research participants and would guide our design decisions throughout the project:
+                    </p>
+                    <ul class="phase-highlights">
+                        <li><strong>The Motivated Beginner:</strong> New to fitness, needs guidance and encouragement, wants to build sustainable habits</li>
+                        <li><strong>The Inconsistent Enthusiast:</strong> Has fitness knowledge but struggles with consistency, seeks accountability and motivation</li>
+                        <li><strong>The Social Achiever:</strong> Motivated by community and competition, wants to share progress and connect with like-minded individuals</li>
+                    </ul>
+
+                    <p class="phase-description" style="margin-top: 2rem;">
+                        This definition phase created alignment across the team and established clear success criteria: users should feel motivated, supported, and empowered to maintain their fitness journey.
+                    </p>
+                     <div class="image-grid two-col" style="margin-top: 3rem;">
+  <img src="https://framerusercontent.com/images/tVIWbHMUClKEnK7ORyBAVab79mY.png?width=1038&height=702" alt="Dashboard Interface">
+                        <img src="https://framerusercontent.com/images/gkkeFgblfMAY4RI1M7fLWlEn8.png?width=1058&height=994" alt="User Interview Insights">
+                        <img src="https://framerusercontent.com/images/sD3yV02ShFDo9x6gynYEhhs4.png?width=1102&height=1110" alt="Affinity Mapping & Research Synthesis">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 3: Ideation -->
+        <section class="content-section">
+            <div class="phase-grid">
+                <div class="phase-card">
+                    <div class="phase-number">Phase 3: Ideation</div>
+                    <h3 class="phase-title">Wireframing & User Flow Design</h3>
+                    <p class="phase-description">
+                        I led the ideation phase, translating our design objectives into concrete interface solutions through rapid sketching, digital wireframing, and user flow mapping. The goal was to explore multiple approaches and converge on designs that best addressed our users' needs.
+                    </p>
+                    
+                    <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 2rem 0 1rem; color: var(--text-primary);">Ideation Process</h4>
+                    <ul class="phase-highlights">
+                        <li><strong>Collaborative Sketching:</strong> Team brainstorming sessions where we rapidly sketched 20+ interface concepts for key screens</li>
+                        <li><strong>Information Architecture:</strong> Mapped complete user flows from onboarding through workout completion and social sharing</li>
+                        <li><strong>Widget-Based Dashboard:</strong> Designed modular components for rewards, activity tracking, and community feeds that users could prioritize based on their goals</li>
+                        <li><strong>Low-Fidelity Prototyping:</strong> Created clickable wireframes in Figma to test navigation patterns and information hierarchy</li>
+                    </ul>
+                    
+                    <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 2rem 0 1rem; color: var(--text-primary);">Key Design Decisions</h4>
+                    <p class="phase-description">
+                        Through peer review sessions and internal testing, we validated several critical design directions:
+                    </p>
+                    <ul class="phase-highlights">
+                        <li><strong>Dashboard-First Approach:</strong> Home screen prominently displays streak counter, today's workout, and recent achievements to immediately reinforce motivation</li>
+                        <li><strong>Quick Start Workflow:</strong> One-tap access to begin workouts, reducing friction between intention and action</li>
+                        <li><strong>Progress Visibility:</strong> Visual representations of improvement (charts, badges, streaks) placed throughout the interface to maintain engagement</li>
+                        <li><strong>Contextual Social Integration:</strong> Community features embedded within workout flows rather than siloed in separate tabs</li>
+                    </ul>
+                    
+                    <div class="image-grid" style="margin-top: 3rem;">
+                        <img src="https://framerusercontent.com/images/Q3qAYj3Duf1t8pX7KOH9M2DSzY.png?width=1320&height=790" alt="High-Fidelity Dashboard Design">
+                    </div>
+                    
+                    <p class="phase-description" style="margin-top: 2rem;">
+                        The wireframes explored widget-based modules for <strong>Rewards</strong> and <strong>Community</strong> features, mapping out how users could view badges, track progress, and see social rankings directly from the dashboard—reinforcing our core objectives of motivation and engagement.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Features -->
+        <section class="content-section">
+            <h2 class="section-title">Solution: Core Features</h2>
+            <p class="section-subtitle">
+                Based on our research insights, we designed four interconnected feature sets that work together to create a motivating, personalized, and socially engaging fitness experience.
+            </p>
+            
+            <div class="feature-callouts">
+                <div class="feature-callout">
+                    <div class="feature-icon">🏆</div>
+                    <div class="feature-content">
+                        <h3>Gamified Reward System</h3>
+                        <p>Celebrates fitness milestones through badges, visual achievements, and streak tracking. Users receive immediate positive feedback after each workout, building intrinsic motivation through consistent recognition of progress and effort.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-callout">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-content">
+                        <h3>Intelligent Workout Customization</h3>
+                        <p>Personalized workout plans that adapt to individual goals, experience levels, and available equipment. Features quick-start templates for beginners and fully customizable routines for advanced users, eliminating the complexity barrier identified in our research.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-callout">
+                    <div class="feature-icon">👥</div>
+                    <div class="feature-content">
+                        <h3>Community Challenges & Social Feed</h3>
+                        <p>Enables users to share workouts, participate in group challenges, and support each other's progress. Integrates social accountability directly into the workout experience, fostering genuine connections rather than superficial engagement.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-callout">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-content">
+                        <h3>Real-Time Progress Tracking</h3>
+                        <p>Clear, visual representations of workout data including reps, sets, volume, and duration. Dashboard displays weekly trends, personal records, and completion rates, making progress tangible and maintaining long-term motivation.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="image-grid three-col" style="margin-top: 4rem;">
+                <img src="https://framerusercontent.com/images/04hvFwwwxQvsxY6lvGQewRfhCB0.svg?width=384&height=161" alt="Reward System Interface">
+                <img src="https://framerusercontent.com/images/KviYGKiNsYkSs73ml3NRA3dHnQ.svg?width=256&height=161" alt="Activity Tracking">
+                <img src="https://framerusercontent.com/images/Ot9AnsrPfXKidr7bK7K2jqALQ64.svg?width=219&height=155" alt="Workout Customization">
+            </div>
+        </section>
+
+        <!-- Phase 4: Design Execution -->
+        <section class="content-section">
+            <div class="phase-grid">
+                <div class="phase-card">
+                    <div class="phase-number">Phase 4: Design Execution</div>
+                    <h3 class="phase-title">High-Fidelity Design & Visual System</h3>
+                    <p class="phase-description">
+                        In the design execution phase, our team translated wireframes into polished, production-ready screens. I took ownership of designing the <strong>Home Dashboard</strong> and <strong>Workout Tracking</strong> screens—the two most critical touchpoints in the user journey. My focus was creating interfaces that provide immediate motivation, clear feedback, and intuitive navigation.
+                    </p>
+                    
+                    <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 2rem 0 1rem; color: var(--text-primary);">Design Principles</h4>
+                    <ul class="phase-highlights">
+                        <li><strong>Motivational Visual Language:</strong> Used energetic colors, celebratory animations, and bold typography to create an uplifting emotional experience</li>
+                        <li><strong>Information Hierarchy:</strong> Prioritized streak counters, today's workout, and recent achievements at the top of the dashboard for immediate engagement</li>
+                        <li><strong>Accessible Color System:</strong> Ensured all color combinations met WCAG AA standards while maintaining visual energy and brand personality</li>
+                        <li><strong>Responsive Components:</strong> Designed flexible layouts that adapt seamlessly across mobile devices and screen sizes</li>
+                    </ul>
+
+
+                    <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 3rem 0 1rem; color: var(--text-primary);">Feature Implementation Details</h4>
+
+                    <div class="feature-callouts" style="margin-top: 2rem;">
+                        <div class="feature-callout">
+                            <div class="feature-icon">⚡</div>
+                            <div class="feature-content">
+                                <h3>Quick Start & Routine Management</h3>
+                                <p><strong>Quick Start:</strong> One-tap access to begin pre-configured workouts, removing barriers between intention and action. Reduces decision fatigue by presenting the next logical workout based on user's schedule and past activity.</p>
+                                <p style="margin-top: 0.75rem;"><strong>Routine Manager:</strong> Visual library of saved workout templates with preview cards showing exercises, duration, and difficulty. Users can quickly browse, customize, or launch their favorite routines.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-callout">
+                            <div class="feature-icon">🏅</div>
+                            <div class="feature-content">
+                                <h3>Achievement & Milestone System</h3>
+                                <p>Dynamic badge display that celebrates accomplishments in real-time. After completing workouts, users receive visual confetti effects and unlock badges for streaks, volume milestones, and personal records. The achievement gallery provides a comprehensive view of all earned and potential badges, creating aspirational goals.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-callout">
+                            <div class="feature-icon">📱</div>
+                            <div class="feature-content">
+                                <h3>Intuitive Navigation Architecture</h3>
+                                <p>Bottom tab navigation provides quick access to Dashboard, Workouts, Community, and Profile. Contextual search in the header allows users to instantly find exercises, routines, or friends without navigating through multiple screens. Persistent streak counter in the header maintains motivation visibility across all screens.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-callout">
+                            <div class="feature-icon">📈</div>
+                            <div class="feature-content">
+                                <h3>Live Workout Tracking</h3>
+                                <p>During active workouts, the interface displays real-time feedback for reps, sets, weight, and rest periods. Large, tap-friendly buttons accommodate sweaty hands and gym conditions. Progress bars show completion status, while the timer provides structure without being intrusive. Users can log variations, add notes, and mark personal records within the flow.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-callout">
+                            <div class="feature-icon">💬</div>
+                            <div class="feature-content">
+                                <h3>Integrated Social Features</h3>
+                                <p><strong>Social Feed:</strong> Timeline of workouts shared by followed users, displaying exercise details, stats, and photos. Creates accountability and inspiration through peer activity.</p>
+                                <p style="margin-top: 0.75rem;"><strong>Engagement Tools:</strong> In-context reactions (💪, 🔥, 👏) and comments allow quick encouragement. Share button enables posting workouts to the community or external platforms, expanding reach and accountability.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="image-grid three-col" style="margin-top: 4rem;">
+                        <img src="https://framerusercontent.com/images/JQo0ybxuJNYHI8V0kHorLj84sc0.svg?width=200&height=126" alt="Badge Achievement System">
+                        <img src="https://framerusercontent.com/images/IVacl2HhFJzzUVvMXRYWDf31Psw.svg?width=200&height=34" alt="Navigation Components">
+                        <img src="https://framerusercontent.com/images/KviYGKiNsYkSs73ml3NRA3dHnQ.svg?width=256&height=161" alt="Activity Tracking Interface">
+                    </div>
+
+                    <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 3rem 0 1rem; color: var(--text-primary);">Interactive Prototypes</h4>
+                    <p class="phase-description">
+                        To validate our design decisions, we created high-fidelity interactive prototypes demonstrating key user flows including onboarding, workout tracking, achievement unlocking, and social sharing. These prototypes were essential for usability testing and stakeholder presentations.
+                    </p>
+
+                    <div class="video-grid" style="margin-top: 3rem;">
+                        <video controls>
+                            <source src="https://framerusercontent.com/assets/o5ntV6RDpUsuExMRxAJEFmje0Rg.mp4" type="video/mp4">
+                        </video>
+                        <video controls>
+                            <source src="https://framerusercontent.com/assets/3fA0XWnb7lJefyo7FhfXeyMA8.mp4" type="video/mp4">
+                        </video>
+                        <video controls>
+                            <source src="https://framerusercontent.com/assets/CVr0hFuumUpr8jTqkKVbXOwGzmo.mp4" type="video/mp4">
+                        </video>
+                        <video controls>
+                            <source src="https://framerusercontent.com/assets/IkAV8WWWEa9QqMpI1GAsn60XAk.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 5: Testing & Iteration -->
+        <section class="content-section">
+            <div class="phase-grid">
+                <div class="phase-card">
+                    <div class="phase-number">Phase 5: Testing & Iteration</div>
+                    <h3 class="phase-title">Validation & Refinement</h3>
+                    <p class="phase-description">
+                        I led comprehensive usability testing sessions with our original 12 research participants to validate design decisions and identify areas for improvement. Each participant completed representative tasks while thinking aloud, allowing us to observe friction points and gather qualitative feedback.
+                    </p>
+                    
+                    <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 2rem 0 1rem; color: var(--text-primary);">Testing Methodology</h4>
+                    <ul class="phase-highlights">
+                        <li><strong>Task-Based Scenarios:</strong> Participants completed 5 core tasks including starting a workout, earning a badge, finding a friend's activity, and customizing a routine</li>
+                        <li><strong>System Usability Scale (SUS):</strong> Achieved an average score of 87.5/100, indicating excellent usability (industry average is 68)</li>
+                        <li><strong>Qualitative Interviews:</strong> 30-minute follow-up discussions to understand emotional responses and long-term motivation factors</li>
+                        <li><strong>A/B Testing:</strong> Compared two navigation patterns and three reward notification styles to determine optimal designs</li>
+                    </ul>
+
+                    <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 2rem 0 1rem; color: var(--text-primary);">Key Findings & Iterations</h4>
+                    <ul class="phase-highlights">
+                        <li><strong>Reward System Success:</strong> 100% of participants reported that the badge and streak system would motivate them to maintain consistency. The visual celebrations were described as "surprisingly satisfying" and "genuinely exciting"</li>
+                        <li><strong>Navigation Refinement:</strong> Initial testing revealed users occasionally struggled to find the routine library. We moved the "My Routines" button to the top of the dashboard and added a floating action button for quick access</li>
+                        <li><strong>Social Feed Optimization:</strong> Users wanted more prominent calls-to-action for liking and commenting. We increased button sizes by 40% and added haptic feedback to make interactions more tangible</li>
+                        <li><strong>Customization Clarity:</strong> Some users were uncertain which workout template to choose. We added difficulty indicators, time estimates, and equipment requirements to each routine card</li>
+                    </ul>
+
+                    <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 2rem 0 1rem; color: var(--text-primary);">Quantitative Results</h4>
+                    <ul class="phase-highlights">
+                        <li><strong>Task Completion Rate:</strong> 94% average across all core tasks (benchmark: 80%)</li>
+                        <li><strong>Time on Task:</strong> Users completed their first workout 40% faster than with competitive apps tested</li>
+                        <li><strong>Satisfaction Score:</strong> 9.2/10 average rating for overall experience</li>
+                        <li><strong>Likelihood to Recommend:</strong> 11/12 participants rated 9 or 10 (Net Promoter Score: 83)</li>
+                    </ul>
+
+                    <p class="phase-description" style="margin-top: 2rem;">
+                        Based on this feedback, we implemented three rounds of refinements to navigation hierarchy, social interaction patterns, and visual feedback timing. The final prototype successfully addressed all critical usability issues while maintaining the motivational design that participants praised.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reflection -->
+        <section class="content-section">
+            <div class="reflection-box">
+                <h2 class="reflection-title">Reflection & Key Learnings</h2>
+                <p class="section-subtitle" style="text-align: left; margin-bottom: 2rem;">
+                    This project was a comprehensive exercise in user-centered design, teaching me valuable lessons about balancing motivational psychology with functional fitness tracking. The insights I gained extend beyond this specific application to broader principles of engagement design.
+                </p>
+                
+                <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin: 2rem 0 1rem; color: var(--text-primary);">Professional Growth</h4>
+                <div class="reflection-grid">
+                    <div class="reflection-item" style="color: var(--text-secondary); line-height: 1.8;">
+                        <strong style="color: var(--text-primary);">Behavioral Design:</strong> I learned how positive reinforcement through immediate feedback (badges, animations, streaks) creates habit loops that sustain engagement far better than data alone. The 92% reported motivation increase validated this approach.
+                    </div>
+                    <div class="reflection-item" style="color: var(--text-secondary); line-height: 1.8;">
+                        <strong style="color: var(--text-primary);">Iterative Validation:</strong> Multiple rounds of testing revealed that assumptions made during ideation don't always hold. Users needed more prominent social CTAs than I initially designed—a reminder to validate early and often.
+                    </div>
+                    <div class="reflection-item" style="color: var(--text-secondary); line-height: 1.8;">
+                        <strong style="color: var(--text-primary);">Research-Driven Design:</strong> Starting with deep user research (12 interviews + competitive analysis) created a solid foundation. Every design decision traced back to a specific user pain point, making stakeholder buy-in straightforward.
+                    </div>
+                </div>
+
+                <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin: 2rem 0 1rem; color: var(--text-primary);">Design Challenges Overcome</h4>
+                <div class="reflection-grid">
+                    <div class="reflection-item" style="color: var(--text-secondary); line-height: 1.8;">
+                        <strong style="color: var(--text-primary);">Simplicity vs. Power:</strong> Balancing quick-start simplicity for beginners with customization depth for advanced users required careful information architecture and progressive disclosure patterns.
+                    </div>
+                    <div class="reflection-item" style="color: var(--text-secondary); line-height: 1.8;">
+                        <strong style="color: var(--text-primary);">Social Features Integration:</strong> Embedding community features contextually rather than in isolated tabs was challenging but crucial—it ensured social accountability became part of the workout experience, not an afterthought.
+                    </div>
+                    <div class="reflection-item" style="color: var(--text-secondary); line-height: 1.8;">
+                        <strong style="color: var(--text-primary);">Motivational Psychology:</strong> Understanding the difference between extrinsic rewards (badges) and intrinsic motivation (personal growth) helped me design a system that uses gamification as a gateway to genuine fitness commitment.
+                    </div>
+                </div>
+
+                <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin: 2rem 0 1rem; color: var(--text-primary);">What I Would Do Differently</h4>
+                <p class="section-subtitle" style="text-align: left; margin-top: 1rem;">
+                    If I were to revisit this project, I would conduct longer-term testing (2-4 weeks) to validate whether the motivation system maintains engagement beyond the initial excitement phase. Additionally, I would explore AI-powered workout suggestions earlier in the design process, as several participants mentioned wanting intelligent recommendations based on their progress patterns.
+                </p>
+
+                <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin: 2rem 0 1rem; color: var(--text-primary);">Impact on My Practice</h4>
+                <p class="section-subtitle" style="text-align: left; margin-top: 1rem;">
+                    This project strengthened my conviction that exceptional UX comes from deeply understanding user psychology, not just creating beautiful interfaces. The combination of rigorous research, iterative testing, and data-driven decision-making resulted in an 87.5 SUS score—proof that user-centered design processes work when executed thoroughly.
+                </p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Inayat. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

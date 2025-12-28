@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemtrails Mobile App - Inayat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #14b8a6;
+            --accent-light: #2dd4bf;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --gradient-1: #14b8a6;
+            --gradient-2: #06b6d4;
+            --gradient-3: #0891b2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            z-index: 1000;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .project-hero {
+            padding: 10rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-hero::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--gradient-1) 0%, transparent 70%);
+            filter: blur(120px);
+            opacity: 0.4;
+            z-index: 0;
+        }
+
+        .project-hero-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 3rem;
+            transition: gap 0.3s ease;
+        }
+
+        .back-button:hover {
+            gap: 1rem;
+        }
+
+        .hero-content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            text-align: left;
+        }
+
+        .project-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 50%, var(--gradient-3) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .project-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Video Container - Hero Style */
+        .hero-video {
+            width: 70%;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .hero-video iframe {
+            width: 100%;
+            aspect-ratio: 9/16;
+            border: none;
+            display: block;
+        }
+
+        /* Content Container */
+        .project-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .content-section {
+            margin-bottom: 6rem;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            text-align: left;
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            text-align: left;
+            max-width: 100%;
+        }
+
+        .section-description strong {
+            color: var(--text-primary);
+        }
+
+        /* Meta Info Grid */
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+            text-align: left;
+        }
+
+        .meta-item h3 {
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .meta-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Problem/Solution/Goal Cards */
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .info-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2.5rem;
+            text-align: left;
+        }
+
+        .info-card h3 {
+            font-size: 1.5rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .info-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Design Concept Highlight */
+        .design-highlight {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 3rem;
+            margin: 3rem 0;
+            text-align: left;
+        }
+
+        .design-highlight h3 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .design-highlight .section-description {
+            text-align: left;
+            max-width: 100%;
+        }
+
+        /* Image Showcase - Two Column */
+        .image-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .image-row.single {
+            grid-template-columns: 1fr;
+            max-width: 450px;
+        }
+
+        .image-row.three-column {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 9rem;
+            max-width: 1000px;
+        }
+
+        .image-row.three-column .showcase-image {
+            max-width: 100%;
+        }
+
+        /* Smaller images for feature sections */
+        .feature-section .image-row {
+            max-width: 700px;
+            gap: 1rem;
+        }
+
+        .showcase-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .showcase-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(20, 184, 166, 0.2);
+        }
+
+        /* Feature Section */
+        .feature-section {
+            margin: 4rem 0;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .feature-header {
+            text-align: left;
+        }
+
+        .feature-header h3 {
+            font-size: 1.6rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .feature-header p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Feature images in two-column grid */
+        .feature-section .image-row {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            max-width: none;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+
+        .footer-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .hero-content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .hero-text {
+                text-align: center;
+            }
+
+            .hero-video {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .meta-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .image-row {
+                grid-template-columns: 1fr;
+            }
+
+            .image-row.three-column {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 10, 10, 0.95);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .project-title {
+                font-size: 3rem;
+            }
+
+            .project-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .meta-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Inayat</a>
+            <ul class="nav-links">
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/About.html">About</a></li>
+                <li><a href="/Projects.html">Projects</a></li>
+                <li><a href="/Resume.html">Resume</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Project Hero -->
+    <section class="project-hero">
+        <div class="project-hero-container">
+            <a href="/Projects.html" class="back-button">← Back to Projects</a>
+            
+            <div class="hero-content-wrapper">
+                <div class="hero-text">
+                    <h1 class="project-title">Chemtrails—</h1>
+                    <p class="project-subtitle">All-in-one Travel Planning App</p>
+                </div>
+
+                <!-- Hero Video Thumbnail -->
+                <div class="hero-video">
+                    <iframe 
+                        src="https://www.youtube.com/embed/TTxRGhsGydw?autoplay=1&mute=1&loop=1&playlist=TTxRGhsGydw&controls=0&modestbranding=1&rel=0" 
+                        allow="autoplay; encrypted-media" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Content -->
+    <div class="project-content">
+        <!-- Project Overview -->
+        <section class="content-section">
+            <h2 class="section-title">Project Overview</h2>
+            <p class="section-description">
+                Chemtrails is a mobile travel app designed to help users <strong>discover destinations, plan trips, and capture travel memories</strong> in one place. Instead of switching between multiple apps for exploration, organization, and journaling, Chemtrails brings the entire travel journey into a single, cohesive experience.
+            </p>
+        </section>
+
+        <!-- Meta Information -->
+        <div class="meta-grid">
+            <div class="meta-item">
+                <h3>Role</h3>
+                <p>UX/UI Designer & Front and Back-End Developer</p>
+            </div>
+            <div class="meta-item">
+                <h3>Team</h3>
+                <p>Inayat Inayat, Shin Thant Thant</p>
+            </div>
+            <div class="meta-item">
+                <h3>Tools</h3>
+                <p>React Native, Firebase, Firestore, Google Places API, Figma</p>
+            </div>
+            <div class="meta-item">
+                <h3>Timeline</h3>
+                <p>Fall 2025</p>
+            </div>
+        </div>
+
+        <!-- Problem, Solution, Goal -->
+        <div class="info-cards">
+            <div class="info-card">
+                <h3>Problem</h3>
+                <p>Travel planning is fragmented. Users often rely on separate apps to search places, save ideas, plan schedules, and document experiences—making the process overwhelming and disconnected.</p>
+            </div>
+            <div class="info-card">
+                <h3>Solution</h3>
+                <p>Chemtrails unifies exploration, planning, and reflection into one intuitive mobile experience. Users can search places, save destinations into folders, schedule visits using a calendar, and journal memories with photos—all within the same app.</p>
+            </div>
+            <div class="info-card">
+                <h3>Goal</h3>
+                <p>Design a unified mobile travel experience that reduces cognitive load by seamlessly connecting discovery, trip planning, and reflection within a single, intuitive interface.</p>
+            </div>
+        </div>
+
+        <!-- Design Concept -->
+        <section class="content-section">
+            <h2 class="section-title">Design Concept</h2>
+            <div class="design-highlight">
+                <h3>Calm · Exploratory · Personal</h3>
+                <p class="section-description">
+                    Chemtrails is designed to feel like a <strong>travel companion</strong>, not a task manager. The interface utilizes soft colour tones, a clear hierarchy, and generous spacing to minimize cognitive load and foster a relaxed exploration experience. Content—places, images, and memories—remains the primary focus, while the UI stays intentionally minimal and supportive.
+                </p>
+            </div>
+
+            <!-- Design Concept Images -->
+           <div class="image-row three-column">
+                <img src="https://framerusercontent.com/images/pJ2YwFEGutHEWSxIjrMCGsefa8E.png" alt="Color Palette" class="showcase-image">
+                <img src="https://framerusercontent.com/images/q4R2OOhv0ZjtXvTos0ltK74pv4.png" alt="Color Usage" class="showcase-image">
+                <img src="https://framerusercontent.com/images/7f5FyKXoMmVvKQWMmbBRN9PKatA.png" alt="Color Application" class="showcase-image">
+            </div>
+        </section>
+
+        <!-- Color Palette -->
+        <section class="content-section">
+            <h2 class="section-title">Color Palette</h2>
+            <p class="section-description">
+                The color palette for Chemtrails is inspired by <strong>travel, nature, and movement</strong>, with an emphasis on calmness and clarity. Soft blues and muted greens are used as primary colors to evoke a sense of openness, reliability, and exploration. Neutral tones support backgrounds and secondary surfaces, helping content such as place images, maps, and journal photos remain the focal point. Accent colors are used sparingly for primary actions (such as saving a place or adding a journal entry) to guide user attention without overwhelming the interface.
+            </p>
+            <p class="section-description">
+                <strong>UX rationale:</strong> A restrained palette reduces visual fatigue, supports long browsing sessions, and lowers cognitive load during planning-heavy tasks.
+            </p>
+
+            <div class="image-row">
+                <img src="https://framerusercontent.com/images/4y7k8a34B8fQenNG3N4Cl2qoLyM.png" alt="UI Components" class="showcase-image">
+                <img src="https://framerusercontent.com/images/oC5Di78dviuVfqaHa8zAFbUDiEU.png" alt="Interface Design" class="showcase-image">
+                 <img src="https://framerusercontent.com/images/i8VLJGTqqu2XrBfkGv4kNTE7qg.png" alt="Design System" class="showcase-image">
+            </div>
+            <div class="image-row">
+                <img src="https://framerusercontent.com/images/A6vsauvu8zOwzLJBdiTiYxnqXY.png" alt="Visual Design" class="showcase-image">
+                <img src="https://framerusercontent.com/images/etGdSgENrQsVrsTa8YI50ZBm7A.png" alt="App Screens" class="showcase-image">
+                <img src="https://framerusercontent.com/images/AMXPtX5gm3EruEXy0KWLwQI4Xg.png" alt="User Interface" class="showcase-image">
+            </div>
+            <div class="image-row">
+               <img src="https://framerusercontent.com/images/3WzW4LRXlklCtTV3MWNjWUVyd1k.png" alt="App Design" class="showcase-image">
+                <img src="https://framerusercontent.com/images/NmxveCGmGFNkwrJvOWJT1T2cg.png" alt="Mobile UI" class="showcase-image">
+ <img src="https://framerusercontent.com/images/ZPYsVWTz1RPVY0wiSCwi39IKck.png" alt="Design Overview" class="showcase-image">
+            </div>
+            <div class="image-row">
+                 <img src="https://framerusercontent.com/images/uKQo1vQ7gGpPv3aRfpXPWj5eZc.png" alt="Design Concept" class="showcase-image">
+                <img src="https://framerusercontent.com/images/CnkOHDCEVhGEzQzyDikNzIGYSw.png" alt="Design Elements" class="showcase-image">
+            </div>
+        </section>
+
+        <!-- Key Features -->
+        <section class="content-section">
+            <h2 class="section-title">Key Features</h2>
+
+            <!-- Feature 1: Explore Destinations -->
+            <div class="feature-section">
+                <div class="feature-header">
+                    <h3>Explore Destinations</h3>
+                    <p>Users can search for destinations using real-time Google Places data, view ratings, reviews, photos, and directions, and save locations instantly to their wishlist.</p>
+                </div>
+                <div class="image-row">
+                    <img src="https://framerusercontent.com/images/pJ2YwFEGutHEWSxIjrMCGsefa8E.png" alt="Explore Feature" class="showcase-image">
+                    <img src="https://framerusercontent.com/images/UNvj77qOq4Gm527iPxRjcrroo.png" alt="Search Interface" class="showcase-image">
+                </div>
+            </div>
+
+            <!-- Feature 2: Wishlist & Calendar -->
+            <div class="feature-section">
+                <div class="feature-header">
+                    <h3>Wishlist & Calendar Planning</h3>
+                    <p>Saved places can be organized into custom folders and assigned visit dates through a built-in calendar, transforming inspiration into actionable plans.</p>
+                </div>
+                <div class="image-row">
+                    <img src="https://framerusercontent.com/images/j9D2ecOa5aW0QLDns1EAdr5m3OI.png" alt="Wishlist" class="showcase-image">
+                    <img src="https://framerusercontent.com/images/39qf446JNBKmnDctgNVNmyiI8I.png" alt="Calendar" class="showcase-image">
+                </div>
+            </div>
+
+            <!-- Feature 3: Home Dashboard -->
+            <div class="feature-section">
+                <div class="feature-header">
+                    <h3>Home Dashboard</h3>
+                    <p>A personalized dashboard featuring dynamic greetings, rotating travel quotes, upcoming plans, and featured destinations creates a welcoming starting point.</p>
+                </div>
+                <div class="image-row">
+                    <img src="https://framerusercontent.com/images/7f5FyKXoMmVvKQWMmbBRN9PKatA.png" alt="Dashboard" class="showcase-image">
+                    <img src="https://framerusercontent.com/images/NJPr8oJlGXzqxhK577KEaPxFrls.png" alt="Home Screen" class="showcase-image">
+                </div>
+            </div>
+
+            <!-- Feature 4: Travel Journal -->
+            <div class="feature-section">
+                <div class="feature-header">
+                    <h3>Travel Journal</h3>
+                    <p>Users can create, edit, and delete journal entries with multiple photos, allowing them to document trips as personal narratives rather than checklists.</p>
+                </div>
+                <div class="image-row">
+                    <img src="https://framerusercontent.com/images/q4R2OOhv0ZjtXvTos0ltK74pv4.png" alt="Journal" class="showcase-image">
+                    <img src="https://framerusercontent.com/images/O6W5PwyyXIaw5xCf9dSK8C9Qbk.png" alt="Journal Entry" class="showcase-image">
+                </div>
+            </div>
+
+            <!-- Feature 5: Profile and Stats -->
+            <div class="feature-section">
+                <div class="feature-header">
+                    <h3>Profile and Stats</h3>
+                    <p>The profile page tracks user identity and automatically generated travel statistics such as cities visited and trips journaled.</p>
+                </div>
+                <div class="image-row">
+                    <img src="https://framerusercontent.com/images/2pJra1xXKFFCJle4OpXPyXZ4q00.png" alt="Profile" class="showcase-image">
+                    <img src="https://framerusercontent.com/images/GUe6DC5vsPYLSAVfzCufYRaYh0M.png" alt="Stats" class="showcase-image">
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Overview -->
+        <section class="content-section">
+            <h2 class="section-title">Technical Overview</h2>
+            <div class="info-card" style="max-width: 800px;">
+                <p style="margin-bottom: 1rem;"><strong>Frontend:</strong> React Native (Expo)</p>
+                <p style="margin-bottom: 1rem;"><strong>Backend:</strong> Firebase Authentication, Firestore</p>
+                <p style="margin-bottom: 1rem;"><strong>Media Storage:</strong> Firebase Storage</p>
+                <p style="margin-bottom: 1rem;"><strong>APIs:</strong> Google Places API</p>
+                <p><strong>Navigation:</strong> Bottom tab navigation</p>
+            </div>
+        </section>
+
+        <!-- Challenges and Learning -->
+        <section class="content-section">
+            <h2 class="section-title">Challenges and Learning</h2>
+            <p class="section-description">
+                This was my first full mobile app built with React Native. I encountered challenges related to navigation state, image uploads, API error handling, and calendar logic. Through documentation-driven learning, debugging, and iteration, I gained confidence in building scalable, multi-screen mobile applications and translating UX designs into functional products.
+            </p>
+        </section>
+
+        <!-- Outcome -->
+        <section class="content-section">
+            <h2 class="section-title">Outcome</h2>
+            <p class="section-description">
+                Chemtrails resulted in a fully functional mobile application that supports real user data, media uploads, and external APIs. The project strengthened my skills in <strong>UX thinking, mobile development, and problem-solving</strong>, and demonstrates my ability to design and build end-to-end digital products.
+            </p>
+        </section>
+
+        <!-- Demo Link -->
+        <section class="content-section">
+            <h2 class="section-title">Demo Link</h2>
+            <div>
+                <a href="https://youtu.be/TTxRGhsGydw?si=j8xNKcImTwr5870A" target="_blank" style="color: var(--accent-light); font-size: 1.2rem; text-decoration: none; border: 2px solid var(--accent); padding: 1rem 2rem; border-radius: 50px; display: inline-block; transition: all 0.3s ease;">
+                    Watch Full Demo on YouTube →
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Inayat. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

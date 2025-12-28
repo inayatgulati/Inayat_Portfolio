@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MasterCard SharePoint Redesign - Inayat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #14b8a6;
+            --accent-light: #2dd4bf;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --gradient-1: #14b8a6;
+            --gradient-2: #06b6d4;
+            --gradient-3: #0891b2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            z-index: 1000;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section - Chemtrails Style */
+        .project-hero {
+            padding: 10rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-hero::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--gradient-1) 0%, transparent 70%);
+            filter: blur(120px);
+            opacity: 0.4;
+            z-index: 0;
+        }
+
+        .project-hero-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 3rem;
+            transition: gap 0.3s ease;
+        }
+
+        .back-button:hover {
+            gap: 1rem;
+        }
+
+        .hero-content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            text-align: left;
+        }
+
+        .project-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 50%, var(--gradient-3) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .project-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .hero-image {
+            width: 100%;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Content Container */
+        .project-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .content-section {
+            margin-bottom: 6rem;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            text-align: left;
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            text-align: left;
+            max-width: 100%;
+        }
+
+        .section-description strong {
+            color: var(--text-primary);
+        }
+
+        /* Meta Info Grid - Chemtrails Style */
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+            text-align: left;
+        }
+
+        .meta-item h3 {
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .meta-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Info Cards - Problem/Solution Style */
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .info-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2.5rem;
+            text-align: left;
+        }
+
+        .info-card h3 {
+            font-size: 1.5rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .info-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Design Highlight - Challenge Box */
+        .design-highlight {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 3rem;
+            margin: 3rem 0;
+            text-align: left;
+        }
+
+        .design-highlight h3 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .design-highlight .section-description {
+            text-align: left;
+            max-width: 100%;
+            font-style: italic;
+        }
+
+        /* NDA Notice */
+        .nda-notice {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .nda-notice h3 {
+            font-size: 1.3rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        /* Lists */
+        .content-list {
+            margin: 2rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .content-list li {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .content-list li strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Decision Sections */
+        .decision-section {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+        }
+
+        .decision-title {
+            font-size: 1.6rem;
+            color: var(--accent-light);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Image Showcase */
+        .showcase-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 2rem 0;
+        }
+
+        .showcase-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(20, 184, 166, 0.2);
+        }
+
+        /* Comparison Container */
+        .comparison-container {
+            margin: 4rem 0;
+        }
+
+        .comparison-label {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        /* Two-column comparison layout */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .comparison-item {
+            text-align: left;
+        }
+
+        .comparison-item h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .comparison-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .comparison-item img:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(20, 184, 166, 0.2);
+        }
+
+        /* Impact Grid */
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .impact-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .impact-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .impact-card h4 {
+            font-size: 1.4rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .impact-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Learning Points */
+        .learning-grid {
+            display: grid;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .learning-item {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        .learning-item h4 {
+            font-size: 1.3rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+
+        .footer-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .hero-content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .hero-text {
+                text-align: center;
+            }
+
+            .meta-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .impact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 10, 10, 0.95);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+                transition: transform 0.3s ease, opacity 0.3s ease;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .project-title {
+                font-size: 2.5rem;
+            }
+
+            .meta-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Inayat</a>
+            <ul class="nav-links">
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/About.html">About</a></li>
+                <li><a href="/Projects.html">Projects</a></li>
+                <li><a href="/Resume.html">Resume</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="project-hero">
+        <div class="project-hero-container">
+            <a href="/Projects.html" class="back-button">
+                ← Back to Projects
+            </a>
+            
+            <div class="hero-content-wrapper">
+                <div class="hero-text">
+                    <h1 class="project-title">Workplace Experience SharePoint</h1>
+                    <p class="project-subtitle">
+                        Building a Centralized, Accessible User Guide for Mastercard's Global Workforce
+                    </p>
+                </div>
+                
+                <div class="hero-image">
+                    <img src="https://framerusercontent.com/images/3bPjYIUexggbXzSEECfMd4rdc.png?width=966&height=689" alt="MasterCard Project">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Content -->
+    <div class="project-content">
+        
+        <!-- NDA Notice -->
+        <div class="nda-notice">
+            <h3>Non-Disclosure Agreement</h3>
+            <p class="section-description">
+                Due to Mastercard's confidentiality policies, high-fidelity screens and internal structures are protected under a <strong>Non-Disclosure Agreement (NDA)</strong>. The following overview highlights my design process, research insights, and decisions within NDA boundaries. For a deeper discussion, please contact me directly via <strong>email</strong> or <strong>LinkedIn</strong>.
+            </p>
+        </div>
+
+        <!-- Meta Info -->
+        <div class="meta-grid">
+            <div class="meta-item">
+                <h3>Role</h3>
+                <p>UX/UI Intern</p>
+            </div>
+            <div class="meta-item">
+                <h3>Team</h3>
+                <p>Vice President, Project Manager, UX/UI Intern</p>
+            </div>
+            <div class="meta-item">
+                <h3>Tools</h3>
+                <p>Figma, SharePoint, JSON, Information Architecture, User Persona and Journey Mapping</p>
+            </div>
+            <div class="meta-item">
+                <h3>Timeline</h3>
+                <p>May - August 2025</p>
+            </div>
+        </div>
+
+        <!-- Project Overview -->
+        <section class="content-section">
+            <h2 class="section-title">Project Overview</h2>
+            <p class="section-description">
+                During my UX/UI internship at <strong>Mastercard's Vancouver Tech Hub</strong>, I worked within the <strong>Workplace Experience Department</strong> under the guidance of the <strong>Vice President of Workplace Experience</strong>. My main focus was to redesign the <strong>internal SharePoint platform</strong>—transforming it from a static information repository into a <strong>comprehensive user guide system</strong> for employees across Mastercard's global offices.
+            </p>
+            <p class="section-description">
+                This redesign aimed to make the platform more intuitive, engaging, and accessible—especially for employees visiting or transferring to the <strong>Vancouver branch</strong> from other global offices. It consolidated everything from <strong>office policies, catering services, and facility booking forms</strong> to <strong>travel information and event resources</strong>, ensuring that every employee could easily navigate workplace processes without friction.
+            </p>
+        </section>
+
+        <!-- Problem -->
+        <section class="content-section">
+            <h2 class="section-title">Problem</h2>
+            <p class="section-description">
+                The existing Workplace Experience SharePoint served primarily as an <strong>information archive</strong>—lacking the structure, visual clarity, and discoverability employees needed.
+            </p>
+            <p class="section-description">
+                Employees, especially those travelling to or newly joining the Vancouver branch, often struggled to locate essential resources such as <strong>catering forms, IT requests, event bookings, and building information</strong>. This led to <strong>communication bottlenecks</strong>, <strong>repeated support emails</strong>, and <strong>low engagement</strong> with the platform.
+            </p>
+
+            <div class="design-highlight">
+                <h3>Design Challenge</h3>
+                <p class="section-description">"How might we redesign the Workplace Experience SharePoint into an accessible, user-centric guide that simplifies onboarding, supports cross-branch employees, and fosters a cohesive workplace experience?"</p>
+            </div>
+        </section>
+
+        <!-- Discovery & Research -->
+        <section class="content-section">
+            <h2 class="section-title">Discovery & Research</h2>
+            <p class="section-description">
+                To deeply understand employee needs, I conducted <strong>qualitative interviews</strong> and <strong>workplace observations</strong>, and developed <strong>personas</strong> and <strong>journey maps</strong> representing different employee groups—from local staff to visiting teams from Dublin, India, and the U.S.
+            </p>
+            
+            <div class="info-cards">
+                <div class="info-card">
+                    <h3>Insight 1</h3>
+                    <p><strong>Inconsistent Navigation:</strong> Employees couldn't find important forms or resources quickly.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Insight 2</h3>
+                    <p><strong>Lack of Context:</strong> Visiting employees often felt uncertain about local services and workspace processes.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Insight 3</h3>
+                    <p><strong>Outdated Layout:</strong> The structure didn't reflect how people actually interact with information daily.</p>
+                </div>
+            </div>
+
+            <p class="section-description">
+                By mapping out employee journeys, I identified the most common tasks—such as <strong>booking meeting rooms, requesting catering, and accessing workplace policies</strong>—and restructured the SharePoint to prioritize these workflows.
+            </p>
+        </section>
+
+        <!-- Ideation and Design Process -->
+        <section class="content-section">
+            <h2 class="section-title">Ideation and Design Process</h2>
+            <p class="section-description">
+                Collaborating with the <strong>Vice President</strong> and <strong>Project Manager</strong>, I synthesized my research findings and journey map insights into clear, actionable design directions. Additionally, I worked closely with teams in <strong>Dublin, India, and the U.S.</strong> to ensure the redesign could scale globally while maintaining regional flexibility and content relevance.
+            </p>
+
+            <!-- Decision 1 -->
+            <div class="decision-section">
+                <h3 class="decision-title">Decision 1: Modular Homepage with Side Navigation</h3>
+                <p class="section-description">
+                    To make the site intuitive and efficient, I designed a <strong>side navigation menu</strong> structured as an organized list of key categories, giving employees immediate access to critical information without excessive scrolling or hidden pages.
+                </p>
+                <p class="section-description">The menu included sections such as:</p>
+                <ul class="content-list">
+                    <li>Home</li>
+                    <li>Visiting Vancouver</li>
+                    <li>Transportation</li>
+                    <li>Amenities</li>
+                    <li>Events</li>
+                    <li>Teams in Vancouver</li>
+                    <li>Floor plans</li>
+                    <li>Access Card Info</li>
+                    <li>Storage & Parking Info</li>
+                    <li>Forms and Policies</li>
+                </ul>
+                <p class="section-description">
+                    This structured menu replaced the previous scattered layout, allowing users—especially those new or visiting—to find what they needed within seconds.
+                </p>
+            </div>
+
+            <!-- Decision 2 -->
+            <div class="decision-section">
+                <h3 class="decision-title">Decision 2: Information Architecture Overhaul</h3>
+                <p class="section-description">
+                    Guided by journey mapping insights, I completely restructured the information hierarchy to reduce redundancies and improve clarity. Pages were reorganized based on <strong>user goals</strong> rather than departmental ownership, resulting in new intuitive categories such as <em>"Plan Your Visit," "Book a Space,"</em> and <em>"Workplace Support."</em>
+                </p>
+                <p class="section-description">
+                    This approach simplified the content flow and reflected how employees naturally searched for workplace information, making the platform both <strong>task-oriented and discoverable</strong>.
+                </p>
+            </div>
+
+            <!-- Decision 3 -->
+            <div class="decision-section">
+                <h3 class="decision-title">Decision 3: Visual Identity + Accessibility Enhancements</h3>
+                <p class="section-description">
+                    To create a consistent and visually engaging experience, I established a refined color and layout system that balanced Mastercard's corporate branding with functional clarity.
+                </p>
+                <ul class="content-list">
+                    <li><strong>Primary Colors:</strong> Black and off-white accents were used for sub-categories to visually separate different content views.</li>
+                    <li><strong>Functional Colors:</strong> Black was reserved for all interactive buttons, ensuring strong contrast and accessibility compliance.</li>
+                    <li><strong>Status Colors:</strong> Muted grey for Circulars and bright orange for Notices maintained clear visual differentiation.</li>
+                </ul>
+                <p class="section-description">
+                    These color-coded systems enhanced scannability, guided user attention, and brought brand consistency to every page.
+                </p>
+            </div>
+
+            <!-- Decision 4 -->
+            <div class="decision-section">
+                <h3 class="decision-title">Decision 4: Global Scalability + Consistency</h3>
+                <p class="section-description">
+                    After piloting the redesigned SharePoint in Vancouver, I collaborated with Workplace Experience teams in Dublin, India, and the U.S. to adapt the new structure to their local branches. This involved remote design reviews, asynchronous testing, and continuous iteration based on feedback from each region.
+                </p>
+                <p class="section-description">
+                    The final framework was flexible enough to accommodate local content while maintaining consistent information architecture and design language across all global instances—ensuring a unified Mastercard experience for every employee.
+                </p>
+            </div>
+        </section>
+
+        <!-- Before/After Comparison -->
+        <section class="content-section">
+            <h2 class="section-title">Before & After</h2>
+            <div class="comparison-grid">
+                <div class="comparison-item">
+                    <h3>Before</h3>
+                    <img src="https://framerusercontent.com/images/qj7ErSWHQh5zEzWE7SbjDasz0Y.png?width=4026&height=5700" alt="Before Redesign">
+                </div>
+                <div class="comparison-item">
+                    <h3>After</h3>
+                    <img src="https://framerusercontent.com/images/W9B3XG2Jn7wEsMGo1v6ZJHOoyBU.png?width=4026&height=5700" alt="After Redesign">
+                </div>
+            </div>
+        </section>
+
+        <!-- Collaboration and Implementation -->
+        <section class="content-section">
+            <h2 class="section-title">Collaboration and Implementation</h2>
+            <p class="section-description">
+                Working as the only UX/UI designer in the department, I led the end-to-end design process and maintained <strong>biweekly design syncs</strong> with the Vice President and Project Manager to align on progress and decisions.
+            </p>
+            <p class="section-description">
+                Given SharePoint's technical limitations, I partnered directly with IT support to <strong>translate design specifications into feasible modules</strong>. My iterative prototyping approach ensured that visual quality and usability were never compromised despite system constraints.
+            </p>
+
+            <img src="https://framerusercontent.com/images/EGEmZLYRoCQC3N8DK6Hj1DJqmz4.png?width=3779&height=1488" alt="Collaboration Process" class="showcase-image">
+        </section>
+
+        <!-- Outcome and Impact -->
+        <section class="content-section">
+            <h2 class="section-title">Outcome and Impact</h2>
+            <p class="section-description">
+                The redesigned Workplace Experience SharePoint significantly improved usability and engagement across Mastercard's internal teams:
+            </p>
+
+            <div class="impact-grid">
+                <div class="impact-card">
+                    <h4>Simplified Access</h4>
+                    <p>Employees could locate key resources up to <strong>40% faster</strong> through reorganized navigation and visual cues.</p>
+                </div>
+                <div class="impact-card">
+                    <h4>Global Adoption</h4>
+                    <p>The structure and design principles were later adopted by <strong>multiple Mastercard branches</strong> for their local SharePoints.</p>
+                </div>
+                <div class="impact-card">
+                    <h4>Enhanced Employee Experience</h4>
+                    <p>Visiting employees reported a smoother onboarding experience when transitioning to the Vancouver office.</p>
+                </div>
+                <div class="impact-card">
+                    <h4>Increased Internal Visibility</h4>
+                    <p>The Workplace Experience Department gained greater recognition for its clarity and communication efficiency.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- What I Learned -->
+        <section class="content-section">
+            <h2 class="section-title">What I Learned</h2>
+            
+            <div class="learning-grid">
+                <div class="learning-item">
+                    <h4>Designing for Global Teams</h4>
+                    <p class="section-description">
+                        I learned how to create systems flexible enough to work across countries, cultures, and time zones.
+                    </p>
+                </div>
+
+                <div class="learning-item">
+                    <h4>Strategic Thinking</h4>
+                    <p class="section-description">
+                        Journey mapping and persona development helped me tie UX decisions directly to employee pain points and organizational goals.
+                    </p>
+                </div>
+
+                <div class="learning-item">
+                    <h4>Adaptability in Constraints</h4>
+                    <p class="section-description">
+                        Designing within SharePoint's framework taught me to balance creativity with feasibility—an essential skill for enterprise UX.
+                    </p>
+                </div>
+
+                <div class="learning-item">
+                    <h4>Leadership in Collaboration</h4>
+                    <p class="section-description">
+                        As the only designer, I strengthened my ability to communicate, advocate, and make informed design decisions confidently.
+                    </p>
+                </div>
+            </div>
+
+            <img src="https://framerusercontent.com/images/QjUZtqCzDzdT4yAp2bXwGgS6Q4s.png?width=1536&height=1024" alt="Project Insights" class="showcase-image">
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Inayat. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Woodland Vortex of Poh - Inayat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #14b8a6;
+            --accent-light: #2dd4bf;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --gradient-1: #14b8a6;
+            --gradient-2: #06b6d4;
+            --gradient-3: #0891b2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            z-index: 1000;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .project-hero {
+            padding: 10rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-hero::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--gradient-1) 0%, transparent 70%);
+            filter: blur(120px);
+            opacity: 0.4;
+            z-index: 0;
+        }
+
+        .project-hero-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 3rem;
+            transition: gap 0.3s ease;
+        }
+
+        .back-button:hover {
+            gap: 1rem;
+        }
+
+        .hero-content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            text-align: left;
+        }
+
+        .project-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 50%, var(--gradient-3) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .project-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Video Container */
+        .hero-video {
+            width: 100%;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .hero-video video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Content Container */
+        .project-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .content-section {
+            margin-bottom: 6rem;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            text-align: left;
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            text-align: left;
+            max-width: 100%;
+        }
+
+        .section-description strong {
+            color: var(--text-primary);
+        }
+
+        /* Meta Info Grid */
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+            text-align: left;
+        }
+
+        .meta-item h3 {
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .meta-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Design Highlight */
+        .design-highlight {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 3rem;
+            margin: 3rem 0;
+            text-align: left;
+        }
+
+        .design-highlight h3 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        /* Lists */
+        .content-list {
+            margin: 1.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .content-list li {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .content-list li strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .content-list ul {
+            margin-top: 0.5rem;
+            padding-left: 2rem;
+        }
+
+        /* Info Cards */
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .info-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2.5rem;
+            text-align: left;
+        }
+
+        .info-card h3 {
+            font-size: 1.5rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .info-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Element Grid */
+        .element-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .element-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .element-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(20, 184, 166, 0.2);
+        }
+
+        .element-card img {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            margin: 0 auto 1.5rem;
+        }
+
+        .element-card h4 {
+            font-size: 1.2rem;
+            color: var(--accent-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .element-card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        /* Character Showcase */
+        .character-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin: 3rem 0;
+            align-items: center;
+        }
+
+        .character-image {
+            text-align: center;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 3rem;
+        }
+
+        .character-image img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+        }
+
+        .character-text h3 {
+            font-size: 2rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .character-text p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        /* Showcase Image */
+        .showcase-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 2rem 0;
+        }
+
+        .showcase-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(20, 184, 166, 0.2);
+        }
+
+        /* Learning Grid */
+        .learning-grid {
+            display: grid;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .learning-item {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        .learning-item h4 {
+            font-size: 1.3rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+
+        .footer-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .hero-content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .hero-text {
+                text-align: center;
+            }
+
+            .meta-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .element-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .character-showcase {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 10, 10, 0.95);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+                transition: transform 0.3s ease, opacity 0.3s ease;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .project-title {
+                font-size: 2.5rem;
+            }
+
+            .meta-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .element-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Inayat</a>
+            <ul class="nav-links">
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/About.html">About</a></li>
+                <li><a href="/Projects.html">Projects</a></li>
+                <li><a href="/Resume.html">Resume</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="project-hero">
+        <div class="project-hero-container">
+            <a href="/Projects.html" class="back-button">
+                ← Back to Projects
+            </a>
+            
+            <div class="hero-content-wrapper">
+                <div class="hero-text">
+                    <h1 class="project-title">The Woodland Vortex of Poh</h1>
+                    <p class="project-subtitle">
+                        Game Design: A 2D Tile-Based Adventure
+                    </p>
+                </div>
+                
+                <div class="hero-video">
+                    <video autoplay loop muted playsinline>
+                        <source src="https://framerusercontent.com/assets/oHYl1VFwGyVPv9t2Tv1gQEZ4bS4.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Content -->
+    <div class="project-content">
+        
+        <!-- Meta Info -->
+        <div class="meta-grid">
+            <div class="meta-item">
+                <h3>Timeline</h3>
+                <p>Jul '24 - Aug '24<br>(2 weeks)</p>
+            </div>
+            <div class="meta-item">
+                <h3>Contributors</h3>
+                <p>Solo Project</p>
+            </div>
+            <div class="meta-item">
+                <h3>Role</h3>
+                <p>Lead designer and developer, responsible for gameplay mechanics, user interface, and player interaction systems</p>
+            </div>
+            <div class="meta-item">
+                <h3>Project Purpose</h3>
+                <p>Created as a school project to develop skills in interactive design and game development</p>
+            </div>
+        </div>
+
+        <!-- Project Overview -->
+        <section class="content-section">
+            <h2 class="section-title">Project Overview</h2>
+            <p class="section-description">
+                This project is a <strong>2D tile-based adventure game</strong> where the player controls <strong>Poh, a panda</strong>, navigating through a map to collect items, defeat enemies, and unlock passages. The goal is to reach a winning tile, involving various interactions that test the player's strategy and decision-making. The game blends visual aesthetics with gameplay mechanics to create an engaging experience.
+            </p>
+        </section>
+
+        <!-- Context, Skills, and Tools -->
+        <section class="content-section">
+            <h2 class="section-title">Context, Skills, and Tools</h2>
+            
+            <div class="learning-item">
+                <h4>Skills</h4>
+                <p class="section-description">
+                    Game design, coding in JavaScript (P5.js), 2D graphics, UI/UX design for games
+                </p>
+            </div>
+
+            <div class="learning-item">
+                <h4>Tools</h4>
+                <p class="section-description">
+                    Figma for prototyping, Photoshop for sprite creation, and pictures, sounds taken from internet
+                </p>
+            </div>
+        </section>
+
+        <!-- Main Character & Game Field -->
+        <section class="content-section">
+            <div class="character-showcase">
+                <div class="character-image">
+                    <img src="https://framerusercontent.com/images/fjJ0DgMwuKbRhq93zyjSm5Cz0.png?width=576&height=433" alt="Main Character - Poh the Panda">
+                    <h4 style="color: var(--accent-light); margin-top: 1rem;">Main Character</h4>
+                </div>
+                <div class="character-text">
+                    <h3>Meet Poh</h3>
+                    <p>The player controls Poh, a brave panda navigating through a mysterious woodland vortex, collecting items and overcoming obstacles to reach the gate exit.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Objective -->
+        <section class="content-section">
+            <h2 class="section-title">Objective</h2>
+            <p class="section-description">
+                The primary objective was to create a <strong>compelling, interactive experience</strong> that engages players through exploration and problem-solving within a 2D environment. The game addresses the challenge of designing mechanics that enhance user engagement and immersion while maintaining simplicity in navigation and controls.
+            </p>
+        </section>
+
+        <!-- Elements Used -->
+        <section class="content-section">
+            <h2 class="section-title">Elements Used</h2>
+            
+            <div class="element-grid">
+                <div class="element-card">
+                    <img src="https://framerusercontent.com/images/WgJUzR0a8Cj18PNWV5uvmMAg9g.png?width=500&height=500" alt="Points Booster">
+                    <h4>Points Booster</h4>
+                </div>
+
+                 <div class="element-card">
+                   <img src="https://framerusercontent.com/images/aQCtICLWNwpZkfflde0W2KSkwbw.png?width=552&height=452" alt="Points Booster">
+                    <h4>Point Booster</h4>
+                </div>
+
+                <div class="element-card">
+                   <img src="https://framerusercontent.com/images/O2CmviqJXr3ntJUcvRt8gSzpb8.png?width=372&height=372" alt="Health Booster">
+                    <h4>Health Booster</h4>
+                </div>
+
+                <div class="element-card">
+                    <img src="https://framerusercontent.com/images/aWptZYhyEioEM6OnWiclcKzc6Gw.png?width=204&height=192" alt="Key">
+                    <h4>Key</h4>
+                </div>
+
+                <div class="element-card">
+                    <img src="https://framerusercontent.com/images/0KmwbInMgu8k2rmndDvaLOCrKVE.png?width=209&height=241"  alt="Enemy Snake">
+                    <h4>Enemy<br>(Snake)</h4>
+                </div>
+
+                <div class="element-card">
+                    <img src="https://framerusercontent.com/images/KsVKU1DqdWrrFwblLoTlFlVdeQ.png?width=372&height=372" alt="Gate Exit">
+                    <h4>Gate Exit</h4>
+                </div>
+            </div>
+        </section>
+
+        <!-- Description of Solution -->
+        <section class="content-section">
+            <h2 class="section-title">Description of Solution</h2>
+
+            <div class="learning-item">
+                <h4>Goals</h4>
+                <p class="section-description">
+                    To develop an accessible and enjoyable gameplay experience for users of all ages, focusing on intuitive interaction and satisfying progression.
+                </p>
+            </div>
+
+            <img src="https://framerusercontent.com/images/KAYswAilv9YuNuU75MT5CkfQNvc.jpeg?width=1000&height=520" alt="Game Map Layout" class="showcase-image">
+
+            <div class="learning-item">
+                <h4>Design Rationale</h4>
+                
+                <p class="section-description"><strong>Industry Standards & UI Patterns</strong></p>
+                <ul class="content-list">
+                    <li><strong>Tile-based systems</strong> are a staple in 2D platformers because they provide a <strong>structured, modular environment</strong> that simplifies movement and navigation</li>
+                    <li>Successful games like <strong>Super Mario Bros., Celeste, and Hollow Knight</strong> use tile-based layouts to create predictable yet dynamic gameplay spaces</li>
+                    <li>In <strong>UI/UX design</strong>, grid-based layouts improve <strong>visual hierarchy, readability, and user efficiency</strong>, making them a trusted industry standard for organizing information clearly</li>
+                </ul>
+
+                <p class="section-description" style="margin-top: 2rem;"><strong>Usability Research & Player Experience</strong></p>
+                <ul class="content-list">
+                    <li><strong>Cognitive Load Reduction:</strong> Research in game usability suggests that structured layouts help users process information more efficiently, reducing confusion</li>
+                    <li><strong>Fitts's Law:</strong> A well-structured tile system groups interactive elements logically, making it easier for players to navigate and interact quickly</li>
+                    <li><strong>Nielsen Norman Group's UI Research</strong> highlights that grid-based structures guide user attention, improving scanability and interaction speed</li>
+                </ul>
+            </div>
+
+            <div class="learning-item">
+                <h4>Iterations</h4>
+                <p class="section-description">
+                    <strong>First Iteration:</strong> Basic movement and tile interaction were implemented, with feedback focused on optimizing controls.
+                </p>
+                <p class="section-description">
+                    <strong>Second Iteration:</strong> Added collectible items and enemy interactions, incorporating feedback to improve game balance and user feedback mechanisms.
+                </p>
+            </div>
+
+            <div class="learning-item">
+                <h4>Challenges and Discoveries</h4>
+                <p class="section-description">
+                    Initial challenges involved adjusting enemy AI to maintain fairness and enhancing visual elements for clarity. The design was adapted to balance difficulty and player progression.
+                </p>
+            </div>
+
+            <div class="design-highlight">
+                <h3>Final Outcome</h3>
+                <p class="section-description">
+                    The final solution includes a complete gameplay loop with objectives, challenges, and a satisfying end goal, providing a cohesive and engaging user experience.
+                </p>
+            </div>
+        </section>
+
+        <!-- Challenges -->
+        <section class="content-section">
+            <h2 class="section-title">Challenges</h2>
+            
+            <div class="info-cards">
+                <div class="info-card">
+                    <h3>Visual Integration</h3>
+                    <ul class="content-list">
+                        <li>Finding the perfect imagery that resonates with the game theme</li>
+                        <li>Creating a cohesive visual language across all game elements</li>
+                        <li>Maintaining readability against dynamic backgrounds</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h3>Technical Implementation</h3>
+                    <ul class="content-list">
+                        <li>Developing smooth transitions between different game states</li>
+                        <li>Integrating collision detection with tile-based movement</li>
+                        <li>Ensuring consistent performance across devices</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h3>Design Balance</h3>
+                    <ul class="content-list">
+                        <li>Harmonizing difficulty progression throughout levels</li>
+                        <li>Creating engaging interactions without overwhelming players</li>
+                        <li>Maintaining visual hierarchy while incorporating dynamic elements</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Takeaways -->
+        <section class="content-section">
+            <h2 class="section-title">Takeaways</h2>
+            
+            <div class="learning-grid">
+                <div class="learning-item">
+                    <h4>Learning</h4>
+                    <p class="section-description">
+                        Gained insights into game mechanics and the balance between challenge and accessibility. Understanding how tile-based systems create predictable yet engaging gameplay experiences.
+                    </p>
+                </div>
+
+                <div class="learning-item">
+                    <h4>Future Improvements</h4>
+                    <p class="section-description">
+                        Implementing more complex enemy AI and additional levels could enhance replayability and depth. Better optimization techniques for smoother performance across devices would also be considered.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Inayat. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
