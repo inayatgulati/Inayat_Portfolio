@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Inayat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <li><a href="./index.html">Home</a></li>
@@ -421,11 +423,11 @@
         <div class="nav-container">
             <a href="./index.html" class="logo">INAYAT</a>
            <ul class="nav-links">
-    <li><a href="./index.html">Home</a></li>
-    <li><a href="./About.html">About</a></li>
-    <li><a href="./Projects.html" class="active">Projects</a></li>
-    <li><a href="./Resume.html">Resume</a></li>
-    <li><a href="./index.html#contact">Contact</a></li>
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/About.html">About</a></li>
+    <li><a href="/Projects.html" class="active">Projects</a></li>
+    <li><a href="/Resume.html">Resume</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
 </ul>
             <div class="hamburger">
                 <span></span>
@@ -465,7 +467,7 @@
                     <!-- MasterCard Internship -->
                 <div class="project-card" data-category="internship">
                     <div class="project-image" style="background: linear-gradient(135deg, rgba(20, 184, 166, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%);">
-                    <img src="../Images/Mastercard.png" alt="MasterCard SharePoint">
+                    <img src="/Images/Mastercard.png" alt="MasterCard SharePoint">
                     </div>
                     <div class="project-content">
                         <p class="project-category">Internship</p>
@@ -474,7 +476,7 @@
                             Contributed to enterprise-level SharePoint solutions, enhancing user experience and 
                             functionality for internal collaboration and document management systems.
                         </p>
-                        <a href="./Projects/Mastercard_Project.html" class="project-link">
+                        <a href="/Projects/Mastercard_Project.html" class="project-link">
                             View Details →
                         </a>
                     </div>
@@ -483,7 +485,7 @@
                 <!-- Chemtrails Mobile App -->
                 <div class="project-card" data-category="mobile ui-ux">
                     <div class="project-image">
-                           <img src="../Images/SigninPage.png" alt="Chemtrails">
+                           <img src="/Images/SigninPage.png" alt="Chemtrails">
                     </div>
                     <div class="project-content">
                         <p class="project-category">Mobile App UX/UI Design</p>
@@ -493,7 +495,7 @@
                             by consolidating discovery, organization, and memory capture into a single, 
                             intuitive mobile experience.
                         </p>
-                        <a href="./Projects/Chemtrails_Project.html" class="project-link">
+                        <a href="/Projects/Chemtrails_Project.html" class="project-link">
                             View Details →
                         </a>
                     </div>
@@ -502,7 +504,7 @@
                      <!-- IAT33- MasterCard-Client based project -->
                 <div class="project-card" data-category="ui-ux web">
                     <div class="project-image" style="background: linear-gradient(135deg, rgba(20, 184, 166, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%);">
-                    <img src="../Images/Chart 2.png" alt="Fraud Detection Dashboard - MasterCard">
+                    <img src="/Images/Chart 2.png" alt="Fraud Detection Dashboard - MasterCard">
                     </div>
                     <div class="project-content">
                         <p class="project-category">UX/UI Design</p>
@@ -512,7 +514,7 @@
             fraud detection dashboard. Improved data visualization, workflow efficiency, and introduced 
             AI-driven insights through user interviews and iterative prototyping.    
                         </p>
-                        <a href="./Projects/mastercard-fraud-dashboard.html" class="project-link">
+                        <a href="/Projects/mastercard-fraud-dashboard.html" class="project-link">
                             View Details →
                         </a>
                     </div>
@@ -521,7 +523,7 @@
                      <!-- Fitness Tracking App -->
                 <div class="project-card" data-category="mobile ui-ux">
                     <div class="project-image" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(8, 145, 178, 0.15) 100%);">
-                       <img src="../Images/FitnessApp.png" alt="MasterCard SharePoint">
+                       <img src="/Images/FitnessApp.png" alt="MasterCard SharePoint">
                     </div>
                     <div class="project-content">
                         <p class="project-category">Mobile App Interface</p>
@@ -530,7 +532,7 @@
                             Developed a Fitness Tracking App featuring real-time feedback for instant progress insights, 
                             gamification elements to boost motivation, and community engagement for social support.
                         </p>
-                        <a href="./Projects/Fitness_App.html" class="project-link">
+                        <a href="/Projects/Fitness_App.html" class="project-link">
                             View Details →
                         </a>
                     </div>
@@ -539,7 +541,7 @@
                   <!-- Sojoy Scribbles Website -->
                 <div class="project-card" data-category="web ui-ux">
                     <div class="project-image" style="background: linear-gradient(135deg, rgba(8, 145, 178, 0.15) 0%, rgba(20, 184, 166, 0.1) 100%);">
-                       <img src="../Images/Sojoy Scribble.png" alt="Sojoy Scribbles">
+                       <img src="/Images/Sojoy Scribble.png" alt="Sojoy Scribbles">
                     </div>
                     <div class="project-content">
                         <p class="project-category">Web Development</p>
@@ -549,7 +551,7 @@
                             to explore original illustrations and place personalized orders through a playful, 
                             user-friendly experience.
                         </p>
-                        <a href="./Projects/SojoyScribbles.html" class="project-link">
+                        <a href="/Projects/SojoyScribbles.html" class="project-link">
                             View Details →
                         </a>
                     </div>
@@ -558,7 +560,7 @@
                 <!-- Isola Microsite -->
                 <div class="project-card" data-category="ui-ux web">
                     <div class="project-image" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(8, 145, 178, 0.1) 100%);">
-                     <img src="../Images/IsolaDesign.png" alt="IsolaDesign">
+                     <img src="/Images/IsolaDesign.png" alt="IsolaDesign">
                     </div>
                     <div class="project-content">
                         <p class="project-category">Interaction Design</p>
@@ -567,7 +569,7 @@
                             A collaborative project featuring a website and posters that help locals and tourists 
                             explore restaurants, galleries, and exhibitions through a directory and interactive guide map.
                         </p>
-                        <a href="./Projects/Discoverisola_project.html" class="project-link">
+                        <a href="/Projects/Discoverisola_project.html" class="project-link">
                             View Details →
                         </a>
                     </div>
@@ -576,7 +578,7 @@
                 <!-- Panda Adventure Game -->
                 <div class="project-card" data-category="ui-ux">
                     <div class="project-image" style="background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(6, 182, 212, 0.15) 100%);">
-                     <img src="../Images/Panda.png" alt="Panda game">
+                     <img src="/Images/Panda.png" alt="Panda game">
                     </div>
                     <div class="project-content">
                         <p class="project-category">Game Design</p>
@@ -585,7 +587,7 @@
                             A 2D tile-based game where players guide Poh the panda through vibrant environments, 
                             collecting bamboo, defeating enemies, and unlocking pathways to reach the final goal.
                         </p>
-                        <a href="./Projects/2D_PandaGame.html" class="project-link">
+                        <a href="/Projects/2D_PandaGame.html" class="project-link">
                             View Details →
                         </a>
                     </div>
@@ -594,7 +596,7 @@
                 <!-- Sculpture Pavilion -->
                 <div class="project-card" data-category="3d">
                     <div class="project-image" style="background: linear-gradient(135deg, rgba(8, 145, 178, 0.1) 0%, rgba(20, 184, 166, 0.15) 100%);">
-                     <img src="../Images/Sculpture.png" alt="Sculpture Pavilion">
+                     <img src="/Images/Sculpture.png" alt="Sculpture Pavilion">
                     </div>
                     <div class="project-content">
                         <p class="project-category">Spatial Design - 3D Modelling</p>
@@ -603,7 +605,7 @@
                             A two-story design featuring layered panels, dynamic pathways, and natural light integration, 
                             creating an immersive and accessible space for art and events.
                         </p>
-                        <a href="./Projects/Sculpturepavilion.html" class="project-link">
+                        <a href="/Projects/Sculpturepavilion.html" class="project-link">
                             View Details →
                         </a>
                     </div>
