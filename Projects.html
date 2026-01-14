@@ -243,6 +243,37 @@
             position: relative;
         }
 
+        /* Make entire card clickable */
+.project-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.project-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.project-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.project-description {
+    flex: 1;
+    margin-bottom: auto;
+}
+
+.project-link {
+    margin-top: 1.5rem;
+    align-self: flex-start;
+}
+
         .project-card::before {
             content: '';
             position: absolute;
@@ -461,23 +492,23 @@
     <section class="projects-section">
         <div class="projects-container">
             <div class="projects-grid">
-                    <!-- MasterCard Internship -->
+                 <!-- MasterCard Internship -->
                 <div class="project-card" data-category="internship">
-                    <div class="project-image" style="background: linear-gradient(135deg, rgba(20, 184, 166, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%);">
-                    <img src="./Images/Mastercard.png" alt="MasterCard SharePoint">
-                    </div>
-                    <div class="project-content">
-                        <p class="project-category">Internship</p>
-                        <h3 class="project-title">WEx SharePoint - MasterCard</h3>
-                        <p class="project-description">
-                            Contributed to enterprise-level SharePoint solutions, enhancing user experience and 
-                            functionality for internal collaboration and document management systems.
-                        </p>
-                        <a href="./Projects/Mastercard_Project.html" class="project-link">
-                            View Details →
-                        </a>
-                    </div>
-                </div>
+    <a href="./Projects/Mastercard_Project.html" class="project-card-link">
+        <div class="project-image">
+            <img src="./Images/Mastercard.png" alt="MasterCard SharePoint">
+        </div>
+        <div class="project-content">
+            <p class="project-category">Internship</p>
+            <h3 class="project-title">WEx SharePoint - MasterCard</h3>
+            <p class="project-description">Contributed to enterprise-level SharePoint solutions, enhancing user experience and 
+                            functionality for internal collaboration and document management systems.</p>
+            <span class="project-link">
+                View Details →
+            </span>
+        </div>
+    </a>
+</div>
 
                 <!-- Chemtrails Mobile App -->
                 <div class="project-card" data-category="mobile ui-ux">
