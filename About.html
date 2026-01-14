@@ -247,6 +247,15 @@
             box-shadow: 0 20px 60px rgba(20, 184, 166, 0.2);
         }
 
+        .about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    border-radius: 20px;
+        }
+
         .about-image::before {
             content: '';
             position: absolute;
@@ -583,7 +592,12 @@
             nav {
                 padding: 1rem 1.5rem;
             }
-
+.about-image {
+        height: 400px;
+    }
+     .about-image img {
+        height: 400px;
+    }
             .nav-links {
                 position: fixed;
                 top: 70px;
@@ -650,6 +664,13 @@
             .section-title {
                 font-size: 1.8rem;
             }
+             .about-image {
+        height: 350px;
+    }
+    
+    .about-image img {
+        height: 350px;
+    }
         }
     </style>
 </head>
