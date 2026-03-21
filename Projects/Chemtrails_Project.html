@@ -1,504 +1,805 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chemtrails — Inayat</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg:     #0a0a0a;
-      --sur:    rgba(255,255,255,0.03);
-      --bdr:    rgba(255,255,255,0.08);
-      --text:   #f0f0f0;
-      --muted:  #888;
-      --dim:    #444;
-      --teal:   #14b8a6;
-      --teal-l: #2dd4bf;
-      --teal-d: #0d9488;
-      --nav-h:  64px;
-      --side-w: 200px;
-    }
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Work Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemtrails Mobile App - Inayat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0a0a0a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #14b8a6;
+            --accent-light: #2dd4bf;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --gradient-1: #14b8a6;
+            --gradient-2: #06b6d4;
+            --gradient-3: #0891b2;
+        }
 
-    /* NAV */
-    .topnav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); z-index: 200; display: flex; align-items: center; padding: 0 2rem; background: rgba(10,10,10,0.93); backdrop-filter: blur(16px); border-bottom: 1px solid var(--bdr); }
-    .topnav-in { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; letter-spacing: 1px; color: var(--text); text-decoration: none; }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; transition: color .2s; }
-    .nav-links a:hover { color: var(--teal); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    /* SIDENAV */
-    .sidenav { position: fixed; top: var(--nav-h); left: 0; width: var(--side-w); height: calc(100vh - var(--nav-h)); padding: 2.5rem 1rem 2rem 2rem; border-right: 1px solid var(--bdr); background: var(--bg); display: flex; flex-direction: column; gap: 2rem; overflow-y: auto; overflow-x: hidden; z-index: 100; }
-    .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--teal); text-decoration: none; font-size: 0.78rem; font-weight: 500; transition: gap .2s; white-space: nowrap; }
-    .back-link:hover { gap: 10px; }
-    .side-lbl { font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--dim); font-weight: 600; margin-bottom: 0.75rem; }
-    .side-list { display: flex; flex-direction: column; }
-    .side-a { display: flex; align-items: center; gap: 8px; padding: 7px 0 7px 10px; color: var(--dim); text-decoration: none; font-size: 0.77rem; border-left: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
-    .side-a:hover { color: var(--text); border-left-color: var(--dim); }
-    .side-a.active { color: var(--teal-l); border-left-color: var(--teal); font-weight: 500; }
-    .side-num { font-size: 0.6rem; color: var(--dim); min-width: 16px; }
-    .side-a.active .side-num { color: var(--teal); }
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-    /* MAIN */
-    .main { margin-left: var(--side-w); padding: calc(var(--nav-h) + 3rem) 3.5rem 6rem 3rem; max-width: calc(900px + var(--side-w)); }
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            z-index: 1000;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+        }
 
-    /* HERO */
-    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
-    .tag { font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--teal); padding: 3px 10px; border: 1px solid rgba(20,184,166,.25); border-radius: 20px; background: rgba(20,184,166,.05); }
-    .hero-h { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem,5vw,4.2rem); font-weight: 300; line-height: 1.05; margin-bottom: 0.4rem; }
-    .hero-h em { font-style: italic; color: var(--teal-l); }
-    .hero-sub { font-size: 1rem; color: var(--muted); margin-bottom: 1rem; }
-    .hero-p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; max-width: 520px; margin-bottom: 1.75rem; }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    /* STATS */
-    .stats { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--bdr); border-radius: 14px; overflow: hidden; margin-bottom: 1.75rem; }
-    .stat { padding: 1.2rem 1.1rem; background: var(--sur); border-right: 1px solid var(--bdr); }
-    .stat:last-child { border-right: none; }
-    .s-n { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 700; color: var(--teal-l); line-height: 1; margin-bottom: 5px; }
-    .s-l { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
-    .s-sub { font-size: 0.65rem; color: var(--dim); margin-top: 2px; }
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
 
-    /* META */
-    .meta { display: flex; gap: 2rem; flex-wrap: wrap; padding-top: 1.25rem; border-top: 1px solid var(--bdr); margin-bottom: 5rem; }
-    .m-k { font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 4px; }
-    .m-v { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
 
-    /* SECTION */
-    .sec { margin-bottom: 5rem; }
-    .phase { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
-    .p-dot { width: 20px; height: 20px; border-radius: 50%; background: rgba(20,184,166,.1); border: 1px solid rgba(20,184,166,.3); display: flex; align-items: center; justify-content: center; font-size: 0.58rem; color: var(--teal); font-weight: 700; }
-    .p-txt { font-size: 0.65rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal); font-weight: 600; }
-    .sec-h { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 300; line-height: 1.15; margin-bottom: 0.5rem; }
-    .sec-lead { font-size: 0.875rem; color: var(--muted); line-height: 1.8; max-width: 580px; margin-bottom: 1.5rem; }
-    .rule { height: 1px; background: var(--bdr); margin-bottom: 1.5rem; }
-    .sub { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 0.875rem; }
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
 
-    /* GRIDS */
-    .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.5rem; }
-    .g2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 1.5rem; }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
 
-    /* CARDS */
-    .nc { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
-    .nc-n { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--teal-l); line-height: 1; margin-bottom: 6px; }
-    .nc-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; }
-    .nc-d { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
 
-    .ic { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
-    .ic-ico { font-size: 1rem; margin-bottom: 0.6rem; }
-    .ic-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; }
-    .ic-d { font-size: 0.76rem; color: var(--muted); line-height: 1.55; }
+        .nav-links a:hover {
+            color: var(--accent);
+        }
 
-    /* FINDING ROW */
-    .flist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
-    .fr { display: flex; gap: 0.875rem; align-items: flex-start; padding: 0.875rem 1.1rem; background: var(--sur); border: 1px solid var(--bdr); border-radius: 8px; transition: border-color .2s; }
-    .fr:hover { border-color: rgba(20,184,166,.2); }
-    .fr-i { width: 30px; height: 30px; min-width: 30px; border-radius: 6px; background: rgba(20,184,166,.07); border: 1px solid rgba(20,184,166,.15); display: flex; align-items: center; justify-content: center; font-size: 0.82rem; }
-    .fr-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
-    .fr-d { font-size: 0.77rem; color: var(--muted); line-height: 1.55; }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
 
-    /* QUOTE */
-    .quote { border-left: 2px solid var(--teal); padding: 0.875rem 1.25rem; margin: 1.25rem 0; background: rgba(20,184,166,.04); border-radius: 0 8px 8px 0; }
-    .quote p { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; line-height: 1.6; color: var(--text); }
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: all 0.3s ease;
+        }
 
-    /* TECH STACK */
-    .stack { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
-    .stack-row { display: flex; align-items: center; gap: 1rem; padding: 0.875rem 1.1rem; background: var(--sur); border: 1px solid var(--bdr); border-radius: 8px; }
-    .stack-label { font-size: 0.65rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--teal); font-weight: 600; min-width: 100px; }
-    .stack-value { font-size: 0.82rem; color: var(--muted); }
+        /* Hero Section */
+        .project-hero {
+            padding: 10rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
 
-    /* TOOLS */
-    .tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
-    .tool { font-size: 0.72rem; padding: 4px 12px; border-radius: 20px; background: var(--sur); border: 1px solid var(--bdr); color: var(--muted); }
+        .project-hero::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--gradient-1) 0%, transparent 70%);
+            filter: blur(120px);
+            opacity: 0.4;
+            z-index: 0;
+        }
 
-    /* FEATURE SECTION */
-    .feature-block { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--bdr); }
-    .feature-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-    .feature-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; margin-bottom: 0.5rem; }
-    .feature-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.8; max-width: 560px; margin-bottom: 1.25rem; }
+        .project-hero-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
 
-    /* IMAGES */
-    .imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
-    .imgs.c1 { grid-template-columns: 1fr; }
-    .imgs.c2 { grid-template-columns: 1fr 1fr; }
-    .imgs.c3 { grid-template-columns: repeat(3,1fr); }
-    .iw { border-radius: 12px; overflow: hidden; border: 1px solid var(--bdr); background: #111; }
-    .iw img { width: 100%; display: block; }
-    .icap { padding: 7px 10px; font-size: 0.7rem; color: var(--dim); border-top: 1px solid var(--bdr); line-height: 1.4; }
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 3rem;
+            transition: gap 0.3s ease;
+        }
 
-    /* DEMO BUTTON */
-    .demo-btn { display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.875rem 2rem; background: linear-gradient(135deg, var(--teal-d), var(--teal)); color: white; text-decoration: none; border-radius: 50px; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.5px; transition: all .3s; margin-top: 1rem; }
-    .demo-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(20,184,166,.4); }
+        .back-button:hover {
+            gap: 1rem;
+        }
 
-    /* REFLECTION */
-    .rc { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
-    .rc-t { font-size: 0.82rem; font-weight: 600; color: var(--teal-l); margin-bottom: 6px; }
-    .rc-d { font-size: 0.78rem; color: var(--muted); line-height: 1.7; }
+        .hero-content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
 
-    /* FOOTER */
-    footer { background: #050508; border-top: 1px solid var(--bdr); padding: 1.5rem 2rem; text-align: center; font-size: 0.8rem; color: var(--dim); }
+        .hero-text {
+            text-align: left;
+        }
 
-    /* REVEAL */
-    .rev { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
-    .rev.in { opacity: 1; transform: none; }
+        .project-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 50%, var(--gradient-3) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
 
-    /* RESPONSIVE */
-    @media (max-width: 860px) {
-      .sidenav { display: none; }
-      .main { margin-left: 0; padding: 5rem 1.5rem 5rem; }
-      .stats { grid-template-columns: repeat(2,1fr); }
-      .g3, .g2 { grid-template-columns: 1fr; }
-      .imgs.c2, .imgs.c3 { grid-template-columns: 1fr; }
-      .stack-row { flex-direction: column; align-items: flex-start; gap: 4px; }
-    }
-    @media (max-width: 480px) {
-      .stats { grid-template-columns: 1fr 1fr; }
-      .hero-h { font-size: 2.4rem; }
-      .nav-links { display: none; }
-    }
-  </style>
+        .project-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Video Container - Hero Style */
+        .hero-video {
+            width: 70%;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .hero-video iframe {
+            width: 100%;
+            aspect-ratio: 9/16;
+            border: none;
+            display: block;
+        }
+
+        /* Content Container */
+        .project-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .content-section {
+            margin-bottom: 6rem;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            text-align: left;
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            text-align: left;
+            max-width: 100%;
+        }
+
+        .section-description strong {
+            color: var(--text-primary);
+        }
+
+        /* Meta Info Grid */
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+            text-align: left;
+        }
+
+        .meta-item h3 {
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .meta-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Problem/Solution/Goal Cards */
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .info-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2.5rem;
+            text-align: left;
+        }
+
+        .info-card h3 {
+            font-size: 1.5rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .info-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Design Concept Highlight */
+        .design-highlight {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 3rem;
+            margin: 3rem 0;
+            text-align: left;
+        }
+
+        .design-highlight h3 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .design-highlight .section-description {
+            text-align: left;
+            max-width: 100%;
+        }
+
+        /* Image Showcase - Two Column */
+        .image-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .image-row.single {
+            grid-template-columns: 1fr;
+            max-width: 450px;
+        }
+
+        .image-row.three-column {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 9rem;
+            max-width: 1000px;
+        }
+
+        .image-row.three-column .showcase-image {
+            max-width: 100%;
+        }
+
+        /* Smaller images for feature sections */
+        .feature-section .image-row {
+            max-width: 700px;
+            gap: 1rem;
+        }
+
+        .showcase-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .showcase-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(20, 184, 166, 0.2);
+        }
+
+        /* Feature Section */
+        .feature-section {
+            margin: 4rem 0;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .feature-header {
+            text-align: left;
+        }
+
+        .feature-header h3 {
+            font-size: 1.6rem;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+
+        .feature-header p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Feature images in two-column grid */
+        .feature-section .image-row {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            max-width: none;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+
+        .footer-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .hero-content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .hero-text {
+                text-align: center;
+            }
+
+            .hero-video {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .meta-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .info-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .image-row {
+                grid-template-columns: 1fr;
+            }
+
+            .image-row.three-column {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 10, 10, 0.95);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .project-title {
+                font-size: 3rem;
+            }
+
+            .project-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .meta-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<!-- NAV -->
-<nav class="topnav">
-  <div class="topnav-in">
-    <a href="../index.html" class="logo">INAYAT</a>
-    <ul class="nav-links">
-      <li><a href="../index.html">Home</a></li>
-      <li><a href="../About.html">About</a></li>
-      <li><a href="../Projects.html">Projects</a></li>
-      <li><a href="../Resume.html">Resume</a></li>
-      <li><a href="../index.html#contact">Contact</a></li>
-    </ul>
-  </div>
-</nav>
-
-<!-- SIDENAV -->
-<aside class="sidenav">
-  <a href="../Projects.html" class="back-link">← Projects</a>
-  <div>
-    <div class="side-lbl">Case Study</div>
-    <nav class="side-list">
-      <a href="#overview"    class="side-a active"><span class="side-num">00</span>Overview</a>
-      <a href="#concept"     class="side-a"><span class="side-num">01</span>Design Concept</a>
-      <a href="#palette"     class="side-a"><span class="side-num">02</span>Colour Palette</a>
-      <a href="#features"    class="side-a"><span class="side-num">03</span>Key Features</a>
-      <a href="#tech"        class="side-a"><span class="side-num">04</span>Tech Stack</a>
-      <a href="#challenges"  class="side-a"><span class="side-num">05</span>Challenges</a>
-      <a href="#outcome"     class="side-a"><span class="side-num">06</span>Outcome</a>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">INAYAT</a>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../About.html">About</a></li>
+                <li><a href="../Projects.html">Projects</a></li>
+                <li><a href="../Resume.html">Resume</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
     </nav>
-  </div>
-</aside>
 
-<!-- MAIN -->
-<main class="main">
+    <!-- Project Hero -->
+    <section class="project-hero">
+        <div class="project-hero-container">
+            <a href="../Projects.html" class="back-button">← Back to Projects</a>
+            
+            <div class="hero-content-wrapper">
+                <div class="hero-text">
+                    <h1 class="project-title">Chemtrails—</h1>
+                    <p class="project-subtitle">All-in-one Travel Planning App</p>
+                </div>
 
-  <!-- HERO -->
-  <header style="margin-bottom:4rem;">
-    <div class="tags">
-      <span class="tag">Mobile App</span>
-      <span class="tag">UX/UI Design</span>
-      <span class="tag">React Native</span>
-      <span class="tag">Full-Stack</span>
-    </div>
-    <h1 class="hero-h">Chemtrails<em>—</em></h1>
-    <p class="hero-sub">All-in-one Travel Planning App</p>
-    <p class="hero-p">Discover destinations, plan trips, and capture travel memories in one place — instead of juggling six apps to plan a single journey.</p>
-
-    <div class="stats">
-      <div class="stat"><div class="s-n">&lt;3</div><div class="s-l">Min to plan a trip</div><div class="s-sub">vs 10+ with separate apps</div></div>
-      <div class="stat"><div class="s-n">5</div><div class="s-l">Core features</div><div class="s-sub">Explore, plan, journal</div></div>
-      <div class="stat"><div class="s-n">2</div><div class="s-l">Developers</div><div class="s-sub">Design + built by Inayat</div></div>
-      <div class="stat"><div class="s-n">1</div><div class="s-l">Unified experience</div><div class="s-sub">Replacing 6 separate apps</div></div>
-    </div>
-
-    <div class="meta">
-      <div><div class="m-k">Timeline</div><div class="m-v">Fall 2025</div></div>
-      <div><div class="m-k">My Role</div><div class="m-v">UX/UI Designer<br>Front &amp; Back-End Dev</div></div>
-      <div><div class="m-k">Team</div><div class="m-v">Inayat Inayat<br>Shin Thant Thant</div></div>
-      <div><div class="m-k">Stack</div><div class="m-v">React Native, Firebase<br>Google Places API</div></div>
-    </div>
-  </header>
-
-  <!-- 00 OVERVIEW -->
-  <section id="overview" class="sec rev">
-    <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
-    <h2 class="sec-h">The Problem &amp;<br>The Solution</h2>
-    <p class="sec-lead">Travel planning is fragmented. Users rely on separate apps to search places, save ideas, plan schedules, and document experiences — making the process overwhelming and disconnected.</p>
-    <div class="rule"></div>
-
-    <div class="g3" style="margin-bottom:2rem">
-      <div class="nc">
-        <div class="nc-n">6+</div>
-        <div class="nc-t">Apps for one trip</div>
-        <div class="nc-d">Maps, notes, calendar, camera, booking, journaling — all separate, none talking to each other</div>
-      </div>
-      <div class="nc">
-        <div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Context loss</div>
-        <div class="nc-t">Switching kills flow</div>
-        <div class="nc-d">Every app switch breaks the planning mindset — users lose track of where they were and what they were doing</div>
-      </div>
-      <div class="nc">
-        <div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Memories lost</div>
-        <div class="nc-t">No reflection layer</div>
-        <div class="nc-d">Photos end up in camera rolls, notes in random apps — no structured way to look back on a trip</div>
-      </div>
-    </div>
-
-    <div class="quote">
-      <p>"Design a unified mobile travel experience that reduces cognitive load by seamlessly connecting discovery, trip planning, and reflection within a single, intuitive interface."</p>
-    </div>
-
-    <p style="font-size:0.875rem;color:var(--muted);line-height:1.8;max-width:600px">Chemtrails unifies exploration, planning, and reflection into one intuitive mobile experience. Users can search places, save destinations into folders, schedule visits using a calendar, and journal memories with photos — all within the same app.</p>
-  </section>
-
-  <!-- 01 DESIGN CONCEPT -->
-  <section id="concept" class="sec rev">
-    <div class="phase"><div class="p-dot">1</div><span class="p-txt">Design Concept</span></div>
-    <h2 class="sec-h">Calm · Exploratory<br><em>Personal</em></h2>
-    <p class="sec-lead">Chemtrails is designed to feel like a travel companion, not a task manager. The interface uses soft colour tones, clear hierarchy, and generous spacing to minimise cognitive load.</p>
-    <div class="rule"></div>
-
-    <div class="flist" style="margin-bottom:2rem">
-      <div class="fr"><div class="fr-i">🎨</div><div><div class="fr-t">Content is the hero</div><div class="fr-d">Place images, maps, and journal photos remain the focal point — the UI stays intentionally minimal and supportive rather than decorative.</div></div></div>
-      <div class="fr"><div class="fr-i">🧘</div><div><div class="fr-t">Reduced cognitive load</div><div class="fr-d">Generous spacing, clear information hierarchy, and predictable navigation patterns let users focus on where they're going, not how to use the app.</div></div></div>
-      <div class="fr"><div class="fr-i">✈️</div><div><div class="fr-t">Exploration-forward</div><div class="fr-d">Every screen encourages wandering — from rotating travel quotes on the home screen to discovery-first search results that surface places before logistics.</div></div></div>
-    </div>
-
-    <div class="imgs c3">
-      <div class="iw"><img src="https://framerusercontent.com/images/pJ2YwFEGutHEWSxIjrMCGsefa8E.png" alt="Colour palette"></div>
-      <div class="iw"><img src="https://framerusercontent.com/images/q4R2OOhv0ZjtXvTos0ltK74pv4.png" alt="Colour usage"></div>
-      <div class="iw"><img src="https://framerusercontent.com/images/7f5FyKXoMmVvKQWMmbBRN9PKatA.png" alt="Colour application"></div>
-    </div>
-  </section>
-
-  <!-- 02 COLOUR PALETTE -->
-  <section id="palette" class="sec rev">
-    <div class="phase"><div class="p-dot">2</div><span class="p-txt">Colour Palette</span></div>
-    <h2 class="sec-h">Inspired by Travel,<br>Nature &amp; Movement</h2>
-    <p class="sec-lead">The palette is built around calmness and clarity — soft blues and muted greens evoke openness, reliability, and exploration without overwhelming the content.</p>
-    <div class="rule"></div>
-
-    <div class="g3" style="margin-bottom:2rem">
-      <div class="ic"><div class="ic-ico">🔵</div><div class="ic-t">Primary — Soft blues</div><div class="ic-d">Evoke openness and reliability. Used for primary actions and key navigation elements across all screens.</div></div>
-      <div class="ic"><div class="ic-ico">🌿</div><div class="ic-t">Secondary — Muted greens</div><div class="ic-d">Suggest nature and exploration. Used for supporting surfaces and secondary interface elements.</div></div>
-      <div class="ic"><div class="ic-ico">⬜</div><div class="ic-t">Neutral tones</div><div class="ic-d">Support backgrounds and secondary surfaces — keeping place images, maps, and journal photos as the visual focus.</div></div>
-    </div>
-
-    <p style="font-size:0.82rem;color:var(--muted);line-height:1.7;max-width:560px;margin-bottom:1.5rem">Accent colours are used sparingly for primary actions (saving a place, adding a journal entry) to guide user attention without overwhelming the interface. A restrained palette reduces visual fatigue, supports long browsing sessions, and lowers cognitive load during planning-heavy tasks.</p>
-
-    <div class="imgs c3" style="margin-bottom:1rem">
-      <div class="iw"><img src="https://framerusercontent.com/images/4y7k8a34B8fQenNG3N4Cl2qoLyM.png" alt="UI components"></div>
-      <div class="iw"><img src="https://framerusercontent.com/images/oC5Di78dviuVfqaHa8zAFbUDiEU.png" alt="Interface design"></div>
-      <div class="iw"><img src="https://framerusercontent.com/images/i8VLJGTqqu2XrBfkGv4kNTE7qg.png" alt="Design system"></div>
-    </div>
-    <div class="imgs c3" style="margin-bottom:1rem">
-      <div class="iw"><img src="https://framerusercontent.com/images/A6vsauvu8zOwzLJBdiTiYxnqXY.png" alt="Visual design"></div>
-      <div class="iw"><img src="https://framerusercontent.com/images/etGdSgENrQsVrsTa8YI50ZBm7A.png" alt="App screens"></div>
-      <div class="iw"><img src="https://framerusercontent.com/images/AMXPtX5gm3EruEXy0KWLwQI4Xg.png" alt="User interface"></div>
-    </div>
-    <div class="imgs c3">
-      <div class="iw"><img src="https://framerusercontent.com/images/3WzW4LRXlklCtTV3MWNjWUVyd1k.png" alt="App design"></div>
-      <div class="iw"><img src="https://framerusercontent.com/images/NmxveCGmGFNkwrJvOWJT1T2cg.png" alt="Mobile UI"></div>
-      <div class="iw"><img src="https://framerusercontent.com/images/ZPYsVWTz1RPVY0wiSCwi39IKck.png" alt="Design overview"></div>
-    </div>
-    <div class="imgs c2">
-      <div class="iw"><img src="https://framerusercontent.com/images/uKQo1vQ7gGpPv3aRfpXPWj5eZc.png" alt="Design concept"></div>
-      <div class="iw"><img src="https://framerusercontent.com/images/CnkOHDCEVhGEzQzyDikNzIGYSw.png" alt="Design elements"></div>
-    </div>
-  </section>
-
-  <!-- 03 KEY FEATURES -->
-  <section id="features" class="sec rev">
-    <div class="phase"><div class="p-dot">3</div><span class="p-txt">Key Features</span></div>
-    <h2 class="sec-h">Five Features,<br>One Experience</h2>
-    <p class="sec-lead">Every feature solves a specific part of the fragmented travel planning problem — and they all connect to each other.</p>
-    <div class="rule"></div>
-
-    <!-- Explore -->
-    <div class="feature-block">
-      <div class="sub">Feature 01</div>
-      <div class="feature-title">Explore Destinations</div>
-      <p class="feature-desc">Users can search for destinations using real-time Google Places data, view ratings, reviews, photos, and directions, and save locations instantly to their wishlist.</p>
-      <div class="imgs c2">
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/pJ2YwFEGutHEWSxIjrMCGsefa8E.png" alt="Explore feature">
-          <div class="icap">Explore screen — real-time Google Places results with ratings and photos</div>
+                <!-- Hero Video Thumbnail -->
+                <div class="hero-video">
+                    <iframe 
+                        src="https://www.youtube.com/embed/TTxRGhsGydw?autoplay=1&mute=1&loop=1&playlist=TTxRGhsGydw&controls=0&modestbranding=1&rel=0" 
+                        allow="autoplay; encrypted-media" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
         </div>
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/UNvj77qOq4Gm527iPxRjcrroo.png" alt="Search interface">
-          <div class="icap">Search interface — instant results as you type</div>
+    </section>
+
+    <!-- Project Content -->
+    <div class="project-content">
+        <!-- Project Overview -->
+        <section class="content-section">
+            <h2 class="section-title">Project Overview</h2>
+            <p class="section-description">
+                Chemtrails is a mobile travel app designed to help users <strong>discover destinations, plan trips, and capture travel memories</strong> in one place. Instead of switching between multiple apps for exploration, organization, and journaling, Chemtrails brings the entire travel journey into a single, cohesive experience.
+            </p>
+        </section>
+
+        <!-- Meta Information -->
+        <div class="meta-grid">
+            <div class="meta-item">
+                <h3>Role</h3>
+                <p>UX/UI Designer & Front and Back-End Developer</p>
+            </div>
+            <div class="meta-item">
+                <h3>Team</h3>
+                <p>Inayat Inayat, Shin Thant Thant</p>
+            </div>
+            <div class="meta-item">
+                <h3>Tools</h3>
+                <p>React Native, Firebase, Firestore, Google Places API, Figma</p>
+            </div>
+            <div class="meta-item">
+                <h3>Timeline</h3>
+                <p>Fall 2025</p>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Wishlist -->
-    <div class="feature-block">
-      <div class="sub">Feature 02</div>
-      <div class="feature-title">Wishlist &amp; Calendar Planning</div>
-      <p class="feature-desc">Saved places can be organised into custom folders and assigned visit dates through a built-in calendar, transforming inspiration into actionable plans.</p>
-      <div class="imgs c2">
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/j9D2ecOa5aW0QLDns1EAdr5m3OI.png" alt="Wishlist">
-          <div class="icap">Wishlist — custom folders for organising saved destinations</div>
+        <!-- Problem, Solution, Goal -->
+        <div class="info-cards">
+            <div class="info-card">
+                <h3>Problem</h3>
+                <p>Travel planning is fragmented. Users often rely on separate apps to search places, save ideas, plan schedules, and document experiences—making the process overwhelming and disconnected.</p>
+            </div>
+            <div class="info-card">
+                <h3>Solution</h3>
+                <p>Chemtrails unifies exploration, planning, and reflection into one intuitive mobile experience. Users can search places, save destinations into folders, schedule visits using a calendar, and journal memories with photos—all within the same app.</p>
+            </div>
+            <div class="info-card">
+                <h3>Goal</h3>
+                <p>Design a unified mobile travel experience that reduces cognitive load by seamlessly connecting discovery, trip planning, and reflection within a single, intuitive interface.</p>
+                    </div>
         </div>
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/39qf446JNBKmnDctgNVNmyiI8I.png" alt="Calendar planning">
-          <div class="icap">Calendar — assign visit dates and build an itinerary</div>
+               
+      <!-- User Research -->
+        <section class="content-section">
+            <h2 class="section-title">User Research</h2>
+
+            <h3 style="color: var(--accent-light); font-size: 1.2rem; margin-bottom: 0.75rem;">Who We Designed For</h3>
+            <p class="section-description">
+                I conducted 5 semi-structured interviews with frequent travellers (2–4 trips per year) aged 22–35, screened for using at least 3 separate apps to plan a single trip.
+            </p>
+
+            <h3 style="color: var(--accent-light); font-size: 1.2rem; margin-bottom: 0.75rem;">Key Findings</h3>
+            <div class="info-cards">
+                <div class="info-card">
+                    <h3>01</h3>
+                    <p>All 5 participants used Google Maps, Instagram, and Notes simultaneously — context-switching was the #1 frustration.</p>
+                </div>
+                <div class="info-card">
+                    <h3>02</h3>
+                    <p>4 of 5 said they forget saved places because they lose track of which app they saved them in.</p>
+                </div>
+                <div class="info-card">
+                    <h3>03</h3>
+                    <p>3 of 5 wanted a way to document memories that felt more personal than a camera roll.</p>
+                </div>
+            </div>
+
+            <div class="design-highlight">
+                <h3>The Insight That Shaped Everything</h3>
+                <p class="section-description">
+                    <em>"The problem isn't planning — it's that my planning is scattered across 6 apps, so I can never see the full picture."</em>
+                </p>
+                <p class="section-description" style="margin-bottom: 0;">— Research participant</p>
+            </div>
+        </section>
+
+        <!-- Design Iterations -->
+        <section class="content-section">
+            <h2 class="section-title">Design Iterations</h2>
+
+            <div class="info-cards">
+                <div class="info-card">
+                    <h3>v1 → v2</h3>
+                    <p><strong style="color: var(--text-primary);">Simplifying the Home Dashboard</strong><br><br>
+                    The first version showed ALL upcoming trips simultaneously. Early testing (n=3) showed users felt overwhelmed. We restructured to one upcoming plan + one featured destination — reducing visual noise and giving users a clear starting point.</p>
+                </div>
+                <div class="info-card">
+                    <h3>v2 → v3</h3>
+                    <p><strong style="color: var(--text-primary);">Journal Entry Flow</strong><br><br>
+                    Adding photos required a separate screen. Two participants missed the feature entirely. We moved photo upload inline — increasing attachment rates from 40% to 90% in follow-up testing.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Cut</h3>
+                    <p><strong style="color: var(--text-primary);">What We Decided Not to Build</strong><br><br>
+                    We prototyped a social sharing feature but cut it after research showed users wanted a private travel companion, not a social platform. Cutting it sharpened our core value proposition.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Design Concept -->
+        <section class="content-section">
+            <h2 class="section-title">Design Concept</h2>
+            <div class="design-highlight">
+                <h3>Calm · Exploratory · Personal</h3>
+                <p class="section-description">
+                    Chemtrails is designed to feel like a <strong>travel companion</strong>, not a task manager. The interface utilizes soft colour tones, a clear hierarchy, and generous spacing to minimize cognitive load and foster a relaxed exploration experience. Content—places, images, and memories—remains the primary focus, while the UI stays intentionally minimal and supportive.
+                </p>
+            </div>
+
+            <!-- Design Concept Images -->
+           <div class="image-row three-column">
+                <img src="https://framerusercontent.com/images/pJ2YwFEGutHEWSxIjrMCGsefa8E.png" alt="Color Palette" class="showcase-image">
+                <img src="https://framerusercontent.com/images/q4R2OOhv0ZjtXvTos0ltK74pv4.png" alt="Color Usage" class="showcase-image">
+                <img src="https://framerusercontent.com/images/7f5FyKXoMmVvKQWMmbBRN9PKatA.png" alt="Color Application" class="showcase-image">
+            </div>
+        </section>
+
+        <!-- Color Palette -->
+        <section class="content-section">
+            <h2 class="section-title">Color Palette</h2>
+            <p class="section-description">
+                The color palette for Chemtrails is inspired by <strong>travel, nature, and movement</strong>, with an emphasis on calmness and clarity. Soft blues and muted greens are used as primary colors to evoke a sense of openness, reliability, and exploration. Neutral tones support backgrounds and secondary surfaces, helping content such as place images, maps, and journal photos remain the focal point. Accent colors are used sparingly for primary actions (such as saving a place or adding a journal entry) to guide user attention without overwhelming the interface.
+            </p>
+            <p class="section-description">
+                <strong>UX rationale:</strong> A restrained palette reduces visual fatigue, supports long browsing sessions, and lowers cognitive load during planning-heavy tasks.
+            </p>
+
+            <div class="image-row">
+                <img src="https://framerusercontent.com/images/4y7k8a34B8fQenNG3N4Cl2qoLyM.png" alt="UI Components" class="showcase-image">
+                <img src="https://framerusercontent.com/images/oC5Di78dviuVfqaHa8zAFbUDiEU.png" alt="Interface Design" class="showcase-image">
+                 <img src="https://framerusercontent.com/images/i8VLJGTqqu2XrBfkGv4kNTE7qg.png" alt="Design System" class="showcase-image">
+            </div>
+            <div class="image-row">
+                <img src="https://framerusercontent.com/images/A6vsauvu8zOwzLJBdiTiYxnqXY.png" alt="Visual Design" class="showcase-image">
+                <img src="https://framerusercontent.com/images/etGdSgENrQsVrsTa8YI50ZBm7A.png" alt="App Screens" class="showcase-image">
+                <img src="https://framerusercontent.com/images/AMXPtX5gm3EruEXy0KWLwQI4Xg.png" alt="User Interface" class="showcase-image">
+            </div>
+            <div class="image-row">
+               <img src="https://framerusercontent.com/images/3WzW4LRXlklCtTV3MWNjWUVyd1k.png" alt="App Design" class="showcase-image">
+                <img src="https://framerusercontent.com/images/NmxveCGmGFNkwrJvOWJT1T2cg.png" alt="Mobile UI" class="showcase-image">
+ <img src="https://framerusercontent.com/images/ZPYsVWTz1RPVY0wiSCwi39IKck.png" alt="Design Overview" class="showcase-image">
+            </div>
+            <div class="image-row">
+                 <img src="https://framerusercontent.com/images/uKQo1vQ7gGpPv3aRfpXPWj5eZc.png" alt="Design Concept" class="showcase-image">
+                <img src="https://framerusercontent.com/images/CnkOHDCEVhGEzQzyDikNzIGYSw.png" alt="Design Elements" class="showcase-image">
+            </div>
+        </section>
+
+        <!-- Key Features -->
+        <section class="content-section">
+            <h2 class="section-title">Key Features</h2>
+
+            <!-- Feature 1: Explore Destinations -->
+            <div class="feature-section">
+                <div class="feature-header">
+                    <h3>Explore Destinations</h3>
+                    <p>Users can search for destinations using real-time Google Places data, view ratings, reviews, photos, and directions, and save locations instantly to their wishlist.</p>
+                </div>
+                <div class="image-row">
+                    <img src="https://framerusercontent.com/images/pJ2YwFEGutHEWSxIjrMCGsefa8E.png" alt="Explore Feature" class="showcase-image">
+                    <img src="https://framerusercontent.com/images/UNvj77qOq4Gm527iPxRjcrroo.png" alt="Search Interface" class="showcase-image">
+                </div>
+            </div>
+
+            <!-- Feature 2: Wishlist & Calendar -->
+            <div class="feature-section">
+                <div class="feature-header">
+                    <h3>Wishlist & Calendar Planning</h3>
+                    <p>Saved places can be organized into custom folders and assigned visit dates through a built-in calendar, transforming inspiration into actionable plans.</p>
+                </div>
+                <div class="image-row">
+                    <img src="https://framerusercontent.com/images/j9D2ecOa5aW0QLDns1EAdr5m3OI.png" alt="Wishlist" class="showcase-image">
+                    <img src="https://framerusercontent.com/images/39qf446JNBKmnDctgNVNmyiI8I.png" alt="Calendar" class="showcase-image">
+                </div>
+            </div>
+
+            <!-- Feature 3: Home Dashboard -->
+            <div class="feature-section">
+                <div class="feature-header">
+                    <h3>Home Dashboard</h3>
+                    <p>A personalized dashboard featuring dynamic greetings, rotating travel quotes, upcoming plans, and featured destinations creates a welcoming starting point.</p>
+                </div>
+                <div class="image-row">
+                    <img src="https://framerusercontent.com/images/7f5FyKXoMmVvKQWMmbBRN9PKatA.png" alt="Dashboard" class="showcase-image">
+                    <img src="https://framerusercontent.com/images/NJPr8oJlGXzqxhK577KEaPxFrls.png" alt="Home Screen" class="showcase-image">
+                </div>
+            </div>
+
+            <!-- Feature 4: Travel Journal -->
+            <div class="feature-section">
+                <div class="feature-header">
+                    <h3>Travel Journal</h3>
+                    <p>Users can create, edit, and delete journal entries with multiple photos, allowing them to document trips as personal narratives rather than checklists.</p>
+                </div>
+                <div class="image-row">
+                    <img src="https://framerusercontent.com/images/q4R2OOhv0ZjtXvTos0ltK74pv4.png" alt="Journal" class="showcase-image">
+                    <img src="https://framerusercontent.com/images/O6W5PwyyXIaw5xCf9dSK8C9Qbk.png" alt="Journal Entry" class="showcase-image">
+                </div>
+            </div>
+
+            <!-- Feature 5: Profile and Stats -->
+            <div class="feature-section">
+                <div class="feature-header">
+                    <h3>Profile and Stats</h3>
+                    <p>The profile page tracks user identity and automatically generated travel statistics such as cities visited and trips journaled.</p>
+                </div>
+                <div class="image-row">
+                    <img src="https://framerusercontent.com/images/2pJra1xXKFFCJle4OpXPyXZ4q00.png" alt="Profile" class="showcase-image">
+                    <img src="https://framerusercontent.com/images/GUe6DC5vsPYLSAVfzCufYRaYh0M.png" alt="Stats" class="showcase-image">
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Overview -->
+        <section class="content-section">
+            <h2 class="section-title">Technical Overview</h2>
+            <div class="info-card" style="max-width: 800px;">
+                <p style="margin-bottom: 1rem;"><strong>Frontend:</strong> React Native (Expo)</p>
+                <p style="margin-bottom: 1rem;"><strong>Backend:</strong> Firebase Authentication, Firestore</p>
+                <p style="margin-bottom: 1rem;"><strong>Media Storage:</strong> Firebase Storage</p>
+                <p style="margin-bottom: 1rem;"><strong>APIs:</strong> Google Places API</p>
+                <p><strong>Navigation:</strong> Bottom tab navigation</p>
+            </div>
+        </section>
+
+        <!-- Challenges and Learning -->
+        <section class="content-section">
+            <h2 class="section-title">Challenges and Learning</h2>
+            <p class="section-description">
+                This was my first full mobile app built with React Native. I encountered challenges related to navigation state, image uploads, API error handling, and calendar logic. Through documentation-driven learning, debugging, and iteration, I gained confidence in building scalable, multi-screen mobile applications and translating UX designs into functional products.
+            </p>
+        </section>
+
+        <!-- Outcome -->
+        <section class="content-section">
+            <h2 class="section-title">Outcome</h2>
+            <p class="section-description">
+                Chemtrails resulted in a fully functional mobile application that supports real user data, media uploads, and external APIs. The project strengthened my skills in <strong>UX thinking, mobile development, and problem-solving</strong>, and demonstrates my ability to design and build end-to-end digital products.
+            </p>
+        </section>
+
+        <!-- Demo Link -->
+        <section class="content-section">
+            <h2 class="section-title">Demo Link</h2>
+            <div>
+                <a href="https://youtu.be/TTxRGhsGydw?si=j8xNKcImTwr5870A" target="_blank" style="color: var(--accent-light); font-size: 1.2rem; text-decoration: none; border: 2px solid var(--accent); padding: 1rem 2rem; border-radius: 50px; display: inline-block; transition: all 0.3s ease;">
+                    Watch Full Demo on YouTube →
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Inayat. All rights reserved.</p>
         </div>
-      </div>
-    </div>
+    </footer>
 
-    <!-- Home Dashboard -->
-    <div class="feature-block">
-      <div class="sub">Feature 03</div>
-      <div class="feature-title">Home Dashboard</div>
-      <p class="feature-desc">A personalised dashboard featuring dynamic greetings, rotating travel quotes, upcoming plans, and featured destinations creates a welcoming starting point for every session.</p>
-      <div class="imgs c2">
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/7f5FyKXoMmVvKQWMmbBRN9PKatA.png" alt="Dashboard">
-          <div class="icap">Home dashboard — personalised greeting, quotes, upcoming trips</div>
-        </div>
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/NJPr8oJlGXzqxhK577KEaPxFrls.png" alt="Home screen">
-          <div class="icap">Featured destinations — curated discovery at a glance</div>
-        </div>
-      </div>
-    </div>
+    <script>
+        // Mobile Navigation Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
 
-    <!-- Journal -->
-    <div class="feature-block">
-      <div class="sub">Feature 04</div>
-      <div class="feature-title">Travel Journal</div>
-      <p class="feature-desc">Users can create, edit, and delete journal entries with multiple photos — documenting trips as personal narratives rather than checklists.</p>
-      <div class="imgs c2">
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/q4R2OOhv0ZjtXvTos0ltK74pv4.png" alt="Journal">
-          <div class="icap">Journal overview — all trips in one place</div>
-        </div>
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/O6W5PwyyXIaw5xCf9dSK8C9Qbk.png" alt="Journal entry">
-          <div class="icap">Journal entry — photos, notes, and memories in one view</div>
-        </div>
-      </div>
-    </div>
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
 
-    <!-- Profile -->
-    <div class="feature-block">
-      <div class="sub">Feature 05</div>
-      <div class="feature-title">Profile &amp; Stats</div>
-      <p class="feature-desc">The profile page tracks user identity and automatically generated travel statistics — cities visited, trips journaled, and places saved.</p>
-      <div class="imgs c2">
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/2pJra1xXKFFCJle4OpXPyXZ4q00.png" alt="Profile">
-          <div class="icap">Profile — user identity and preferences</div>
-        </div>
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/GUe6DC5vsPYLSAVfzCufYRaYh0M.png" alt="Travel stats">
-          <div class="icap">Stats — automatically tracked travel metrics</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 04 TECH STACK -->
-  <section id="tech" class="sec rev">
-    <div class="phase"><div class="p-dot">4</div><span class="p-txt">Technical Overview</span></div>
-    <h2 class="sec-h">Built End-to-End</h2>
-    <p class="sec-lead">Designed and developed from scratch — every screen in Figma then translated into working React Native code.</p>
-    <div class="rule"></div>
-
-    <div class="stack">
-      <div class="stack-row"><div class="stack-label">Frontend</div><div class="stack-value">React Native (Expo) — cross-platform mobile development</div></div>
-      <div class="stack-row"><div class="stack-label">Backend</div><div class="stack-value">Firebase Authentication + Firestore — real-time database and user auth</div></div>
-      <div class="stack-row"><div class="stack-label">Media Storage</div><div class="stack-value">Firebase Storage — photo uploads for journal entries</div></div>
-      <div class="stack-row"><div class="stack-label">APIs</div><div class="stack-value">Google Places API — real-time destination search and place data</div></div>
-      <div class="stack-row"><div class="stack-label">Navigation</div><div class="stack-value">Bottom tab navigation — persistent access to all five core features</div></div>
-      <div class="stack-row"><div class="stack-label">Design</div><div class="stack-value">Figma — full hi-fi prototype before a single line of code</div></div>
-    </div>
-
-    <div class="sub">Tools Used</div>
-    <div class="tools">
-      <span class="tool">React Native</span>
-      <span class="tool">Expo</span>
-      <span class="tool">Firebase</span>
-      <span class="tool">Firestore</span>
-      <span class="tool">Firebase Storage</span>
-      <span class="tool">Google Places API</span>
-      <span class="tool">Figma</span>
-    </div>
-  </section>
-
-  <!-- 05 CHALLENGES -->
-  <section id="challenges" class="sec rev">
-    <div class="phase"><div class="p-dot">5</div><span class="p-txt">Challenges &amp; Learning</span></div>
-    <h2 class="sec-h">First Full<br>Mobile App</h2>
-    <p class="sec-lead">This was my first full mobile app built with React Native. The hardest parts weren't the design — they were the gaps between design and working code.</p>
-    <div class="rule"></div>
-
-    <div class="flist" style="margin-bottom:2rem">
-      <div class="fr"><div class="fr-i">🧭</div><div><div class="fr-t">Navigation state management</div><div class="fr-d">React Native's navigation stack required careful state handling — especially when passing data between screens like a selected destination flowing into the calendar and wishlist.</div></div></div>
-      <div class="fr"><div class="fr-i">📸</div><div><div class="fr-t">Image uploads and storage</div><div class="fr-d">Connecting Firebase Storage with camera and gallery permissions across iOS and Android exposed platform-specific differences that documentation alone couldn't fully prepare for.</div></div></div>
-      <div class="fr"><div class="fr-i">🔌</div><div><div class="fr-t">API error handling</div><div class="fr-d">Google Places API responses required robust error handling — rate limits, empty results, and network failures all needed graceful fallbacks to avoid crashes in production.</div></div></div>
-      <div class="fr"><div class="fr-i">📅</div><div><div class="fr-t">Calendar logic</div><div class="fr-d">Building a custom calendar that synced with Firestore in real time — handling date conflicts, multi-day trips, and timezone differences — was the most technically demanding part of the project.</div></div></div>
-    </div>
-
-    <div class="quote">
-      <p>"Through documentation-driven learning, debugging, and iteration, I gained confidence in building scalable, multi-screen mobile applications and translating UX designs into functional products."</p>
-    </div>
-  </section>
-
-  <!-- 06 OUTCOME -->
-  <section id="outcome" class="sec rev">
-    <div class="phase"><div class="p-dot">6</div><span class="p-txt">Outcome</span></div>
-    <h2 class="sec-h">Fully Shipped,<br>Fully Functional</h2>
-    <p class="sec-lead">Chemtrails resulted in a fully functional mobile application supporting real user data, media uploads, and external APIs — design and development as one continuous process.</p>
-    <div class="rule"></div>
-
-    <div class="g2" style="margin-bottom:2rem">
-      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Shipped</div><div class="nc-t">End-to-end product</div><div class="nc-d">From user research and Figma prototype to working React Native app with live Firebase backend</div></div>
-      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Proven</div><div class="nc-t">Design + development</div><div class="nc-d">Demonstrates that UX thinking and technical execution are not separate skills — they reinforce each other</div></div>
-      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Real data</div><div class="nc-t">Live APIs + storage</div><div class="nc-d">Google Places API, Firebase Auth, Firestore, and Firebase Storage all running in a production environment</div></div>
-      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Scalable</div><div class="nc-t">Multi-screen architecture</div><div class="nc-d">Component-based React Native structure built to be extended with future features like social sharing and trip collaboration</div></div>
-    </div>
-
-    <div class="sub">Watch the Full Demo</div>
-    <p style="font-size:0.875rem;color:var(--muted);line-height:1.8;margin-bottom:1rem">A full walkthrough of all five features — Explore, Wishlist, Calendar, Journal, and Profile — in a real device recording.</p>
-    <a href="https://youtu.be/TTxRGhsGydw?si=j8xNKcImTwr5870A" target="_blank" class="demo-btn">
-      ▶ Watch Full Demo on YouTube
-    </a>
-  </section>
-
-</main>
-
-<footer>© 2025 Inayat. All rights reserved.</footer>
-
-<script>
-  const ro = new IntersectionObserver(
-    es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }),
-    { threshold: 0.06 }
-  );
-  document.querySelectorAll('.rev').forEach(el => ro.observe(el));
-
-  const links = document.querySelectorAll('.side-a');
-  const secs  = document.querySelectorAll('.sec');
-  const so = new IntersectionObserver(es => {
-    es.forEach(e => {
-      if (e.isIntersecting) {
-        links.forEach(l => l.classList.remove('active'));
-        const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
-        if (a) a.classList.add('active');
-      }
-    });
-  }, { rootMargin: '-15% 0px -65% 0px' });
-  secs.forEach(s => so.observe(s));
-</script>
-
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
 </body>
 </html>
