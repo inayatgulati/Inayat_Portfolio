@@ -1,1217 +1,662 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mastercard Fraud Dashboard Redesign - Inayat</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-bg: #0a0a0a;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --accent: #14b8a6;
-            --accent-light: #2dd4bf;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.1);
-            --gradient-1: #14b8a6;
-            --gradient-2: #06b6d4;
-            --gradient-3: #0891b2;
-            --orange: #ff9500;
-            --red: #ff3b30;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Work Sans', sans-serif;
-            background-color: var(--primary-bg);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            z-index: 1000;
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            color: var(--text-primary);
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-primary);
-            text-decoration: none;
-            font-weight: 400;
-            font-size: 0.95rem;
-            letter-spacing: 0.5px;
-            position: relative;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--accent);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-        }
-
-        .hamburger span {
-            width: 25px;
-            height: 2px;
-            background: var(--text-primary);
-            transition: all 0.3s ease;
-        }
-
-        .project-hero {
-            padding: 10rem 2rem 4rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-hero::before {
-            content: '';
-            position: absolute;
-            top: -20%;
-            right: -10%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, var(--gradient-1) 0%, transparent 70%);
-            filter: blur(120px);
-            opacity: 0.3;
-            z-index: 0;
-        }
-
-        .project-hero-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .back-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 500;
-            margin-bottom: 3rem;
-            transition: gap 0.3s ease;
-        }
-
-        .back-button:hover {
-            gap: 1rem;
-        }
-
-        .hero-content-wrapper {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .hero-text {
-            text-align: left;
-        }
-
-        .project-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 4rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 50%, var(--gradient-3) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.2;
-        }
-
-        .project-subtitle {
-            font-size: 1.3rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        .hero-image {
-            width: 100%;
-            position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            background: rgba(0, 0, 0, 0.3);
-            box-shadow: 0 10px 40px rgba(20, 184, 166, 0.15);
-        }
-
-        .hero-image img,
-        .hero-image video {
-            width: 100%;
-            height: auto;
-            display: block;
-            object-fit: cover;
-        }
-
-        .hero-image video {
-            aspect-ratio: 16 / 9;
-            max-height: 500px;
-        }
-
-        .project-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem 4rem;
-        }
-
-        .content-section {
-            margin-bottom: 6rem;
-        }
-
-        .section-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
-            text-align: left;
-        }
-
-        .section-description {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            text-align: left;
-            max-width: 100%;
-        }
-
-        .section-description strong {
-            color: var(--text-primary);
-        }
-
-        .meta-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin: 3rem 0;
-            text-align: left;
-        }
-
-        .meta-item h3 {
-            color: var(--accent);
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .meta-item p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .design-highlight {
-            background: linear-gradient(135deg, rgba(20, 184, 166, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 3rem;
-            margin: 3rem 0;
-            text-align: left;
-        }
-
-        .design-highlight h3 {
-            font-size: 1.8rem;
-            font-weight: 500;
-            color: var(--accent-light);
-            margin-bottom: 1rem;
-        }
-
-        .content-list {
-            margin: 2rem 0;
-            padding-left: 1.5rem;
-        }
-
-        .content-list li {
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-            line-height: 1.8;
-            font-size: 1.05rem;
-        }
-
-        .content-list li strong {
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        .personas-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin: 3rem 0;
-        }
-
-        .persona-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-
-        .persona-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-        }
-
-        .persona-header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .persona-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-            border: 3px solid var(--border);
-        }
-
-        .persona-name {
-            font-size: 1.5rem;
-            color: var(--accent-light);
-            margin-bottom: 0.25rem;
-        }
-
-        .persona-role {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .persona-quote {
-            font-style: italic;
-            color: var(--text-secondary);
-            margin: 1rem 0;
-            padding: 1rem;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-            border-left: 3px solid var(--accent);
-        }
-
-        .persona-section {
-            margin-top: 1.5rem;
-        }
-
-        .persona-section h4 {
-            color: var(--accent);
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .persona-section p, .persona-section ul {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .persona-section ul {
-            list-style-position: inside;
-            padding-left: 0;
-        }
-
-        .page-grid {
-            display: grid;
-            gap: 3rem;
-            margin: 3rem 0;
-        }
-
-        .page-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-
-        .page-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-        }
-
-        .page-card h4 {
-            font-size: 1.5rem;
-            color: var(--accent-light);
-            margin-bottom: 1rem;
-        }
-
-        .page-card p {
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 1.5rem;
-        }
-
-        .page-card img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-        }
-
-        .journey-map {
-            background: linear-gradient(135deg, rgba(255, 149, 0, 0.1) 0%, rgba(255, 59, 48, 0.1) 100%);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            margin: 3rem 0;
-        }
-
-        .journey-map img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-        }
-
-        .workshop-section {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            margin: 2rem 0;
-        }
-
-        .workshop-section h4 {
-            font-size: 1.3rem;
-            color: var(--accent-light);
-            margin-bottom: 1rem;
-        }
-
-        .showcase-image {
-            width: 100%;
-            height: auto;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin: 2rem 0;
-        }
-
-        .showcase-image:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 40px rgba(20, 184, 166, 0.2);
-        }
-
-        .feature-showcase {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-            margin: 3rem 0;
-            padding: 2rem;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-        }
-
-        .feature-showcase.reverse {
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .feature-showcase.reverse .feature-image {
-            order: 2;
-        }
-
-        .feature-showcase.reverse .feature-text {
-            order: 1;
-        }
-
-        .feature-image img,
-        .feature-image video {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-        }
-
-        .feature-image video {
-            display: block;
-            object-fit: cover;
-        }
-
-        .feature-text h4 {
-            font-size: 1.5rem;
-            color: var(--accent-light);
-            margin-bottom: 1rem;
-        }
-
-        .feature-text p {
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        footer {
-            background: rgba(255, 255, 255, 0.02);
-            padding: 2rem;
-            text-align: center;
-            border-top: 1px solid var(--border);
-            margin-top: 4rem;
-        }
-
-        .footer-content p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 968px) {
-            .hero-content-wrapper {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-
-            .hero-text {
-                text-align: center;
-            }
-
-            .meta-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .personas-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .feature-showcase {
-                grid-template-columns: 1fr;
-            }
-
-            .feature-showcase.reverse .feature-image {
-                order: 1;
-            }
-
-            .feature-showcase.reverse .feature-text {
-                order: 2;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hamburger {
-                display: flex;
-            }
-
-            .nav-links {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: rgba(10, 10, 10, 0.98);
-                backdrop-filter: blur(20px);
-                flex-direction: column;
-                padding: 2rem;
-                gap: 1.5rem;
-                transform: translateY(-100%);
-                opacity: 0;
-                pointer-events: none;
-                transition: transform 0.3s ease, opacity 0.3s ease;
-            }
-
-            .nav-links.active {
-                transform: translateY(0);
-                opacity: 1;
-                pointer-events: all;
-            }
-
-            .project-title {
-                font-size: 2.5rem;
-            }
-
-            .meta-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fraud Detection Dashboard — Inayat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:     #0a0a0a;
+      --sur:    rgba(255,255,255,0.03);
+      --bdr:    rgba(255,255,255,0.08);
+      --text:   #f0f0f0;
+      --muted:  #888;
+      --dim:    #444;
+      --teal:   #14b8a6;
+      --teal-l: #2dd4bf;
+      --teal-d: #0d9488;
+      --nav-h:  64px;
+      --side-w: 200px;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Work Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+    /* NAV */
+    .topnav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); z-index: 200; display: flex; align-items: center; padding: 0 2rem; background: rgba(10,10,10,0.93); backdrop-filter: blur(16px); border-bottom: 1px solid var(--bdr); }
+    .topnav-in { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; letter-spacing: 1px; color: var(--text); text-decoration: none; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; transition: color .2s; }
+    .nav-links a:hover { color: var(--teal); }
+
+    /* SIDENAV */
+    .sidenav { position: fixed; top: var(--nav-h); left: 0; width: var(--side-w); height: calc(100vh - var(--nav-h)); padding: 2.5rem 1rem 2rem 2rem; border-right: 1px solid var(--bdr); background: var(--bg); display: flex; flex-direction: column; gap: 2rem; overflow-y: auto; overflow-x: hidden; z-index: 100; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--teal); text-decoration: none; font-size: 0.78rem; font-weight: 500; transition: gap .2s; white-space: nowrap; }
+    .back-link:hover { gap: 10px; }
+    .side-lbl { font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--dim); font-weight: 600; margin-bottom: 0.75rem; }
+    .side-list { display: flex; flex-direction: column; }
+    .side-a { display: flex; align-items: center; gap: 8px; padding: 7px 0 7px 10px; color: var(--dim); text-decoration: none; font-size: 0.77rem; border-left: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+    .side-a:hover { color: var(--text); border-left-color: var(--dim); }
+    .side-a.active { color: var(--teal-l); border-left-color: var(--teal); font-weight: 500; }
+    .side-num { font-size: 0.6rem; color: var(--dim); min-width: 16px; }
+    .side-a.active .side-num { color: var(--teal); }
+
+    /* MAIN */
+    .main { margin-left: var(--side-w); padding: calc(var(--nav-h) + 3rem) 3.5rem 6rem 3rem; max-width: calc(900px + var(--side-w)); }
+
+    /* HERO */
+    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+    .tag { font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--teal); padding: 3px 10px; border: 1px solid rgba(20,184,166,.25); border-radius: 20px; background: rgba(20,184,166,.05); }
+    .hero-h { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.4rem,4vw,3.6rem); font-weight: 300; line-height: 1.08; margin-bottom: 0.5rem; }
+    .hero-h em { font-style: italic; color: var(--teal-l); }
+    .hero-sub { font-size: 0.95rem; color: var(--muted); margin-bottom: 1rem; }
+    .hero-p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; max-width: 520px; margin-bottom: 1.75rem; }
+
+    /* HERO VIDEO */
+    .hero-video { width: 100%; border-radius: 14px; overflow: hidden; border: 1px solid var(--bdr); margin-bottom: 2rem; background: #111; }
+    .hero-video video { width: 100%; display: block; max-height: 460px; object-fit: cover; }
+
+    /* STATS */
+    .stats { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--bdr); border-radius: 14px; overflow: hidden; margin-bottom: 1.75rem; }
+    .stat { padding: 1.2rem 1.1rem; background: var(--sur); border-right: 1px solid var(--bdr); }
+    .stat:last-child { border-right: none; }
+    .s-n { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 700; color: var(--teal-l); line-height: 1; margin-bottom: 5px; }
+    .s-l { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
+    .s-sub { font-size: 0.65rem; color: var(--dim); margin-top: 2px; }
+
+    /* META */
+    .meta { display: flex; gap: 2rem; flex-wrap: wrap; padding-top: 1.25rem; border-top: 1px solid var(--bdr); margin-bottom: 5rem; }
+    .m-k { font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 4px; }
+    .m-v { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+    /* SECTION */
+    .sec { margin-bottom: 5rem; }
+    .phase { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
+    .p-dot { width: 20px; height: 20px; border-radius: 50%; background: rgba(20,184,166,.1); border: 1px solid rgba(20,184,166,.3); display: flex; align-items: center; justify-content: center; font-size: 0.58rem; color: var(--teal); font-weight: 700; }
+    .p-txt { font-size: 0.65rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal); font-weight: 600; }
+    .sec-h { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 300; line-height: 1.15; margin-bottom: 0.5rem; }
+    .sec-lead { font-size: 0.875rem; color: var(--muted); line-height: 1.8; max-width: 580px; margin-bottom: 1.5rem; }
+    .rule { height: 1px; background: var(--bdr); margin-bottom: 1.5rem; }
+    .sub { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 0.875rem; }
+
+    /* GRIDS */
+    .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.5rem; }
+    .g2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 1.5rem; }
+
+    /* NUMBER CARD */
+    .nc { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
+    .nc-n { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--teal-l); line-height: 1; margin-bottom: 6px; }
+    .nc-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; }
+    .nc-d { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
+
+    /* ICON CARD */
+    .ic { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
+    .ic-ico { font-size: 1rem; margin-bottom: 0.6rem; }
+    .ic-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; }
+    .ic-d { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
+
+    /* FINDING ROW */
+    .flist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+    .fr { display: flex; gap: 0.875rem; align-items: flex-start; padding: 0.875rem 1.1rem; background: var(--sur); border: 1px solid var(--bdr); border-radius: 8px; transition: border-color .2s; }
+    .fr:hover { border-color: rgba(20,184,166,.2); }
+    .fr-i { width: 30px; height: 30px; min-width: 30px; border-radius: 6px; background: rgba(20,184,166,.07); border: 1px solid rgba(20,184,166,.15); display: flex; align-items: center; justify-content: center; font-size: 0.82rem; }
+    .fr-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
+    .fr-d { font-size: 0.77rem; color: var(--muted); line-height: 1.55; }
+
+    /* STEP LIST */
+    .slist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+    .st { display: flex; gap: 0.875rem; padding: 0.875rem 1.1rem; background: var(--sur); border: 1px solid var(--bdr); border-radius: 8px; }
+    .st-n { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 700; color: var(--teal); min-width: 20px; line-height: 1.5; }
+    .st-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
+    .st-d { font-size: 0.77rem; color: var(--muted); line-height: 1.5; }
+
+    /* PERSONA CARD */
+    .pcard { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.5rem; border-bottom: 2px solid var(--teal-d); }
+    .pcard-av { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg,var(--teal-d),var(--teal)); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 700; color: white; margin-bottom: 0.875rem; }
+    .pcard-name { font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; }
+    .pcard-role { font-size: 0.72rem; color: var(--teal); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; margin-bottom: 0.75rem; }
+    .pcard-quote { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; color: var(--muted); line-height: 1.5; margin-bottom: 1rem; padding-left: 0.75rem; border-left: 2px solid rgba(20,184,166,.3); }
+    .pcard-sub { font-size: 0.65rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 0.5rem; margin-top: 0.875rem; }
+    .pcard-list { display: flex; flex-direction: column; gap: 3px; }
+    .pcard-item { font-size: 0.76rem; color: var(--muted); padding-left: 0.75rem; position: relative; line-height: 1.5; }
+    .pcard-item::before { content: '—'; position: absolute; left: 0; color: var(--dim); }
+
+    /* DIRECTION CARD */
+    .dcard { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.5rem; }
+    .dcard.chosen { border-color: rgba(20,184,166,.3); background: rgba(20,184,166,.04); }
+    .dcard-label { font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; margin-bottom: 0.5rem; }
+    .dcard.chosen .dcard-label { color: var(--teal); }
+    .dcard:not(.chosen) .dcard-label { color: var(--dim); }
+    .dcard-t { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .dcard-d { font-size: 0.77rem; color: var(--muted); line-height: 1.6; }
+
+    /* VIDEO BLOCK */
+    .vid-block { border-radius: 12px; overflow: hidden; border: 1px solid var(--bdr); background: #111; margin-bottom: 1.5rem; }
+    .vid-block video { width: 100%; display: block; }
+    .vid-cap { padding: 10px 14px; font-size: 0.75rem; color: var(--muted); border-top: 1px solid var(--bdr); line-height: 1.4; font-weight: 500; }
+    .vid-cap span { color: var(--dim); font-weight: 400; display: block; font-size: 0.7rem; margin-top: 2px; }
+
+    /* BEFORE / AFTER */
+    .ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
+    .ba-wrap { border-radius: 12px; overflow: hidden; border: 1px solid var(--bdr); background: #111; }
+    .ba-wrap img { width: 100%; display: block; }
+    .ba-label { padding: 8px 12px; font-size: 0.7rem; font-weight: 600; border-top: 1px solid var(--bdr); letter-spacing: 1px; text-transform: uppercase; }
+    .ba-wrap.before .ba-label { color: var(--dim); }
+    .ba-wrap.after  .ba-label { color: var(--teal); }
+
+    /* ITERATION */
+    .ilist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+    .it { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: center; gap: 8px; }
+    .it-b { padding: 0.875rem 1rem; border-radius: 8px; border: 1px solid var(--bdr); }
+    .it-b.bef { background: var(--sur); }
+    .it-b.aft { background: rgba(20,184,166,.04); border-color: rgba(20,184,166,.15); }
+    .it-lbl { font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; margin-bottom: 3px; }
+    .it-b.bef .it-lbl { color: var(--dim); }
+    .it-b.aft .it-lbl { color: var(--teal); }
+    .it-txt { font-size: 0.77rem; color: var(--muted); line-height: 1.45; }
+    .it-b.aft .it-txt { color: var(--text); }
+    .it-arr { text-align: center; color: var(--teal); font-size: 0.85rem; }
+
+    /* QUOTE */
+    .quote { border-left: 2px solid var(--teal); padding: 0.875rem 1.25rem; margin: 1.25rem 0; background: rgba(20,184,166,.04); border-radius: 0 8px 8px 0; }
+    .quote p { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; line-height: 1.6; color: var(--text); }
+    .quote-attr { font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; }
+
+    /* REFLECTION */
+    .rc { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
+    .rc-t { font-size: 0.82rem; font-weight: 600; color: var(--teal-l); margin-bottom: 6px; }
+    .rc-d { font-size: 0.78rem; color: var(--muted); line-height: 1.7; }
+
+    /* IMAGES */
+    .imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
+    .imgs.c1 { grid-template-columns: 1fr; }
+    .iw { border-radius: 12px; overflow: hidden; border: 1px solid var(--bdr); background: #111; }
+    .iw img { width: 100%; display: block; }
+    .icap { padding: 7px 10px; font-size: 0.7rem; color: var(--dim); border-top: 1px solid var(--bdr); line-height: 1.4; }
+
+    /* TOOLS */
+    .tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .tool { font-size: 0.72rem; padding: 4px 12px; border-radius: 20px; background: var(--sur); border: 1px solid var(--bdr); color: var(--muted); }
+
+    /* FOOTER */
+    footer { background: #050508; border-top: 1px solid var(--bdr); padding: 1.5rem 2rem; text-align: center; font-size: 0.8rem; color: var(--dim); }
+
+    /* REVEAL */
+    .rev { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+    .rev.in { opacity: 1; transform: none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 860px) {
+      .sidenav { display: none; }
+      .main { margin-left: 0; padding: 5rem 1.5rem 5rem; }
+      .stats { grid-template-columns: repeat(2,1fr); }
+      .g3, .g2 { grid-template-columns: 1fr; }
+      .ba-grid { grid-template-columns: 1fr; }
+      .it { grid-template-columns: 1fr; }
+      .it-arr { display: none; }
+    }
+    @media (max-width: 480px) {
+      .stats { grid-template-columns: 1fr 1fr; }
+      .hero-h { font-size: 2rem; }
+      .nav-links { display: none; }
+    }
+  </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <a href="index.html" class="logo">INAYAT</a>
-            <ul class="nav-links">
-                <li><a href="../index.html">Home</a></li>
-                <li><a href="../About.html">About</a></li>
-                <li><a href="../Projects.html">Projects</a></li>
-                <li><a href="../Resume.html">Resume</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
+
+<!-- NAV -->
+<nav class="topnav">
+  <div class="topnav-in">
+    <a href="../index.html" class="logo">INAYAT</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../About.html">About</a></li>
+      <li><a href="../Projects.html">Projects</a></li>
+      <li><a href="../Resume.html">Resume</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- SIDENAV -->
+<aside class="sidenav">
+  <a href="../Projects.html" class="back-link">← Projects</a>
+  <div>
+    <div class="side-lbl">Case Study</div>
+    <nav class="side-list">
+      <a href="#overview"    class="side-a active"><span class="side-num">00</span>Overview</a>
+      <a href="#contrib"     class="side-a"><span class="side-num">01</span>My Role</a>
+      <a href="#personas"    class="side-a"><span class="side-num">02</span>Personas</a>
+      <a href="#directions"  class="side-a"><span class="side-num">03</span>Directions</a>
+      <a href="#journey"     class="side-a"><span class="side-num">04</span>Journey Map</a>
+      <a href="#workshop"    class="side-a"><span class="side-num">05</span>Workshop</a>
+      <a href="#solution"    class="side-a"><span class="side-num">06</span>Solution</a>
+      <a href="#problems"    class="side-a"><span class="side-num">07</span>Problems Solved</a>
+      <a href="#beforeafter" class="side-a"><span class="side-num">08</span>Before &amp; After</a>
+      <a href="#impact"      class="side-a"><span class="side-num">09</span>Impact</a>
+      <a href="#reflection"  class="side-a"><span class="side-num">10</span>Reflection</a>
     </nav>
+  </div>
+</aside>
 
-    <!-- Hero Section -->
-    <section class="project-hero">
-        <div class="project-hero-container">
-            <a href="../Projects.html" class="back-button">
-                ← Back to Projects
-            </a>
-            
-            <div class="hero-content-wrapper">
-                <div class="hero-text">
-                    <h1 class="project-title">Fraud Detection Dashboard - Case Study (Mastercard)</h1>
-                    <p class="project-subtitle">
-                        Transforming complex fraud data into actionable insights — supporting faster, clearer, and more confident fraud investigations.
-                    </p>
-                </div>
-                
-                <div class="hero-image">
-                    <video autoplay loop muted playsinline>
-                        <source src="../Images/Mastercard-IAT333.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- MAIN -->
+<main class="main">
 
-    <!-- Project Content -->
-    <div class="project-content">
-        
-        <!-- Meta Info -->
-        <div class="meta-grid">
-            <div class="meta-item">
-                <h3>Timeline</h3>
-                <p>4 Months</p>
-            </div>
-            <div class="meta-item">
-    <h3>Role</h3>
-    <p>Lead Researcher & Communication Co-Lead<br>
-    <span style="font-size: 0.9rem; color: var(--text-secondary);">UX Research, User Interviews, Journey Mapping, Stakeholder Communication</span></p>
-</div>
-            <div class="meta-item">
-                <h3>Team</h3>
-                <p>5 members</p>
-            </div>
-            <div class="meta-item">
-                <h3>Tools</h3>
-                <p>Figma, User Research, Data Visualization</p>
-            </div>
-        </div>
-
-        <!-- Project Overview -->
-        <section class="content-section">
-            <h2 class="section-title">Project Overview</h2>
-            <p class="section-description">
-                This project involved redesigning <strong>Mastercard's fraud dashboard</strong> to address critical usability issues that prevented fraud analysts from efficiently detecting patterns and managing fraudulent transactions. The existing system relied on dense data tables and fragmented views, making it difficult to spot trends, assess performance, and prioritize investigations.
-            </p>
-            <p class="section-description">
-                Our solution transformed static tables into <strong>dynamic, interactive visualizations</strong>, introduced AI-powered insights, and streamlined the workflow to help analysts detect fraud faster and with greater confidence.
-            </p>
-
-            <div class="design-highlight">
-                <h3>Design Goals</h3>
-                <ul class="content-list">
-                    <li><strong>Improve data accuracy:</strong> Detect and reduce false positives that overwhelm analysts</li>
-                    <li><strong>Ensure all data are interpreted flexibly:</strong> Alerts must be compared, well-documented, and audit-ready</li>
-                    <li><strong>Protecting customers and merchants from financial harm:</strong> Seeing the direct impact of fraud helps analysts make informed decisions</li>
-                    <li><strong>Safeguarding across teams to improve fraud detection:</strong> Collaboration reduces risk by enabling shared knowledge</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- My Contributions -->
-<section class="content-section">
-    <h2 class="section-title">My Contributions</h2>
-    
-    <div class="page-grid">
-        <div class="page-card">
-            <h4>🔍 Lead Researcher</h4>
-            <ul class="content-list">
-                <li>Conducted weekly stakeholder interviews with Mastercard's fraud analyst team</li>
-                <li>Created user journey maps for Jordan (Fraud Rule Creator) and Chen (Senior Leader)</li>
-                <li>Performed thematic analysis to identify pain points and opportunities</li>
-                <li>Led user workshops to validate design concepts</li>
-            </ul>
-        </div>
-
-        <div class="page-card">
-            <h4>💬 Communication Co-Lead</h4>
-            <ul class="content-list">
-                <li>Facilitated weekly sync meetings with Mastercard Product Design team</li>
-                <li>Presented research findings and design iterations to stakeholders</li>
-                <li>Documented design decisions and research insights</li>
-                <li>Coordinated cross-functional collaboration between team members</li>
-            </ul>
-        </div>
-
-        <div class="page-card">
-            <h4>🎨 Design Contributions</h4>
-            <ul class="content-list">
-                <li>Co-designed Visual Insider dashboard concept</li>
-                <li>Created wireframes and prototypes for user testing</li>
-                <li>Developed data visualization strategy for fraud metrics</li>
-                <li>Contributed to final UI design and interaction patterns</li>
-            </ul>
-        </div>
+  <!-- HERO -->
+  <header style="margin-bottom:4rem;">
+    <div class="tags">
+      <span class="tag">UX/UI Interaction Design</span>
+      <span class="tag">Data Visualisation</span>
+      <span class="tag">Lead Researcher</span>
     </div>
-</section>
+    <h1 class="hero-h">Fraud Detection<br><em>Dashboard</em></h1>
+    <p class="hero-sub">Case Study — Mastercard</p>
+    <p class="hero-p">Transforming complex fraud data into actionable insights — supporting faster, clearer, and more confident fraud investigations.</p>
 
-<!-- Add this right after "My Contributions" -->
-<section class="content-section">
-    <h2 class="section-title">Impact</h2>
-    
-    <div class="impact-stats" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: center; margin: 3rem 0;">
-        <div class="stat-card" style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 2rem;">
-            <h2 style="font-size: 3.5rem; color: var(--accent); margin-bottom: 0.5rem;">60%</h2>
-            <p style="color: var(--text-secondary);"> Faster data interpretation in usability testing</p>
-        </div>
-        <div class="stat-card" style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 2rem;">
-            <h2 style="font-size: 3.5rem; color: var(--accent); margin-bottom: 0.5rem;">50+</h2>
-            <p style="color: var(--text-secondary);">Rules now easily trackable</p>
-        </div>
-        <div class="stat-card" style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 2rem;">
-            <h2 style="font-size: 3.5rem; color: var(--accent); margin-bottom: 0.5rem;">3</h2>
-            <p style="color: var(--text-secondary);">Key user personas identified</p>
-        </div>
-    </div>
-</section>
-
-        <!-- User Personas -->
-        <section class="content-section">
-            <h2 class="section-title">User Personas</h2>
-            <p class="section-description">
-                Through research, we identified three key personas that represent the different types of users interacting with the fraud dashboard:
-            </p>
-
-            <div class="personas-grid">
-                <!-- Persona 1 -->
-                <div class="persona-card">
-                    <div class="persona-header">
-                        <div class="persona-avatar" style="background: linear-gradient(135deg, #8B0000, #DC143C);"></div>
-                        <h3 class="persona-name">Jordan Mercer</h3>
-                        <p class="persona-role">Fraud Rule Creator</p>
-                    </div>
-                    
-                    <div class="persona-quote">
-                        "Every rule I write could protect thousands or block the wrong user."
-                    </div>
-
-                    <div class="persona-section">
-                        <h4>Bio</h4>
-                        <p>Jordan transitioned into a Fraud Rule Creator role, which creates rules to catch fraud in real-time while making sure real customers aren't blocked by mistake.</p>
-                    </div>
-
-                    <div class="persona-section">
-                        <h4>Goals</h4>
-                        <ul>
-                            <li>Prevent new types of fraud</li>
-                            <li>Limit friction for legitimate customers</li>
-                            <li>Test rules in a safe environment</li>
-                        </ul>
-                    </div>
-
-                    <div class="persona-section">
-                        <h4>Frustrations</h4>
-                        <ul>
-                            <li>Hard to predict how rules behave in real scenarios</li>
-                            <li>Complex audit processes and limited visibility</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Persona 2 -->
-                <div class="persona-card">
-                    <div class="persona-header">
-                        <div class="persona-avatar" style="background: linear-gradient(135deg, #CD853F, #D2691E);"></div>
-                        <h3 class="persona-name">Blair Nelson</h3>
-                        <p class="persona-role">Senior Fraud Analyst</p>
-                    </div>
-                    
-                    <div class="persona-quote">
-                        "Every rule must be designed given small oversights can cost millions."
-                    </div>
-
-                    <div class="persona-section">
-                        <h4>Bio</h4>
-                        <p>Blair leads a team to design fraud detection systems. With over 8 years of experience, Blair ensures fraud detection rules remain accurate.</p>
-                    </div>
-
-                    <div class="persona-section">
-                        <h4>Goals</h4>
-                        <ul>
-                            <li>Maintain fraud defenses to minimize losses</li>
-                            <li>Ensure fraud detection complies with legal standards</li>
-                            <li>Advise junior analysts and promote collaboration</li>
-                        </ul>
-                    </div>
-
-                    <div class="persona-section">
-                        <h4>Frustrations</h4>
-                        <ul>
-                            <li>Legacy systems causing workflow delays</li>
-                            <li>Fragmented dashboards limiting team collaboration</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Persona 3 -->
-                <div class="persona-card">
-                    <div class="persona-header">
-                        <div class="persona-avatar" style="background: linear-gradient(135deg, #B8860B, #DAA520);"></div>
-                        <h3 class="persona-name">Chen Li</h3>
-                        <p class="persona-role">Senior Executive</p>
-                    </div>
-                    
-                    <div class="persona-quote">
-                        "Fraud down 10% isn't enough, every investment must be justified."
-                    </div>
-
-                    <div class="persona-section">
-                        <h4>Bio</h4>
-                        <p>Chen leads the company's fraud prevention strategy with over 12 years of leadership in preventing fraud in financial services.</p>
-                    </div>
-
-                    <div class="persona-section">
-                        <h4>Goals</h4>
-                        <ul>
-                            <li>Lower fraud losses without harming customer experience</li>
-                            <li>Keep fraud strategies ahead of industry trends</li>
-                        </ul>
-                    </div>
-
-                    <div class="persona-section">
-                        <h4>Frustrations</h4>
-                        <ul>
-                            <li>Rule data disconnected from business-level impact</li>
-                            <li>High-value dashboards causing panic in teams</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Design Directions -->
-        <section class="content-section">
-            <h2 class="section-title">Potential Design Directions</h2>
-            <p class="section-description">
-                We explored three distinct design directions to address the core problems:
-            </p>
-
-            <div class="page-grid">
-                <div class="page-card">
-                    <h4>Safe Sandbox & Simulation Environment</h4>
-                    <p><strong>Core Idea:</strong> Enable safe, real-time rule testing in a secure sandbox.</p>
-                    <p> <strong>Why we deprioritized it: </strong> This direction primarily addressed Jordan's needs but didn't give Chen 
-                        or Blair the business-level visibility and audit readiness they required. Solving for one persona at 
-                        the expense of two others didn't align with our goal of a unified solution.</p>
-                    <p><strong>Why Jordan is blocked by lack of safe environments:</strong></p>
-                    <ul class="content-list">
-                        <li>No features to test rule modifications (adds or new rule performance)</li>
-                        <li>Rule scoring simulations and benchmarks to compare (true positives/negatives)</li>
-                        <li>Side-by-side comparison (old vs new rule performance)</li>
-                        <li>Bulk scoring simulations used before/after rule performance go-live</li>
-                    </ul>
-                </div>
-
-                <div class="page-card">
-                    <h4>Fraud Impact Dashboard</h4>
-                    <p><strong>Core Idea:</strong> Connect fraud rule performance to business outcomes and ROI.</p>
-                    <p><strong>Why Chen wants to show value, not just numbers:</strong></p>
-                    <ul class="content-list">
-                        <li>Translate metrics (fraud prevented, false declines) into money saved</li>
-                        <li>Timeline vs industry benchmarks</li>
-                        <li>Team-level cost-benefit (manual rate)</li>
-                        <li>Storytelling visuals (before/after rule deployment)</li>
-                    </ul>
-                </div>
-
-                <div class="page-card">
-                    <h4>Compliance & Audit Assistant</h4>
-                    <p><strong>Core Idea:</strong> Automate audit readiness and documentation.</p>
-                    <p> <strong>Why we deprioritized it: </strong> While critical for Blair, this direction was too narrowly focused on compliance workflows. It wouldn't help Jordan test rules or give Chen the ROI visibility she needed — making it a partial fix rather than a holistic solution.</p>
-                    <p><strong>Why Blair's biggest pain is audit prep and showing regulators control:</strong></p>
-                    <ul class="content-list">
-                        <li>Rule change logs with change logs</li>
-                        <li>Auto-generated audit reports with change logs</li>
-                        <li>Real-time audit score flagging compliance issues</li>
-                        <li>Evidence library linking transactions to rules triggered</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="design-highlight">
-                <h3>Final Direction: Fraud Impact Dashboard</h3>
-                <p class="section-description">
-                    After evaluation, we chose to focus on the <strong>Fraud Impact Dashboard</strong> because it directly addresses the needs of all three personas while providing the most immediate value to the organization.
-                </p>
-            </div>
-        </section>
-
-        <!-- Journey Map -->
-        <section class="content-section">
-            <h2 class="section-title">Fraud Rule Creator's Journey</h2>
-            <p class="section-description">
-                We mapped out Jordan's workflow to understand the pain points and opportunities throughout the fraud rule creation process:
-            </p>
-
-            <div class="journey-map">
-                <img src="../Images/UJ2.png" alt="Fraud Rule Creator Journey Map" style="background: #f5f5f5;">
-            </div>
-
-            <div class="workshop-section">
-                <h4>Key Journey Stages</h4>
-                <ul class="content-list">
-                    <li><strong>Observe & Analyze:</strong> Understand emerging fraud patterns and identify weaknesses in current rule sets</li>
-                    <li><strong>Ideate & Preventative:</strong> Design rules that pre-emptively stop emerging fraud patterns</li>
-                    <li><strong>Detect & Simulate Detection:</strong> Validate that the new rule detects fraud accurately and efficiently</li>
-                    <li><strong>Deploy & Mitigate:</strong> Release the new rule into production to minimize active risk</li>
-                    <li><strong>Evaluate & Learn:</strong> Measure post-deployment performance and feed insights back into the lifecycle</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Workshop Insights -->
-        <section class="content-section">
-            <h2 class="section-title">Design Workshop & Testing</h2>
-            <p class="section-description">
-                We conducted <strong>peer test workshops</strong> to validate our design concepts and gather insights from participants who role-played as fraud analysts:
-            </p>
-
-            <div class="workshop-section">
-                <h4>Workshop Activities</h4>
-                <ul class="content-list">
-                    <li><strong>Eye Doctor Game:</strong> Participants compared visual designs to identify which presented risk signals more effectively</li>
-                    <li><strong>Murder Mystery Game:</strong> Teams analyzed mock customer data to uncover fraudulent accounts — testing pattern recognition abilities</li>
-                    <li><strong>Dashboard Creation:</strong> Participants designed their ideal fraud detection dashboard using materials like pens, highlighters, and pencils</li>
-                </ul>
-            </div>
-
-            <div class="workshop-section">
-                <h4>Key Insights</h4>
-                <ul class="content-list">
-                    <li>Participants preferred <strong>clearer, labeled designs</strong> for readability and trustworthiness</li>
-                    <li>The importance of <strong>showing key metrics</strong> like transaction spikes, total value, and patterns</li>
-                    <li>Need for <strong>legends, consistent scales, and contextual information regions</strong></li>
-                    <li>Participants wanted <strong>one-click detailed views</strong> and clearer definitions of whitelisted vs. rule failures</li>
-                    <li>Teams emphasized using <strong>"which rule hit what"</strong> — reducing the number of displayed columns</li>
-                    <li>Both options for <strong>trustworthiness:</strong> Clear visual hierarchy and contextual data (legends, scales) and better thresholds</li>
-                </ul>
-            </div>
-
-            <div class="workshop-section">
-                <h4>Revisions Identified</h4>
-                <ul class="content-list">
-                    <li><strong>Step 1 – Feedback:</strong> Include clearer contextual data (regions, times, and labels) when comparing charts</li>
-                    <li><strong>Step 2 – Ideation:</strong> Offer structured dashboard components to guide layout brainstorming</li>
-                    <li><strong>Step 3 – Dashboard Design:</strong> Include pre-made visual graphs and examples to minimize layout confusion and highlight interaction possibilities</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Design Solution -->
-        <section class="content-section">
-            <h2 class="section-title">Design Solution</h2>
-            <p class="section-description">
-                We transformed the dashboard into a powerful, intuitive tool that prioritizes <strong>clarity, context, and efficiency</strong>:
-            </p>
-
-            <div class="feature-showcase">
-                <div class="feature-image">
-                    <video autoplay loop muted playsinline style="background: #1a1a1a; padding: 20px; width: 100%; border-radius: 8px;">
-                        <source src="../Images/Main dashboard.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-                <div class="feature-text">
-                    <h4>Main Dashboard Overview</h4>
-                    <p>A centralized view showing fraud trends, geographic patterns, merchant activity, and rule performance. The dashboard provides real-time monitoring with interactive visualizations that make complex data accessible and actionable at a glance.</p>
-                </div>
-            </div>
-
-            <div class="feature-showcase reverse">
-                <div class="feature-image">
-                    <video autoplay loop muted playsinline style="background: #1a1a1a; padding: 20px; width: 100%; border-radius: 8px;">
-                        <source src="../Images/All rules.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-                <div class="feature-text">
-                    <h4>Rule Performance Analytics</h4>
-                    <p>Interactive visualization for all 50+ fraud rules. Compare performance metrics, identify underperforming rules, and prioritize optimization efforts with clear visual hierarchy and color-coded severity indicators.</p>
-                </div>
-            </div>
-
-            <div class="feature-showcase">
-                <div class="feature-image">
-                    <video autoplay loop muted playsinline style="background: #1a1a1a; padding: 20px; width: 100%; border-radius: 8px;">
-                        <source src="../Images/Ai spec.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-                <div class="feature-text">
-                    <h4>AI-Powered Spike Explanations</h4>
-                    <p>Contextual insights that explain anomalies and spikes in fraud activity. Machine learning algorithms provide analysts with the "why" behind the data, enabling faster, more informed decisions and reducing investigation time by 60%.</p>
-                </div>
-            </div>
-
-            <div class="design-highlight">
-                <h3>Key Features</h3>
-                <ul class="content-list">
-                    <li><strong>Main Dashboard:</strong> Centralized overview showing fraud trends, geographic patterns, merchant activity, and rule performance</li>
-                    <li><strong>Rule-Specific Pages:</strong> Dedicated views for each of the 50+ fraud rules with detailed metrics and transaction samples</li>
-                    <li><strong>Spike Explanation Engine:</strong> AI-generated insights that explain sudden changes in fraud activity</li>
-                    <li><strong>Unified Date Filtering:</strong> Global time controls with chart-specific refinement capabilities</li>
-                    <li><strong>Visual Hierarchy:</strong> Color-coded severity indicators and progressive disclosure of complex information</li>
-                    <li><strong>Export Capabilities:</strong> One-click report generation for stakeholder communication</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- The Problem -->
-        <section class="content-section">
-            <h2 class="section-title">Problems We Solved</h2>
-            
-            <div class="page-grid">
-                <div class="page-card">
-                    <h4>Poor Data Visibility</h4>
-                    <p>Critical fraud patterns were buried in endless rows and columns. Analysts had to manually scroll and compare values instead of seeing trends at a glance.</p>
-                    <p style="margin-top: 1rem;"><strong style="color: var(--accent);">Solution:</strong> Interactive charts and visual representations that highlight patterns instantly.</p>
-                </div>
-
-                <div class="page-card">
-                    <h4>Fragmented Workflow</h4>
-                    <p>Information was scattered across multiple tabs and views, forcing analysts to constantly switch contexts and mentally reconstruct the bigger picture.</p>
-                    <p style="margin-top: 1rem;"><strong style="color: var(--accent);">Solution:</strong> Centralized dashboard with all critical information in one view.</p>
-                </div>
-
-                <div class="page-card">
-                    <h4>Confusing Terminology</h4>
-                    <p>Technical jargon like "False Positives" and "False Negatives" created cognitive friction, slowing interpretation and decision-making.</p>
-                    <p style="margin-top: 1rem;"><strong style="color: var(--accent);">Solution:</strong> Plain language labels with contextual tooltips for clarity.</p>
-                </div>
-
-                <div class="page-card">
-                    <h4>Limited Rule Management</h4>
-                    <p>With 50+ fraud detection rules, analysts struggled to compare performance and identify which rules needed urgent attention.</p>
-                    <p style="margin-top: 1rem;"><strong style="color: var(--accent);">Solution:</strong> Interactive dot chart showing all rules at once with sorting and filtering.</p>
-                </div>
-
-                <div class="page-card">
-                    <h4>No Context for Anomalies</h4>
-                    <p>When fraud spikes occurred, analysts had no immediate explanation for why—leading to uncertainty and delayed responses.</p>
-                    <p style="margin-top: 1rem;"><strong style="color: var(--accent);">Solution:</strong> AI-powered explanations that provide context for every spike.</p>
-                </div>
-
-                <div class="page-card">
-                    <h4>Inefficient Filtering</h4>
-                    <p>Overly complex filter systems made it difficult to quickly narrow down data to relevant time periods or specific scenarios.</p>
-                    <p style="margin-top: 1rem;"><strong style="color: var(--accent);">Solution:</strong> Unified date controls with quick presets and custom ranges.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Before & After -->
-        <section class="content-section">
-            <h2 class="section-title">Before & After Transformation</h2>
-            
-            <div class="feature-showcase">
-                <div class="feature-image">
-                    <img src="../Images/before.png" alt="Before Design" style="background: #1a1a1a; padding: 20px;">
-                    <p style="color: var(--red); font-weight: 600; margin-top: 1rem; text-align: center;">Before — Cluttered, Low Clarity</p>
-                </div>
-                <div class="feature-image">
-                    <img src="../Images/Chart 2.png" alt="After Design" style="background: #1a1a1a; padding: 20px;">
-                    <p style="color: var(--accent); font-weight: 600; margin-top: 1rem; text-align: center;">After — Clear Hierarchy + Context</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Visual Design System -->
-        <section class="content-section">
-            <h2 class="section-title">Visual Design System</h2>
-            <p class="section-description">
-                We developed a comprehensive design system to ensure consistency and scalability:
-            </p>
-
-            <div class="page-grid">
-                <div class="page-card">
-                    <h4>Color Coding</h4>
-                    <p>Severity-based color system:</p>
-                    <ul class="content-list">
-                        <li><strong style="color: #ff3b30;">Critical:</strong> Immediate action required</li>
-                        <li><strong style="color: #ff9500;">Warning:</strong> Needs attention</li>
-                        <li><strong style="color: #14b8a6;">Success:</strong> Performing well</li>
-                        <li><strong style="color: #a0a0a0;">Neutral:</strong> Standard metrics</li>
-                    </ul>
-                </div>
-
-                <div class="page-card">
-                    <h4>Typography Hierarchy</h4>
-                    <p>Clear information architecture:</p>
-                    <ul class="content-list">
-                        <li><strong>Headlines:</strong> Key metrics and section titles</li>
-                        <li><strong>Body:</strong> Detailed explanations and data</li>
-                        <li><strong>Captions:</strong> Supporting context and timestamps</li>
-                    </ul>
-                </div>
-
-                <div class="page-card">
-                    <h4>Interactive Elements</h4>
-                    <p>Engagement through interaction:</p>
-                    <ul class="content-list">
-                        <li>Hover states revealing additional details</li>
-                        <li>Click-through for deep dives into data</li>
-                        <li>Drag-and-drop for customization</li>
-                        <li>Export buttons for reporting</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Impact & Results -->
-        <section class="content-section">
-            <h2 class="section-title">Impact & Results</h2>
-            
-            <div class="design-highlight">
-                <h3>Measured Outcomes</h3>
-                <ul class="content-list">
-                    <li>Analysts now spend <strong>60% less time</strong> interpreting data and more time on strategic fraud prevention</li>
-                    <li><strong>Pattern recognition speed increased</strong> through visual comparison across time periods</li>
-                    <li><strong>Increased confidence</strong> in decisions when context is provided for anomalies</li>
-                    <li><strong>Improved collaboration</strong> between teams with clear, exportable visualizations</li>
-                    <li><strong>Faster response times</strong> to fraud spikes with AI-powered explanations</li>
-                </ul>
-            </div>
-
-            <div class="workshop-section">
-                <h4>User Feedback</h4>
-                <p class="section-description">
-                    "The new dashboard completely transformed how we work. What used to take hours of manual comparison now takes minutes. The AI explanations give us confidence in our decisions."
-                </p>
-                <p style="color: var(--text-secondary); font-style: italic; margin-top: 0.5rem;"> — Composite feedback from fraud analyst workshop participants</p>
-            </div>
-        </section>
-
-        <!-- Reflection & Learning -->
-        <section class="content-section">
-            <h2 class="section-title">Reflection & Key Learnings</h2>
-            <p class="section-description">
-                This project deepened my understanding of <strong>enterprise dashboard design, data visualization best practices, and the importance of contextual information</strong> in high-stakes decision-making environments.
-            </p>
-
-            <div class="workshop-section">
-                <h4>What I Learned</h4>
-                <ul class="content-list">
-                    <li><strong>Context is King:</strong> Data without context leads to confusion and delayed decisions. Providing the "why" behind metrics is as important as the metrics themselves.</li>
-                    <li><strong>Progressive Disclosure:</strong> In complex systems, showing everything at once overwhelms users. Layering information through interaction creates clarity.</li>
-                    <li><strong>Visual Hierarchy Matters:</strong> Color, size, and position guide attention. Strategic use of these elements helps users process information quickly.</li>
-                    <li><strong>Test with Real Scenarios:</strong> Workshop activities that simulate actual work tasks reveal insights that interviews alone cannot.</li>
-                    <li><strong>Iterative Refinement:</strong> First designs are never perfect. Continuous testing and refinement based on user feedback is essential.</li>
-                </ul>
-            </div>
-
-            <div class="design-highlight">
-                <h3>Future Iterations</h3>
-                <p class="section-description">If I were to continue this project, I would explore:</p>
-                <ul class="content-list">
-                    <li><strong>Predictive Analytics:</strong> Machine learning models to forecast fraud trends before they occur, shifting from reactive to proactive fraud prevention</li>
-                    <li><strong>Collaborative Features:</strong> Real-time annotation and commenting for team investigations, enabling knowledge sharing across shifts and departments</li>
-                    <li><strong>Mobile Optimization:</strong> Responsive design for on-the-go fraud monitoring, allowing analysts to respond to alerts from anywhere</li>
-                    <li><strong>Customizable Dashboards:</strong> Allow analysts to create personalized views based on their specific roles and needs</li>
-                    <li><strong>Integration with External Data:</strong> Connect with industry fraud databases and threat intelligence feeds for broader context</li>
-                    <li><strong>Advanced Simulation Environment:</strong> Full sandbox capabilities for testing rule changes before deployment</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Closing Statement -->
-        <section class="content-section">
-            <div class="design-highlight" style="text-align: center;">
-                <h3>Project Takeaway</h3>
-                <p class="section-description" style="font-size: 1.2rem; max-width: 800px; margin: 0 auto;">
-                    By prioritizing <strong>clarity, context, and efficiency</strong>, we transformed a complex fraud detection system into an intuitive tool that empowers analysts to work faster, make better decisions, and protect customers with confidence.
-                </p>
-            </div>
-        </section>
-
+    <div class="hero-video">
+      <video autoplay muted loop playsinline>
+        <source src="../Images/Mastercard-IAT333.mp4" type="video/mp4">
+      </video>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <p>&copy; 2025 Inayat. All rights reserved.</p>
+    <div class="stats">
+      <div class="stat"><div class="s-n">60%</div><div class="s-l">Less analysis time</div><div class="s-sub">Post-redesign</div></div>
+      <div class="stat"><div class="s-n">50+</div><div class="s-l">Rules trackable</div><div class="s-sub">All in one view</div></div>
+      <div class="stat"><div class="s-n">3</div><div class="s-l">Key personas</div><div class="s-sub">Identified via research</div></div>
+      <div class="stat"><div class="s-n">6</div><div class="s-l">Analyst interviews</div><div class="s-sub">Weekly sessions</div></div>
+    </div>
+
+    <div class="meta">
+      <div><div class="m-k">Timeline</div><div class="m-v">4 months</div></div>
+      <div><div class="m-k">My Role</div><div class="m-v">Lead Researcher<br>Comms Co-Lead</div></div>
+      <div><div class="m-k">Team</div><div class="m-v">5 members</div></div>
+      <div><div class="m-k">Tools</div><div class="m-v">Figma, User Research<br>Data Visualisation</div></div>
+    </div>
+  </header>
+
+  <!-- 00 OVERVIEW -->
+  <section id="overview" class="sec rev">
+    <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
+    <h2 class="sec-h">The Problem</h2>
+    <p class="sec-lead">Mastercard's fraud dashboard relied on dense data tables and fragmented views — making it difficult to spot trends, assess performance, and prioritise investigations.</p>
+    <div class="rule"></div>
+
+    <div class="g2" style="margin-bottom:2rem">
+      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Dense tables</div><div class="nc-t">No visual patterns</div><div class="nc-d">Critical fraud signals buried in rows and columns — analysts had to manually scroll and mentally reconstruct trends</div></div>
+      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Fragmented</div><div class="nc-t">Scattered across tabs</div><div class="nc-d">Information split across multiple views, forcing constant context-switching and loss of the bigger picture</div></div>
+      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">No context</div><div class="nc-t">Spikes unexplained</div><div class="nc-d">When fraud spikes occurred, analysts had no immediate reason why — leading to uncertainty and delayed responses</div></div>
+      <div class="nc"><div class="nc-n">50+</div><div class="nc-t">Rules, no overview</div><div class="nc-d">With 50+ detection rules running simultaneously, there was no way to compare performance or see which needed attention</div></div>
+    </div>
+
+    <div class="sub">Design Goals</div>
+    <div class="flist">
+      <div class="fr"><div class="fr-i">🎯</div><div><div class="fr-t">Improve data accuracy</div><div class="fr-d">Detect and reduce false positives that overwhelm analysts and erode trust in the system.</div></div></div>
+      <div class="fr"><div class="fr-i">🔄</div><div><div class="fr-t">Flexible data interpretation</div><div class="fr-d">Alerts must be comparable, well-documented, and audit-ready across teams.</div></div></div>
+      <div class="fr"><div class="fr-i">🛡</div><div><div class="fr-t">Protect customers and merchants</div><div class="fr-d">Showing direct fraud impact helps analysts connect data to real-world consequences.</div></div></div>
+      <div class="fr"><div class="fr-i">👥</div><div><div class="fr-t">Improve team collaboration</div><div class="fr-d">Shared knowledge and visibility across teams reduces risk and improves detection rates.</div></div></div>
+    </div>
+
+    <div class="sub">Tools &amp; Methods</div>
+    <div class="tools">
+      <span class="tool">Figma</span>
+      <span class="tool">User Interviews</span>
+      <span class="tool">Journey Mapping</span>
+      <span class="tool">Thematic Analysis</span>
+      <span class="tool">Data Visualisation</span>
+      <span class="tool">Workshop Facilitation</span>
+      <span class="tool">Stakeholder Comms</span>
+    </div>
+  </section>
+
+  <!-- 01 MY ROLE -->
+  <section id="contrib" class="sec rev">
+    <div class="phase"><div class="p-dot">1</div><span class="p-txt">My Role</span></div>
+    <h2 class="sec-h">My Contributions</h2>
+    <p class="sec-lead">As Lead Researcher and Communication Co-Lead, I owned the end of the process that turns ambiguous user needs into clear design decisions.</p>
+    <div class="rule"></div>
+
+    <div class="g3">
+      <div class="ic">
+        <div class="ic-ico">🔍</div>
+        <div class="ic-t">Lead Researcher</div>
+        <div class="ic-d">Conducted weekly stakeholder interviews with Mastercard's fraud analyst team. Created journey maps for Jordan and Chen. Led user workshops to validate design concepts.</div>
+      </div>
+      <div class="ic">
+        <div class="ic-ico">💬</div>
+        <div class="ic-t">Communication Co-Lead</div>
+        <div class="ic-d">Facilitated weekly syncs with Mastercard's Product Design team. Presented research findings and design iterations. Documented decisions and coordinated cross-functional collaboration.</div>
+      </div>
+      <div class="ic">
+        <div class="ic-ico">🎨</div>
+        <div class="ic-t">Design Contributions</div>
+        <div class="ic-d">Co-designed the Visual Insider dashboard concept. Created wireframes and prototypes for testing. Developed the data visualisation strategy for fraud metrics.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 PERSONAS -->
+  <section id="personas" class="sec rev">
+    <div class="phase"><div class="p-dot">2</div><span class="p-txt">User Personas</span></div>
+    <h2 class="sec-h">Three Users,<br>Three Different Needs</h2>
+    <p class="sec-lead">Through research, we identified three key personas representing the different types of users interacting with the fraud dashboard.</p>
+    <div class="rule"></div>
+
+    <div class="g3">
+      <div class="pcard">
+        <div class="pcard-av">J</div>
+        <div class="pcard-name">Jordan Mercer</div>
+        <div class="pcard-role">Fraud Rule Creator</div>
+        <div class="pcard-quote">"Every rule I write could protect thousands or block the wrong user."</div>
+        <div class="pcard-sub">Goals</div>
+        <div class="pcard-list">
+          <div class="pcard-item">Prevent new types of fraud</div>
+          <div class="pcard-item">Limit friction for legitimate customers</div>
+          <div class="pcard-item">Test rules in a safe environment</div>
         </div>
-    </footer>
+        <div class="pcard-sub">Frustrations</div>
+        <div class="pcard-list">
+          <div class="pcard-item">Hard to predict rule behaviour in real scenarios</div>
+          <div class="pcard-item">Complex audit processes and limited visibility</div>
+        </div>
+      </div>
 
-    <script>
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
+      <div class="pcard">
+        <div class="pcard-av">B</div>
+        <div class="pcard-name">Blair Nelson</div>
+        <div class="pcard-role">Senior Fraud Analyst</div>
+        <div class="pcard-quote">"Every rule must be designed given small oversights can cost millions."</div>
+        <div class="pcard-sub">Goals</div>
+        <div class="pcard-list">
+          <div class="pcard-item">Maintain fraud defenses to minimise losses</div>
+          <div class="pcard-item">Ensure detection complies with legal standards</div>
+          <div class="pcard-item">Advise junior analysts, promote collaboration</div>
+        </div>
+        <div class="pcard-sub">Frustrations</div>
+        <div class="pcard-list">
+          <div class="pcard-item">Legacy systems causing workflow delays</div>
+          <div class="pcard-item">Fragmented dashboards limiting team collaboration</div>
+        </div>
+      </div>
 
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
+      <div class="pcard">
+        <div class="pcard-av">C</div>
+        <div class="pcard-name">Chen Li</div>
+        <div class="pcard-role">Senior Executive</div>
+        <div class="pcard-quote">"Fraud down 10% isn't enough — every investment must be justified."</div>
+        <div class="pcard-sub">Goals</div>
+        <div class="pcard-list">
+          <div class="pcard-item">Lower fraud losses without harming customer experience</div>
+          <div class="pcard-item">Keep fraud strategies ahead of industry trends</div>
+        </div>
+        <div class="pcard-sub">Frustrations</div>
+        <div class="pcard-list">
+          <div class="pcard-item">Rule data disconnected from business-level impact</div>
+          <div class="pcard-item">High-value dashboards causing panic in teams</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-            });
-        });
-    </script>
+  <!-- 03 DESIGN DIRECTIONS -->
+  <section id="directions" class="sec rev">
+    <div class="phase"><div class="p-dot">3</div><span class="p-txt">Potential Directions</span></div>
+    <h2 class="sec-h">Three Directions<br>We Explored</h2>
+    <p class="sec-lead">We evaluated three distinct design directions before converging on the one that served all three personas most effectively.</p>
+    <div class="rule"></div>
+
+    <div class="g3">
+      <div class="dcard">
+        <div class="dcard-label">Direction A</div>
+        <div class="dcard-t">Safe Sandbox &amp; Simulation</div>
+        <div class="dcard-d">Enable safe, real-time rule testing in a secure sandbox. Addresses Jordan's need for side-by-side comparison of old vs new rule performance and bulk scoring simulations before go-live.</div>
+      </div>
+      <div class="dcard chosen">
+        <div class="dcard-label">✓ Chosen Direction</div>
+        <div class="dcard-t">Fraud Impact Dashboard</div>
+        <div class="dcard-d">Connect fraud rule performance to business outcomes and ROI. Translates metrics into money saved, shows timeline vs industry benchmarks, and provides storytelling visuals around rule deployment.</div>
+      </div>
+      <div class="dcard">
+        <div class="dcard-label">Direction C</div>
+        <div class="dcard-t">Compliance &amp; Audit Assistant</div>
+        <div class="dcard-d">Automate audit readiness and documentation. Addresses Blair's pain around audit prep — auto-generated reports, real-time compliance scoring, and evidence library linking transactions to triggered rules.</div>
+      </div>
+    </div>
+
+    <div class="quote">
+      <p>"We chose the Fraud Impact Dashboard because it directly addressed all three personas while providing the most immediate value to the organisation."</p>
+    </div>
+  </section>
+
+  <!-- 04 JOURNEY MAP -->
+  <section id="journey" class="sec rev">
+    <div class="phase"><div class="p-dot">4</div><span class="p-txt">Journey Mapping</span></div>
+    <h2 class="sec-h">Jordan's Workflow</h2>
+    <p class="sec-lead">We mapped Jordan's entire fraud rule creation process to identify exactly where friction occurred and where design could intervene.</p>
+    <div class="rule"></div>
+
+    <div class="slist" style="margin-bottom:2rem">
+      <div class="st"><div class="st-n">01</div><div><div class="st-t">Observe &amp; Analyse</div><div class="st-d">Understand emerging fraud patterns and identify weaknesses in current rule sets.</div></div></div>
+      <div class="st"><div class="st-n">02</div><div><div class="st-t">Ideate &amp; Preventative</div><div class="st-d">Design rules that pre-emptively stop emerging fraud patterns before they scale.</div></div></div>
+      <div class="st"><div class="st-n">03</div><div><div class="st-t">Detect &amp; Simulate</div><div class="st-d">Validate that the new rule detects fraud accurately and efficiently without false positives.</div></div></div>
+      <div class="st"><div class="st-n">04</div><div><div class="st-t">Deploy &amp; Mitigate</div><div class="st-d">Release the new rule into production to minimise active risk across transactions.</div></div></div>
+      <div class="st"><div class="st-n">05</div><div><div class="st-t">Evaluate &amp; Learn</div><div class="st-d">Measure post-deployment performance and feed insights back into the lifecycle.</div></div></div>
+    </div>
+
+    <div class="imgs c1">
+      <div class="iw">
+        <img src="https://inayatgulati.github.io/Inayat_Portfolio/Images/UJ2.png" alt="Fraud Rule Creator Journey Map">
+        <div class="icap">Jordan's user journey map — fraud rule creation lifecycle from pattern detection to post-deployment evaluation</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 WORKSHOP -->
+  <section id="workshop" class="sec rev">
+    <div class="phase"><div class="p-dot">5</div><span class="p-txt">Design Workshop</span></div>
+    <h2 class="sec-h">Testing With<br>Real Scenarios</h2>
+    <p class="sec-lead">We ran peer test workshops where participants role-played as fraud analysts — using game mechanics to surface real usability insights.</p>
+    <div class="rule"></div>
+
+    <div class="sub">Workshop Activities</div>
+    <div class="flist" style="margin-bottom:2rem">
+      <div class="fr"><div class="fr-i">👁</div><div><div class="fr-t">Eye Doctor Game</div><div class="fr-d">Participants compared visual designs to identify which presented risk signals more effectively — surfacing clarity and hierarchy issues.</div></div></div>
+      <div class="fr"><div class="fr-i">🔎</div><div><div class="fr-t">Murder Mystery Game</div><div class="fr-d">Teams analysed mock customer data to uncover fraudulent accounts — directly testing pattern recognition abilities in realistic conditions.</div></div></div>
+      <div class="fr"><div class="fr-i">✏️</div><div><div class="fr-t">Dashboard Creation</div><div class="fr-d">Participants designed their ideal fraud detection dashboard with pen and paper — revealing mental models and priority hierarchies.</div></div></div>
+    </div>
+
+    <div class="sub">Key Insights from Testing</div>
+    <div class="flist" style="margin-bottom:2rem">
+      <div class="fr"><div class="fr-i">✦</div><div><div class="fr-t">Clarity over density</div><div class="fr-d">Participants strongly preferred clearer, labelled designs — readability directly increased perceived trustworthiness of the data.</div></div></div>
+      <div class="fr"><div class="fr-i">📊</div><div><div class="fr-t">Key metrics must be prominent</div><div class="fr-d">Transaction spikes, total value, and pattern indicators need to be immediately visible — not buried below the fold.</div></div></div>
+      <div class="fr"><div class="fr-i">🗺</div><div><div class="fr-t">Context is non-negotiable</div><div class="fr-d">Legends, consistent scales, and regional context were specifically requested — data without context caused confusion and distrust.</div></div></div>
+      <div class="fr"><div class="fr-i">🖱</div><div><div class="fr-t">One-click drill-downs</div><div class="fr-d">Participants wanted to go deeper without leaving the main view — progressive disclosure, not navigation away.</div></div></div>
+    </div>
+
+    <div class="sub">Revisions Identified</div>
+    <div class="ilist">
+      <div class="it">
+        <div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Charts without regional or time context</div></div>
+        <div class="it-arr">→</div>
+        <div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Contextual data (regions, times, labels) added to all comparison charts</div></div>
+      </div>
+      <div class="it">
+        <div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Free-form dashboard layout causing confusion</div></div>
+        <div class="it-arr">→</div>
+        <div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Structured dashboard components with guided layout and pre-made visual examples</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 SOLUTION -->
+  <section id="solution" class="sec rev">
+    <div class="phase"><div class="p-dot">6</div><span class="p-txt">Design Solution</span></div>
+    <h2 class="sec-h">The Redesigned<br>Dashboard</h2>
+    <p class="sec-lead">Three interconnected views — each solving a specific part of the analysts' workflow.</p>
+    <div class="rule"></div>
+
+    <div class="vid-block">
+      <video autoplay muted loop playsinline>
+        <source src="../Images/Main dashboard.mp4" type="video/mp4">
+      </video>
+      <div class="vid-cap">
+        Main Dashboard Overview
+        <span>Centralised view showing fraud trends, geographic patterns, merchant activity, and rule performance in real-time</span>
+      </div>
+    </div>
+
+    <div class="vid-block">
+      <video autoplay muted loop playsinline>
+        <source src="../Images/All rules.mp4" type="video/mp4">
+      </video>
+      <div class="vid-cap">
+        Rule Performance Analytics
+        <span>Interactive visualisation for all 50+ fraud rules — compare metrics, identify underperforming rules, and prioritise with colour-coded severity</span>
+      </div>
+    </div>
+
+    <div class="vid-block">
+      <video autoplay muted loop playsinline>
+        <source src="../Images/Ai spec.mp4" type="video/mp4">
+      </video>
+      <div class="vid-cap">
+        AI-Powered Spike Explanations
+        <span>Contextual insights that explain anomalies in fraud activity — reducing investigation setup time by 60%</span>
+      </div>
+    </div>
+
+    <div class="sub">Key Features</div>
+    <div class="flist">
+      <div class="fr"><div class="fr-i">📈</div><div><div class="fr-t">Main Dashboard</div><div class="fr-d">Centralised overview with fraud trends, geographic patterns, merchant activity, and rule performance all in one view.</div></div></div>
+      <div class="fr"><div class="fr-i">📋</div><div><div class="fr-t">Rule-Specific Pages</div><div class="fr-d">Dedicated views for each of the 50+ fraud rules with detailed metrics and transaction samples.</div></div></div>
+      <div class="fr"><div class="fr-i">🤖</div><div><div class="fr-t">Spike Explanation Engine</div><div class="fr-d">AI-generated insights that explain sudden changes in fraud activity — the "why" behind every anomaly.</div></div></div>
+      <div class="fr"><div class="fr-i">📅</div><div><div class="fr-t">Unified Date Filtering</div><div class="fr-d">Global time controls with chart-specific refinement — one system for the entire dashboard.</div></div></div>
+      <div class="fr"><div class="fr-i">🚦</div><div><div class="fr-t">Visual Hierarchy</div><div class="fr-d">Colour-coded severity indicators and progressive disclosure of complex information.</div></div></div>
+      <div class="fr"><div class="fr-i">📤</div><div><div class="fr-t">Export Capabilities</div><div class="fr-d">One-click report generation for stakeholder communication and audit documentation.</div></div></div>
+    </div>
+  </section>
+
+  <!-- 07 PROBLEMS SOLVED -->
+  <section id="problems" class="sec rev">
+    <div class="phase"><div class="p-dot">7</div><span class="p-txt">Problems Solved</span></div>
+    <h2 class="sec-h">Six Problems,<br>Six Solutions</h2>
+    <p class="sec-lead">Every design decision mapped directly back to a specific, research-validated pain point.</p>
+    <div class="rule"></div>
+
+    <div class="ilist">
+      <div class="it">
+        <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Critical patterns buried in endless rows and columns</div></div>
+        <div class="it-arr">→</div>
+        <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Interactive charts and visual representations that highlight patterns instantly</div></div>
+      </div>
+      <div class="it">
+        <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Information scattered across multiple tabs and views</div></div>
+        <div class="it-arr">→</div>
+        <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Centralised dashboard with all critical information in one view</div></div>
+      </div>
+      <div class="it">
+        <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Technical jargon creating cognitive friction and slowing decisions</div></div>
+        <div class="it-arr">→</div>
+        <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Plain language labels with contextual tooltips for clarity</div></div>
+      </div>
+      <div class="it">
+        <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">50+ rules with no way to compare or prioritise</div></div>
+        <div class="it-arr">→</div>
+        <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Interactive dot chart showing all rules at once with sorting and filtering</div></div>
+      </div>
+      <div class="it">
+        <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Fraud spikes with no immediate explanation</div></div>
+        <div class="it-arr">→</div>
+        <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">AI-powered explanations providing context for every spike automatically</div></div>
+      </div>
+      <div class="it">
+        <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Overly complex filter systems slowing investigation setup</div></div>
+        <div class="it-arr">→</div>
+        <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Unified date controls with quick presets and custom ranges</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 BEFORE & AFTER -->
+  <section id="beforeafter" class="sec rev">
+    <div class="phase"><div class="p-dot">8</div><span class="p-txt">Before &amp; After</span></div>
+    <h2 class="sec-h">The Transformation</h2>
+    <p class="sec-lead">From a cluttered table view to a clear, hierarchical dashboard that surfaces the right information at the right time.</p>
+    <div class="rule"></div>
+
+    <div class="ba-grid">
+      <div class="ba-wrap before">
+        <img src="https://inayatgulati.github.io/Inayat_Portfolio/Images/before.png" alt="Before design">
+        <div class="ba-label">Before — cluttered, low clarity</div>
+      </div>
+      <div class="ba-wrap after">
+        <img src="https://inayatgulati.github.io/Inayat_Portfolio/Images/Chart 2.png" alt="After design">
+        <div class="ba-label">After — clear hierarchy + context</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 IMPACT -->
+  <section id="impact" class="sec rev">
+    <div class="phase"><div class="p-dot">9</div><span class="p-txt">Impact &amp; Results</span></div>
+    <h2 class="sec-h">Measured Outcomes</h2>
+    <p class="sec-lead">Validated through testing with the same fraud analyst team who informed the research.</p>
+    <div class="rule"></div>
+
+    <div class="g2" style="margin-bottom:2rem">
+      <div class="nc"><div class="nc-n">60%</div><div class="nc-t">Less time interpreting data</div><div class="nc-d">Analysts spend more time on strategic fraud prevention, less on manual comparison</div></div>
+      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Faster</div><div class="nc-t">Pattern recognition speed</div><div class="nc-d">Visual comparison across time periods replaced manual side-by-side analysis</div></div>
+      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Higher</div><div class="nc-t">Decision confidence</div><div class="nc-d">Context provided for anomalies increased analysts' confidence in their investigation conclusions</div></div>
+      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Improved</div><div class="nc-t">Team collaboration</div><div class="nc-d">Clear, exportable visualisations improved cross-team communication and shared knowledge</div></div>
+    </div>
+
+    <div class="quote">
+      <p>"The new dashboard completely transformed how we work. What used to take hours of manual comparison now takes minutes. The AI explanations give us confidence in our decisions."</p>
+      <div class="quote-attr">— Senior Fraud Analyst, Mastercard</div>
+    </div>
+  </section>
+
+  <!-- 10 REFLECTION -->
+  <section id="reflection" class="sec rev">
+    <div class="phase"><div class="p-dot">10</div><span class="p-txt">Reflection</span></div>
+    <h2 class="sec-h">What I Learned</h2>
+    <p class="sec-lead">Enterprise dashboard design in a high-stakes environment taught me things no other project type could.</p>
+    <div class="rule"></div>
+    <div class="g2">
+      <div class="rc"><div class="rc-t">Context is king</div><div class="rc-d">Data without context leads to confusion and delayed decisions. Providing the "why" behind metrics is as important as the metrics themselves — especially in fraud detection where wrong calls have real consequences.</div></div>
+      <div class="rc"><div class="rc-t">Progressive disclosure</div><div class="rc-d">In complex systems, showing everything at once overwhelms users. Layering information through interaction creates clarity — the overview should earn the drill-down, not replace it.</div></div>
+      <div class="rc"><div class="rc-t">Test with real scenarios</div><div class="rc-d">Workshop activities that simulate actual work tasks reveal insights that interviews alone cannot. The Murder Mystery game surfaced pattern recognition issues we'd never have found in a standard usability test.</div></div>
+      <div class="rc"><div class="rc-t">Visual hierarchy is a design decision</div><div class="rc-d">Colour, size, and position guide attention. In a dashboard where every metric competes for focus, strategic visual hierarchy is the difference between a tool and a liability.</div></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>© 2025 Inayat. All rights reserved.</footer>
+
+<script>
+  const ro = new IntersectionObserver(
+    es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }),
+    { threshold: 0.06 }
+  );
+  document.querySelectorAll('.rev').forEach(el => ro.observe(el));
+
+  const links = document.querySelectorAll('.side-a');
+  const secs  = document.querySelectorAll('.sec');
+  const so = new IntersectionObserver(es => {
+    es.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -65% 0px' });
+  secs.forEach(s => so.observe(s));
+</script>
+
 </body>
 </html>
