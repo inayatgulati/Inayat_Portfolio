@@ -7,21 +7,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-
   <style>
     :root {
-      --bg:      #0a0a0a;
-      --surface: rgba(255,255,255,0.03);
-      --border:  rgba(255,255,255,0.08);
-      --text:    #f0f0f0;
-      --muted:   #888;
-      --dim:     #444;
-      --teal:    #14b8a6;
-      --teal-l:  #2dd4bf;
-      --teal-d:  #0d9488;
-      --r-sm:    8px;
-      --r-md:    12px;
-      --r-lg:    16px;
+      --bg:     #0a0a0a;
+      --sur:    rgba(255,255,255,0.03);
+      --bdr:    rgba(255,255,255,0.08);
+      --text:   #f0f0f0;
+      --muted:  #888;
+      --dim:    #444;
+      --teal:   #14b8a6;
+      --teal-l: #2dd4bf;
+      --teal-d: #0d9488;
+      --nav-h:  64px;
+      --side-w: 200px;
+      --gap:    24px;
     }
 
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,15 +32,16 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* NAV */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      height: 64px; display: flex; align-items: center; padding: 0 2rem;
-      background: rgba(10,10,10,0.92); backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
+    /* ── TOP NAV ── */
+    .topnav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h); z-index: 200;
+      display: flex; align-items: center; padding: 0 2rem;
+      background: rgba(10,10,10,0.93); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--bdr);
     }
-    .nav-in {
-      width: 100%; max-width: 1100px; margin: 0 auto;
+    .topnav-in {
+      width: 100%; max-width: 1200px; margin: 0 auto;
       display: flex; justify-content: space-between; align-items: center;
     }
     .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; letter-spacing: 1px; color: var(--text); text-decoration: none; }
@@ -49,45 +49,53 @@
     .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; transition: color .2s; }
     .nav-links a:hover { color: var(--teal); }
 
-    /* LAYOUT */
-    .page {
-      display: grid; grid-template-columns: 196px 1fr;
-      max-width: 1100px; margin: 0 auto; padding-top: 64px;
-    }
-
-    /* SIDENAV */
+    /* ── FIXED SIDENAV ── */
     .sidenav {
-      position: sticky; top: 64px;
-      height: calc(100vh - 64px);
-      padding: 3rem 1.5rem 2rem 2rem;
-      border-right: 1px solid var(--border);
+      position: fixed;
+      top: var(--nav-h);
+      left: 0;
+      width: var(--side-w);
+      height: calc(100vh - var(--nav-h));
+      padding: 2.5rem 1rem 2rem 2rem;
+      border-right: 1px solid var(--bdr);
+      background: var(--bg);
       display: flex; flex-direction: column; gap: 2rem;
-      overflow-y: auto;
+      overflow-y: auto; overflow-x: hidden;
+      z-index: 100;
     }
     .back-link {
       display: inline-flex; align-items: center; gap: 6px;
       color: var(--teal); text-decoration: none;
       font-size: 0.78rem; font-weight: 500; transition: gap .2s;
+      white-space: nowrap;
     }
     .back-link:hover { gap: 10px; }
-    .side-label { font-size: 0.62rem; letter-spacing: 3px; text-transform: uppercase; color: var(--dim); font-weight: 600; margin-bottom: 0.75rem; }
-    .side-list { display: flex; flex-direction: column; gap: 1px; }
+    .side-lbl {
+      font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--dim); font-weight: 600; margin-bottom: 0.75rem;
+    }
+    .side-list { display: flex; flex-direction: column; gap: 0; }
     .side-a {
       display: flex; align-items: center; gap: 8px;
-      padding: 7px 0 7px 12px;
-      color: var(--dim); text-decoration: none; font-size: 0.78rem;
-      border-left: 2px solid transparent; transition: color .2s, border-color .2s;
+      padding: 7px 0 7px 10px;
+      color: var(--dim); text-decoration: none; font-size: 0.77rem;
+      border-left: 2px solid transparent;
+      transition: color .2s, border-color .2s;
+      white-space: nowrap;
     }
     .side-a:hover { color: var(--text); border-left-color: var(--dim); }
     .side-a.active { color: var(--teal-l); border-left-color: var(--teal); font-weight: 500; }
-    .side-n { font-size: 0.62rem; color: var(--dim); min-width: 18px; }
-    .side-a.active .side-n { color: var(--teal); }
+    .side-num { font-size: 0.6rem; color: var(--dim); min-width: 16px; }
+    .side-a.active .side-num { color: var(--teal); }
 
-    /* MAIN */
-    .main { padding: 3rem 3.5rem 6rem; min-width: 0; }
+    /* ── MAIN CONTENT ── */
+    .main {
+      margin-left: var(--side-w);
+      padding: calc(var(--nav-h) + 3rem) 3.5rem 6rem 3rem;
+      max-width: calc(900px + var(--side-w));
+    }
 
-    /* HERO */
-    .hero { margin-bottom: 5rem; }
+    /* ── HERO ── */
     .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
     .tag {
       font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase;
@@ -97,145 +105,113 @@
     }
     .hero-h {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.6rem,4.5vw,4rem); font-weight: 300; line-height: 1.08;
-      margin-bottom: 1rem;
+      font-size: clamp(2.6rem, 4vw, 3.8rem);
+      font-weight: 300; line-height: 1.08; margin-bottom: 1rem;
     }
     .hero-h em { font-style: italic; color: var(--teal-l); }
-    .hero-p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; max-width: 520px; margin-bottom: 2rem; }
+    .hero-p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; max-width: 520px; margin-bottom: 1.75rem; }
 
-    /* STATS */
+    /* ── HERO VIDEO ── */
+    .hero-video {
+      width: 100%; border-radius: 14px; overflow: hidden;
+      border: 1px solid var(--bdr); margin-bottom: 2rem;
+      background: #111;
+    }
+    .hero-video video { width: 100%; display: block; max-height: 480px; object-fit: cover; }
+
+    /* ── STATS ── */
     .stats {
       display: grid; grid-template-columns: repeat(4,1fr);
-      border: 1px solid var(--border); border-radius: var(--r-lg);
+      border: 1px solid var(--bdr); border-radius: 14px;
       overflow: hidden; margin-bottom: 1.75rem;
     }
-    .stat { padding: 1.2rem 1.25rem; background: var(--surface); border-right: 1px solid var(--border); }
+    .stat { padding: 1.2rem 1.1rem; background: var(--sur); border-right: 1px solid var(--bdr); }
     .stat:last-child { border-right: none; }
     .s-n { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 700; color: var(--teal-l); line-height: 1; margin-bottom: 5px; }
     .s-l { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
     .s-sub { font-size: 0.65rem; color: var(--dim); margin-top: 2px; }
 
-    /* META */
-    .meta {
-      display: flex; gap: 2rem; flex-wrap: wrap;
-      padding-top: 1.25rem; border-top: 1px solid var(--border);
-    }
+    /* ── META ── */
+    .meta { display: flex; gap: 2rem; flex-wrap: wrap; padding-top: 1.25rem; border-top: 1px solid var(--bdr); margin-bottom: 5rem; }
     .m-k { font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 4px; }
     .m-v { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
 
-    /* SECTION */
+    /* ── SECTION ── */
     .sec { margin-bottom: 5rem; }
-    .phase {
-      display: inline-flex; align-items: center; gap: 8px;
-      margin-bottom: 0.75rem;
-    }
+    .phase { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
     .p-dot {
       width: 20px; height: 20px; border-radius: 50%;
       background: rgba(20,184,166,.1); border: 1px solid rgba(20,184,166,.3);
       display: flex; align-items: center; justify-content: center;
       font-size: 0.58rem; color: var(--teal); font-weight: 700;
     }
-    .p-text { font-size: 0.65rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal); font-weight: 600; }
+    .p-txt { font-size: 0.65rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal); font-weight: 600; }
     .sec-h { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 300; line-height: 1.15; margin-bottom: 0.5rem; }
     .sec-lead { font-size: 0.875rem; color: var(--muted); line-height: 1.8; max-width: 560px; margin-bottom: 1.5rem; }
-    .rule { height: 1px; background: var(--border); margin-bottom: 1.5rem; }
+    .rule { height: 1px; background: var(--bdr); margin-bottom: 1.5rem; }
     .sub { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 0.875rem; }
 
-    /* GRID HELPERS */
+    /* ── GRIDS ── */
     .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.5rem; }
     .g2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 1.5rem; }
 
-    /* CARD — number + text */
-    .nc {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r-md); padding: 1.25rem;
-    }
+    /* ── NUMBER CARD ── */
+    .nc { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
     .nc-n { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--teal-l); line-height: 1; margin-bottom: 6px; }
     .nc-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; }
     .nc-d { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
 
-    /* CARD — icon title desc */
-    .ic {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r-md); padding: 1.25rem;
-    }
-    .ic-icon { font-size: 1rem; margin-bottom: 0.625rem; }
+    /* ── ICON CARD ── */
+    .ic { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
+    .ic-ico { font-size: 1rem; margin-bottom: 0.6rem; }
     .ic-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; }
     .ic-d { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
 
-    /* FINDING ROWS */
+    /* ── FINDING ROW ── */
     .flist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
     .fr {
       display: flex; gap: 0.875rem; align-items: flex-start;
-      padding: 0.875rem 1.125rem;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r-sm); transition: border-color .2s;
+      padding: 0.875rem 1.1rem;
+      background: var(--sur); border: 1px solid var(--bdr);
+      border-radius: 8px; transition: border-color .2s;
     }
     .fr:hover { border-color: rgba(20,184,166,.2); }
-    .fr-i {
-      width: 30px; height: 30px; min-width: 30px; border-radius: 6px;
-      background: rgba(20,184,166,.07); border: 1px solid rgba(20,184,166,.15);
-      display: flex; align-items: center; justify-content: center; font-size: 0.82rem;
-    }
+    .fr-i { width: 30px; height: 30px; min-width: 30px; border-radius: 6px; background: rgba(20,184,166,.07); border: 1px solid rgba(20,184,166,.15); display: flex; align-items: center; justify-content: center; font-size: 0.82rem; }
     .fr-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
     .fr-d { font-size: 0.77rem; color: var(--muted); line-height: 1.55; }
 
-    /* STEPS */
+    /* ── STEP LIST ── */
     .slist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
-    .st {
-      display: flex; gap: 0.875rem;
-      padding: 0.875rem 1.125rem;
-      background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-sm);
-    }
+    .st { display: flex; gap: 0.875rem; padding: 0.875rem 1.1rem; background: var(--sur); border: 1px solid var(--bdr); border-radius: 8px; }
     .st-n { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 700; color: var(--teal); min-width: 20px; line-height: 1.5; }
     .st-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
     .st-d { font-size: 0.77rem; color: var(--muted); line-height: 1.5; }
 
-    /* PERSONA */
-    .pc {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r-md); padding: 1.25rem;
-      border-bottom: 2px solid var(--teal-d);
-    }
-    .pc-av {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: linear-gradient(135deg,var(--teal-d),var(--teal));
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 700; color: white;
-      margin-bottom: 0.75rem;
-    }
+    /* ── PERSONA ── */
+    .pc { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; border-bottom: 2px solid var(--teal-d); }
+    .pc-av { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg,var(--teal-d),var(--teal)); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 0.75rem; }
     .pc-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; }
     .pc-d { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
 
-    /* COMP CARD */
-    .cc {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r-md); padding: 1.25rem;
-    }
-    .cc-n { font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; }
-    .pill { display: inline-block; font-size: 0.62rem; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin-bottom: 6px; }
+    /* ── COMP CARD ── */
+    .cc { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
+    .cc-n { font-size: 0.88rem; font-weight: 600; margin-bottom: 8px; }
+    .pill { display: inline-block; font-size: 0.62rem; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin-bottom: 5px; }
     .pg { background: rgba(20,184,166,.1); color: var(--teal); }
     .pr { background: rgba(248,113,113,.1); color: #f87171; }
     .cc-d { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
 
-    /* RESULT */
-    .res {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r-md); padding: 1.25rem;
-      display: flex; align-items: flex-start; gap: 0.875rem;
-    }
-    .res-n { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 700; color: var(--teal-l); line-height: 1; min-width: 52px; }
-    .res-l { font-size: 0.78rem; color: var(--muted); line-height: 1.5; margin-top: 1px; }
+    /* ── RESULT ── */
+    .res { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; display: flex; align-items: flex-start; gap: 0.875rem; }
+    .res-n { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 700; color: var(--teal-l); line-height: 1; min-width: 50px; }
+    .res-l { font-size: 0.78rem; color: var(--muted); line-height: 1.5; margin-top: 2px; }
     .res-ctx { font-size: 0.67rem; color: var(--dim); margin-top: 3px; }
 
-    /* ITERATION */
-    .itlist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+    /* ── ITERATION ── */
+    .ilist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
     .it { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: center; gap: 8px; }
-    .it-b {
-      padding: 0.875rem 1rem; border-radius: var(--r-sm);
-      border: 1px solid var(--border);
-    }
-    .it-b.bef { background: var(--surface); }
+    .it-b { padding: 0.875rem 1rem; border-radius: 8px; border: 1px solid var(--bdr); }
+    .it-b.bef { background: var(--sur); }
     .it-b.aft { background: rgba(20,184,166,.04); border-color: rgba(20,184,166,.15); }
     .it-lbl { font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; margin-bottom: 3px; }
     .it-b.bef .it-lbl { color: var(--dim); }
@@ -244,48 +220,45 @@
     .it-b.aft .it-txt { color: var(--text); }
     .it-arr { text-align: center; color: var(--teal); font-size: 0.85rem; }
 
-    /* REFLECTION */
-    .rc {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r-md); padding: 1.25rem;
-    }
+    /* ── REFLECTION ── */
+    .rc { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
     .rc-t { font-size: 0.82rem; font-weight: 600; color: var(--teal-l); margin-bottom: 6px; }
     .rc-d { font-size: 0.78rem; color: var(--muted); line-height: 1.7; }
 
-    /* QUOTE */
-    .quote {
-      border-left: 2px solid var(--teal);
-      padding: 0.875rem 1.25rem;
-      margin: 1.25rem 0;
-      background: rgba(20,184,166,.04);
-      border-radius: 0 var(--r-sm) var(--r-sm) 0;
-    }
+    /* ── QUOTE ── */
+    .quote { border-left: 2px solid var(--teal); padding: 0.875rem 1.25rem; margin: 1.25rem 0; background: rgba(20,184,166,.04); border-radius: 0 8px 8px 0; }
     .quote p { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; line-height: 1.6; color: var(--text); }
 
-    /* IMAGES */
+    /* ── IMAGES ── */
     .imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
+    .imgs.c1 { grid-template-columns: 1fr; }
     .imgs.c2 { grid-template-columns: 1fr 1fr; }
     .imgs.c3 { grid-template-columns: repeat(3,1fr); }
-    .imgs.c1 { grid-template-columns: 1fr; }
-    .iw { border-radius: var(--r-md); overflow: hidden; border: 1px solid var(--border); background: #111; }
+    .iw { border-radius: 12px; overflow: hidden; border: 1px solid var(--bdr); background: #111; }
     .iw img { width: 100%; display: block; }
-    .icap { padding: 7px 10px; font-size: 0.7rem; color: var(--dim); border-top: 1px solid var(--border); line-height: 1.4; }
+    .iw video { width: 100%; display: block; border-radius: 0; }
+    .icap { padding: 7px 10px; font-size: 0.7rem; color: var(--dim); border-top: 1px solid var(--bdr); line-height: 1.4; }
 
-    /* FOOTER */
-    footer { background: #050508; border-top: 1px solid var(--border); padding: 1.5rem 2rem; text-align: center; font-size: 0.8rem; color: var(--dim); }
+    /* ── VIDEO GRID ── */
+    .vid-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 1.5rem; }
+    .vid-wrap { border-radius: 12px; overflow: hidden; border: 1px solid var(--bdr); background: #111; }
+    .vid-wrap video { width: 100%; display: block; }
 
-    /* REVEAL */
+    /* ── FOOTER ── */
+    footer { background: #050508; border-top: 1px solid var(--bdr); padding: 1.5rem 2rem; text-align: center; font-size: 0.8rem; color: var(--dim); }
+
+    /* ── REVEAL ── */
     .rev { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
     .rev.in { opacity: 1; transform: none; }
 
-    /* RESPONSIVE */
+    /* ── RESPONSIVE ── */
     @media (max-width: 860px) {
-      .page { grid-template-columns: 1fr; }
       .sidenav { display: none; }
-      .main { padding: 2rem 1.5rem 5rem; }
+      .main { margin-left: 0; padding: 5rem 1.5rem 5rem; }
       .stats { grid-template-columns: repeat(2,1fr); }
       .g3, .g2 { grid-template-columns: 1fr; }
       .imgs.c2, .imgs.c3 { grid-template-columns: 1fr; }
+      .vid-grid { grid-template-columns: 1fr; }
       .it { grid-template-columns: 1fr; }
       .it-arr { display: none; }
     }
@@ -298,8 +271,9 @@
 </head>
 <body>
 
-<nav>
-  <div class="nav-in">
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="topnav-in">
     <a href="../index.html" class="logo">INAYAT</a>
     <ul class="nav-links">
       <li><a href="../index.html">Home</a></li>
@@ -311,238 +285,319 @@
   </div>
 </nav>
 
-<div class="page">
+<!-- FIXED SIDENAV -->
+<aside class="sidenav">
+  <a href="../Projects.html" class="back-link">← Projects</a>
+  <div>
+    <div class="side-lbl">Case Study</div>
+    <nav class="side-list">
+      <a href="#overview"   class="side-a active"><span class="side-num">00</span>Overview</a>
+      <a href="#discovery"  class="side-a"><span class="side-num">01</span>Discovery</a>
+      <a href="#definition" class="side-a"><span class="side-num">02</span>Definition</a>
+      <a href="#ideation"   class="side-a"><span class="side-num">03</span>Ideation</a>
+      <a href="#execution"  class="side-a"><span class="side-num">04</span>Execution</a>
+      <a href="#testing"    class="side-a"><span class="side-num">05</span>Testing</a>
+      <a href="#reflection" class="side-a"><span class="side-num">06</span>Reflection</a>
+    </nav>
+  </div>
+</aside>
 
-  <!-- SIDENAV -->
-  <aside class="sidenav">
-    <a href="../Projects.html" class="back-link">← Projects</a>
-    <div>
-      <div class="side-label">Case Study</div>
-      <nav class="side-list">
-        <a href="#overview"   class="side-a active"><span class="side-n">00</span>Overview</a>
-        <a href="#discovery"  class="side-a"><span class="side-n">01</span>Discovery</a>
-        <a href="#definition" class="side-a"><span class="side-n">02</span>Definition</a>
-        <a href="#ideation"   class="side-a"><span class="side-n">03</span>Ideation</a>
-        <a href="#execution"  class="side-a"><span class="side-n">04</span>Execution</a>
-        <a href="#testing"    class="side-a"><span class="side-n">05</span>Testing</a>
-        <a href="#reflection" class="side-a"><span class="side-n">06</span>Reflection</a>
-      </nav>
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <header id="top" style="margin-bottom:4rem;">
+    <div class="tags">
+      <span class="tag">Interface Design</span>
+      <span class="tag">Mobile UX</span>
+      <span class="tag">Research Lead</span>
     </div>
-  </aside>
+    <h1 class="hero-h">Fitness Tracking<br><em>App</em></h1>
+    <p class="hero-p">Helping busy people stay consistent — through smart motivation design, frictionless flows, and genuine community accountability.</p>
 
-  <!-- MAIN -->
-  <main class="main">
+    <!-- HERO VIDEO -->
+    <div class="hero-video">
+      <video autoplay muted loop playsinline>
+        <source src="https://framerusercontent.com/assets/764JYSKnJXhvcyl4ZkHNJrB1c.mp4" type="video/mp4">
+      </video>
+    </div>
 
-    <!-- HERO -->
-    <header class="hero">
-      <div class="tags">
-        <span class="tag">Interface Design</span>
-        <span class="tag">Mobile UX</span>
-        <span class="tag">Research Lead</span>
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat"><div class="s-n">87.5</div><div class="s-l">SUS Score</div><div class="s-sub">Industry avg: 68</div></div>
+      <div class="stat"><div class="s-n">94%</div><div class="s-l">Task Completion</div><div class="s-sub">Benchmark: 80%</div></div>
+      <div class="stat"><div class="s-n">40%</div><div class="s-l">Faster First Workout</div><div class="s-sub">vs. competitor apps</div></div>
+      <div class="stat"><div class="s-n">83</div><div class="s-l">Net Promoter Score</div><div class="s-sub">11 of 12 rated 9–10</div></div>
+    </div>
+
+    <!-- META -->
+    <div class="meta">
+      <div><div class="m-k">Duration</div><div class="m-v">Jul – Aug 2024<br>4 weeks</div></div>
+      <div><div class="m-k">My Role</div><div class="m-v">UX/UI Designer<br>Research Lead</div></div>
+      <div><div class="m-k">Team</div><div class="m-v">3 UX Designers<br>Collaborative</div></div>
+      <div><div class="m-k">My Screens</div><div class="m-v">Home Dashboard<br>Workout Tracking</div></div>
+    </div>
+  </header>
+
+  <!-- 00 OVERVIEW -->
+  <section id="overview" class="sec rev">
+    <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
+    <h2 class="sec-h">The Problem With<br>Fitness Apps Today</h2>
+    <p class="sec-lead">Users don't fail because they lack motivation. They fail because apps are designed for data, not for people.</p>
+    <div class="rule"></div>
+    <div class="g3">
+      <div class="nc"><div class="nc-n">85%</div><div class="nc-t">Drop off within 3 weeks</div><div class="nc-d">No visible progress, no rewards, no reason to return</div></div>
+      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Too complex</div><div class="nc-t">Customization paradox</div><div class="nc-d">Either overwhelming or too generic — neither served real users</div></div>
+      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Surface-level</div><div class="nc-t">Community wasn't real</div><div class="nc-d">Social features existed as afterthoughts, not accountability tools</div></div>
+    </div>
+    <div class="quote"><p>"Users didn't need more data. They needed to feel like the app was on their side."</p></div>
+    <p style="font-size:0.875rem;color:var(--muted);line-height:1.8;max-width:580px">Through iterative user testing with 12 participants, we developed a solution that increased user motivation by 92% and improved workout consistency through clear visual feedback and social accountability.</p>
+  </section>
+
+  <!-- 01 DISCOVERY -->
+  <section id="discovery" class="sec rev">
+    <div class="phase"><div class="p-dot">1</div><span class="p-txt">Phase One — Discovery</span></div>
+    <h2 class="sec-h">Research &amp;<br>Problem Identification</h2>
+    <p class="sec-lead">I led research analysis and synthesis across 12 participants — to understand not just what broke, but why people gave up.</p>
+    <div class="rule"></div>
+
+    <div class="sub">Research Methods</div>
+    <div class="slist">
+      <div class="st"><div class="st-n">01</div><div><div class="st-t">In-depth user interviews</div><div class="st-d">12 participants × 45–60 min. Covered habits, failure points, and emotional responses to fitness tracking.</div></div></div>
+      <div class="st"><div class="st-n">02</div><div><div class="st-t">Survey distribution</div><div class="st-d">50+ fitness app users surveyed to validate interview patterns at scale.</div></div></div>
+      <div class="st"><div class="st-n">03</div><div><div class="st-t">Competitive analysis</div><div class="st-d">Evaluated Stronglifts, Samsung Health, and Fitbod for strengths and critical gaps.</div></div></div>
+      <div class="st"><div class="st-n">04</div><div><div class="st-t">Affinity mapping</div><div class="st-d">Synthesised qualitative data into clusters identifying the three core pain points driving churn.</div></div></div>
+    </div>
+
+    <div class="sub">Participant Breakdown</div>
+    <div class="g3" style="margin-bottom:2rem">
+      <div class="nc"><div class="nc-n">3</div><div class="nc-t">Fitness Coaches</div><div class="nc-d">Rarely use apps — lack of motivation and minimal engagement</div></div>
+      <div class="nc"><div class="nc-n">2</div><div class="nc-t">Gym Members</div><div class="nc-d">Used apps for routines but disliked confusing interfaces</div></div>
+      <div class="nc"><div class="nc-n">2</div><div class="nc-t">Mental Health Coaches</div><div class="nc-d">Apps lacked consistency, encouragement, and habit support</div></div>
+    </div>
+
+    <div class="sub">Competitive Analysis</div>
+    <div class="g3" style="margin-bottom:2rem">
+      <div class="cc"><div class="cc-n">Stronglifts</div><span class="pill pg">✓ Progression tracking</span><br><span class="pill pr">Gap</span><div class="cc-d">No emotional feedback — pure data, zero celebration of effort</div></div>
+      <div class="cc"><div class="cc-n">Samsung Health</div><span class="pill pg">✓ Broad coverage</span><br><span class="pill pr">Gap</span><div class="cc-d">Poor onboarding — users lost before completing first workout</div></div>
+      <div class="cc"><div class="cc-n">Fitbod</div><span class="pill pg">✓ Smart algorithm</span><br><span class="pill pr">Gap</span><div class="cc-d">Social features are an afterthought — no genuine community layer</div></div>
+    </div>
+
+    <div class="sub">Research Images</div>
+    <div class="imgs c2">
+      <div class="iw">
+        <img src="https://framerusercontent.com/images/XjvwmxPaRX0m7Fq1jwOodRmt5dw.png" alt="Workout Tracking Screen">
+        <div class="icap">Competitive audit — data density without emotional design</div>
       </div>
-      <h1 class="hero-h">Fitness Tracking<br><em>App</em></h1>
-      <p class="hero-p">Helping busy people stay consistent — through smart motivation design, frictionless flows, and genuine community accountability.</p>
-
-      <div class="stats">
-        <div class="stat"><div class="s-n">87.5</div><div class="s-l">SUS Score</div><div class="s-sub">Industry avg: 68</div></div>
-        <div class="stat"><div class="s-n">94%</div><div class="s-l">Task Completion</div><div class="s-sub">Benchmark: 80%</div></div>
-        <div class="stat"><div class="s-n">40%</div><div class="s-l">Faster First Workout</div><div class="s-sub">vs. competitor apps</div></div>
-        <div class="stat"><div class="s-n">83</div><div class="s-l">Net Promoter Score</div><div class="s-sub">11 of 12 rated 9–10</div></div>
+      <div class="iw">
+        <img src="https://framerusercontent.com/images/NtzWWwZaSZXixPptuH9BhNlvhM.png" alt="Social Features">
+        <div class="icap">Social features audit — where community became surface-level</div>
       </div>
+    </div>
+  </section>
 
-      <div class="meta">
-        <div><div class="m-k">Duration</div><div class="m-v">Jul – Aug 2024<br>4 weeks</div></div>
-        <div><div class="m-k">My Role</div><div class="m-v">UX/UI Designer<br>Research Lead</div></div>
-        <div><div class="m-k">Team</div><div class="m-v">3 UX Designers<br>Collaborative</div></div>
-        <div><div class="m-k">My Screens</div><div class="m-v">Home Dashboard<br>Workout Tracking</div></div>
+  <!-- 02 DEFINITION -->
+  <section id="definition" class="sec rev">
+    <div class="phase"><div class="p-dot">2</div><span class="p-txt">Phase Two — Definition</span></div>
+    <h2 class="sec-h">Personas &amp;<br>Design Objectives</h2>
+    <p class="sec-lead">Translating research chaos into design clarity. I created the personas and led the team in converting pain points into testable objectives.</p>
+    <div class="rule"></div>
+
+    <div class="sub">User Personas</div>
+    <div class="g3" style="margin-bottom:2rem">
+      <div class="pc"><div class="pc-av">B</div><div class="pc-t">The Motivated Beginner</div><div class="pc-d">Needs guidance and early wins to build belief that consistency is possible.</div></div>
+      <div class="pc"><div class="pc-av">E</div><div class="pc-t">The Inconsistent Enthusiast</div><div class="pc-d">Has the knowledge, not the routine. Needs external accountability to close the gap.</div></div>
+      <div class="pc"><div class="pc-av">S</div><div class="pc-t">The Social Achiever</div><div class="pc-d">Motivated by others. Wants to share progress and feel part of something bigger.</div></div>
+    </div>
+
+    <div class="sub">Design Objectives</div>
+    <div class="flist" style="margin-bottom:2rem">
+      <div class="fr"><div class="fr-i">🏆</div><div><div class="fr-t">Build intrinsic motivation</div><div class="fr-d">Badges, streaks, and milestone celebrations providing immediate positive feedback and long-term achievement tracking.</div></div></div>
+      <div class="fr"><div class="fr-i">🎯</div><div><div class="fr-t">Simplify customisation</div><div class="fr-d">Intelligent workout builder that adapts to goals, experience, and equipment without overwhelming choices.</div></div></div>
+      <div class="fr"><div class="fr-i">👥</div><div><div class="fr-t">Foster authentic community</div><div class="fr-d">Social features encouraging meaningful interaction and mutual support — not superficial engagement metrics.</div></div></div>
+      <div class="fr"><div class="fr-i">✦</div><div><div class="fr-t">Prioritise immediate clarity</div><div class="fr-d">All navigation, feedback, and data visualisation must be immediately understandable without tutorials.</div></div></div>
+    </div>
+
+    <div class="sub">Definition Phase Images</div>
+    <div class="imgs c3">
+      <div class="iw">
+        <img src="https://framerusercontent.com/images/tVIWbHMUClKEnK7ORyBAVab79mY.png" alt="Dashboard Interface">
+        <div class="icap">Early dashboard concept</div>
       </div>
-    </header>
-
-    <!-- 00 -->
-    <section id="overview" class="sec rev">
-      <div class="phase"><div class="p-dot">0</div><span class="p-text">Overview</span></div>
-      <h2 class="sec-h">The Problem With<br>Fitness Apps Today</h2>
-      <p class="sec-lead">Users don't fail because they lack motivation. They fail because apps are designed for data, not for people.</p>
-      <div class="rule"></div>
-      <div class="g3">
-        <div class="nc"><div class="nc-n">85%</div><div class="nc-t">Drop off within 3 weeks</div><div class="nc-d">No visible progress, no rewards, no reason to return</div></div>
-        <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Too complex</div><div class="nc-t">Customization paradox</div><div class="nc-d">Either overwhelming or too generic — neither served real users</div></div>
-        <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Surface-level</div><div class="nc-t">Community wasn't real</div><div class="nc-d">Social features were afterthoughts, not accountability tools</div></div>
+      <div class="iw">
+        <img src="https://framerusercontent.com/images/gkkeFgblfMAY4RI1M7fLWlEn8.png" alt="User Interview Insights">
+        <div class="icap">Interview synthesis clusters</div>
       </div>
-      <div class="quote"><p>"Users didn't need more data. They needed to feel like the app was on their side."</p></div>
-    </section>
-
-    <!-- 01 -->
-    <section id="discovery" class="sec rev">
-      <div class="phase"><div class="p-dot">1</div><span class="p-text">Phase One — Discovery</span></div>
-      <h2 class="sec-h">Research &amp;<br>Problem Identification</h2>
-      <p class="sec-lead">I led research analysis and synthesis across 12 participants — to understand not just what broke, but why people gave up.</p>
-      <div class="rule"></div>
-
-      <div class="sub">Research Methods</div>
-      <div class="slist">
-        <div class="st"><div class="st-n">01</div><div><div class="st-t">In-depth user interviews</div><div class="st-d">12 participants × 45–60 min. Covered habits, failure points, and emotional responses to fitness tracking.</div></div></div>
-        <div class="st"><div class="st-n">02</div><div><div class="st-t">Survey distribution</div><div class="st-d">50+ fitness app users surveyed to validate interview patterns at scale.</div></div></div>
-        <div class="st"><div class="st-n">03</div><div><div class="st-t">Competitive analysis</div><div class="st-d">Evaluated Stronglifts, Samsung Health, and Fitbod for strengths and critical gaps.</div></div></div>
-        <div class="st"><div class="st-n">04</div><div><div class="st-t">Affinity mapping</div><div class="st-d">Synthesised qualitative data into clusters identifying the three core pain points driving churn.</div></div></div>
+      <div class="iw">
+        <img src="https://framerusercontent.com/images/sD3yV02ShFDo9x6gynYEhhs4.png" alt="Affinity Mapping">
+        <div class="icap">Affinity mapping output</div>
       </div>
+    </div>
+  </section>
 
-      <div class="sub">Participant Breakdown</div>
-      <div class="g3">
-        <div class="nc"><div class="nc-n">3</div><div class="nc-t">Fitness Coaches</div><div class="nc-d">Found apps too basic — no meaningful engagement</div></div>
-        <div class="nc"><div class="nc-n">2</div><div class="nc-t">Gym Members</div><div class="nc-d">Abandoned apps due to confusing interfaces</div></div>
-        <div class="nc"><div class="nc-n">2</div><div class="nc-t">Mental Health Coaches</div><div class="nc-d">Apps lacked consistency cues and habit support</div></div>
+  <!-- 03 IDEATION -->
+  <section id="ideation" class="sec rev">
+    <div class="phase"><div class="p-dot">3</div><span class="p-txt">Phase Three — Ideation</span></div>
+    <h2 class="sec-h">Wireframing &amp;<br>User Flow Design</h2>
+    <p class="sec-lead">I led the ideation phase — translating objectives into interface concepts through sketching, flow mapping, and low-fidelity prototyping.</p>
+    <div class="rule"></div>
+
+    <div class="sub">Key Design Decisions</div>
+    <div class="flist" style="margin-bottom:2rem">
+      <div class="fr"><div class="fr-i">📊</div><div><div class="fr-t">Dashboard-first approach</div><div class="fr-d">Home screen leads with streak counter, today's workout, and recent achievements — immediate motivation before anything else.</div></div></div>
+      <div class="fr"><div class="fr-i">⚡</div><div><div class="fr-t">One-tap quick start</div><div class="fr-d">Every extra tap is a chance to abandon the session. Reducing friction between intention and action was critical.</div></div></div>
+      <div class="fr"><div class="fr-i">👁</div><div><div class="fr-t">Progress visibility everywhere</div><div class="fr-d">Charts, badges, streaks placed throughout — not siloed to a dedicated analytics screen.</div></div></div>
+      <div class="fr"><div class="fr-i">🔗</div><div><div class="fr-t">Contextual social integration</div><div class="fr-d">Community embedded within workout flows — accountability as default, not optional.</div></div></div>
+    </div>
+
+    <div class="sub">High-Fidelity Wireframes</div>
+    <div class="imgs c1">
+      <div class="iw">
+        <img src="https://framerusercontent.com/images/Q3qAYj3Duf1t8pX7KOH9M2DSzY.png" alt="High-Fidelity Dashboard Design">
+        <div class="icap">High-fidelity dashboard wireframes — exploring widget-based reward and community modules</div>
       </div>
+    </div>
+  </section>
 
-      <div class="sub">Competitive Analysis</div>
-      <div class="g3">
-        <div class="cc"><div class="cc-n">Stronglifts</div><span class="pill pg">✓ Progression tracking</span><br><span class="pill pr">Gap</span><div class="cc-d">Pure data — no emotional feedback or achievement celebration</div></div>
-        <div class="cc"><div class="cc-n">Samsung Health</div><span class="pill pg">✓ Broad coverage</span><br><span class="pill pr">Gap</span><div class="cc-d">Poor onboarding — users lost before completing first workout</div></div>
-        <div class="cc"><div class="cc-n">Fitbod</div><span class="pill pg">✓ Smart algorithm</span><br><span class="pill pr">Gap</span><div class="cc-d">Social features are an afterthought — no genuine community</div></div>
+  <!-- 04 EXECUTION -->
+  <section id="execution" class="sec rev">
+    <div class="phase"><div class="p-dot">4</div><span class="p-txt">Phase Four — Execution</span></div>
+    <h2 class="sec-h">High-Fidelity<br>Design System</h2>
+    <p class="sec-lead">My screens: Home Dashboard and Workout Tracking — the two most critical touchpoints. Every decision traces back to a research finding.</p>
+    <div class="rule"></div>
+
+    <div class="sub">Design Principles</div>
+    <div class="g2" style="margin-bottom:2rem">
+      <div class="ic"><div class="ic-ico">🎨</div><div class="ic-t">Motivational visual language</div><div class="ic-d">Energetic colours, celebratory animations, bold typography — an uplifting experience, not just a tracker.</div></div>
+      <div class="ic"><div class="ic-ico">📐</div><div class="ic-t">Clear information hierarchy</div><div class="ic-d">Streak counter, today's workout, recent achievements prioritised at top — critical context before anything else.</div></div>
+      <div class="ic"><div class="ic-ico">♿</div><div class="ic-t">Accessible colour system</div><div class="ic-d">All colour combinations meet WCAG AA standards while maintaining visual energy.</div></div>
+      <div class="ic"><div class="ic-ico">📱</div><div class="ic-t">Responsive components</div><div class="ic-d">Flexible layouts that adapt across devices — fitness happens everywhere.</div></div>
+    </div>
+
+    <div class="sub">Core Features</div>
+    <div class="flist" style="margin-bottom:2rem">
+      <div class="fr"><div class="fr-i">⚡</div><div><div class="fr-t">Quick Start &amp; Routine Management</div><div class="fr-d">One-tap access to pre-configured workouts. Visual routine library with preview cards showing exercises, duration, and difficulty.</div></div></div>
+      <div class="fr"><div class="fr-i">🏅</div><div><div class="fr-t">Achievement &amp; Milestone System</div><div class="fr-d">Dynamic badge display with real-time confetti after workouts. Achievement gallery creates aspirational goals beyond today's session.</div></div></div>
+      <div class="fr"><div class="fr-i">📱</div><div><div class="fr-t">Intuitive Navigation Architecture</div><div class="fr-d">Bottom tab navigation with quick access to Dashboard, Workouts, Community, and Profile. Persistent streak counter in header.</div></div></div>
+      <div class="fr"><div class="fr-i">📈</div><div><div class="fr-t">Live Workout Tracking</div><div class="fr-d">Large tap-friendly buttons for gym conditions. Real-time reps/sets/weight. Progress bars show completion without adding pressure.</div></div></div>
+      <div class="fr"><div class="fr-i">💬</div><div><div class="fr-t">Integrated Social Feed</div><div class="fr-d">In-context reactions and comments for quick encouragement. Share button posts workouts to community or external platforms.</div></div></div>
+    </div>
+
+    <div class="sub">Design System Screens</div>
+    <div class="imgs c3" style="margin-bottom:1.5rem">
+      <div class="iw">
+        <img src="https://framerusercontent.com/images/04hvFwwwxQvsxY6lvGQewRfhCB0.svg" alt="Reward System Interface">
+        <div class="icap">Reward system interface</div>
       </div>
-
-      <div class="imgs c2">
-        <div class="iw"><img src="https://framerusercontent.com/images/XjvwmxPaRX0m7Fq1jwOodRmt5dw.png" alt="Competitive audit"><div class="icap">Competitive audit — data density without emotional design</div></div>
-        <div class="iw"><img src="https://framerusercontent.com/images/NtzWWwZaSZXixPptuH9BhNlvhM.png" alt="Social features analysis"><div class="icap">Social features audit — where community became surface-level</div></div>
+      <div class="iw">
+        <img src="https://framerusercontent.com/images/KviYGKiNsYkSs73ml3NRA3dHnQ.svg" alt="Activity Tracking">
+        <div class="icap">Activity tracking components</div>
       </div>
-    </section>
-
-    <!-- 02 -->
-    <section id="definition" class="sec rev">
-      <div class="phase"><div class="p-dot">2</div><span class="p-text">Phase Two — Definition</span></div>
-      <h2 class="sec-h">Personas &amp;<br>Design Objectives</h2>
-      <p class="sec-lead">Translating research chaos into design clarity. I created the personas and led the team in converting pain points into testable objectives.</p>
-      <div class="rule"></div>
-
-      <div class="sub">User Personas</div>
-      <div class="g3">
-        <div class="pc"><div class="pc-av">B</div><div class="pc-t">The Motivated Beginner</div><div class="pc-d">Needs guidance and early wins to build belief that consistency is possible.</div></div>
-        <div class="pc"><div class="pc-av">E</div><div class="pc-t">The Inconsistent Enthusiast</div><div class="pc-d">Has the knowledge, not the routine. Needs external accountability.</div></div>
-        <div class="pc"><div class="pc-av">S</div><div class="pc-t">The Social Achiever</div><div class="pc-d">Motivated by others. Wants to share progress and feel part of something.</div></div>
+      <div class="iw">
+        <img src="https://framerusercontent.com/images/Ot9AnsrPfXKidr7bK7K2jqALQ64.svg" alt="Workout Customization">
+        <div class="icap">Workout customisation</div>
       </div>
+    </div>
 
-      <div class="sub">Design Objectives</div>
-      <div class="flist">
-        <div class="fr"><div class="fr-i">🏆</div><div><div class="fr-t">Build intrinsic motivation</div><div class="fr-d">Badges, streaks, and milestone celebrations providing immediate positive feedback and long-term achievement tracking.</div></div></div>
-        <div class="fr"><div class="fr-i">🎯</div><div><div class="fr-t">Simplify customisation</div><div class="fr-d">Intelligent workout builder that adapts to goals, experience, and equipment without overwhelming choices.</div></div></div>
-        <div class="fr"><div class="fr-i">👥</div><div><div class="fr-t">Foster authentic community</div><div class="fr-d">Social features encouraging meaningful interaction and mutual support — not superficial engagement metrics.</div></div></div>
-        <div class="fr"><div class="fr-i">✦</div><div><div class="fr-t">Prioritise immediate clarity</div><div class="fr-d">All navigation, feedback, and data visualisation must be immediately understandable without tutorials.</div></div></div>
+    <div class="imgs c2" style="margin-bottom:1.5rem">
+      <div class="iw">
+        <img src="https://framerusercontent.com/images/JQo0ybxuJNYHI8V0kHorLj84sc0.svg" alt="Badge Achievement System">
+        <div class="icap">Badge achievement system</div>
       </div>
-
-      <div class="imgs c3">
-        <div class="iw"><img src="https://framerusercontent.com/images/tVIWbHMUClKEnK7ORyBAVab79mY.png" alt="Dashboard wireframe"><div class="icap">Early dashboard concept</div></div>
-        <div class="iw"><img src="https://framerusercontent.com/images/gkkeFgblfMAY4RI1M7fLWlEn8.png" alt="Interview insights"><div class="icap">Interview synthesis clusters</div></div>
-        <div class="iw"><img src="https://framerusercontent.com/images/sD3yV02ShFDo9x6gynYEhhs4.png" alt="Affinity map"><div class="icap">Affinity mapping output</div></div>
+      <div class="iw">
+        <img src="https://framerusercontent.com/images/IVacl2HhFJzzUVvMXRYWDf31Psw.svg" alt="Navigation Components">
+        <div class="icap">Navigation components</div>
       </div>
-    </section>
+    </div>
 
-    <!-- 03 -->
-    <section id="ideation" class="sec rev">
-      <div class="phase"><div class="p-dot">3</div><span class="p-text">Phase Three — Ideation</span></div>
-      <h2 class="sec-h">Wireframing &amp;<br>User Flow Design</h2>
-      <p class="sec-lead">I led the ideation phase — translating objectives into interface concepts through sketching, flow mapping, and low-fidelity prototyping.</p>
-      <div class="rule"></div>
-
-      <div class="sub">Key Design Decisions</div>
-      <div class="flist">
-        <div class="fr"><div class="fr-i">📊</div><div><div class="fr-t">Dashboard-first approach</div><div class="fr-d">Home screen leads with streak counter, today's workout, and recent achievements — immediate motivation before anything else.</div></div></div>
-        <div class="fr"><div class="fr-i">⚡</div><div><div class="fr-t">One-tap quick start</div><div class="fr-d">Every extra tap is a chance to abandon the session. Reducing friction between intention and action was critical.</div></div></div>
-        <div class="fr"><div class="fr-i">👁</div><div><div class="fr-t">Progress visibility everywhere</div><div class="fr-d">Charts, badges, streaks placed throughout — not siloed to a dedicated analytics screen.</div></div></div>
-        <div class="fr"><div class="fr-i">🔗</div><div><div class="fr-t">Contextual social integration</div><div class="fr-d">Community embedded within workout flows rather than isolated in a separate tab — accountability as default, not optional.</div></div></div>
+    <div class="sub">Interactive Prototypes</div>
+    <div class="vid-grid">
+      <div class="vid-wrap">
+        <video autoplay muted loop playsinline>
+          <source src="https://framerusercontent.com/assets/o5ntV6RDpUsuExMRxAJEFmje0Rg.mp4" type="video/mp4">
+        </video>
       </div>
-
-      <div class="imgs c1">
-        <div class="iw"><img src="https://framerusercontent.com/images/Q3qAYj3Duf1t8pX7KOH9M2DSzY.png" alt="Dashboard wireframes"><div class="icap">High-fidelity dashboard wireframes — exploring widget-based reward and community modules</div></div>
+      <div class="vid-wrap">
+        <video autoplay muted loop playsinline>
+          <source src="https://framerusercontent.com/assets/3fA0XWnb7lJefyo7FhfXeyMA8.mp4" type="video/mp4">
+        </video>
       </div>
-    </section>
-
-    <!-- 04 -->
-    <section id="execution" class="sec rev">
-      <div class="phase"><div class="p-dot">4</div><span class="p-text">Phase Four — Execution</span></div>
-      <h2 class="sec-h">High-Fidelity<br>Design System</h2>
-      <p class="sec-lead">My screens: Home Dashboard and Workout Tracking — the two most critical touchpoints. Every decision traces back to a research finding.</p>
-      <div class="rule"></div>
-
-      <div class="sub">Design Principles</div>
-      <div class="g2">
-        <div class="ic"><div class="ic-icon">🎨</div><div class="ic-t">Motivational visual language</div><div class="ic-d">Energetic colours, celebratory animations, bold typography — uplifting emotional experience, not just a tracker.</div></div>
-        <div class="ic"><div class="ic-icon">📐</div><div class="ic-t">Clear information hierarchy</div><div class="ic-d">Streak counter, today's workout, recent achievements prioritised at top — critical context before anything else.</div></div>
-        <div class="ic"><div class="ic-icon">♿</div><div class="ic-t">Accessible colour system</div><div class="ic-d">All colour combinations meet WCAG AA standards while maintaining visual energy and motivational tone.</div></div>
-        <div class="ic"><div class="ic-icon">📱</div><div class="ic-t">Responsive components</div><div class="ic-d">Flexible layouts that adapt across devices — fitness happens everywhere, not just at a desk.</div></div>
+      <div class="vid-wrap">
+        <video autoplay muted loop playsinline>
+          <source src="https://framerusercontent.com/assets/CVr0hFuumUpr8jTqkKVbXOwGzmo.mp4" type="video/mp4">
+        </video>
       </div>
-
-      <div class="sub">Core Features</div>
-      <div class="flist">
-        <div class="fr"><div class="fr-i">⚡</div><div><div class="fr-t">Quick Start &amp; Routine Management</div><div class="fr-d">One-tap access to pre-configured workouts. Visual routine library with preview cards showing exercises, duration, and difficulty.</div></div></div>
-        <div class="fr"><div class="fr-i">🏅</div><div><div class="fr-t">Achievement &amp; Milestone System</div><div class="fr-d">Dynamic badge display with real-time confetti after workouts. Achievement gallery creates aspirational goals beyond today's session.</div></div></div>
-        <div class="fr"><div class="fr-i">📈</div><div><div class="fr-t">Live Workout Tracking</div><div class="fr-d">Large tap-friendly buttons for gym conditions. Real-time reps/sets/weight. Progress bars show completion without adding pressure.</div></div></div>
-        <div class="fr"><div class="fr-i">💬</div><div><div class="fr-t">Integrated Social Feed</div><div class="fr-d">In-context reactions and comments for quick encouragement. Share button posts workouts to community or external platforms.</div></div></div>
+      <div class="vid-wrap">
+        <video autoplay muted loop playsinline>
+          <source src="https://framerusercontent.com/assets/IkAV8WWWEa9QqMpI1GAsn60XAk.mp4" type="video/mp4">
+        </video>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- 05 -->
-    <section id="testing" class="sec rev">
-      <div class="phase"><div class="p-dot">5</div><span class="p-text">Phase Five — Testing</span></div>
-      <h2 class="sec-h">Validation &amp;<br>Iteration</h2>
-      <p class="sec-lead">I led usability testing with all 12 original participants — task-based scenarios, SUS scoring, qualitative interviews, and A/B tests across three rounds.</p>
-      <div class="rule"></div>
+  <!-- 05 TESTING -->
+  <section id="testing" class="sec rev">
+    <div class="phase"><div class="p-dot">5</div><span class="p-txt">Phase Five — Testing</span></div>
+    <h2 class="sec-h">Validation &amp;<br>Iteration</h2>
+    <p class="sec-lead">I led usability testing with all 12 original participants — task-based scenarios, SUS scoring, qualitative interviews, and A/B tests across three rounds.</p>
+    <div class="rule"></div>
 
-      <div class="sub">Quantitative Results</div>
-      <div class="g2">
-        <div class="res"><div class="res-n">87.5</div><div><div class="res-l">System Usability Scale</div><div class="res-ctx">Industry average is 68 — "Excellent" classification</div></div></div>
-        <div class="res"><div class="res-n">94%</div><div><div class="res-l">Task completion rate</div><div class="res-ctx">Across 5 core tasks — benchmark was 80%</div></div></div>
-        <div class="res"><div class="res-n">40%</div><div><div class="res-l">Faster first workout</div><div class="res-ctx">Compared to competitive apps tested in same sessions</div></div></div>
-        <div class="res"><div class="res-n">9.2</div><div><div class="res-l">Satisfaction score / 10</div><div class="res-ctx">NPS of 83 — 11 of 12 participants rated 9 or 10</div></div></div>
+    <div class="sub">Quantitative Results</div>
+    <div class="g2" style="margin-bottom:2rem">
+      <div class="res"><div class="res-n">87.5</div><div><div class="res-l">System Usability Scale</div><div class="res-ctx">Industry average is 68 — "Excellent" classification</div></div></div>
+      <div class="res"><div class="res-n">94%</div><div><div class="res-l">Task completion rate</div><div class="res-ctx">Across 5 core tasks — benchmark was 80%</div></div></div>
+      <div class="res"><div class="res-n">40%</div><div><div class="res-l">Faster first workout</div><div class="res-ctx">Compared to competitive apps tested in same sessions</div></div></div>
+      <div class="res"><div class="res-n">9.2</div><div><div class="res-l">Satisfaction score / 10</div><div class="res-ctx">NPS of 83 — 11 of 12 participants rated 9 or 10</div></div></div>
+    </div>
+
+    <div class="sub">What Changed &amp; Why</div>
+    <div class="ilist">
+      <div class="it">
+        <div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Routine library buried inside the Workouts tab</div></div>
+        <div class="it-arr">→</div>
+        <div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">"My Routines" promoted to dashboard top + floating action button added</div></div>
       </div>
-
-      <div class="sub">What Changed &amp; Why</div>
-      <div class="itlist">
-        <div class="it">
-          <div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Routine library buried inside the Workouts tab</div></div>
-          <div class="it-arr">→</div>
-          <div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">"My Routines" promoted to dashboard top + floating action button added</div></div>
-        </div>
-        <div class="it">
-          <div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Standard-sized like/comment buttons on social feed</div></div>
-          <div class="it-arr">→</div>
-          <div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Buttons increased 40% in size + haptic feedback for tangibility</div></div>
-        </div>
-        <div class="it">
-          <div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Routine cards showed only name and exercise count</div></div>
-          <div class="it-arr">→</div>
-          <div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Cards now show difficulty level, time estimate, and equipment required</div></div>
-        </div>
+      <div class="it">
+        <div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Standard-sized like/comment buttons on social feed</div></div>
+        <div class="it-arr">→</div>
+        <div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Buttons increased 40% in size + haptic feedback for tangibility</div></div>
       </div>
-
-      <div class="quote"><p>"100% of participants said the badge and streak system would motivate them to stay consistent — described as 'surprisingly satisfying'."</p></div>
-    </section>
-
-    <!-- 06 -->
-    <section id="reflection" class="sec rev">
-      <div class="phase"><div class="p-dot">6</div><span class="p-text">Reflection</span></div>
-      <h2 class="sec-h">What I Learned</h2>
-      <p class="sec-lead">The thinking shifts that will shape how I approach every project going forward.</p>
-      <div class="rule"></div>
-      <div class="g2">
-        <div class="rc"><div class="rc-t">Behavioral design works</div><div class="rc-d">Positive reinforcement through immediate feedback creates habit loops that sustain engagement far better than data alone. The 92% motivation increase was the direct result of designing for the emotional side of consistency.</div></div>
-        <div class="rc"><div class="rc-t">Assumptions don't survive testing</div><div class="rc-d">Users needed more prominent social CTAs than I initially designed. What seemed obvious in ideation was invisible in practice — the designer's mental model and the user's are rarely the same thing.</div></div>
-        <div class="rc"><div class="rc-t">Simplicity vs. power is a tension, not a tradeoff</div><div class="rc-d">Balancing quick-start simplicity for beginners with customisation depth for advanced users required careful information architecture and progressive disclosure — not choosing one audience over the other.</div></div>
-        <div class="rc"><div class="rc-t">What I'd do differently</div><div class="rc-d">Run longer-term testing (2–4 weeks) to validate whether motivation holds beyond initial excitement. And explore AI-powered workout suggestions earlier — several participants asked for intelligent recommendations based on their patterns.</div></div>
+      <div class="it">
+        <div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Routine cards showed only name and exercise count</div></div>
+        <div class="it-arr">→</div>
+        <div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Cards now show difficulty level, time estimate, and equipment required</div></div>
       </div>
-    </section>
+    </div>
+    <div class="quote"><p>"100% of participants said the badge and streak system would motivate them to stay consistent — described as 'surprisingly satisfying'."</p></div>
+  </section>
 
-  </main>
-</div>
+  <!-- 06 REFLECTION -->
+  <section id="reflection" class="sec rev">
+    <div class="phase"><div class="p-dot">6</div><span class="p-txt">Reflection</span></div>
+    <h2 class="sec-h">What I Learned</h2>
+    <p class="sec-lead">The thinking shifts that will shape how I approach every project going forward.</p>
+    <div class="rule"></div>
+    <div class="g2">
+      <div class="rc"><div class="rc-t">Behavioral design works</div><div class="rc-d">Positive reinforcement through immediate feedback creates habit loops that sustain engagement far better than data alone. The 92% motivation increase was the direct result of designing for the emotional side of consistency.</div></div>
+      <div class="rc"><div class="rc-t">Assumptions don't survive testing</div><div class="rc-d">Users needed more prominent social CTAs than I initially designed. What seemed obvious in ideation was invisible in practice — the designer's mental model and the user's are rarely the same thing.</div></div>
+      <div class="rc"><div class="rc-t">Simplicity vs. power is a tension, not a tradeoff</div><div class="rc-d">Balancing quick-start simplicity for beginners with customisation depth for advanced users required careful information architecture and progressive disclosure.</div></div>
+      <div class="rc"><div class="rc-t">What I'd do differently</div><div class="rc-d">Run longer-term testing (2–4 weeks) to validate whether motivation holds beyond initial excitement. Explore AI-powered workout suggestions earlier — several participants asked for intelligent recommendations based on their patterns.</div></div>
+    </div>
+  </section>
+
+</main>
 
 <footer>© 2025 Inayat. All rights reserved.</footer>
 
 <script>
-  const obs = new IntersectionObserver(
+  // Scroll reveal
+  const ro = new IntersectionObserver(
     es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }),
     { threshold: 0.06 }
   );
-  document.querySelectorAll('.rev').forEach(el => obs.observe(el));
+  document.querySelectorAll('.rev').forEach(el => ro.observe(el));
 
+  // Active sidenav link
   const links = document.querySelectorAll('.side-a');
   const secs  = document.querySelectorAll('.sec');
   const so = new IntersectionObserver(es => {
