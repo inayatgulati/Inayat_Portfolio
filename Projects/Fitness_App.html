@@ -113,11 +113,19 @@
 
     /* ── HERO VIDEO ── */
     .hero-video {
-      width: 100%; border-radius: 14px; overflow: hidden;
-      border: 1px solid var(--bdr); margin-bottom: 2rem;
-      background: #111;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
     }
-    .hero-video video { width: 100%; display: block; max-height: 480px; object-fit: cover; }
+    .hero-video video {
+      width: 280px;
+      height: 560px;
+      object-fit: cover;
+      border-radius: 32px;
+      border: 1px solid var(--bdr);
+      display: block;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
 
     /* ── STATS ── */
     .stats {
