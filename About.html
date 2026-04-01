@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Me - Inayat</title>
+    <title>About — Inayat</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-bg: #0a0a0a;
-            --secondary-bg: #ffffff;
             --text-primary: #ffffff;
             --text-secondary: #a0a0a0;
             --accent: #14b8a6;
@@ -23,7 +22,7 @@
             --gradient-3: #0891b2;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
 
         body {
             font-family: 'Work Sans', sans-serif;
@@ -33,46 +32,17 @@
             overflow-x: hidden;
         }
 
-        /* ── Custom Cursor ── */
-        * { cursor: none !important; }
-
-        #cursor-dot {
-            position: fixed; top: 0; left: 0;
-            width: 8px; height: 8px;
-            background: #14b8a6;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 99999;
-            transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, background 0.2s, opacity 0.2s;
-        }
-        #cursor-ring {
-            position: fixed; top: 0; left: 0;
-            width: 32px; height: 32px;
-            border: 1.5px solid rgba(20,184,166,0.5);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 99998;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s ease, height 0.3s ease, border-color 0.3s;
-        }
+        /* ── CURSOR ── */
+        #cursor-dot { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: #14b8a6; border-radius: 50%; pointer-events: none; z-index: 99999; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, background 0.2s, opacity 0.2s; }
+        #cursor-ring { position: fixed; top: 0; left: 0; width: 32px; height: 32px; border: 1.5px solid rgba(20,184,166,0.5); border-radius: 50%; pointer-events: none; z-index: 99998; transform: translate(-50%, -50%); transition: width 0.3s ease, height 0.3s ease, border-color 0.3s; }
         body.cursor-hover #cursor-dot  { width: 12px; height: 12px; background: #2dd4bf; }
         body.cursor-hover #cursor-ring { width: 44px; height: 44px; border-color: rgba(45,212,191,0.7); }
         body.cursor-click #cursor-dot  { width: 6px; height: 6px; }
         body.cursor-click #cursor-ring { width: 22px; height: 22px; border-color: #14b8a6; }
         @media (pointer: coarse) { * { cursor: auto !important; } #cursor-dot, #cursor-ring { display: none; } }
 
-        /* Navigation */
-        nav {
-            position: fixed; top: 0; left: 0; right: 0;
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            z-index: 1000;
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid var(--border);
-            animation: slideDown 0.6s ease;
-        }
+        /* ── NAV ── */
+        nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(10,10,10,0.8); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); z-index: 1000; padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); animation: slideDown 0.6s ease; }
         @keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; letter-spacing: 1px; color: var(--text-primary); text-decoration: none; }
@@ -87,99 +57,231 @@
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
 
-        /* Hero */
-        .hero { padding: 10rem 2rem 6rem; position: relative; overflow: hidden; }
-        .hero::before { content: ''; position: absolute; top: -30%; right: -10%; width: 600px; height: 600px; background: radial-gradient(circle, var(--gradient-1) 0%, transparent 70%); filter: blur(120px); opacity: 0.4; animation: float 20s ease-in-out infinite; z-index: 0; }
-        @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(30px, -30px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } }
-        .hero-container { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; text-align: center; }
-        .hero-title { font-family: 'Cormorant Garamond', serif; font-size: 4rem; font-weight: 600; margin-bottom: 1rem; background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 50%, var(--gradient-3) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: fadeInUp 0.8s ease; }
+        /* ── ABOUT HERO ── */
+        .about-hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 2rem 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .about-hero::before { content: ''; position: absolute; top: -30%; right: -10%; width: 600px; height: 600px; background: radial-gradient(circle, var(--gradient-1) 0%, transparent 70%); filter: blur(120px); opacity: 0.35; animation: float 20s ease-in-out infinite; z-index: 0; }
+        .about-hero::after { content: ''; position: absolute; bottom: -20%; left: -10%; width: 500px; height: 500px; background: radial-gradient(circle, var(--gradient-3) 0%, transparent 70%); filter: blur(120px); opacity: 0.25; animation: float 15s ease-in-out infinite reverse; z-index: 0; }
+        @keyframes float { 0%, 100% { transform: translate(0,0) scale(1); } 33% { transform: translate(30px,-30px) scale(1.1); } 66% { transform: translate(-20px,20px) scale(0.9); } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* About */
-        .about { padding: 4rem 2rem; position: relative; }
-        .about-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: center; }
-        .about-image-container { position: relative; animation: fadeInUp 0.8s ease 0.2s both; }
-        .about-image { width: 100%; height: 500px; background: linear-gradient(135deg, rgba(20,184,166,0.1) 0%, rgba(6,182,212,0.1) 100%); border-radius: 20px; position: relative; overflow: hidden; border: 1px solid var(--border); backdrop-filter: blur(20px); box-shadow: 0 20px 60px rgba(20,184,166,0.2); }
-        .about-image img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; border-radius: 20px; }
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 5rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Photo */
+        .about-photo-wrap {
+            position: relative;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+        .about-photo {
+            width: 100%;
+            aspect-ratio: 3/4;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 30px 80px rgba(20,184,166,0.15);
+            position: relative;
+        }
+        .about-photo img {
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: center top;
+            display: block;
+            transition: transform 0.6s ease;
+        }
+        .about-photo:hover img { transform: scale(1.03); }
+        .about-photo::after {
+            content: '';
+            position: absolute; inset: 0;
+            border-radius: 20px;
+            background: linear-gradient(180deg, transparent 60%, rgba(10,10,10,0.4) 100%);
+        }
+
+        /* Floating tag */
+        .photo-tag {
+            position: absolute;
+            bottom: -16px; right: -16px;
+            background: rgba(10,10,10,0.9);
+            border: 1px solid rgba(20,184,166,0.4);
+            border-radius: 12px;
+            padding: 12px 18px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 2;
+        }
+        .photo-tag span {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent-light);
+        }
+        .photo-tag strong {
+            display: block;
+            font-size: 13px;
+            color: var(--text-primary);
+            margin-top: 2px;
+        }
+
+        /* Bio content */
         .about-content { animation: fadeInUp 0.8s ease 0.4s both; }
-        .about-subtitle { font-size: 0.95rem; color: var(--accent-light); letter-spacing: 3px; text-transform: uppercase; font-weight: 500; margin-bottom: 1.5rem; }
-        .about-heading { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 600; margin-bottom: 2rem; line-height: 1.2; }
-        .about-text { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem; }
+        .about-label { font-size: 0.85rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; }
+        .about-heading {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem; font-weight: 600;
+            line-height: 1.15; margin-bottom: 2rem;
+        }
+        .about-heading em {
+            font-style: normal;
+            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .about-text {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.85;
+            margin-bottom: 1.4rem;
+        }
+        .about-text:last-of-type { margin-bottom: 2.5rem; }
 
-        /* Skills */
-        .skills { padding: 6rem 2rem; position: relative; overflow: hidden; }
-        .skills::before { content: ''; position: absolute; bottom: -20%; left: -10%; width: 500px; height: 500px; background: radial-gradient(circle, var(--gradient-2) 0%, transparent 70%); filter: blur(120px); opacity: 0.25; z-index: 0; }
-        .skills-container { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
-        .section-title { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 600; text-align: center; margin-bottom: 4rem; position: relative; }
+        /* CTA row */
+        .about-ctas { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+        .about-btn {
+            display: inline-block; padding: 0.9rem 2.2rem;
+            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 100%);
+            color: #fff; text-decoration: none; border-radius: 50px;
+            font-weight: 500; font-size: 0.95rem; letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(20,184,166,0.3);
+            position: relative; overflow: hidden;
+        }
+        .about-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s ease; }
+        .about-btn:hover::before { left: 100%; }
+        .about-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 50px rgba(20,184,166,0.5); }
+        .about-link { color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; border-bottom: 1px solid transparent; padding-bottom: 2px; transition: all 0.3s ease; }
+        .about-link:hover { color: var(--accent-light); border-bottom-color: var(--accent-light); }
+
+        /* ── TIMELINE ── */
+        .journey { padding: 8rem 2rem; position: relative; overflow: hidden; }
+        .journey::before { content: ''; position: absolute; top: 20%; right: -5%; width: 400px; height: 400px; background: radial-gradient(circle, var(--gradient-3) 0%, transparent 70%); filter: blur(120px); opacity: 0.15; z-index: 0; }
+        .journey-container { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+        .section-title { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 600; text-align: center; margin-bottom: 4rem; }
         .section-title::after { content: ''; display: block; width: 80px; height: 2px; background: var(--accent); margin: 1.5rem auto 0; }
-        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-        .skill-card { background: var(--card-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 16px; padding: 2rem; border: 1px solid var(--border); transition: all 0.3s ease; opacity: 0; animation: fadeInUp 0.6s ease forwards; }
-        .skill-card:nth-child(1) { animation-delay: 0.1s; } .skill-card:nth-child(2) { animation-delay: 0.2s; } .skill-card:nth-child(3) { animation-delay: 0.3s; } .skill-card:nth-child(4) { animation-delay: 0.4s; } .skill-card:nth-child(5) { animation-delay: 0.5s; } .skill-card:nth-child(6) { animation-delay: 0.6s; } .skill-card:nth-child(7) { animation-delay: 0.7s; }
-        .skill-card:hover { border-color: var(--accent); box-shadow: 0 20px 50px rgba(20,184,166,0.2); transform: translateY(-5px); }
-        .skill-icon { width: 50px; height: 50px; background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; font-size: 1.5rem; }
-        .skill-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.8rem; }
-        .skill-description { color: var(--text-secondary); line-height: 1.7; font-size: 0.95rem; }
 
-        /* Resume */
-        .resume { padding: 6rem 2rem; background: linear-gradient(180deg, var(--primary-bg) 0%, #0f0f1a 100%); position: relative; overflow: hidden; }
-        .resume::before { content: ''; position: absolute; top: -20%; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, var(--gradient-3) 0%, transparent 70%); filter: blur(140px); opacity: 0.3; z-index: 0; }
-        .resume-container { max-width: 800px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
-        .resume-card { background: var(--card-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 20px; padding: 3rem; border: 1px solid var(--border); margin-top: 2rem; }
-        .resume-icon { width: 80px; height: 80px; background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem; font-size: 2.5rem; box-shadow: 0 15px 40px rgba(20,184,166,0.4); }
-        .resume-text { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2rem; }
-        .resume-btn { display: inline-block; padding: 1rem 2.5rem; background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 100%); color: #fff; text-decoration: none; border-radius: 50px; font-weight: 500; letter-spacing: 0.5px; transition: all 0.3s ease; box-shadow: 0 10px 40px rgba(20,184,166,0.3); }
-        .resume-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 50px rgba(20,184,166,0.5); }
+        .timeline { position: relative; padding: 1rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--border); }
 
-        /* Contact */
-        .contact { padding: 6rem 2rem; background: var(--primary-bg); }
-        .contact-container { max-width: 1000px; margin: 0 auto; text-align: center; }
-        .contact-description { font-size: 1.2rem; color: rgba(255,255,255,0.8); margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .timeline-item {
+            position: relative;
+            padding: 0 0 3rem 3rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .timeline-item.visible { opacity: 1; transform: translateY(0); }
+
+        .timeline-dot {
+            position: absolute; left: -7px; top: 4px;
+            width: 16px; height: 16px;
+            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+            border: 3px solid var(--primary-bg);
+            border-radius: 50%;
+            box-shadow: 0 0 16px rgba(20,184,166,0.5);
+        }
+        .timeline-year {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem; font-weight: 600;
+            color: var(--accent); letter-spacing: 1px;
+            margin-bottom: 0.4rem;
+        }
+        .timeline-title {
+            font-size: 1.15rem; font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+        .timeline-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            max-width: 680px;
+        }
+        .timeline-tags {
+            display: flex; flex-wrap: wrap; gap: 6px;
+            margin-top: 1rem;
+        }
+        .timeline-tag {
+            font-size: 10px; font-weight: 600;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--accent-light);
+            background: rgba(20,184,166,0.08);
+            padding: 3px 10px; border-radius: 99px;
+            border: 1px solid rgba(20,184,166,0.2);
+        }
+
+        /* ── CONTACT ── */
+        .contact { padding: 8rem 2rem; background: linear-gradient(180deg, var(--primary-bg) 0%, #0f0f1a 100%); position: relative; overflow: hidden; }
+        .contact::before { content: ''; position: absolute; top: -20%; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, var(--gradient-2) 0%, transparent 70%); filter: blur(140px); opacity: 0.3; z-index: 0; }
+        .contact-container { max-width: 1000px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+        .contact-description { font-size: 1.1rem; color: rgba(255,255,255,0.7); margin-bottom: 3rem; max-width: 560px; margin-left: auto; margin-right: auto; }
         .contact-links { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
         .contact-item { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 2.5rem 2rem; background: var(--card-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 16px; min-width: 200px; text-decoration: none; color: #fff; transition: all 0.4s ease; border: 1px solid var(--border); position: relative; overflow: hidden; }
         .contact-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(20,184,166,0.1), transparent); transition: left 0.6s ease; }
         .contact-item:hover::before { left: 100%; }
         .contact-item:hover { background: rgba(20,184,166,0.1); border-color: var(--accent); transform: translateY(-8px); box-shadow: 0 20px 50px rgba(20,184,166,0.3); }
         .contact-icon { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 100%); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 10px 30px rgba(20,184,166,0.4); transition: all 0.3s ease; }
-        .contact-item:hover .contact-icon { transform: scale(1.1) rotate(5deg); box-shadow: 0 15px 40px rgba(20,184,166,0.6); }
+        .contact-item:hover .contact-icon { transform: scale(1.1) rotate(5deg); }
         .contact-label { font-weight: 500; font-size: 0.95rem; }
-        .contact-value { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+        .contact-value { color: rgba(255,255,255,0.6); font-size: 0.9rem; }
 
         footer { background: #050508; color: rgba(255,255,255,0.5); padding: 2rem; text-align: center; border-top: 1px solid var(--border); }
 
+        /* ── RESPONSIVE ── */
         @media (max-width: 1024px) {
             .about-container { grid-template-columns: 1fr; gap: 3rem; }
-            .about-image { height: 500px; }
+            .about-photo { aspect-ratio: 4/3; }
+            .about-heading { font-size: 2.5rem; }
         }
         @media (max-width: 768px) {
             nav { padding: 1rem 1.5rem; }
-            .about-image { height: 400px; }
-            .about-image img { height: 400px; }
             .nav-links { position: fixed; top: 70px; left: -100%; width: 100%; background: rgba(10,10,10,0.98); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); flex-direction: column; padding: 2rem; gap: 1.5rem; transition: left 0.3s ease; border-bottom: 1px solid var(--border); }
             .nav-links.active { left: 0; }
             .hamburger { display: flex; }
-            .hero { padding: 8rem 1.5rem 4rem; }
-            .hero-title { font-size: 2.5rem; }
+            .about-hero { padding: 7rem 1.5rem 4rem; min-height: auto; }
             .about-heading { font-size: 2rem; }
             .section-title { font-size: 2.2rem; }
-            .skills-grid { grid-template-columns: 1fr; }
+            .journey { padding: 4rem 1.5rem; }
+            .contact { padding: 4rem 1.5rem; }
             .contact-links { flex-direction: column; align-items: center; }
             .contact-item { width: 100%; max-width: 300px; }
+            .photo-tag { bottom: -12px; right: -8px; }
+            .about-ctas { flex-direction: column; align-items: flex-start; }
         }
         @media (max-width: 480px) {
-            .hero-title { font-size: 2rem; }
+            .about-heading { font-size: 1.8rem; }
             .section-title { font-size: 1.8rem; }
-            .about-image { height: 350px; }
-            .about-image img { height: 350px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Custom Cursor -->
     <div id="cursor-dot"></div>
     <div id="cursor-ring"></div>
 
-    <!-- Navigation -->
     <nav>
         <div class="nav-container">
             <a href="./index.html" class="logo">INAYAT</a>
@@ -194,57 +296,100 @@
         </div>
     </nav>
 
-    <!-- Hero -->
-    <section class="hero">
-        <div class="hero-container">
-            <h1 class="hero-title">About Me</h1>
-        </div>
-    </section>
-
-    <!-- About -->
-    <section class="about">
+    <!-- About Hero -->
+    <section class="about-hero">
         <div class="about-container">
-            <div class="about-image-container">
-                <div class="about-image">
+
+            <!-- Photo -->
+            <div class="about-photo-wrap">
+                <div class="about-photo">
                     <img src="./Images/Inayat.JPG" alt="Inayat">
                 </div>
+                <div class="photo-tag">
+                    <span>Based in</span>
+                    <strong>Vancouver, BC</strong>
+                </div>
             </div>
+
+            <!-- Bio -->
             <div class="about-content">
-                <p class="about-subtitle">Who I Am</p>
-                <h2 class="about-heading">Crafting User-Centered Solutions</h2>
-                <p class="about-text">I am majoring in Interactive Arts and Technology with concentrations in Interaction Design and Web Design and Development. As an aspiring interaction designer and product designer, I craft user-centered solutions that seamlessly combine creativity and functionality. My passion spans designing seamless digital experiences, developing intuitive web interfaces, and exploring physical product design—all focused on user needs and innovative design principles.</p>
-                <p class="about-text">With expertise in web design and development, I bring ideas to life through responsive interfaces, clean code, and visually compelling designs. Whether I'm building interactive prototypes, designing 3D models, creating web applications, or optimizing user flows, I thrive on creating impactful experiences that solve real-world problems. My research-focused approach allows me to deeply understand user behaviors and translate insights into meaningful design decisions across both digital and physical mediums.</p>
-                <p class="about-text">Beyond design, I draw inspiration from architecture, art, and technology, using these influences to fuel my creativity and attention to detail. I'm committed to continuous growth, staying updated with the latest tools and trends to deliver exceptional results. I aim to contribute to projects that merge design and technology, creating impactful user experiences through both creative innovation and evidence-based research—whether it's a digital interface, a web platform, or a physical product.</p>
+                <p class="about-label">About Me</p>
+                <h1 class="about-heading">Designer who makes things <em>actually work.</em></h1>
+
+                <p class="about-text">I'm a UX/UI designer based in Vancouver, studying Interactive Arts and Technology at SFU. I got into design because I kept running into digital products that looked polished but made no sense to actually use — and I wanted to fix that.</p>
+
+                <p class="about-text">That brought me to Mastercard's Vancouver Tech Hub, where I redesigned internal platforms used by 15,000+ global employees and ran cross-cultural research across four countries. It also led me to build Chemtrails — a mobile travel app I took from user interviews all the way to a shipped product.</p>
+
+                <p class="about-text">I'm research-first by habit and technically literate by choice. My foundation in frontend development means I design with real constraints in mind — no beautiful mockups that fall apart in build. I'm targeting full-time UX roles for fall 2026.</p>
+
+                <p class="about-text">Outside of design, I'm usually exploring somewhere new — Vancouver's neighbourhoods, BC's backcountry, or a different city entirely. Experiencing different places is what keeps my design perspective fresh.</p>
+
+                <div class="about-ctas">
+                    <a href="./Resume.html" class="about-btn">Download Resume</a>
+                </div>
             </div>
+
         </div>
     </section>
 
-    <!-- Skills -->
-    <section class="skills">
-        <div class="skills-container">
-            <h2 class="section-title">Skills & Expertise</h2>
-            <div class="skills-grid">
-                <div class="skill-card"><div class="skill-icon">🔍</div><h3 class="skill-title">User Research</h3><p class="skill-description">Experienced in conducting surveys, usability testing, and analyzing user behaviour to inform design decisions.</p></div>
-                <div class="skill-card"><div class="skill-icon">⚡</div><h3 class="skill-title">Prototyping</h3><p class="skill-description">Expertise in creating interactive prototypes to visualize and test user flows and designs.</p></div>
-                <div class="skill-card"><div class="skill-icon">🗂️</div><h3 class="skill-title">Information Architecture</h3><p class="skill-description">Skilled in structuring and organizing content to optimize navigation and user experience.</p></div>
-                <div class="skill-card"><div class="skill-icon">💡</div><h3 class="skill-title">Critical Thinking & Problem Solving</h3><p class="skill-description">Adept at analyzing complex problems and developing innovative, user-centered solutions.</p></div>
-                <div class="skill-card"><div class="skill-icon">🤝</div><h3 class="skill-title">Collaboration</h3><p class="skill-description">Strong team player with experience working in Agile environments and cross-functional teams.</p></div>
-                <div class="skill-card"><div class="skill-icon">💻</div><h3 class="skill-title">Programming & Development</h3><p class="skill-description">Proficient in HTML, CSS, JavaScript, React, Java, Python, and C++. Experienced with Git version control for collaborative development and project management. Capable of building full-stack applications and seamlessly communicating with development teams.</p></div>
-                <div class="skill-card"><div class="skill-icon">🚀</div><h3 class="skill-title">Technical Project Development</h3><p class="skill-description">Built production-ready applications using React for dynamic user interfaces. Proficient in Git workflows for version control, branching strategies, and collaborative coding. Experience managing codebases and implementing responsive web applications.</p></div>
-                <div class="skill-card"><div class="skill-icon">🎨</div><h3 class="skill-title">Design Tools & Software</h3><p class="skill-description">Proficient in industry-standard design tools including Figma, Adobe XD, Adobe Photoshop, Adobe Illustrator, and Framer. Experienced in creating high-fidelity mockups, interactive prototypes, and production-ready design assets for web and mobile platforms.</p></div>
-                <div class="skill-card"><div class="skill-icon">🔄</div><h3 class="skill-title">Agile & Iterative Design</h3><p class="skill-description">Familiar with Agile methodologies, emphasizing iterative workflows and continuous improvement.</p></div>
-            </div>
-        </div>
-    </section>
+    <!-- Timeline -->
+    <section class="journey">
+        <div class="journey-container">
+            <h2 class="section-title">My Journey</h2>
+            <div class="timeline">
 
-    <!-- Resume -->
-    <section class="resume">
-        <div class="resume-container">
-            <h2 class="section-title">Resume</h2>
-            <div class="resume-card">
-                <div class="resume-icon">📄</div>
-                <p class="resume-text">Download my resume to learn more about my experience, education, and accomplishments.</p>
-                <a href="https://acrobat.adobe.com/id/urn:aaid:sc:US:0ee6d955-4448-49ed-b70b-3be2dad6d3b8" target="_blank" class="resume-btn">Download Resume</a>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2022 – 2023</div>
+                    <h3 class="timeline-title">Where Creativity Meets Evidence</h3>
+                    <p class="timeline-desc">Discovered that the best design decisions aren't opinions — they're hypotheses tested against real user behavior. Started building fluency in Figma, usability testing, and information architecture while studying at SFU. Realized design isn't about making things look good. It's about making things work.</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Figma</span>
+                        <span class="timeline-tag">User Research</span>
+                        <span class="timeline-tag">Information Architecture</span>
+                        <span class="timeline-tag">Prototyping</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2023 – 2024</div>
+                    <h3 class="timeline-title">Research Changes Everything</h3>
+                    <p class="timeline-desc">Moved from designing for imagined users to designing for real ones. Ran first structured usability tests, conducted contextual interviews, and learned to translate messy qualitative data into clear design decisions. The biggest lesson: the best solution is almost never your first idea.</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Usability Testing</span>
+                        <span class="timeline-tag">Journey Mapping</span>
+                        <span class="timeline-tag">Persona Development</span>
+                        <span class="timeline-tag">Iterative Design</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">Summer 2025</div>
+                    <h3 class="timeline-title">Enterprise UX at Mastercard</h3>
+                    <p class="timeline-desc">Interned at Mastercard's Vancouver Tech Hub, redesigning internal SharePoint platforms for 15,000+ global employees. Worked directly under the VP of Workplace Experience, ran cross-cultural research across Dublin, India, and the US, and learned how to ship UX at enterprise scale — within real business constraints.</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Enterprise UX</span>
+                        <span class="timeline-tag">Cross-cultural Research</span>
+                        <span class="timeline-tag">SharePoint</span>
+                        <span class="timeline-tag">Stakeholder Communication</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">Fall 2025</div>
+                    <h3 class="timeline-title">From Design to Product — End to End</h3>
+                    <p class="timeline-desc">Led the design and development of Chemtrails, a full-stack mobile travel app built in React Native with Firebase. Went from user interviews to shipped product — handling UX research, interaction design, and front/backend development. Proved that design thinking and technical execution aren't separate skills.</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">React Native</span>
+                        <span class="timeline-tag">Firebase</span>
+                        <span class="timeline-tag">Mobile UX</span>
+                        <span class="timeline-tag">End-to-end Product Design</span>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -270,7 +415,9 @@
     </section>
 
     <footer>
-        <div class="footer-content"><p>&copy; 2025 Inayat. All rights reserved.</p></div>
+        <div style="max-width:1400px;margin:0 auto;">
+            <p>&copy; 2025 Inayat. All rights reserved.</p>
+        </div>
     </footer>
 
     <script>
@@ -279,45 +426,33 @@
         const navLinks  = document.querySelector('.nav-links');
         hamburger.addEventListener('click', () => { hamburger.classList.toggle('active'); navLinks.classList.toggle('active'); });
         document.querySelectorAll('.nav-links a').forEach(link => { link.addEventListener('click', () => { hamburger.classList.remove('active'); navLinks.classList.remove('active'); }); });
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { e.preventDefault(); const t = document.querySelector(this.getAttribute('href')); if (t) window.scrollTo({ top: t.offsetTop - 80, behavior: 'smooth' }); }); });
 
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+        // Timeline scroll reveal
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => entry.target.classList.add('visible'), i * 100);
+                }
             });
-        });
+        }, { threshold: 0.15 });
+        timelineItems.forEach(item => observer.observe(item));
 
-        // ── Custom Cursor ──
+        // Custom cursor
         (function () {
             const dot  = document.getElementById('cursor-dot');
             const ring = document.getElementById('cursor-ring');
             let mx=0, my=0, rx=0, ry=0;
-
-            document.addEventListener('mousemove', e => {
-                mx = e.clientX; my = e.clientY;
-                dot.style.left = mx + 'px'; dot.style.top = my + 'px';
-            });
-
-            function animRing() {
-                rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
-                ring.style.left = Math.round(rx) + 'px'; ring.style.top = Math.round(ry) + 'px';
-                requestAnimationFrame(animRing);
-            }
+            document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; });
+            function animRing() { rx+=(mx-rx)*0.14; ry+=(my-ry)*0.14; ring.style.left=Math.round(rx)+'px'; ring.style.top=Math.round(ry)+'px'; requestAnimationFrame(animRing); }
             animRing();
-
-            document.addEventListener('mouseover', e => {
-                if (e.target.closest('a, button, .skill-card, .contact-item, .resume-btn, .hamburger')) document.body.classList.add('cursor-hover');
-            });
-            document.addEventListener('mouseout', e => {
-                if (e.target.closest('a, button, .skill-card, .contact-item, .resume-btn, .hamburger')) document.body.classList.remove('cursor-hover');
-            });
-
+            document.addEventListener('mouseover', e => { if (e.target.closest('a, button, .contact-item, .about-btn, .hamburger')) document.body.classList.add('cursor-hover'); });
+            document.addEventListener('mouseout',  e => { if (e.target.closest('a, button, .contact-item, .about-btn, .hamburger')) document.body.classList.remove('cursor-hover'); });
             document.addEventListener('mousedown', () => document.body.classList.add('cursor-click'));
             document.addEventListener('mouseup',   () => document.body.classList.remove('cursor-click'));
-            document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
-            document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
+            document.addEventListener('mouseleave', () => { dot.style.opacity='0'; ring.style.opacity='0'; });
+            document.addEventListener('mouseenter', () => { dot.style.opacity='1'; ring.style.opacity='1'; });
         })();
     </script>
 </body>
