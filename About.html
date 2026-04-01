@@ -57,17 +57,64 @@
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
 
-        /* ── ABOUT HERO ── */
-        .about-hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 8rem 2rem 6rem;
+        /* ── HERO (matches Projects page) ── */
+        .hero {
+            padding: 10rem 2rem 4rem;
             position: relative;
             overflow: hidden;
         }
-        .about-hero::before { content: ''; position: absolute; top: -30%; right: -10%; width: 600px; height: 600px; background: radial-gradient(circle, var(--gradient-1) 0%, transparent 70%); filter: blur(120px); opacity: 0.35; animation: float 20s ease-in-out infinite; z-index: 0; }
-        .about-hero::after { content: ''; position: absolute; bottom: -20%; left: -10%; width: 500px; height: 500px; background: radial-gradient(circle, var(--gradient-3) 0%, transparent 70%); filter: blur(120px); opacity: 0.25; animation: float 15s ease-in-out infinite reverse; z-index: 0; }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -20%; right: -10%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, var(--gradient-1) 0%, transparent 70%);
+            filter: blur(120px);
+            opacity: 0.4;
+            z-index: 0;
+        }
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        .page-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 50%, var(--gradient-3) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ── ABOUT BODY ── */
+        .about-body {
+            padding: 6rem 2rem 8rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .about-body::after {
+            content: '';
+            position: absolute;
+            bottom: -20%; left: -10%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, var(--gradient-3) 0%, transparent 70%);
+            filter: blur(120px);
+            opacity: 0.25;
+            animation: float 15s ease-in-out infinite reverse;
+            z-index: 0;
+        }
+
         @keyframes float { 0%, 100% { transform: translate(0,0) scale(1); } 33% { transform: translate(30px,-30px) scale(1.1); } 66% { transform: translate(-20px,20px) scale(0.9); } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -173,8 +220,6 @@
         .about-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s ease; }
         .about-btn:hover::before { left: 100%; }
         .about-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 50px rgba(20,184,166,0.5); }
-        .about-link { color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; border-bottom: 1px solid transparent; padding-bottom: 2px; transition: all 0.3s ease; }
-        .about-link:hover { color: var(--accent-light); border-bottom-color: var(--accent-light); }
 
         /* ── TIMELINE ── */
         .journey { padding: 8rem 2rem; position: relative; overflow: hidden; }
@@ -261,7 +306,10 @@
             .nav-links { position: fixed; top: 70px; left: -100%; width: 100%; background: rgba(10,10,10,0.98); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); flex-direction: column; padding: 2rem; gap: 1.5rem; transition: left 0.3s ease; border-bottom: 1px solid var(--border); }
             .nav-links.active { left: 0; }
             .hamburger { display: flex; }
-            .about-hero { padding: 7rem 1.5rem 4rem; min-height: auto; }
+            .hero { padding: 8rem 1.5rem 3rem; }
+            .page-title { font-size: 2.5rem; }
+            .page-subtitle { font-size: 1rem; }
+            .about-body { padding: 4rem 1.5rem 6rem; }
             .about-heading { font-size: 2rem; }
             .section-title { font-size: 2.2rem; }
             .journey { padding: 4rem 1.5rem; }
@@ -272,6 +320,7 @@
             .about-ctas { flex-direction: column; align-items: flex-start; }
         }
         @media (max-width: 480px) {
+            .page-title { font-size: 2rem; }
             .about-heading { font-size: 1.8rem; }
             .section-title { font-size: 1.8rem; }
         }
@@ -296,8 +345,16 @@
         </div>
     </nav>
 
-    <!-- About Hero -->
-    <section class="about-hero">
+    <!-- Hero (matches Projects page style) -->
+    <section class="hero">
+        <div class="hero-container">
+            <h1 class="page-title">About Me</h1>
+            <p class="page-subtitle">UX/UI designer based in Vancouver — research-first, technically literate, and targeting full-time roles for fall 2026.</p>
+        </div>
+    </section>
+
+    <!-- About Body -->
+    <section class="about-body">
         <div class="about-container">
 
             <!-- Photo -->
@@ -314,7 +371,7 @@
             <!-- Bio -->
             <div class="about-content">
                 <p class="about-label">About Me</p>
-                <h1 class="about-heading">Designer who makes things <em>actually work.</em></h1>
+                <h2 class="about-heading">Designer who makes things <em>actually work.</em></h2>
 
                 <p class="about-text">I'm a UX/UI designer based in Vancouver, studying Interactive Arts and Technology at SFU. I got into design because I kept running into digital products that looked polished but made no sense to actually use — and I wanted to fix that.</p>
 
