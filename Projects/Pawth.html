@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pawth — Inayat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:     #0a0a0a;
+      --sur:    rgba(255,255,255,0.03);
+      --bdr:    rgba(255,255,255,0.08);
+      --text:   #f0f0f0;
+      --muted:  #888;
+      --dim:    #444;
+      --teal:   #14b8a6;
+      --teal-l: #2dd4bf;
+      --teal-d: #0d9488;
+      --nav-h:  64px;
+      --side-w: 200px;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Work Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+    .topnav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); z-index: 200; display: flex; align-items: center; padding: 0 2rem; background: rgba(10,10,10,0.93); backdrop-filter: blur(16px); border-bottom: 1px solid var(--bdr); }
+    .topnav-in { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; letter-spacing: 1px; color: var(--text); text-decoration: none; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; transition: color .2s; }
+    .nav-links a:hover { color: var(--teal); }
+
+    .sidenav { position: fixed; top: var(--nav-h); left: 0; width: var(--side-w); height: calc(100vh - var(--nav-h)); padding: 2.5rem 1rem 2rem 2rem; border-right: 1px solid var(--bdr); background: var(--bg); display: flex; flex-direction: column; gap: 2rem; overflow-y: auto; overflow-x: hidden; z-index: 100; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--teal); text-decoration: none; font-size: 0.78rem; font-weight: 500; transition: gap .2s; white-space: nowrap; }
+    .back-link:hover { gap: 10px; }
+    .side-lbl { font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--dim); font-weight: 600; margin-bottom: 0.75rem; }
+    .side-list { display: flex; flex-direction: column; }
+    .side-a { display: flex; align-items: center; gap: 8px; padding: 7px 0 7px 10px; color: var(--dim); text-decoration: none; font-size: 0.77rem; border-left: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
+    .side-a:hover { color: var(--text); border-left-color: var(--dim); }
+    .side-a.active { color: var(--teal-l); border-left-color: var(--teal); font-weight: 500; }
+    .side-num { font-size: 0.6rem; color: var(--dim); min-width: 16px; }
+    .side-a.active .side-num { color: var(--teal); }
+
+    .main { margin-left: var(--side-w); padding: calc(var(--nav-h) + 3rem) 3.5rem 6rem 3rem; max-width: calc(900px + var(--side-w)); }
+
+    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+    .tag { font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--teal); padding: 3px 10px; border: 1px solid rgba(20,184,166,.25); border-radius: 20px; background: rgba(20,184,166,.05); }
+    .hero-h { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.4rem,4vw,3.6rem); font-weight: 300; line-height: 1.08; margin-bottom: 0.5rem; }
+    .hero-h em { font-style: italic; color: var(--teal-l); }
+    .hero-sub { font-size: 0.95rem; color: var(--muted); margin-bottom: 1rem; }
+    .hero-p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; max-width: 520px; margin-bottom: 1.75rem; }
+
+    .hero-video { width: 100%; border-radius: 14px; overflow: hidden; border: 1px solid var(--bdr); margin-bottom: 2rem; background: #111; }
+    .hero-video iframe { width: 100%; display: block; aspect-ratio: 16/9; border: none; }
+
+    .stats { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--bdr); border-radius: 14px; overflow: hidden; margin-bottom: 1.75rem; }
+    .stat { padding: 1.2rem 1.1rem; background: var(--sur); border-right: 1px solid var(--bdr); }
+    .stat:last-child { border-right: none; }
+    .s-n { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 700; color: var(--teal-l); line-height: 1; margin-bottom: 5px; }
+    .s-l { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
+    .s-sub { font-size: 0.65rem; color: var(--dim); margin-top: 2px; }
+
+    .meta { display: flex; gap: 2rem; flex-wrap: wrap; padding-top: 1.25rem; border-top: 1px solid var(--bdr); margin-bottom: 5rem; }
+    .m-k { font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 4px; }
+    .m-v { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+    .sec { margin-bottom: 5rem; }
+    .phase { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
+    .p-dot { width: 20px; height: 20px; border-radius: 50%; background: rgba(20,184,166,.1); border: 1px solid rgba(20,184,166,.3); display: flex; align-items: center; justify-content: center; font-size: 0.58rem; color: var(--teal); font-weight: 700; }
+    .p-txt { font-size: 0.65rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal); font-weight: 600; }
+    .sec-h { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 300; line-height: 1.15; margin-bottom: 0.5rem; }
+    .sec-lead { font-size: 0.875rem; color: var(--muted); line-height: 1.8; max-width: 580px; margin-bottom: 1.5rem; }
+    .rule { height: 1px; background: var(--bdr); margin-bottom: 1.5rem; }
+    .sub { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 0.875rem; }
+
+    .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.5rem; }
+    .g2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 1.5rem; }
+
+    .nc { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
+    .nc-n { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--teal-l); line-height: 1; margin-bottom: 6px; }
+    .nc-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; }
+    .nc-d { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
+
+    .ic { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
+    .ic-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; }
+    .ic-d { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
+
+    .flist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+    .fr { display: flex; gap: 0.875rem; align-items: flex-start; padding: 0.875rem 1.1rem; background: var(--sur); border: 1px solid var(--bdr); border-radius: 8px; transition: border-color .2s; }
+    .fr:hover { border-color: rgba(20,184,166,.2); }
+    .fr-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
+    .fr-d { font-size: 0.77rem; color: var(--muted); line-height: 1.55; }
+
+    .slist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+    .st { display: flex; gap: 0.875rem; padding: 0.875rem 1.1rem; background: var(--sur); border: 1px solid var(--bdr); border-radius: 8px; }
+    .st-n { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 700; color: var(--teal); min-width: 20px; line-height: 1.5; }
+    .st-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
+    .st-d { font-size: 0.77rem; color: var(--muted); line-height: 1.5; }
+
+    .dcard { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.5rem; }
+    .dcard.chosen { border-color: rgba(20,184,166,.3); background: rgba(20,184,166,.04); }
+    .dcard-label { font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; margin-bottom: 0.5rem; }
+    .dcard.chosen .dcard-label { color: var(--teal); }
+    .dcard:not(.chosen) .dcard-label { color: var(--dim); }
+    .dcard-t { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .dcard-d { font-size: 0.77rem; color: var(--muted); line-height: 1.6; }
+
+    .ilist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+    .it { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: center; gap: 8px; }
+    .it-b { padding: 0.875rem 1rem; border-radius: 8px; border: 1px solid var(--bdr); }
+    .it-b.bef { background: var(--sur); }
+    .it-b.aft { background: rgba(20,184,166,.04); border-color: rgba(20,184,166,.15); }
+    .it-lbl { font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; margin-bottom: 3px; }
+    .it-b.bef .it-lbl { color: var(--dim); }
+    .it-b.aft .it-lbl { color: var(--teal); }
+    .it-txt { font-size: 0.77rem; color: var(--muted); line-height: 1.45; }
+    .it-b.aft .it-txt { color: var(--text); }
+    .it-arr { text-align: center; color: var(--teal); font-size: 0.85rem; }
+
+    .quote { border-left: 2px solid var(--teal); padding: 0.875rem 1.25rem; margin: 1.25rem 0; background: rgba(20,184,166,.04); border-radius: 0 8px 8px 0; }
+    .quote p { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; line-height: 1.6; color: var(--text); }
+    .quote-attr { font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; }
+
+    .rc { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
+    .rc-t { font-size: 0.82rem; font-weight: 600; color: var(--teal-l); margin-bottom: 6px; }
+    .rc-d { font-size: 0.78rem; color: var(--muted); line-height: 1.7; }
+
+    .imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
+    .imgs.c2 { grid-template-columns: 1fr 1fr; }
+    .imgs.c3 { grid-template-columns: repeat(3,1fr); }
+    .iw { border-radius: 12px; overflow: hidden; border: 1px solid var(--bdr); background: #111; }
+    .iw img { width: 100%; display: block; }
+    .icap { padding: 7px 10px; font-size: 0.7rem; color: var(--dim); border-top: 1px solid var(--bdr); line-height: 1.4; }
+
+    /* SKETCH — white background to show pencil */
+    .sketch-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.5rem; }
+    .sketch-wrap { border-radius: 12px; overflow: hidden; border: 1px solid var(--bdr); }
+    .sketch-wrap img { width: 100%; display: block; background: #f8f5f0; }
+    .sketch-cap { padding: 7px 10px; font-size: 0.7rem; color: var(--dim); border-top: 1px solid var(--bdr); line-height: 1.4; background: #111; }
+
+    /* NEW FEATURE HIGHLIGHT CARD */
+    .feature-callout { background: rgba(20,184,166,.04); border: 1px solid rgba(20,184,166,.2); border-radius: 12px; padding: 1.5rem; display: flex; flex-direction: column; justify-content: center; }
+    .feature-callout .sub { margin-bottom: 0.4rem; }
+    .feature-callout-h { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 300; line-height: 1.2; margin-bottom: 0.5rem; }
+    .feature-callout-d { font-size: 0.77rem; color: var(--muted); line-height: 1.7; }
+
+    .api-table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: 0.76rem; }
+    .api-table th { text-align: left; padding: 0.6rem 0.875rem; font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; border-bottom: 1px solid var(--bdr); background: rgba(20,184,166,.04); }
+    .api-table td { padding: 0.6rem 0.875rem; color: var(--muted); border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: top; line-height: 1.5; }
+    .api-table tr:hover td { background: var(--sur); }
+    .method { font-family: monospace; font-size: 0.68rem; padding: 2px 6px; border-radius: 4px; font-weight: 600; white-space: nowrap; }
+    .method.get   { background: rgba(34,197,94,.1);  color: #4ade80; border: 1px solid rgba(34,197,94,.2); }
+    .method.post  { background: rgba(20,184,166,.1); color: var(--teal-l); border: 1px solid rgba(20,184,166,.2); }
+    .method.put   { background: rgba(99,102,241,.1); color: #a5b4fc; border: 1px solid rgba(99,102,241,.2); }
+    .method.del   { background: rgba(239,68,68,.1);  color: #f87171; border: 1px solid rgba(239,68,68,.2); }
+    .method.patch { background: rgba(168,85,247,.1); color: #c4b5fd; border: 1px solid rgba(168,85,247,.2); }
+    .endpoint { font-family: monospace; font-size: 0.72rem; color: var(--text); }
+
+    .tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .tool { font-size: 0.72rem; padding: 4px 12px; border-radius: 20px; background: var(--sur); border: 1px solid var(--bdr); color: var(--muted); }
+
+    .role-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; background: rgba(20,184,166,.08); border: 1px solid rgba(20,184,166,.2); font-size: 0.7rem; color: var(--teal-l); font-weight: 600; margin-bottom: 0.75rem; }
+
+    footer { background: #050508; border-top: 1px solid var(--bdr); padding: 1.5rem 2rem; text-align: center; font-size: 0.8rem; color: var(--dim); }
+
+    .rev { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+    .rev.in { opacity: 1; transform: none; }
+
+    @media (max-width: 860px) {
+      .sidenav { display: none; }
+      .main { margin-left: 0; padding: 5rem 1.5rem 5rem; }
+      .stats { grid-template-columns: repeat(2,1fr); }
+      .g3, .g2, .sketch-grid { grid-template-columns: 1fr; }
+      .it { grid-template-columns: 1fr; }
+      .it-arr { display: none; }
+      .imgs.c2, .imgs.c3 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .stats { grid-template-columns: 1fr 1fr; }
+      .hero-h { font-size: 2rem; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-in">
+    <a href="../index.html" class="logo">INAYAT</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../About.html">About</a></li>
+      <li><a href="../Projects.html">Projects</a></li>
+      <li><a href="../Resume.html">Resume</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<aside class="sidenav">
+  <a href="../Projects.html" class="back-link">← Projects</a>
+  <div>
+    <div class="side-lbl">Case Study</div>
+    <nav class="side-list">
+      <a href="#overview"     class="side-a active"><span class="side-num">00</span>Overview</a>
+      <a href="#sketches"     class="side-a"><span class="side-num">01</span>Sketches</a>
+      <a href="#solution"     class="side-a"><span class="side-num">02</span>Solution</a>
+      <a href="#architecture" class="side-a"><span class="side-num">03</span>Architecture</a>
+      <a href="#api"          class="side-a"><span class="side-num">04</span>API</a>
+      <a href="#access"       class="side-a"><span class="side-num">05</span>Access Control</a>
+      <a href="#challenges"   class="side-a"><span class="side-num">06</span>Challenges</a>
+      <a href="#contribution" class="side-a"><span class="side-num">07</span>My Work</a>
+      <a href="#reflection"   class="side-a"><span class="side-num">08</span>Reflection</a>
+    </nav>
+  </div>
+</aside>
+
+<main class="main">
+
+  <!-- HERO -->
+  <header style="margin-bottom:4rem;">
+    <div class="tags">
+      <span class="tag">Full-Stack Web</span>
+      <span class="tag">UX/UI Design</span>
+      <span class="tag">Social Platform</span>
+      <span class="tag">Project Lead</span>
+    </div>
+    <h1 class="hero-h">Pawth—<br><em>Pet Social Community</em></h1>
+    <p class="hero-sub">Case Study — Full-Stack Web Application</p>
+    <p class="hero-p">A social platform connecting pet owners through shared posts and discovery of pet-friendly locations — bringing community and maps together in one seamless web app.</p>
+
+    <div class="hero-video">
+      <iframe
+        src="https://www.youtube.com/embed/mMx9AH1CtUE?autoplay=1&mute=1&loop=1&playlist=mMx9AH1CtUE&controls=0&modestbranding=1&rel=0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="s-n">3</div><div class="s-l">User roles</div><div class="s-sub">Visitor, Member, Admin</div></div>
+      <div class="stat"><div class="s-n">16+</div><div class="s-l">REST endpoints</div><div class="s-sub">Full CRUD + auth</div></div>
+      <div class="stat"><div class="s-n">6</div><div class="s-l">Pages built</div><div class="s-sub">Landing to Admin</div></div>
+      <div class="stat"><div class="s-n">2</div><div class="s-l">Upload methods</div><div class="s-sub">Gallery + URL</div></div>
+    </div>
+
+    <div class="meta">
+      <div><div class="m-k">Timeline</div><div class="m-v">Spring 2026</div></div>
+      <div><div class="m-k">My Role</div><div class="m-v">Project Lead<br>UX/UI Designer<br>Full-Stack Dev</div></div>
+      <div><div class="m-k">Team</div><div class="m-v">Inayat Inayat<br>Shin Thant Thant</div></div>
+      <div><div class="m-k">Stack</div><div class="m-v">React, Node.js, Express<br>MongoDB, Google Maps API</div></div>
+      <div><div class="m-k">Course</div><div class="m-v">IAT 459 — Full Stack Dev</div></div>
+    </div>
+  </header>
+
+  <!-- 00 OVERVIEW -->
+  <section id="overview" class="sec rev">
+    <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
+    <h2 class="sec-h">The Problem</h2>
+    <p class="sec-lead">Pet owners have no dedicated space to share moments, find community, and discover nearby pet-friendly places — they're scattered across general social platforms that weren't built for them.</p>
+    <div class="rule"></div>
+
+    <div class="g2" style="margin-bottom:2rem">
+      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">No hub</div><div class="nc-t">Fragmented pet community</div><div class="nc-d">Pet content exists across Instagram, Reddit, and Facebook groups — but none of these platforms are built around pet ownership as the core identity.</div></div>
+      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Isolated</div><div class="nc-t">Social + maps disconnected</div><div class="nc-d">Discovering pet-friendly locations and sharing community content required entirely separate apps with no link between the two experiences.</div></div>
+      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Generic</div><div class="nc-t">No pet-owner context</div><div class="nc-d">Existing platforms treat pet posts like any other content — no pet type filtering, no location-based discovery, no community-specific design language.</div></div>
+      <div class="nc"><div class="nc-n">0</div><div class="nc-t">Dedicated platforms</div><div class="nc-d">No full-stack web app existed that combined a social feed, post interactions, user roles, and Google Maps integration specifically for pet owners.</div></div>
+    </div>
+
+    <div class="sub">Project Goals</div>
+    <div class="flist">
+      <div class="fr"><div><div class="fr-t">Build a dedicated pet community</div><div class="fr-d">A social feed where pet owners can create posts, like, comment, and save — with context specific to pet life.</div></div></div>
+      <div class="fr"><div><div class="fr-t">Integrate location discovery</div><div class="fr-d">Google Maps integration to find nearby pet-friendly places — connected to the same platform, not a separate app.</div></div></div>
+      <div class="fr"><div><div class="fr-t">Build a secure, role-based system</div><div class="fr-d">JWT authentication and three-tier RBAC (Visitor, Member, Admin) to ensure appropriate access at every layer of the app.</div></div></div>
+      <div class="fr"><div><div class="fr-t">Dynamic, real-time UI</div><div class="fr-d">Likes, comments, and saves update instantly without page reloads — React state management keeping every interaction snappy.</div></div></div>
+    </div>
+
+    <div class="sub">Tools &amp; Stack</div>
+    <div class="tools">
+      <span class="tool">React</span><span class="tool">Node.js</span><span class="tool">Express</span>
+      <span class="tool">MongoDB</span><span class="tool">Mongoose</span><span class="tool">JWT Auth</span>
+      <span class="tool">Google Maps API</span><span class="tool">Figma</span><span class="tool">REST API</span>
+    </div>
+  </section>
+
+  <!-- 01 SKETCHES -->
+  <section id="sketches" class="sec rev">
+    <div class="phase"><div class="p-dot">1</div><span class="p-txt">Early Sketches</span></div>
+    <h2 class="sec-h">From Notebook<br><em>to Browser</em></h2>
+    <p class="sec-lead">Before a single line of code was written, the core pages and interactions were sketched by hand — mapping out navigation structure, content hierarchy, and feature relationships from first principles.</p>
+    <div class="rule"></div>
+
+    <div class="sketch-grid" style="margin-bottom:2rem">
+      <div class="sketch-wrap">
+        <img src="CamScanner_2026-02-06_14_28_1.jpg" alt="Homepage sketch — feed layout, bottom navigation, notification centre">
+        <div class="sketch-cap">Homepage — feed layout, bottom nav, notification centre</div>
+      </div>
+      <div class="sketch-wrap">
+        <img src="CamScanner_2026-02-06_14_50_1.jpg" alt="Knowledge sharing page — pet type selector, article filter tags">
+        <div class="sketch-cap">Knowledge sharing page — pet type selector &amp; filter tags</div>
+      </div>
+      <div class="sketch-wrap">
+        <img src="CamScanner_2026-02-08_16_58_1.jpg" alt="Profile page — posts grid, saved collections tab">
+        <div class="sketch-cap">Profile page — posts grid, saved collections tab</div>
+      </div>
+    </div>
+
+    <div class="sub">Sketch → Built</div>
+    <div class="ilist">
+      <div class="it">
+        <div class="it-b bef"><div class="it-lbl">Sketched</div><div class="it-txt">Pinterest-style masonry feed with image cards, likes, saves, and comments inline — like how Pinterest homepage works</div></div>
+        <div class="it-arr">→</div>
+        <div class="it-b aft"><div class="it-lbl">Built</div><div class="it-txt">Masonry grid dashboard with pet type filter tabs, search bar, and real-time interaction buttons (like, save, comment) on every card</div></div>
+      </div>
+      <div class="it">
+        <div class="it-b bef"><div class="it-lbl">Sketched</div><div class="it-txt">Profile with "Your Posts" and "Saved" tabs — saved posts as a separate collections view</div></div>
+        <div class="it-arr">→</div>
+        <div class="it-b aft"><div class="it-lbl">Built</div><div class="it-txt">Profile page with My Posts / Saved toggle, post and saved count stats, edit profile, and log out</div></div>
+      </div>
+      <div class="it">
+        <div class="it-b bef"><div class="it-lbl">Sketched</div><div class="it-txt">Location finder for pet stores, vets, cafes, grooming — category filters in the bottom navigation</div></div>
+        <div class="it-arr">→</div>
+        <div class="it-b aft"><div class="it-lbl">Built</div><div class="it-txt">Google Maps page with 8 category filters (Vet Clinics, Grooming, Shelters, Pet Cafés, Pet Stores, Dog Parks, Boarding, Training)</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 SOLUTION -->
+  <section id="solution" class="sec rev">
+    <div class="phase"><div class="p-dot">2</div><span class="p-txt">Design Solution</span></div>
+    <h2 class="sec-h">Six Pages,<br>One Unified Platform</h2>
+    <p class="sec-lead">Every page addresses a specific gap in the pet owner experience — together they replace the fragmented multi-platform workflow entirely.</p>
+    <div class="rule"></div>
+
+    <div class="sub">Landing Page</div>
+    <p style="font-size:0.875rem;color:var(--muted);line-height:1.8;max-width:580px;margin-bottom:1rem;">The public-facing entry point I designed and built — "Every pet has a story worth sharing." Visitors can browse the feed or join free. No ads, no algorithm games. Just pets.</p>
+    <div class="imgs c2" style="margin-bottom:2rem">
+      <div class="iw"><img src="Screenshot_2026-04-23_at_4_02_01_PM.png" alt="Pawth landing page mobile"><div class="icap">Landing page — mobile view</div></div>
+      <div class="iw"><img src="Screenshot_2026-04-23_at_1_49_50_PM.png" alt="Pawth landing page desktop"><div class="icap">Landing page — desktop hero with animated pet emojis</div></div>
+    </div>
+
+    <div class="sub">Social Feed / Dashboard</div>
+    <p style="font-size:0.875rem;color:var(--muted);line-height:1.8;max-width:580px;margin-bottom:1rem;">Masonry grid of pet posts with search, pet type filters (All / Dog / Cat / Bird / Other), and inline likes, saves, and comment counts on every card. I built the entire dashboard and all interaction logic.</p>
+    <div class="imgs" style="margin-bottom:2rem">
+      <div class="iw"><img src="Screenshot_2026-04-23_at_4_02_38_PM.png" alt="Pawth feed masonry grid"><div class="icap">Feed — masonry grid, pet type filters, search bar, inline interactions</div></div>
+    </div>
+
+    <div class="sub">Pet-Friendly Maps</div>
+    <p style="font-size:0.875rem;color:var(--muted);line-height:1.8;max-width:580px;margin-bottom:1rem;">Google Maps integration with 8 category filters and a live results list — click any marker to see the name, rating, and open/closed status. Built with dynamic marker rendering on every filter change.</p>
+    <div class="imgs" style="margin-bottom:2rem">
+      <div class="iw"><img src="Screenshot_2026-04-23_at_4_03_28_PM.png" alt="Pawth maps with vet clinic filter active"><div class="icap">Maps — Vet Clinics filter active, live results list, marker popup with ratings</div></div>
+    </div>
+
+    <div class="sub">Create Post — Gallery Upload</div>
+    <p style="font-size:0.875rem;color:var(--muted);line-height:1.8;max-width:580px;margin-bottom:1rem;">I added gallery upload as a new feature on top of the original URL-only input — users can now pick directly from their device. Two methods, one clean form.</p>
+    <div class="imgs c2" style="margin-bottom:2rem">
+      <div class="iw"><img src="Screenshot_2026-04-23_at_4_04_06_PM.png" alt="Pawth create post with gallery upload"><div class="icap">Create post — Upload from Gallery or paste a URL, pet type, caption</div></div>
+      <div class="feature-callout">
+        <div class="sub">New Feature Added</div>
+        <div class="feature-callout-h">Upload from Gallery</div>
+        <div class="feature-callout-d">Originally, post creation only accepted a pasted URL. I extended it with a native file picker so users can upload directly from their device — a significantly lower-friction path to sharing a pet photo. The two methods sit side by side in one clean form: gallery or URL, your choice.</div>
+      </div>
+    </div>
+
+    <div class="sub">Profile Page</div>
+    <p style="font-size:0.875rem;color:var(--muted);line-height:1.8;max-width:580px;margin-bottom:1rem;">User identity, post and saved counts, My Posts / Saved tabs, Edit Profile, and Log Out — all in one view. Fully connected to the users API with real-time data and role badge display.</p>
+    <div class="imgs c2" style="margin-bottom:2rem">
+      <div class="iw"><img src="Screenshot_2026-04-23_at_4_05_32_PM.png" alt="Pawth profile page"><div class="icap">Profile — posts grid, saved tab, edit profile, Admin badge</div></div>
+      <div class="ic" style="display:flex;flex-direction:column;justify-content:center;">
+        <div class="sub" style="margin-bottom:0.75rem">Profile Features</div>
+        <div class="flist" style="margin-bottom:0">
+          <div class="fr" style="padding:0.6rem 0.875rem"><div><div class="fr-t">Username + display name + email</div><div class="fr-d">Shows role badge (Admin / Member) below email.</div></div></div>
+          <div class="fr" style="padding:0.6rem 0.875rem"><div><div class="fr-t">Posts &amp; Saved counts</div><div class="fr-d">Auto-calculated from real data — no manual input.</div></div></div>
+          <div class="fr" style="padding:0.6rem 0.875rem"><div><div class="fr-t">My Posts / Saved toggle</div><div class="fr-d">Switch between your own posts and posts you've saved.</div></div></div>
+          <div class="fr" style="padding:0.6rem 0.875rem"><div><div class="fr-t">Edit Profile + Log Out</div><div class="fr-d">Edit display name and profile picture, sign out.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 ARCHITECTURE -->
+  <section id="architecture" class="sec rev">
+    <div class="phase"><div class="p-dot">3</div><span class="p-txt">Technical Architecture</span></div>
+    <h2 class="sec-h">Full-Stack,<br>End-to-End</h2>
+    <p class="sec-lead">React on the frontend, Express + Node.js on the backend, MongoDB for storage. Each layer has a defined responsibility — and data flows cleanly between them.</p>
+    <div class="rule"></div>
+
+    <div class="g3" style="margin-bottom:2rem">
+      <div class="ic"><div class="ic-t">Frontend — React</div><div class="ic-d">Component-based UI with React Router for navigation. State management handles real-time like/comment/save updates without refetching. Role-based route protection at the component level.</div></div>
+      <div class="ic"><div class="ic-t">Backend — Node.js + Express</div><div class="ic-d">RESTful API server with Express routing. JWT middleware protects every authenticated route. Role-checking middleware enforces admin-only endpoints independently of the UI.</div></div>
+      <div class="ic"><div class="ic-t">Database — MongoDB</div><div class="ic-d">Mongoose schemas for Users and Posts. Comments embedded in posts for read performance. Likes and saves stored as arrays for efficient UI state sync.</div></div>
+    </div>
+
+    <div class="sub">Schema Design Decisions</div>
+    <div class="flist">
+      <div class="fr"><div><div class="fr-t">Comments embedded in posts</div><div class="fr-d">Rather than a separate comments collection, comments are stored inline on the post document — a single read fetches both post and all its comments, reducing query latency for the feed.</div></div></div>
+      <div class="fr"><div><div class="fr-t">Likes and saves as arrays</div><div class="fr-d">Storing likedBy and savedBy as username arrays makes it trivial to check if the current user has liked or saved a post — no join needed, just an .includes() check on the client.</div></div></div>
+      <div class="fr"><div><div class="fr-t">Role stored on the User</div><div class="fr-d">A single role field on the User document powers the entire RBAC system — clean, simple, and easy to check in both middleware and frontend route guards.</div></div></div>
+    </div>
+  </section>
+
+  <!-- 04 API -->
+  <section id="api" class="sec rev">
+    <div class="phase"><div class="p-dot">4</div><span class="p-txt">API Documentation</span></div>
+    <h2 class="sec-h">16+ Endpoints,<br>Full CRUD</h2>
+    <p class="sec-lead">A complete RESTful API — authentication, posts, users, and admin operations — all secured with JWT middleware and role-based access control.</p>
+    <div class="rule"></div>
+
+    <div class="sub">Authentication</div>
+    <table class="api-table" style="margin-bottom:1.5rem">
+      <thead><tr><th>Endpoint</th><th>Method</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="endpoint">/api/auth/register</td><td><span class="method post">POST</span></td><td>Register a new user account</td></tr>
+        <tr><td class="endpoint">/api/auth/login</td><td><span class="method post">POST</span></td><td>Login and return JWT token</td></tr>
+        <tr><td class="endpoint">/api/auth/forgot-password</td><td><span class="method post">POST</span></td><td>Generate password reset token</td></tr>
+        <tr><td class="endpoint">/api/auth/reset-password</td><td><span class="method post">POST</span></td><td>Reset password using token</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub">Posts</div>
+    <table class="api-table" style="margin-bottom:1.5rem">
+      <thead><tr><th>Endpoint</th><th>Method</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="endpoint">/api/posts</td><td><span class="method get">GET</span></td><td>Fetch all posts (feed)</td></tr>
+        <tr><td class="endpoint">/api/posts/:id</td><td><span class="method get">GET</span></td><td>Get single post detail</td></tr>
+        <tr><td class="endpoint">/api/posts</td><td><span class="method post">POST</span></td><td>Create new post (member)</td></tr>
+        <tr><td class="endpoint">/api/posts/:id</td><td><span class="method put">PUT</span></td><td>Edit own post (member)</td></tr>
+        <tr><td class="endpoint">/api/posts/:id</td><td><span class="method del">DELETE</span></td><td>Delete own post (member)</td></tr>
+        <tr><td class="endpoint">/api/posts/:id/like</td><td><span class="method post">POST</span></td><td>Like / unlike a post</td></tr>
+        <tr><td class="endpoint">/api/posts/:id/save</td><td><span class="method post">POST</span></td><td>Save / unsave a post</td></tr>
+        <tr><td class="endpoint">/api/posts/:id/comment</td><td><span class="method post">POST</span></td><td>Add a comment to a post</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub">Users &amp; Admin</div>
+    <table class="api-table">
+      <thead><tr><th>Endpoint</th><th>Method</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="endpoint">/api/users/profile</td><td><span class="method get">GET</span></td><td>Get current user profile</td></tr>
+        <tr><td class="endpoint">/api/users/profile</td><td><span class="method put">PUT</span></td><td>Update profile info</td></tr>
+        <tr><td class="endpoint">/api/admin/users</td><td><span class="method get">GET</span></td><td>Get all users (admin only)</td></tr>
+        <tr><td class="endpoint">/api/admin/users/:id/suspend</td><td><span class="method patch">PATCH</span></td><td>Suspend a user (admin only)</td></tr>
+        <tr><td class="endpoint">/api/admin/users/:id</td><td><span class="method del">DELETE</span></td><td>Delete a user (admin only)</td></tr>
+        <tr><td class="endpoint">/api/admin/posts</td><td><span class="method get">GET</span></td><td>Get all posts (admin only)</td></tr>
+        <tr><td class="endpoint">/api/admin/posts/:id</td><td><span class="method del">DELETE</span></td><td>Delete any post (admin only)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 05 ACCESS CONTROL -->
+  <section id="access" class="sec rev">
+    <div class="phase"><div class="p-dot">5</div><span class="p-txt">Access Control</span></div>
+    <h2 class="sec-h">Three Roles,<br>Two Layers of Protection</h2>
+    <p class="sec-lead">Role-based access control enforced at both the backend (JWT middleware) and the frontend (protected routes) — so no role ever sees or reaches what it shouldn't.</p>
+    <div class="rule"></div>
+
+    <div class="g3" style="margin-bottom:2rem">
+      <div class="ic"><div class="ic-t">Visitor</div><div class="ic-d">Not authenticated. Can browse and read posts. Cannot like, comment, save, create content, or access profile and admin pages.</div></div>
+      <div class="ic"><div class="ic-t">Member</div><div class="ic-d">Authenticated with JWT. Can create posts, like, save, comment, edit their own content, and update their profile.</div></div>
+      <div class="ic"><div class="ic-t">Admin</div><div class="ic-d">Elevated role. Can suspend and delete users, delete any post, and access the full admin dashboard — blocked from all other users.</div></div>
+    </div>
+
+    <div class="ilist">
+      <div class="it">
+        <div class="it-b bef"><div class="it-lbl">Frontend Guard</div><div class="it-txt">if (user?.role !== "admin") return &lt;Navigate to="/not-authorized" /&gt;</div></div>
+        <div class="it-arr">+</div>
+        <div class="it-b aft"><div class="it-lbl">Backend Guard</div><div class="it-txt">JWT verified on every request → role checked in admin middleware before any admin route resolves</div></div>
+      </div>
+    </div>
+
+    <div class="quote">
+      <p>"Role-based access control taught me to think about security as a system design problem — not just a feature to bolt on at the end."</p>
+      <div class="quote-attr">— Inayat, Individual Reflection</div>
+    </div>
+  </section>
+
+  <!-- 06 CHALLENGES -->
+  <section id="challenges" class="sec rev">
+    <div class="phase"><div class="p-dot">6</div><span class="p-txt">Technical Challenges</span></div>
+    <h2 class="sec-h">Five Problems,<br>Five Solutions</h2>
+    <p class="sec-lead">Every real-world app surfaces integration problems that docs don't warn you about. Here's what we hit and how we solved them.</p>
+    <div class="rule"></div>
+
+    <div class="slist">
+      <div class="st"><div class="st-n">01</div><div><div class="st-t">Authentication state lost on refresh</div><div class="st-d">User login state was wiped on every page reload. Fixed by persisting the JWT to localStorage on login — <span style="font-family:monospace;font-size:0.72rem;color:var(--teal-l)">localStorage.setItem("token", newToken)</span> — and rehydrating auth state on app load.</div></div></div>
+      <div class="st"><div class="st-n">02</div><div><div class="st-t">RBAC enforced at both layers</div><div class="st-d">Frontend route guards alone weren't enough — a savvy user could hit admin API endpoints directly. Backend role middleware was added to every admin route so the API enforces access independently of the UI.</div></div></div>
+      <div class="st"><div class="st-n">03</div><div><div class="st-t">CORS blocking frontend–backend communication</div><div class="st-d">The React dev server and Express backend ran on different ports, triggering CORS errors on every API call. Solved by enabling CORS on the backend specifically for the frontend origin.</div></div></div>
+      <div class="st"><div class="st-n">04</div><div><div class="st-t">Likes and comments not updating instantly</div><div class="st-d">The feed re-fetched on every interaction, causing a visible flicker. Fixed with optimistic React state updates — <span style="font-family:monospace;font-size:0.72rem;color:var(--teal-l)">setPost(prev =&gt; ({ ...prev, likesCount: data.likesCount }))</span> — making interactions feel immediate.</div></div></div>
+      <div class="st"><div class="st-n">05</div><div><div class="st-t">Google Maps dynamic markers and filtering</div><div class="st-d">Getting markers to update when filter categories changed required careful state management between the React component and the Maps API instance — solved by re-rendering markers on every filter state change.</div></div></div>
+    </div>
+  </section>
+
+  <!-- 07 CONTRIBUTION -->
+  <section id="contribution" class="sec rev">
+    <div class="phase"><div class="p-dot">7</div><span class="p-txt">My Contribution</span></div>
+    <h2 class="sec-h">What I Built<br><em>as Project Lead</em></h2>
+    <p class="sec-lead">As project lead and primary UX/UI designer, I owned the visual identity of Pawth while building the most interaction-heavy features — including two entirely new pages and a new upload feature not in the original brief.</p>
+    <div class="rule"></div>
+
+    <div class="role-badge">Project Lead</div>
+
+    <div class="flist" style="margin-bottom:2rem">
+      <div class="fr"><div><div class="fr-t">Landing page — designed &amp; built from scratch</div><div class="fr-d">The public-facing entry point with hero copy, "Get Started" / "Browse the feed" CTAs, animated floating pet emojis, and category tag chips. A new page I added that wasn't in the original project scope.</div></div></div>
+      <div class="fr"><div><div class="fr-t">Dashboard — feed, filtering, likes, comments, saves</div><div class="fr-d">The core social feed with masonry grid layout, pet type filter tabs, search bar, and all inline post interactions. The most complex frontend feature in the project — real-time state on every like, save, and comment.</div></div></div>
+      <div class="fr"><div><div class="fr-t">Create Post — gallery upload (new feature)</div><div class="fr-d">Originally post creation only accepted a URL. I extended it with a native file picker so users can upload directly from their device gallery — significantly reducing friction for sharing pet photos.</div></div></div>
+      <div class="fr"><div><div class="fr-t">Profile page — posts, saved, stats, edit</div><div class="fr-d">User profile with My Posts / Saved tab toggle, post and saved counts, edit profile, role badge display, and log out — all connected to the users API with real data.</div></div></div>
+      <div class="fr"><div><div class="fr-t">Google Maps integration</div><div class="fr-d">Integrated the Google Maps JavaScript API with 8 category filters, dynamic markers, a live results list on the left, and marker popups with ratings and open/closed status.</div></div></div>
+      <div class="fr"><div><div class="fr-t">UX / UI design — entire application</div><div class="fr-d">Led the full visual design in Figma — colour system, component library, layouts, and responsive patterns — then implemented everything directly in React.</div></div></div>
+      <div class="fr"><div><div class="fr-t">Frontend RBAC — Visitor / Member / Admin</div><div class="fr-d">Implemented role-aware route protection across the entire frontend — conditional UI rendering, protected routes, and the not-authorized redirect flow.</div></div></div>
+    </div>
+
+    <div class="sub">Team Split</div>
+    <div class="g2">
+      <div class="dcard chosen">
+        <div class="dcard-label">✓ My Focus</div>
+        <div class="dcard-t">UI/UX + Landing + Dashboard + Maps + Gallery Upload + Profile + RBAC</div>
+        <div class="dcard-d">All product design, the landing page, the social feed, gallery upload feature, maps integration, profile page, and frontend access control.</div>
+      </div>
+      <div class="dcard">
+        <div class="dcard-label">Shin's Focus</div>
+        <div class="dcard-t">Auth + Backend Integration + Debugging</div>
+        <div class="dcard-d">Frontend authentication flow, backend connection, JWT implementation, route protection, filtering logic improvements, and co-designing the overall UI.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 REFLECTION -->
+  <section id="reflection" class="sec rev">
+    <div class="phase"><div class="p-dot">8</div><span class="p-txt">Reflection</span></div>
+    <h2 class="sec-h">What I Learned</h2>
+    <p class="sec-lead">Building a full-stack application from scratch — UI through API through database — shifted how I think about software. Features don't exist in isolation; every decision ripples across the stack.</p>
+    <div class="rule"></div>
+    <div class="g2" style="margin-bottom:2rem">
+      <div class="rc"><div class="rc-t">Think in systems, not features</div><div class="rc-d">This project shifted my perspective from building isolated features to designing complete, scalable systems. Every schema decision affected the frontend; every UI decision created API requirements. The two can't be designed separately.</div></div>
+      <div class="rc"><div class="rc-t">Security is architecture</div><div class="rc-d">Implementing RBAC taught me that access control isn't a feature — it's a first-principles design decision. Role must live on the user model, be verified on the server, and be reflected in the UI. All three layers are required.</div></div>
+      <div class="rc"><div class="rc-t">State management is UX</div><div class="rc-d">The jump from refetching data to optimistic state updates transformed the feel of the app. A 200ms flicker on every like isn't a bug — it's a UX failure. Understanding this made me a better designer and developer simultaneously.</div></div>
+      <div class="rc"><div class="rc-t">Integration breaks what isolation passes</div><div class="rc-d">CORS errors, auth state loss, and API mismatches only surface when frontend and backend connect. Building both sides gave me the debugging vocabulary to trace problems across the full stack without guessing which layer was at fault.</div></div>
+    </div>
+
+    <div class="sub">Future Iterations</div>
+    <div class="flist">
+      <div class="fr"><div><div class="fr-t">Complete Password Reset Flow</div><div class="fr-d">The token generation is built — connect a transactional email service (SendGrid or Resend) to complete the reset flow end-to-end.</div></div></div>
+      <div class="fr"><div><div class="fr-t">Pet Profiles</div><div class="fr-d">Let users create individual profiles for each of their pets — with breed, age, and a personal feed — deepening the community identity layer.</div></div></div>
+      <div class="fr"><div><div class="fr-t">Real-Time Notifications</div><div class="fr-d">WebSocket-based notifications for likes and comments — so users know when their posts get attention without refreshing.</div></div></div>
+      <div class="fr"><div><div class="fr-t">Search &amp; Explore</div><div class="fr-d">A dedicated search page with full-text post search and user discovery — letting the community grow beyond the main feed.</div></div></div>
+      <div class="fr"><div><div class="fr-t">Mobile App (React Native)</div><div class="fr-d">Port Pawth to a native mobile experience — the social + maps combination is a natural fit for on-the-go pet owners discovering places nearby.</div></div></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>© 2025 Inayat. All rights reserved.</footer>
+
+<script>
+  const ro = new IntersectionObserver(
+    es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }),
+    { threshold: 0.06 }
+  );
+  document.querySelectorAll('.rev').forEach(el => ro.observe(el));
+
+  const links = document.querySelectorAll('.side-a');
+  const secs  = document.querySelectorAll('.sec');
+  const so = new IntersectionObserver(es => {
+    es.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -65% 0px' });
+  secs.forEach(s => so.observe(s));
+</script>
+
+</body>
+</html>
