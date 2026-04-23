@@ -104,8 +104,10 @@
         .project-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(20, 184, 166, 0.25); border-color: rgba(20, 184, 166, 0.3); }
 
         .project-image { width: 100%; height: 300px; background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%); position: relative; overflow: hidden; }
-        .project-image img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: all 0.4s ease; }
-        .project-card:hover .project-image img { transform: scale(1.05); opacity: 1; }
+        .project-image img,
+        .project-image video { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: all 0.4s ease; display: block; }
+        .project-card:hover .project-image img,
+        .project-card:hover .project-image video { transform: scale(1.05); opacity: 1; }
         .project-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 0%, rgba(10, 10, 10, 0.5) 100%); opacity: 0; transition: opacity 0.3s ease; }
         .project-card:hover .project-image::after { opacity: 1; }
 
@@ -209,7 +211,7 @@
                     </a>
                 </div>
 
-                <div class="project-card" data-category="ui-ux web">
+                <div class="project-card" data-category="ui-ux">
                     <a href="./Projects/mastercard-fraud-dashboard.html" class="project-card-link">
                         <div class="project-image" style="background: linear-gradient(135deg, rgba(20,184,166,0.15) 0%, rgba(6,182,212,0.1) 100%);">
                             <img src="./Images/Chart 2.png" alt="Fraud Detection Dashboard">
@@ -232,6 +234,20 @@
                             <p class="project-category">Mobile App Interface</p>
                             <h3 class="project-title">Fitness Tracking App</h3>
                             <p class="project-description">Developed a Fitness Tracking App featuring real-time feedback for instant progress insights, gamification elements to boost motivation, and community engagement for social support.</p>
+                            <span class="project-link">View Details →</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="project-card" data-category="mobile ui-ux">
+                    <a href="./Projects/Pawth_Project.html" class="project-card-link">
+                        <div class="project-image" style="background: linear-gradient(135deg, rgba(20,184,166,0.1) 0%, rgba(6,182,212,0.15) 100%);">
+                            <video src="./Images/Pawth.mp4" autoplay muted loop playsinline></video>
+                        </div>
+                        <div class="project-content">
+                            <p class="project-category">UX/UI Design · Frontend</p>
+                            <h3 class="project-title">Pawth Pet App</h3>
+                            <p class="project-description">A social platform for pet owners — share moments, discover pet-friendly places, and connect with a community of fellow pet lovers. Led UX/UI design and frontend implementation end-to-end.</p>
                             <span class="project-link">View Details →</span>
                         </div>
                     </a>
