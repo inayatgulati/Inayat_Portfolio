@@ -844,21 +844,24 @@
           <a href="#solution" class="side-a"
             ><span class="side-num">02</span>Solution</a
           >
-          <a href="#architecture" class="side-a"
-            ><span class="side-num">03</span>Architecture</a
+          <a href="#eventplanner" class="side-a"
+            ><span class="side-num">03</span>Event Planner</a
           >
-          <a href="#api" class="side-a"><span class="side-num">04</span>API</a>
+          <a href="#architecture" class="side-a"
+            ><span class="side-num">04</span>Architecture</a
+          >
+          <a href="#api" class="side-a"><span class="side-num">05</span>API</a>
           <a href="#access" class="side-a"
-            ><span class="side-num">05</span>Access Control</a
+            ><span class="side-num">06</span>Access Control</a
           >
           <a href="#challenges" class="side-a"
-            ><span class="side-num">06</span>Challenges</a
+            ><span class="side-num">07</span>Challenges</a
           >
           <a href="#contribution" class="side-a"
-            ><span class="side-num">07</span>My Work</a
+            ><span class="side-num">08</span>Design Decisions</a
           >
           <a href="#reflection" class="side-a"
-            ><span class="side-num">08</span>Reflection</a
+            ><span class="side-num">09</span>Reflection</a
           >
         </nav>
       </div>
@@ -868,17 +871,17 @@
       <!-- HERO -->
       <header style="margin-bottom: 4rem">
         <div class="tags">
-          <span class="tag">Full-Stack Web</span>
+          <span class="tag">Personal Project</span>
           <span class="tag">UX/UI Design</span>
-          <span class="tag">Social Platform</span>
-          <span class="tag">Project Lead</span>
+          <span class="tag">Frontend</span>
+          <span class="tag">React</span>
         </div>
         <h1 class="hero-h">Pawth—<br /><em>Pet Social Community</em></h1>
-        <p class="hero-sub">Case Study — Full-Stack Web Application</p>
+        <p class="hero-sub">Personal Project — UX/UI Design &amp; Frontend</p>
         <p class="hero-p">
-          A social platform connecting pet owners through shared posts and
-          discovery of pet-friendly locations — bringing community and maps
-          together in one seamless web app.
+          A social platform I designed and built solo for pet owners — combining
+          a community feed, pet-friendly maps, AI-powered event planning, and
+          expressive UI into one cohesive, fully responsive web app.
         </p>
 
         <div class="hero-video">
@@ -902,14 +905,14 @@
             <div class="s-sub">Full CRUD + auth</div>
           </div>
           <div class="stat">
-            <div class="s-n">6</div>
-            <div class="s-l">Pages built</div>
-            <div class="s-sub">Landing to Admin</div>
+            <div class="s-n">7+</div>
+            <div class="s-l">Pages designed</div>
+            <div class="s-sub">Landing to Event Planner</div>
           </div>
           <div class="stat">
-            <div class="s-n">2</div>
-            <div class="s-l">Upload methods</div>
-            <div class="s-sub">Gallery + URL</div>
+            <div class="s-n">AI</div>
+            <div class="s-l">Event planning</div>
+            <div class="s-sub">Claude API integration</div>
           </div>
         </div>
 
@@ -921,12 +924,12 @@
           <div>
             <div class="m-k">My Role</div>
             <div class="m-v">
-              Project Lead<br />UX/UI Designer<br />Full-Stack Dev
+              Solo Designer<br />UX/UI Lead<br />Frontend Dev
             </div>
           </div>
           <div>
-            <div class="m-k">Team</div>
-            <div class="m-v">Inayat Inayat<br />Shin Thant Thant</div>
+            <div class="m-k">Type</div>
+            <div class="m-v">Personal Project</div>
           </div>
           <div>
             <div class="m-k">Stack</div>
@@ -935,8 +938,8 @@
             </div>
           </div>
           <div>
-            <div class="m-k">Course</div>
-            <div class="m-v">IAT 459 — Full Stack Dev</div>
+            <div class="m-k">Focus</div>
+            <div class="m-v">UX/UI Design<br />Frontend Engineering</div>
           </div>
         </div>
       </header>
@@ -990,24 +993,27 @@
             </div>
           </div>
           <div class="nc">
-            <div class="nc-n">0</div>
-            <div class="nc-t">Dedicated platforms</div>
+            <div class="nc-n" style="font-size: 1.3rem; margin-bottom: 7px">
+              No planner
+            </div>
+            <div class="nc-t">Events scattered or nonexistent</div>
             <div class="nc-d">
-              No full-stack web app existed that combined a social feed, post
-              interactions, user roles, and Google Maps integration specifically
-              for pet owners.
+              There was no way for pet owners to plan, discover, or RSVP to
+              pet-specific social events — meetups, dog park hangouts, and
+              adoption drives were impossible to organise in one place.
             </div>
           </div>
         </div>
 
-        <div class="sub">Project Goals</div>
+        <div class="sub">Design Goals</div>
         <div class="flist">
           <div class="fr">
             <div>
-              <div class="fr-t">Build a dedicated pet community</div>
+              <div class="fr-t">Design a pet community that actually feels like one</div>
               <div class="fr-d">
                 A social feed where pet owners can create posts, like, comment,
-                and save — with context specific to pet life.
+                and save — with a visual identity and UX language specific to
+                pet life, not just repurposed from generic social apps.
               </div>
             </div>
           </div>
@@ -1022,19 +1028,21 @@
           </div>
           <div class="fr">
             <div>
-              <div class="fr-t">Build a secure, role-based system</div>
+              <div class="fr-t">Build an AI-powered event planner</div>
               <div class="fr-d">
-                JWT authentication and three-tier RBAC (Visitor, Member, Admin)
-                to ensure appropriate access at every layer of the app.
+                An event planning page I designed and added as a personal
+                extension — letting users create, browse, and get AI-suggested
+                event ideas tailored to their pet type and preferences.
               </div>
             </div>
           </div>
           <div class="fr">
             <div>
-              <div class="fr-t">Dynamic, real-time UI</div>
+              <div class="fr-t">Keep interactions instant and snappy</div>
               <div class="fr-d">
                 Likes, comments, and saves update instantly without page reloads
-                — React state management keeping every interaction snappy.
+                — React state management making every interaction feel native
+                and responsive.
               </div>
             </div>
           </div>
@@ -1047,6 +1055,7 @@
           ><span class="tool">Mongoose</span><span class="tool">JWT Auth</span>
           <span class="tool">Google Maps API</span
           ><span class="tool">Figma</span><span class="tool">REST API</span>
+          <span class="tool">Claude AI API</span>
         </div>
       </section>
 
@@ -1359,10 +1368,163 @@
         </div>
       </section>
 
-      <!-- 03 ARCHITECTURE -->
-      <section id="architecture" class="sec rev">
+      <!-- 03 EVENT PLANNER -->
+      <section id="eventplanner" class="sec rev">
         <div class="phase">
           <div class="p-dot">3</div>
+          <span class="p-txt">New Feature — Personal Addition</span>
+        </div>
+        <h2 class="sec-h">AI-Powered<br /><em>Event Planner</em></h2>
+        <p class="sec-lead">
+          The event planner is a feature I designed and built entirely on my
+          own, beyond the original app scope. Pet owners can discover upcoming
+          events, create their own, and get AI-generated event ideas tailored
+          to their pet type, vibe, and preferences.
+        </p>
+        <div class="rule"></div>
+
+        <div class="feature-callout" style="margin-bottom: 1.5rem">
+          <div class="sub">Why I Added This</div>
+          <div class="feature-callout-h">Community needs a calendar, not just a feed</div>
+          <div class="feature-callout-d">
+            After building the social feed and maps, I noticed a gap — pet
+            owners couldn't plan or find pet-specific events. Dog park meetups,
+            adoption drives, café socials, and training days were all missing a
+            dedicated space. I designed the Event Planner page to fill that
+            gap: a full event creation flow, a filterable event board, and
+            AI-assisted idea generation for when you're not sure where to start.
+          </div>
+        </div>
+
+        <div class="sub">Feature Overview</div>
+        <div class="flist" style="margin-bottom: 2rem">
+          <div class="fr">
+            <div>
+              <div class="fr-t">AI Event Idea Generator</div>
+              <div class="fr-d">
+                Users select their pet type (Dog, Cat, Bird, Other), vibe tags
+                (Outdoor, Social, Training, Relaxed…), budget, group size,
+                duration, and accessibility needs — then get AI-generated event
+                suggestions. Prompt chips make it even faster to get started.
+              </div>
+            </div>
+          </div>
+          <div class="fr">
+            <div>
+              <div class="fr-t">Event Creation Form</div>
+              <div class="fr-d">
+                Members can create their own events — title, pet type, date,
+                time, location, and description — and publish them to the
+                community board for others to discover and RSVP.
+              </div>
+            </div>
+          </div>
+          <div class="fr">
+            <div>
+              <div class="fr-t">Filterable Event Board</div>
+              <div class="fr-d">
+                Browse all upcoming community events filtered by pet type.
+                Each card shows the event emoji, title, date, time, location,
+                and a short description — clean and scannable at a glance.
+              </div>
+            </div>
+          </div>
+          <div class="fr">
+            <div>
+              <div class="fr-t">RSVP + Ownership System</div>
+              <div class="fr-d">
+                Members can RSVP to any event and see attendee counts in
+                real-time. Event creators can delete their own events, keeping
+                the board accurate and up to date.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sub">UX Design Decisions</div>
+        <div class="ilist" style="margin-bottom: 2rem">
+          <div class="it">
+            <div class="it-b bef">
+              <div class="it-lbl">Problem</div>
+              <div class="it-txt">
+                Blank form is intimidating — users don't know what kind of event
+                to create or even where to start with ideas
+              </div>
+            </div>
+            <div class="it-arr">→</div>
+            <div class="it-b aft">
+              <div class="it-lbl">Solution</div>
+              <div class="it-txt">
+                AI idea generator with pet-type prompt chips gets users from
+                zero to a concrete event concept in two taps — before they even
+                open the creation form
+              </div>
+            </div>
+          </div>
+          <div class="it">
+            <div class="it-b bef">
+              <div class="it-lbl">Problem</div>
+              <div class="it-txt">
+                Event boards are hard to scan when everything is listed in a
+                flat, undifferentiated list
+              </div>
+            </div>
+            <div class="it-arr">→</div>
+            <div class="it-b aft">
+              <div class="it-lbl">Solution</div>
+              <div class="it-txt">
+                Pet type filter tabs (All / Dog / Cat / Bird / Other) + emoji
+                headers on each card make it instantly visual and easy to find
+                what's relevant to you
+              </div>
+            </div>
+          </div>
+          <div class="it">
+            <div class="it-b bef">
+              <div class="it-lbl">Problem</div>
+              <div class="it-txt">
+                Two different user goals on the same page — discovering events
+                vs. creating them — can create a confusing, cluttered layout
+              </div>
+            </div>
+            <div class="it-arr">→</div>
+            <div class="it-b aft">
+              <div class="it-lbl">Solution</div>
+              <div class="it-txt">
+                Three distinct zones: AI generator at top, creation form in the
+                middle, event board below — a natural top-to-bottom flow
+                matching how users think: inspire → create → browse
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sub">AI Integration</div>
+        <div class="g2">
+          <div class="ic">
+            <div class="ic-t">Prompt construction</div>
+            <div class="ic-d">
+              User selections (pet type, vibe tags, budget, group size,
+              duration, accessibility) are assembled into a structured prompt
+              sent to the AI API — returning tailored event concepts that
+              actually make sense for the inputs given.
+            </div>
+          </div>
+          <div class="ic">
+            <div class="ic-t">Prompt chips for speed</div>
+            <div class="ic-d">
+              Each pet type has a set of pre-written starting prompts —
+              one-tap shortcuts that get users to a useful AI response without
+              having to manually configure every parameter first.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 ARCHITECTURE -->
+      <section id="architecture" class="sec rev">
+        <div class="phase">
+          <div class="p-dot">4</div>
           <span class="p-txt">Technical Architecture</span>
         </div>
         <h2 class="sec-h">Full-Stack,<br />End-to-End</h2>
@@ -1435,10 +1597,10 @@
         </div>
       </section>
 
-      <!-- 04 API -->
+      <!-- 05 API -->
       <section id="api" class="sec rev">
         <div class="phase">
-          <div class="p-dot">4</div>
+          <div class="p-dot">5</div>
           <span class="p-txt">API Documentation</span>
         </div>
         <h2 class="sec-h">16+ Endpoints,<br />Full CRUD</h2>
@@ -1584,10 +1746,10 @@
         </table>
       </section>
 
-      <!-- 05 ACCESS CONTROL -->
+      <!-- 06 ACCESS CONTROL -->
       <section id="access" class="sec rev">
         <div class="phase">
-          <div class="p-dot">5</div>
+          <div class="p-dot">6</div>
           <span class="p-txt">Access Control</span>
         </div>
         <h2 class="sec-h">Three Roles,<br />Two Layers of Protection</h2>
@@ -1644,17 +1806,18 @@
 
         <div class="quote">
           <p>
-            "Role-based access control taught me to think about security as a
-            system design problem — not just a feature to bolt on at the end."
+            "Designing and building Pawth solo made the connection between UX
+            decisions and frontend code impossible to ignore — they're the same
+            decision, made twice."
           </p>
-          <div class="quote-attr">— Inayat, Individual Reflection</div>
+          <div class="quote-attr">— Inayat, Project Reflection</div>
         </div>
       </section>
 
-      <!-- 06 CHALLENGES -->
+      <!-- 07 CHALLENGES -->
       <section id="challenges" class="sec rev">
         <div class="phase">
-          <div class="p-dot">6</div>
+          <div class="p-dot">7</div>
           <span class="p-txt">Technical Challenges</span>
         </div>
         <h2 class="sec-h">Five Problems,<br />Five Solutions</h2>
@@ -1744,140 +1907,134 @@
         </div>
       </section>
 
-      <!-- 07 CONTRIBUTION -->
+      <!-- 08 DESIGN DECISIONS -->
       <section id="contribution" class="sec rev">
         <div class="phase">
-          <div class="p-dot">7</div>
-          <span class="p-txt">My Contribution</span>
+          <div class="p-dot">8</div>
+          <span class="p-txt">Design Decisions</span>
         </div>
-        <h2 class="sec-h">What I Built<br /><em>as Project Lead</em></h2>
+        <h2 class="sec-h">What I Designed<br /><em>&amp; Why</em></h2>
         <p class="sec-lead">
-          As project lead and primary UX/UI designer, I owned the visual
-          identity of Pawth while building the most interaction-heavy features —
-          including two entirely new pages and a new upload feature not in the
-          original brief.
+          Every page in Pawth was designed and built by me — from the visual
+          identity and component system in Figma, to the React implementation
+          and responsive layout. Here's a breakdown of the key UX and frontend
+          decisions behind each feature.
         </p>
         <div class="rule"></div>
 
-        <div class="role-badge">Project Lead</div>
+        <div class="role-badge">Solo — UX/UI + Frontend</div>
 
         <div class="flist" style="margin-bottom: 2rem">
           <div class="fr">
             <div>
-              <div class="fr-t">
-                Landing page — designed &amp; built from scratch
-              </div>
+              <div class="fr-t">Landing page — first impression matters</div>
               <div class="fr-d">
-                The public-facing entry point with hero copy, "Get Started" /
-                "Browse the feed" CTAs, animated floating pet emojis, and
-                category tag chips. A new page I added that wasn't in the
-                original project scope.
+                Designed to immediately communicate the platform's purpose —
+                "Every pet has a story worth sharing." Animated floating pet
+                emojis, two clear CTAs (Join / Browse), and category tag chips
+                give visitors context and momentum before they sign up.
               </div>
             </div>
           </div>
           <div class="fr">
             <div>
-              <div class="fr-t">
-                Dashboard — feed, filtering, likes, comments, saves
-              </div>
+              <div class="fr-t">Dashboard — masonry grid for visual density</div>
               <div class="fr-d">
-                The core social feed with masonry grid layout, pet type filter
-                tabs, search bar, and all inline post interactions. The most
-                complex frontend feature in the project — real-time state on
-                every like, save, and comment.
-              </div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">Create Post — gallery upload (new feature)</div>
-              <div class="fr-d">
-                Originally post creation only accepted a URL. I extended it with
-                a native file picker so users can upload directly from their
-                device gallery — significantly reducing friction for sharing pet
-                photos.
+                Chose a masonry grid over a standard card grid to handle
+                variable image ratios naturally. Pet type filter tabs (All / Dog
+                / Cat / Bird / Other) and a search bar let users narrow the feed
+                without leaving the page. Inline likes, saves, and comment
+                counts update optimistically — no flicker, no reload.
               </div>
             </div>
           </div>
           <div class="fr">
             <div>
-              <div class="fr-t">Profile page — posts, saved, stats, edit</div>
+              <div class="fr-t">Event Planner — AI-first, then form</div>
               <div class="fr-d">
-                User profile with My Posts / Saved tab toggle, post and saved
-                counts, edit profile, role badge display, and log out — all
-                connected to the users API with real data.
+                Designed a three-zone layout: AI generator → creation form →
+                event board. This top-to-bottom flow mirrors how a user actually
+                thinks: get inspired first, then create, then browse what others
+                have made. Prompt chips make the AI generator one-tap fast.
               </div>
             </div>
           </div>
           <div class="fr">
             <div>
-              <div class="fr-t">Google Maps integration</div>
+              <div class="fr-t">Maps — category filters over free text search</div>
               <div class="fr-d">
-                Integrated the Google Maps JavaScript API with 8 category
-                filters, dynamic markers, a live results list on the left, and
-                marker popups with ratings and open/closed status.
+                Eight predefined category filters (Vet Clinics, Grooming,
+                Shelters, Pet Cafés, Dog Parks, Boarding, Training, Pet Stores)
+                were chosen over a free text search — because pet owners already
+                know what type of place they need, not its name. Dynamic marker
+                rendering on every filter change keeps the map always in sync.
               </div>
             </div>
           </div>
           <div class="fr">
             <div>
-              <div class="fr-t">UX / UI design — entire application</div>
+              <div class="fr-t">Gallery upload — reducing friction on post creation</div>
               <div class="fr-d">
-                Led the full visual design in Figma — colour system, component
-                library, layouts, and responsive patterns — then implemented
-                everything directly in React.
+                The original post form only accepted a URL, which required users
+                to host images externally first. Adding a native file picker
+                eliminated that step entirely — users can share a photo straight
+                from their camera roll. The two methods (gallery + URL) sit side
+                by side in a single clean form.
               </div>
             </div>
           </div>
           <div class="fr">
             <div>
-              <div class="fr-t">Frontend RBAC — Visitor / Member / Admin</div>
+              <div class="fr-t">Profile — clarity over density</div>
               <div class="fr-d">
-                Implemented role-aware route protection across the entire
-                frontend — conditional UI rendering, protected routes, and the
-                not-authorized redirect flow.
+                The profile page surfaces what matters most at a glance: display
+                name, role badge, post and saved counts, and a clean My Posts /
+                Saved toggle. Edit Profile and Log Out are accessible but not
+                prominent — reducing cognitive load for users who just want to
+                browse their own content.
+              </div>
+            </div>
+          </div>
+          <div class="fr">
+            <div>
+              <div class="fr-t">Visual identity — dark, teal-accented, editorial</div>
+              <div class="fr-d">
+                Built the full design system in Figma — a dark #0a0a0a base,
+                teal (#14b8a6) as the single accent colour, Cormorant Garamond
+                for editorial headings, and Work Sans for UI text. The palette
+                reads as modern and community-focused without being corporate or
+                clinical.
               </div>
             </div>
           </div>
         </div>
 
-        <div class="sub">Team Split</div>
-        <div class="g2">
-          <div class="dcard chosen">
-            <div class="dcard-label">✓ My Focus</div>
-            <div class="dcard-t">
-              UI/UX + Landing + Dashboard + Maps + Gallery Upload + Profile +
-              RBAC
-            </div>
-            <div class="dcard-d">
-              All product design, the landing page, the social feed, gallery
-              upload feature, maps integration, profile page, and frontend
-              access control.
-            </div>
+        <div class="sub">Full Scope</div>
+        <div class="dcard chosen">
+          <div class="dcard-label">✓ Designed &amp; Built Solo</div>
+          <div class="dcard-t">
+            Visual Design · Landing · Dashboard · Event Planner · Maps · Gallery Upload · Profile · RBAC · Responsive Layout
           </div>
-          <div class="dcard">
-            <div class="dcard-label">Shin's Focus</div>
-            <div class="dcard-t">Auth + Backend Integration + Debugging</div>
-            <div class="dcard-d">
-              Frontend authentication flow, backend connection, JWT
-              implementation, route protection, filtering logic improvements,
-              and co-designing the overall UI.
-            </div>
+          <div class="dcard-d">
+            The entire Pawth UX — from initial sketches and Figma wireframes
+            through to the final React implementation — was designed and built
+            by me. Every interaction, every layout decision, every component.
           </div>
         </div>
       </section>
 
-      <!-- 08 REFLECTION -->
+      <!-- 09 REFLECTION -->
       <section id="reflection" class="sec rev">
         <div class="phase">
-          <div class="p-dot">8</div>
+          <div class="p-dot">9</div>
           <span class="p-txt">Reflection</span>
         </div>
         <h2 class="sec-h">What I Learned</h2>
         <p class="sec-lead">
-          Building a full-stack application from scratch — UI through API
-          through database — shifted how I think about software. Features don't
-          exist in isolation; every decision ripples across the stack.
+          Building Pawth solo — from UX sketches through to a fully deployed
+          React app — taught me that design and engineering aren't separate
+          disciplines. Every visual decision has a technical consequence, and
+          every technical choice shapes the user experience.
         </p>
         <div class="rule"></div>
         <div class="g2" style="margin-bottom: 2rem">
@@ -1923,6 +2080,16 @@
         <div class="flist">
           <div class="fr">
             <div>
+              <div class="fr-t">Event Planner — Maps Integration</div>
+              <div class="fr-d">
+                Connect the event planner to the Google Maps page — so when
+                a user creates or browses an event, they can immediately see
+                the venue pinned on the map with nearby pet-friendly spots.
+              </div>
+            </div>
+          </div>
+          <div class="fr">
+            <div>
               <div class="fr-t">Complete Password Reset Flow</div>
               <div class="fr-d">
                 The token generation is built — connect a transactional email
@@ -1945,17 +2112,9 @@
             <div>
               <div class="fr-t">Real-Time Notifications</div>
               <div class="fr-d">
-                WebSocket-based notifications for likes and comments — so users
-                know when their posts get attention without refreshing.
-              </div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">Search &amp; Explore</div>
-              <div class="fr-d">
-                A dedicated search page with full-text post search and user
-                discovery — letting the community grow beyond the main feed.
+                WebSocket-based notifications for likes, comments, and event
+                RSVPs — so users know when their content gets attention without
+                refreshing.
               </div>
             </div>
           </div>
@@ -1963,9 +2122,9 @@
             <div>
               <div class="fr-t">Mobile App (React Native)</div>
               <div class="fr-d">
-                Port Pawth to a native mobile experience — the social + maps
-                combination is a natural fit for on-the-go pet owners
-                discovering places nearby.
+                Port Pawth to a native mobile experience — the social + maps +
+                event planning combination is a natural fit for on-the-go pet
+                owners discovering places and meetups nearby.
               </div>
             </div>
           </div>
