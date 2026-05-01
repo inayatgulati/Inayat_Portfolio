@@ -57,7 +57,7 @@
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
 
-        /* ── HERO (matches Projects page) ── */
+        /* ── HERO ── */
         .hero {
             padding: 10rem 2rem 4rem;
             position: relative;
@@ -97,6 +97,37 @@
             margin: 0 auto;
         }
 
+        /* ── POV BANNER ── */
+        .pov-banner {
+            padding: 0 2rem 0;
+            position: relative;
+            z-index: 1;
+        }
+        .pov-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            border-left: 2px solid var(--accent);
+            padding: 1.5rem 2rem;
+            background: rgba(20,184,166,0.04);
+            border-radius: 0 12px 12px 0;
+        }
+        .pov-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.6rem;
+        }
+        .pov-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.45rem;
+            font-weight: 400;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.55;
+            font-style: italic;
+        }
+
         /* ── ABOUT BODY ── */
         .about-body {
             padding: 6rem 2rem 8rem;
@@ -124,15 +155,17 @@
             display: grid;
             grid-template-columns: 1fr 1.3fr;
             gap: 5rem;
-            align-items: center;
+            align-items: start;
             position: relative;
             z-index: 1;
         }
 
-        /* Photo */
+        /* Photo column */
+        .about-photo-col {
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
         .about-photo-wrap {
             position: relative;
-            animation: fadeInUp 0.8s ease 0.2s both;
         }
         .about-photo {
             width: 100%;
@@ -184,6 +217,41 @@
             margin-top: 2px;
         }
 
+        /* Caption below photo */
+        .photo-caption {
+            margin-top: 28px;
+            padding: 1.2rem 1.4rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+        .photo-caption-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.8rem;
+        }
+        .photo-caption-fact {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .photo-caption-fact:last-child { border-bottom: none; }
+        .photo-caption-dot {
+            width: 5px; height: 5px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 6px;
+        }
+
         /* Bio content */
         .about-content { animation: fadeInUp 0.8s ease 0.4s both; }
         .about-label { font-size: 0.85rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; }
@@ -205,6 +273,39 @@
             margin-bottom: 1.4rem;
         }
         .about-text:last-of-type { margin-bottom: 2.5rem; }
+
+        /* Currently section */
+        .currently-block {
+            margin-bottom: 2.5rem;
+            padding: 1.4rem 1.6rem;
+            background: rgba(20,184,166,0.05);
+            border: 1px solid rgba(20,184,166,0.2);
+            border-radius: 12px;
+        }
+        .currently-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        .currently-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 0.6rem;
+        }
+        .currently-item:last-child { margin-bottom: 0; }
+        .currently-item strong {
+            color: rgba(255,255,255,0.7);
+            font-weight: 500;
+            min-width: 90px;
+            flex-shrink: 0;
+        }
 
         /* CTA row */
         .about-ctas { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
@@ -309,6 +410,8 @@
             .hero { padding: 8rem 1.5rem 3rem; }
             .page-title { font-size: 2.5rem; }
             .page-subtitle { font-size: 1rem; }
+            .pov-banner { padding: 2rem 1.5rem 0; }
+            .pov-text { font-size: 1.2rem; }
             .about-body { padding: 4rem 1.5rem 6rem; }
             .about-heading { font-size: 2rem; }
             .section-title { font-size: 2.2rem; }
@@ -345,7 +448,7 @@
         </div>
     </nav>
 
-    <!-- Hero (matches Projects page style) -->
+    <!-- Hero -->
     <section class="hero">
         <div class="hero-container">
             <h1 class="page-title">About Me</h1>
@@ -353,34 +456,75 @@
         </div>
     </section>
 
+    <!-- POV Banner -->
+    <div class="pov-banner">
+        <div class="pov-inner">
+            <p class="pov-label">Design philosophy</p>
+            <p class="pov-text">"Most products don't fail because of bad visuals — they fail because no one talked to the person using them first."</p>
+        </div>
+    </div>
+
     <!-- About Body -->
     <section class="about-body">
         <div class="about-container">
 
-            <!-- Photo -->
-            <div class="about-photo-wrap">
-                <div class="about-photo">
-                    <img src="./Images/Inayat.JPG" alt="Inayat">
+            <!-- Photo column -->
+            <div class="about-photo-col">
+                <div class="about-photo-wrap">
+                    <div class="about-photo">
+                        <img src="./Images/Inayat.JPG" alt="Inayat">
+                    </div>
+                    <div class="photo-tag">
+                        <span>Based in</span>
+                        <strong>Vancouver, BC</strong>
+                    </div>
                 </div>
-                <div class="photo-tag">
-                    <span>Based in</span>
-                    <strong>Vancouver, BC</strong>
+
+                <!-- Human caption below photo -->
+                <div class="photo-caption">
+                    <p class="photo-caption-label">A few things about me</p>
+                    <div class="photo-caption-fact">
+                        <div class="photo-caption-dot"></div>
+                        <span>I hiked the Stawamus Chief three times before deciding the view never gets old</span>
+                    </div>
+                    <div class="photo-caption-fact">
+                        <div class="photo-caption-dot"></div>
+                        <span>Architecture is my biggest design influence — especially how Tadao Ando uses concrete and light</span>
+                    </div>
+                    <div class="photo-caption-fact">
+                        <div class="photo-caption-dot"></div>
+                        <span>I've lived across cultures, which is why cross-cultural UX problems feel personal, not academic</span>
+                    </div>
                 </div>
             </div>
 
             <!-- Bio -->
             <div class="about-content">
+                <p class="about-label">Who I am</p>
                 <h2 class="about-heading">Designer who makes things <em>actually work.</em></h2>
 
-                <p class="about-text">UX/UI Designer · Vancouver · SFU Interactive Arts & Technology</p>
+                <p class="about-text">I'm a UX/UI designer at SFU studying Interactive Arts & Technology, with a concentration in Interaction Design and a foundation in frontend development. That combination — research brain, build instinct — is what I bring to every project.</p>
 
-                <p class="about-text">I design digital products that are as functional as they are considered. I got into UX because I kept encountering interfaces that looked the part but failed the person using them — and I wanted to be someone who closed that gap.
-My approach is research-first by habit and technically grounded by choice. A foundation in frontend development means I understand what actually ships — so I'm not designing beautiful mockups that fall apart the moment they hit a developer's hands. I care about the constraints as much as the craft.</p>
+                <p class="about-text">I got into UX because I kept encountering interfaces that looked polished but failed the person using them. I wanted to be someone who closed that gap. My approach is research-first by habit: I don't trust my first idea, I test it. And because I can read and write code, I design things that actually survive contact with a developer's hands.</p>
 
-                <p class="about-text">I'm drawn to complex problems, cross-cultural nuance, and the details that most people skip over. Whether I'm synthesizing user research or pushing pixels, I'm always thinking about the person on the other side of the screen.</p>
+                <p class="about-text">I'm drawn to messy, human problems — the kind where the real issue only surfaces after you've sat with a user for an hour. At Mastercard I worked across four countries and learned that designing for 15,000 people means designing for fifteen different mental models at once. That's the work I want more of.</p>
 
-                <p class="about-text">Outside of design, I'm usually exploring — Vancouver's neighbourhoods, BC's backcountry, or a city I've never been to before. Moving through different places and cultures keeps my perspective honest and my empathy for users sharp.
-I'm targeting full-time UX roles for fall 2026.</p>
+                <!-- Currently block -->
+                <div class="currently-block">
+                    <p class="currently-label">Right now</p>
+                    <div class="currently-item">
+                        <strong>Building —</strong>
+                        <span>Pawth, a social platform for pet owners, handling UX and frontend in React</span>
+                    </div>
+                    <div class="currently-item">
+                        <strong>Learning —</strong>
+                        <span>AI interaction patterns and how to design for agentic, multi-step flows</span>
+                    </div>
+                    <div class="currently-item">
+                        <strong>Seeking —</strong>
+                        <span>Full-time UX roles for fall 2026 — open to product, enterprise, and consumer</span>
+                    </div>
+                </div>
 
                 <div class="about-ctas">
                     <a href="./Resume.html" class="about-btn">Download Resume</a>
@@ -448,6 +592,20 @@ I'm targeting full-time UX roles for fall 2026.</p>
                     </div>
                 </div>
 
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2026 — Now</div>
+                    <h3 class="timeline-title">Design Beyond the Screen</h3>
+                    <p class="timeline-desc">Deliberately stepping outside the digital. Attending startup events, design jams, and design festivals — finding that the best design thinking happens in rooms with people, not just in Figma files. Exploring how design principles translate across architecture, physical products, and service experiences. The more I study how a building moves people through space, or how a service touchpoint makes someone feel, the sharper my digital work gets.</p>
+                    <div class="timeline-tags">
+                        <span class="timeline-tag">Service Design</span>
+                        <span class="timeline-tag">Architecture</span>
+                        <span class="timeline-tag">Product Design</span>
+                        <span class="timeline-tag">Design Jams</span>
+                        <span class="timeline-tag">Community</span>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -474,7 +632,7 @@ I'm targeting full-time UX roles for fall 2026.</p>
 
     <footer>
         <div style="max-width:1400px;margin:0 auto;">
-            <p>&copy; 2025 Inayat. All rights reserved.</p>
+            <p>&copy; 2026 Inayat. All rights reserved.</p>
         </div>
     </footer>
 
