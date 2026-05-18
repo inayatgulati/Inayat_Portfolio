@@ -1,556 +1,1560 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Language in the Landscape — Inayat</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root {
---bg:     #0a0a0a;
---sur:    rgba(255,255,255,0.03);
---bdr:    rgba(255,255,255,0.08);
---text:   #f0f0f0;
---muted:  #888;
---dim:    #444;
---teal:   #14b8a6;
---teal-l: #2dd4bf;
---teal-d: #0d9488;
---nav-h:  64px;
---side-w: 200px;
-}
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { font-family: 'Work Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-/* NAV */
-.topnav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); z-index: 200; display: flex; align-items: center; padding: 0 2rem; background: rgba(10,10,10,0.93); backdrop-filter: blur(16px); border-bottom: 1px solid var(--bdr); }
-.topnav-in { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-.logo { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; letter-spacing: 1px; color: var(--text); text-decoration: none; }
-.nav-links { display: flex; gap: 2rem; list-style: none; }
-.nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; transition: color .2s; }
-.nav-links a:hover { color: var(--teal); }
-/* SIDENAV */
-.sidenav { position: fixed; top: var(--nav-h); left: 0; width: var(--side-w); height: calc(100vh - var(--nav-h)); padding: 2.5rem 1rem 2rem 2rem; border-right: 1px solid var(--bdr); background: var(--bg); display: flex; flex-direction: column; gap: 2rem; overflow-y: auto; overflow-x: hidden; z-index: 100; }
-.back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--teal); text-decoration: none; font-size: 0.78rem; font-weight: 500; transition: gap .2s; white-space: nowrap; }
-.back-link:hover { gap: 10px; }
-.side-lbl { font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--dim); font-weight: 600; margin-bottom: 0.75rem; }
-.side-list { display: flex; flex-direction: column; }
-.side-a { display: flex; align-items: center; gap: 8px; padding: 7px 0 7px 10px; color: var(--dim); text-decoration: none; font-size: 0.77rem; border-left: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
-.side-a:hover { color: var(--text); border-left-color: var(--dim); }
-.side-a.active { color: var(--teal-l); border-left-color: var(--teal); font-weight: 500; }
-.side-num { font-size: 0.6rem; color: var(--dim); min-width: 16px; }
-.side-a.active .side-num { color: var(--teal); }
-/* MAIN */
-.main { margin-left: var(--side-w); padding: calc(var(--nav-h) + 3rem) 3.5rem 6rem 3rem; max-width: calc(900px + var(--side-w)); }
-/* HERO */
-.tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
-.tag { font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--teal); padding: 3px 10px; border: 1px solid rgba(20,184,166,.25); border-radius: 20px; background: rgba(20,184,166,.05); }
-.hero-h { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem,5vw,4.2rem); font-weight: 300; line-height: 1.05; margin-bottom: 0.4rem; }
-.hero-h em { font-style: italic; color: var(--teal-l); }
-.hero-sub { font-size: 1rem; color: var(--muted); margin-bottom: 1rem; }
-.hero-p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; max-width: 520px; margin-bottom: 1.75rem; }
-/* HERO IMAGE */
-.hero-img { width: 100%; border-radius: 14px; overflow: hidden; border: 1px solid var(--bdr); margin-bottom: 2rem; background: #111; }
-.hero-img img { width: 100%; display: block; max-height: 460px; object-fit: cover; }
-/* STATS */
-.stats { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--bdr); border-radius: 14px; overflow: hidden; margin-bottom: 1.75rem; }
-.stat { padding: 1.2rem 1.1rem; background: var(--sur); border-right: 1px solid var(--bdr); }
-.stat:last-child { border-right: none; }
-.s-n { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 700; color: var(--teal-l); line-height: 1; margin-bottom: 5px; }
-.s-l { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
-.s-sub { font-size: 0.65rem; color: var(--dim); margin-top: 2px; }
-/* META */
-.meta { display: flex; gap: 2rem; flex-wrap: wrap; padding-top: 1.25rem; border-top: 1px solid var(--bdr); margin-bottom: 5rem; }
-.m-k { font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 4px; }
-.m-v { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
-/* SECTION */
-.sec { margin-bottom: 5rem; }
-.phase { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
-.p-dot { width: 20px; height: 20px; border-radius: 50%; background: rgba(20,184,166,.1); border: 1px solid rgba(20,184,166,.3); display: flex; align-items: center; justify-content: center; font-size: 0.58rem; color: var(--teal); font-weight: 700; }
-.p-txt { font-size: 0.65rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal); font-weight: 600; }
-.sec-h { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 300; line-height: 1.15; margin-bottom: 0.5rem; }
-.sec-lead { font-size: 0.875rem; color: var(--muted); line-height: 1.8; max-width: 580px; margin-bottom: 1.5rem; }
-.rule { height: 1px; background: var(--bdr); margin-bottom: 1.5rem; }
-.sub { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 0.875rem; }
-/* GRIDS */
-.g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.5rem; }
-.g2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 1.5rem; }
-/* CARDS */
-.nc { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
-.nc-n { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--teal-l); line-height: 1; margin-bottom: 6px; }
-.nc-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; }
-.nc-d { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
-.ic { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
-.ic-ico { font-size: 1rem; margin-bottom: 0.6rem; }
-.ic-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; }
-.ic-d { font-size: 0.76rem; color: var(--muted); line-height: 1.55; }
-/* FINDING ROW */
-.flist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
-.fr { display: flex; gap: 0.875rem; align-items: flex-start; padding: 0.875rem 1.1rem; background: var(--sur); border: 1px solid var(--bdr); border-radius: 8px; transition: border-color .2s; }
-.fr:hover { border-color: rgba(20,184,166,.2); }
-.fr-i { width: 30px; height: 30px; min-width: 30px; border-radius: 6px; background: rgba(20,184,166,.07); border: 1px solid rgba(20,184,166,.15); display: flex; align-items: center; justify-content: center; font-size: 0.82rem; }
-.fr-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
-.fr-d { font-size: 0.77rem; color: var(--muted); line-height: 1.55; }
-/* STEP LIST */
-.slist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
-.st { display: flex; gap: 0.875rem; padding: 0.875rem 1.1rem; background: var(--sur); border: 1px solid var(--bdr); border-radius: 8px; }
-.st-n { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 700; color: var(--teal); min-width: 20px; line-height: 1.5; }
-.st-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
-.st-d { font-size: 0.77rem; color: var(--muted); line-height: 1.5; }
-/* QUOTE */
-.quote { border-left: 2px solid var(--teal); padding: 0.875rem 1.25rem; margin: 1.25rem 0; background: rgba(20,184,166,.04); border-radius: 0 8px 8px 0; }
-.quote p { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; line-height: 1.6; color: var(--text); }
-/* TOOLS */
-.tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
-.tool { font-size: 0.72rem; padding: 4px 12px; border-radius: 20px; background: var(--sur); border: 1px solid var(--bdr); color: var(--muted); }
-/* PAGE BLOCK */
-.page-block { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--bdr); }
-.page-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-.page-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; margin-bottom: 0.5rem; }
-.page-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.8; max-width: 560px; margin-bottom: 1.25rem; }
-/* PAGE BLOCK WITH SIDE IMAGE */
-.page-block-with-img { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start; }
-.page-block-with-img .page-content { min-width: 0; }
-.page-block-with-img .page-preview { flex-shrink: 0; }
-.page-preview-img { width: 180px; border-radius: 10px; overflow: hidden; border: 1px solid var(--bdr); background: #111; box-shadow: 0 8px 32px rgba(0,0,0,0.4); transition: transform .3s ease, box-shadow .3s ease; }
-.page-preview-img:hover { transform: scale(1.03) translateY(-2px); box-shadow: 0 16px 48px rgba(0,0,0,0.6); }
-.page-preview-img img { width: 100%; display: block; }
-.page-preview-img.tall { width: 160px; }
-.flipped { transform: rotate(180deg); }
-/* IMAGES */
-.imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
-.imgs.c1 { grid-template-columns: 1fr; }
-.imgs.c2 { grid-template-columns: 1fr 1fr; }
-.iw { border-radius: 12px; overflow: hidden; border: 1px solid var(--bdr); background: #111; }
-.iw img { width: 100%; display: block; }
-.icap { padding: 7px 10px; font-size: 0.7rem; color: var(--dim); border-top: 1px solid var(--bdr); line-height: 1.4; }
-/* REFLECTION */
-.rc { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
-.rc-t { font-size: 0.82rem; font-weight: 600; color: var(--teal-l); margin-bottom: 6px; }
-.rc-d { font-size: 0.78rem; color: var(--muted); line-height: 1.7; }
-/* DESIGN DECISION WITH IMAGE */
-.design-fr { display: flex; gap: 0.875rem; align-items: flex-start; padding: 0; background: var(--sur); border: 1px solid var(--bdr); border-radius: 10px; transition: border-color .2s; overflow: hidden; }
-.design-fr:hover { border-color: rgba(20,184,166,.2); }
-.design-fr-body { display: flex; gap: 0.875rem; align-items: flex-start; padding: 0.875rem 1.1rem; flex: 1; min-width: 0; }
-.design-fr-img { flex-shrink: 0; width: 110px; border-left: 1px solid var(--bdr); background: #111; display: flex; align-items: stretch; }
-.design-fr-img img { width: 100%; object-fit: cover; display: block; }
-/* FOOTER */
-footer { background: #050508; border-top: 1px solid var(--bdr); padding: 1.5rem 2rem; text-align: center; font-size: 0.8rem; color: var(--dim); }
-/* REVEAL */
-.rev { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
-.rev.in { opacity: 1; transform: none; }
-/* RESPONSIVE */
-@media (max-width: 860px) {
-.sidenav { display: none; }
-.main { margin-left: 0; padding: 5rem 1.5rem 5rem; }
-.stats { grid-template-columns: repeat(2,1fr); }
-.g3, .g2 { grid-template-columns: 1fr; }
-.imgs.c2 { grid-template-columns: 1fr; }
-.page-block-with-img { grid-template-columns: 1fr; }
-.page-preview-img, .page-preview-img.tall { width: 100%; max-width: 260px; }
-.design-fr-img { display: none; }
-}
-@media (max-width: 480px) {
-.stats { grid-template-columns: 1fr 1fr; }
-.hero-h { font-size: 2.4rem; }
-.nav-links { display: none; }
-}
-</style>
-</head>
-<body>
-
-<!-- NAV -->
-<nav class="topnav">
-  <div class="topnav-in">
-    <a href="../index.html" class="logo">INAYAT</a>
-    <ul class="nav-links">
-      <li><a href="../index.html">Home</a></li>
-      <li><a href="../About.html">About</a></li>
-      <li><a href="../Projects.html">Projects</a></li>
-      <li><a href="../Resume.html">Resume</a></li>
-      <li><a href="../index.html#contact">Contact</a></li>
-    </ul>
-  </div>
-</nav>
-
-<!-- SIDENAV -->
-<aside class="sidenav">
-  <a href="../Projects.html" class="back-link">← Projects</a>
-  <div>
-    <div class="side-lbl">Case Study</div>
-    <nav class="side-list">
-      <a href="#overview"    class="side-a active"><span class="side-num">00</span>Overview</a>
-      <a href="#deliverables" class="side-a"><span class="side-num">01</span>The Zine</a>
-      <a href="#design"      class="side-a"><span class="side-num">02</span>Design Choices</a>
-      <a href="#process"     class="side-a"><span class="side-num">03</span>Process</a>
-      <a href="#ethics"      class="side-a"><span class="side-num">04</span>Ethics</a>
-      <a href="#rhetoric"    class="side-a"><span class="side-num">05</span>Visual Rhetoric</a>
-      <a href="#reflection"  class="side-a"><span class="side-num">06</span>Reflection</a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Language in the Landscape — Inayat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Work+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0a0a0a;
+        --sur: rgba(255, 255, 255, 0.03);
+        --bdr: rgba(255, 255, 255, 0.08);
+        --text: #f0f0f0;
+        --muted: #888;
+        --dim: #444;
+        --teal: #14b8a6;
+        --teal-l: #2dd4bf;
+        --teal-d: #0d9488;
+        --nav-h: 64px;
+        --side-w: 200px;
+      }
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Work Sans", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+      /* NAV */
+      .topnav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: var(--nav-h);
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        padding: 0 2rem;
+        background: rgba(10, 10, 10, 0.93);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--bdr);
+      }
+      .topnav-in {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.3rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+      }
+      .nav-links a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.875rem;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover {
+        color: var(--teal);
+      }
+      /* SIDENAV */
+      .sidenav {
+        position: fixed;
+        top: var(--nav-h);
+        left: 0;
+        width: var(--side-w);
+        height: calc(100vh - var(--nav-h));
+        padding: 2.5rem 1rem 2rem 2rem;
+        border-right: 1px solid var(--bdr);
+        background: var(--bg);
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        overflow-y: auto;
+        overflow-x: hidden;
+        z-index: 100;
+      }
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--teal);
+        text-decoration: none;
+        font-size: 0.78rem;
+        font-weight: 500;
+        transition: gap 0.2s;
+        white-space: nowrap;
+      }
+      .back-link:hover {
+        gap: 10px;
+      }
+      .side-lbl {
+        font-size: 0.6rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--dim);
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+      }
+      .side-list {
+        display: flex;
+        flex-direction: column;
+      }
+      .side-a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 0 7px 10px;
+        color: var(--dim);
+        text-decoration: none;
+        font-size: 0.77rem;
+        border-left: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+      }
+      .side-a:hover {
+        color: var(--text);
+        border-left-color: var(--dim);
+      }
+      .side-a.active {
+        color: var(--teal-l);
+        border-left-color: var(--teal);
+        font-weight: 500;
+      }
+      .side-num {
+        font-size: 0.6rem;
+        color: var(--dim);
+        min-width: 16px;
+      }
+      .side-a.active .side-num {
+        color: var(--teal);
+      }
+      /* MAIN */
+      .main {
+        margin-left: var(--side-w);
+        padding: calc(var(--nav-h) + 3rem) 3.5rem 6rem 3rem;
+        max-width: calc(900px + var(--side-w));
+      }
+      /* HERO */
+      .tags {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.25rem;
+      }
+      .tag {
+        font-size: 0.68rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: var(--teal);
+        padding: 3px 10px;
+        border: 1px solid rgba(20, 184, 166, 0.25);
+        border-radius: 20px;
+        background: rgba(20, 184, 166, 0.05);
+      }
+      .hero-h {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(2.8rem, 5vw, 4.2rem);
+        font-weight: 300;
+        line-height: 1.05;
+        margin-bottom: 0.4rem;
+      }
+      .hero-h em {
+        font-style: italic;
+        color: var(--teal-l);
+      }
+      .hero-sub {
+        font-size: 1rem;
+        color: var(--muted);
+        margin-bottom: 1rem;
+      }
+      .hero-p {
+        font-size: 0.95rem;
+        color: var(--muted);
+        line-height: 1.8;
+        max-width: 520px;
+        margin-bottom: 1.75rem;
+      }
+      /* HERO IMAGE */
+      .hero-img {
+        width: 100%;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid var(--bdr);
+        margin-bottom: 2rem;
+        background: #111;
+      }
+      .hero-img img {
+        width: 100%;
+        display: block;
+        max-height: 460px;
+        object-fit: cover;
+      }
+      /* STATS */
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border: 1px solid var(--bdr);
+        border-radius: 14px;
+        overflow: hidden;
+        margin-bottom: 1.75rem;
+      }
+      .stat {
+        padding: 1.2rem 1.1rem;
+        background: var(--sur);
+        border-right: 1px solid var(--bdr);
+      }
+      .stat:last-child {
+        border-right: none;
+      }
+      .s-n {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--teal-l);
+        line-height: 1;
+        margin-bottom: 5px;
+      }
+      .s-l {
+        font-size: 0.72rem;
+        color: var(--muted);
+        line-height: 1.4;
+      }
+      .s-sub {
+        font-size: 0.65rem;
+        color: var(--dim);
+        margin-top: 2px;
+      }
+      /* META */
+      .meta {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        padding-top: 1.25rem;
+        border-top: 1px solid var(--bdr);
+        margin-bottom: 5rem;
+      }
+      .m-k {
+        font-size: 0.62rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--teal);
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      .m-v {
+        font-size: 0.8rem;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      /* SECTION */
+      .sec {
+        margin-bottom: 5rem;
+      }
+      .phase {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 0.75rem;
+      }
+      .p-dot {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: rgba(20, 184, 166, 0.1);
+        border: 1px solid rgba(20, 184, 166, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.58rem;
+        color: var(--teal);
+        font-weight: 700;
+      }
+      .p-txt {
+        font-size: 0.65rem;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: var(--teal);
+        font-weight: 600;
+      }
+      .sec-h {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.9rem;
+        font-weight: 300;
+        line-height: 1.15;
+        margin-bottom: 0.5rem;
+      }
+      .sec-lead {
+        font-size: 0.875rem;
+        color: var(--muted);
+        line-height: 1.8;
+        max-width: 580px;
+        margin-bottom: 1.5rem;
+      }
+      .rule {
+        height: 1px;
+        background: var(--bdr);
+        margin-bottom: 1.5rem;
+      }
+      .sub {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--teal);
+        font-weight: 600;
+        margin-bottom: 0.875rem;
+      }
+      /* GRIDS */
+      .g3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-bottom: 1.5rem;
+      }
+      .g2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 1.5rem;
+      }
+      /* CARDS */
+      .nc {
+        background: var(--sur);
+        border: 1px solid var(--bdr);
+        border-radius: 12px;
+        padding: 1.25rem;
+      }
+      .nc-n {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--teal-l);
+        line-height: 1;
+        margin-bottom: 6px;
+      }
+      .nc-t {
+        font-size: 0.82rem;
+        font-weight: 600;
+        margin-bottom: 3px;
+      }
+      .nc-d {
+        font-size: 0.76rem;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      .ic {
+        background: var(--sur);
+        border: 1px solid var(--bdr);
+        border-radius: 12px;
+        padding: 1.25rem;
+      }
+      .ic-ico {
+        font-size: 1rem;
+        margin-bottom: 0.6rem;
+      }
+      .ic-t {
+        font-size: 0.82rem;
+        font-weight: 600;
+        margin-bottom: 3px;
+      }
+      .ic-d {
+        font-size: 0.76rem;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+      /* FINDING ROW */
+      .flist {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 1.5rem;
+      }
+      .fr {
+        display: flex;
+        gap: 0.875rem;
+        align-items: flex-start;
+        padding: 0.875rem 1.1rem;
+        background: var(--sur);
+        border: 1px solid var(--bdr);
+        border-radius: 8px;
+        transition: border-color 0.2s;
+      }
+      .fr:hover {
+        border-color: rgba(20, 184, 166, 0.2);
+      }
+      .fr-i {
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+        border-radius: 6px;
+        background: rgba(20, 184, 166, 0.07);
+        border: 1px solid rgba(20, 184, 166, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.82rem;
+      }
+      .fr-t {
+        font-size: 0.82rem;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+      .fr-d {
+        font-size: 0.77rem;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+      /* STEP LIST */
+      .slist {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 1.5rem;
+      }
+      .st {
+        display: flex;
+        gap: 0.875rem;
+        padding: 0.875rem 1.1rem;
+        background: var(--sur);
+        border: 1px solid var(--bdr);
+        border-radius: 8px;
+      }
+      .st-n {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--teal);
+        min-width: 20px;
+        line-height: 1.5;
+      }
+      .st-t {
+        font-size: 0.82rem;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+      .st-d {
+        font-size: 0.77rem;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      /* QUOTE */
+      .quote {
+        border-left: 2px solid var(--teal);
+        padding: 0.875rem 1.25rem;
+        margin: 1.25rem 0;
+        background: rgba(20, 184, 166, 0.04);
+        border-radius: 0 8px 8px 0;
+      }
+      .quote p {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.2rem;
+        font-style: italic;
+        line-height: 1.6;
+        color: var(--text);
+      }
+      /* TOOLS */
+      .tools {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+      }
+      .tool {
+        font-size: 0.72rem;
+        padding: 4px 12px;
+        border-radius: 20px;
+        background: var(--sur);
+        border: 1px solid var(--bdr);
+        color: var(--muted);
+      }
+      /* PAGE BLOCK */
+      .page-block {
+        margin-bottom: 3rem;
+        padding-bottom: 3rem;
+        border-bottom: 1px solid var(--bdr);
+      }
+      .page-block:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+      .page-title {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.5rem;
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+      }
+      .page-desc {
+        font-size: 0.875rem;
+        color: var(--muted);
+        line-height: 1.8;
+        max-width: 560px;
+        margin-bottom: 1.25rem;
+      }
+      /* PAGE BLOCK WITH SIDE IMAGE */
+      .page-block-with-img {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 2rem;
+        align-items: start;
+      }
+      .page-block-with-img .page-content {
+        min-width: 0;
+      }
+      .page-block-with-img .page-preview {
+        flex-shrink: 0;
+      }
+      .page-preview-img {
+        width: 180px;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid var(--bdr);
+        background: #111;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+      .page-preview-img:hover {
+        transform: scale(1.03) translateY(-2px);
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+      }
+      .page-preview-img img {
+        width: 100%;
+        display: block;
+      }
+      .page-preview-img.tall {
+        width: 160px;
+      }
+      .flipped {
+        transform: rotate(180deg);
+      }
+      /* IMAGES */
+      .imgs {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 1.5rem;
+      }
+      .imgs.c1 {
+        grid-template-columns: 1fr;
+      }
+      .imgs.c2 {
+        grid-template-columns: 1fr 1fr;
+      }
+      .iw {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--bdr);
+        background: #111;
+      }
+      .iw img {
+        width: 100%;
+        display: block;
+      }
+      .icap {
+        padding: 7px 10px;
+        font-size: 0.7rem;
+        color: var(--dim);
+        border-top: 1px solid var(--bdr);
+        line-height: 1.4;
+      }
+      /* REFLECTION */
+      .rc {
+        background: var(--sur);
+        border: 1px solid var(--bdr);
+        border-radius: 12px;
+        padding: 1.25rem;
+      }
+      .rc-t {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--teal-l);
+        margin-bottom: 6px;
+      }
+      .rc-d {
+        font-size: 0.78rem;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+      /* DESIGN DECISION WITH IMAGE */
+      .design-fr {
+        display: flex;
+        gap: 0.875rem;
+        align-items: flex-start;
+        padding: 0;
+        background: var(--sur);
+        border: 1px solid var(--bdr);
+        border-radius: 10px;
+        transition: border-color 0.2s;
+        overflow: hidden;
+      }
+      .design-fr:hover {
+        border-color: rgba(20, 184, 166, 0.2);
+      }
+      .design-fr-body {
+        display: flex;
+        gap: 0.875rem;
+        align-items: flex-start;
+        padding: 0.875rem 1.1rem;
+        flex: 1;
+        min-width: 0;
+      }
+      .design-fr-img {
+        flex-shrink: 0;
+        width: 110px;
+        border-left: 1px solid var(--bdr);
+        background: #111;
+        display: flex;
+        align-items: stretch;
+      }
+      .design-fr-img img {
+        width: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      /* FOOTER */
+      footer {
+        background: #050508;
+        border-top: 1px solid var(--bdr);
+        padding: 1.5rem 2rem;
+        text-align: center;
+        font-size: 0.8rem;
+        color: var(--dim);
+      }
+      /* REVEAL */
+      .rev {
+        opacity: 0;
+        transform: translateY(14px);
+        transition:
+          opacity 0.5s ease,
+          transform 0.5s ease;
+      }
+      .rev.in {
+        opacity: 1;
+        transform: none;
+      }
+      /* RESPONSIVE */
+      @media (max-width: 860px) {
+        .sidenav {
+          display: none;
+        }
+        .main {
+          margin-left: 0;
+          padding: 5rem 1.5rem 5rem;
+        }
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .g3,
+        .g2 {
+          grid-template-columns: 1fr;
+        }
+        .imgs.c2 {
+          grid-template-columns: 1fr;
+        }
+        .page-block-with-img {
+          grid-template-columns: 1fr;
+        }
+        .page-preview-img,
+        .page-preview-img.tall {
+          width: 100%;
+          max-width: 260px;
+        }
+        .design-fr-img {
+          display: none;
+        }
+      }
+      @media (max-width: 480px) {
+        .stats {
+          grid-template-columns: 1fr 1fr;
+        }
+        .hero-h {
+          font-size: 2.4rem;
+        }
+        .nav-links {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav class="topnav">
+      <div class="topnav-in">
+        <a href="../index.html" class="logo">INAYAT</a>
+        <ul class="nav-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../About.html">About</a></li>
+          <li><a href="../Projects.html">Projects</a></li>
+          <li><a href="../Resume.html">Resume</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+        </ul>
+      </div>
     </nav>
-  </div>
-</aside>
 
-<!-- MAIN -->
-<main class="main">
-
-  <!-- HERO -->
-  <header style="margin-bottom:4rem;">
-    <div class="tags">
-      <span class="tag">Publication Design</span>
-      <span class="tag">Indigenous Languages</span>
-      <span class="tag">Print Zine</span>
-      <span class="tag">Team Lead</span>
-    </div>
-    <h1 class="hero-h">Language in the <em>Landscape</em></h1>
-    <p class="hero-sub">A Pocket Zine for Newcomers — Publication Design &amp; Indigenous Language Awareness</p>
-    <p class="hero-p">A foldable, pocket-sized zine designed to help newcomers in Vancouver connect with Indigenous languages and the unceded territories they now call home. Client: CityStudio Vancouver.</p>
-
-    <div class="hero-img">
-      <img src="../Images/poster_pub.png" alt="Language in the Landscape Zine Cover">
-    </div>
-
-    <div class="stats">
-      <div class="stat"><div class="s-n">8</div><div class="s-l">Zine pages</div><div class="s-sub">Fully designed &amp; printed</div></div>
-      <div class="stat"><div class="s-n">2</div><div class="s-l">Indigenous languages</div><div class="s-sub">halq'emeylem &amp; sḵwx̱wú7mesh</div></div>
-      <div class="stat"><div class="s-n">3</div><div class="s-l">Team members</div><div class="s-sub">Design-led collaboration</div></div>
-      <div class="stat"><div class="s-n">1</div><div class="s-l">Client</div><div class="s-sub">CityStudio Vancouver</div></div>
-    </div>
-
-    <div class="meta">
-      <div><div class="m-k">Timeline</div><div class="m-v">Jan – Apr 2026</div></div>
-      <div><div class="m-k">My Role</div><div class="m-v">Team Leader<br>Publication Designer<br>Content Researcher</div></div>
-      <div><div class="m-k">Team</div><div class="m-v">Inayat Inayat<br>Taeri Lee<br>Mansimar Wadhera</div></div>
-      <div><div class="m-k">Tools</div><div class="m-v">Adobe InDesign<br>Adobe Illustrator<br>BC Sans Typography</div></div>
-      <div><div class="m-k">Course</div><div class="m-v">PUB 438 — Design Awareness<br>in Publishing</div></div>
-    </div>
-  </header>
-
-  <!-- 00 OVERVIEW -->
-  <section id="overview" class="sec rev">
-    <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
-    <h2 class="sec-h">The Project</h2>
-    <p class="sec-lead">Vancouver is built on the unceded territories of the Musqueam, Squamish, and Tsleil-Waututh Nations — yet many newcomers encounter land acknowledgments without ever truly understanding their meaning. This project shifts that from passive hearing to active learning.</p>
-    <div class="rule"></div>
-    <div class="g3" style="margin-bottom:2rem">
-      <div class="nc">
-        <div class="nc-n">8</div>
-        <div class="nc-t">Pages designed</div>
-        <div class="nc-d">Cover, acknowledgment, host nations, two language learning spreads, and a full Indigenous language map of Vancouver</div>
+    <!-- SIDENAV -->
+    <aside class="sidenav">
+      <a href="../Projects.html" class="back-link">← Projects</a>
+      <div>
+        <div class="side-lbl">Case Study</div>
+        <nav class="side-list">
+          <a href="#overview" class="side-a active"
+            ><span class="side-num">00</span>Overview</a
+          >
+          <a href="#deliverables" class="side-a"
+            ><span class="side-num">01</span>The Zine</a
+          >
+          <a href="#design" class="side-a"
+            ><span class="side-num">02</span>Design Choices</a
+          >
+          <a href="#process" class="side-a"
+            ><span class="side-num">03</span>Process</a
+          >
+          <a href="#ethics" class="side-a"
+            ><span class="side-num">04</span>Ethics</a
+          >
+          <a href="#rhetoric" class="side-a"
+            ><span class="side-num">05</span>Visual Rhetoric</a
+          >
+          <a href="#reflection" class="side-a"
+            ><span class="side-num">06</span>Reflection</a
+          >
+        </nav>
       </div>
-      <div class="nc">
-        <div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Active</div>
-        <div class="nc-t">Learning over listening</div>
-        <div class="nc-d">Speak, write, and listen — three interaction types built into the physical zine through prompts, practice lines, and QR audio codes</div>
-      </div>
-      <div class="nc">
-        <div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Portable</div>
-        <div class="nc-t">Everyday spaces</div>
-        <div class="nc-d">Designed for transit stations, campuses, airports, and community centres — no app or internet required</div>
-      </div>
-    </div>
-    <div class="quote">
-      <p>"We redefined the problem by shifting focus from passive acknowledgment to active learning — giving newcomers a way to engage with Indigenous language through meaning, pronunciation, and personal reflection."</p>
-    </div>
-  </section>
+    </aside>
 
-  <!-- 01 THE ZINE -->
-  <section id="deliverables" class="sec rev">
-    <div class="phase"><div class="p-dot">1</div><span class="p-txt">The Zine</span></div>
-    <h2 class="sec-h">Inside the<br><em>Publication</em></h2>
-    <p class="sec-lead">The zine unfolds across 8 pages, each with a distinct purpose — guiding readers from acknowledgment through language learning to personal reflection and finally a reimagined map of Vancouver.</p>
-    <div class="rule"></div>
-
-    <!-- Page 01 -->
-    <div class="page-block">
-      <div class="sub">Page 01</div>
-      <div class="page-title">Cover — Indigenous Artwork</div>
-      <p class="page-desc">Artwork by Davies S. as the cover — a surprise entry point rather than a titled front page. Vibrant colours draw readers in and signal that this is something different from an institutional pamphlet.</p>
-      <div class="imgs c2">
-        <div class="iw">
-          <img src="../Images/Front.png" alt="Zine front page">
-          <div class="icap">Front page — full layout with all zine panels visible when unfolded</div>
+    <!-- MAIN -->
+    <main class="main">
+      <!-- HERO -->
+      <header style="margin-bottom: 4rem">
+        <div class="tags">
+          <span class="tag">Publication Design</span>
+          <span class="tag">Indigenous Languages</span>
+          <span class="tag">Print Zine</span>
+          <span class="tag">Team Lead</span>
         </div>
-        <div class="iw">
-          <img src="../Images/Back.png" alt="Zine back page">
-          <div class="icap">Back page — Indigenous language map of Vancouver landmarks and animals</div>
-        </div>
-      </div>
-    </div>
+        <h1 class="hero-h">Language in the <em>Landscape</em></h1>
+        <p class="hero-sub">
+          A Pocket Zine for Newcomers — Publication Design &amp; Indigenous
+          Language Awareness
+        </p>
+        <p class="hero-p">
+          A foldable, pocket-sized zine designed to help newcomers in Vancouver
+          connect with Indigenous languages and the unceded territories they now
+          call home. Client: CityStudio Vancouver.
+        </p>
 
-    <!-- Page 02 -->
-    <div class="page-block">
-      <div class="page-block-with-img">
-        <div class="page-content">
-          <div class="sub">Page 02</div>
-          <div class="page-title">Acknowledging the Unceded Territories</div>
-          <p class="page-desc">Official City of Vancouver text explaining what "unceded" means and why it matters. Using the exact institutional language grounds the zine in accuracy while making it accessible to someone encountering the concept for the first time.</p>
+        <div class="hero-img">
+          <img
+            src="../Images/poster_pub.png"
+            alt="Language in the Landscape Zine Cover"
+          />
         </div>
-        <div class="page-preview">
-          <div class="page-preview-img tall">
-            <img src="../Images/Page2.png" alt="Page 02 — Acknowledging the Unceded Territories" class="flipped">
+
+        <div class="stats">
+          <div class="stat">
+            <div class="s-n">8</div>
+            <div class="s-l">Zine pages</div>
+            <div class="s-sub">Fully designed &amp; printed</div>
+          </div>
+          <div class="stat">
+            <div class="s-n">2</div>
+            <div class="s-l">Indigenous languages</div>
+            <div class="s-sub">halq'emeylem &amp; sḵwx̱wú7mesh</div>
+          </div>
+          <div class="stat">
+            <div class="s-n">3</div>
+            <div class="s-l">Team members</div>
+            <div class="s-sub">Design-led collaboration</div>
+          </div>
+          <div class="stat">
+            <div class="s-n">1</div>
+            <div class="s-l">Client</div>
+            <div class="s-sub">CityStudio Vancouver</div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Page 03 -->
-    <div class="page-block">
-      <div class="page-block-with-img">
-        <div class="page-content">
-          <div class="sub">Page 03</div>
-          <div class="page-title">Learn About Our Host Nations</div>
-          <p class="page-desc">Introduces the Musqueam (xʷməθkʷəy̓əm), Squamish (sḵwx̱wú7mesh), and Tsleil-Waututh (səlilwətaɬ) Nations — their names, traditional territories, and the meanings behind those names.</p>
-        </div>
-        <div class="page-preview">
-          <div class="page-preview-img tall">
-            <img src="../Images/Page3.png" alt="Page 03 — Learn About Our Host Nations" class="flipped">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Pages 04–05 -->
-    <div class="page-block">
-      <div class="sub">Pages 04 – 05</div>
-      <div class="page-title">halq'emeylem — Musqueam Language</div>
-      <p class="page-desc">Teaches "Lí chexw we ey o?" (How are you?) from the Musqueam and Tsleil-Waututh language family. Each spread includes phonetic pronunciation guides, fading practice writing lines, a "Did You Know?" fact, and a QR code linking to audio.</p>
-      <div class="imgs c2" style="margin-top:1rem;">
-        <div class="iw">
-          <img src="../Images/Page4.jpg" alt="Page 04 — halq'emeylem language introduction">
-          <div class="icap">halq'emeylem intro — language context, dialect overview, and Did You Know? fact</div>
-        </div>
-        <div class="iw">
-          <img src="../Images/Page5.jpg" alt="Page 05 — Lí chexw we ey o? practice page">
-          <div class="icap">Practice spread — speak, write, and listen via QR code audio</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Pages 06–07 -->
-    <div class="page-block">
-      <div class="sub">Pages 06 – 07</div>
-      <div class="page-title">sḵwx̱wú7mesh sníchim — Squamish Language</div>
-      <p class="page-desc">Teaches "p'áyak" (Get Better!) from the Squamish language — deeply connected to land, water, and community. Same interactive structure: speak, write, and listen via QR code.</p>
-      <div class="imgs c2" style="margin-top:1rem;">
-        <div class="iw">
-          <img src="../Images/Page6.png" alt="Page 06 — sḵwx̱wú7mesh sníchim introduction">
-          <div class="icap">sḵwx̱wú7mesh sníchim intro — language identity, meaning, and Did You Know? fact</div>
-        </div>
-        <div class="iw">
-          <img src="../Images/Page7.png" alt="Page 07 — p'áyak practice page">
-          <div class="icap">Practice spread — speak, write, and listen via QR code audio</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Page 08 -->
-    <div class="page-block">
-      <div class="page-block-with-img">
-        <div class="page-content">
-          <div class="sub">Page 08 — Back Cover</div>
-          <div class="page-title">Indigenous Language Map of Vancouver</div>
-          <p class="page-desc">Reimagines Vancouver through Indigenous languages — familiar landmarks paired with their Squamish and Musqueam names. Burrard Bridge becomes seṅáḵw, orcas become yéwyews, salmon become sth'óqwí. The map makes language visible in the city itself.</p>
-        </div>
-        <div class="page-preview">
-          <div class="page-preview-img tall">
-            <img src="../Images/Page8.jpg" alt="Page 08 — New city, new life, new language panel" class="flipped">
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 02 DESIGN CHOICES -->
-  <section id="design" class="sec rev">
-    <div class="phase"><div class="p-dot">2</div><span class="p-txt">Design Choices</span></div>
-    <h2 class="sec-h">Intentional &amp;<br><em>Approachable</em></h2>
-    <p class="sec-lead">Every decision — format, colour, typography, interaction — was made to lower barriers and invite participation without overwhelming.</p>
-    <div class="rule"></div>
-    <div class="flist">
-
-      <div class="design-fr">
-        <div class="design-fr-body">
-          <div class="fr-i">📄</div>
+        <div class="meta">
           <div>
-            <div class="fr-t">Zine format over digital</div>
-            <div class="fr-d">No app download, no battery required. Tangible and portable — it exists in the everyday spaces where newcomers already are, and can be revisited at any pace.</div>
+            <div class="m-k">Timeline</div>
+            <div class="m-v">Jan – Apr 2026</div>
           </div>
-        </div>
-      </div>
-
-      <div class="design-fr">
-        <div class="design-fr-body">
-          <div class="fr-i">🎨</div>
           <div>
-            <div class="fr-t">Colour palette inspired by land and water</div>
-            <div class="fr-d">Teal for water, gold for warmth and land, earthy red for community history. Each section is colour-coded — colour here doesn't just organise, it carries meaning.</div>
+            <div class="m-k">My Role</div>
+            <div class="m-v">
+              Team Leader<br />Publication Designer<br />Content Researcher
+            </div>
           </div>
-        </div>
-        <div class="design-fr-img">
-          <img src="../Images/crop_colour.png" alt="Teal colour — acknowledging the territories page">
-        </div>
-      </div>
-
-      <div class="design-fr">
-        <div class="design-fr-body">
-          <div class="fr-i">🔤</div>
           <div>
-            <div class="fr-t">BC Sans typeface</div>
-            <div class="fr-d">Chosen for accessibility and readability across all hierarchy levels. A locally rooted typeface for a locally rooted subject — legible at small sizes for the pocket format.</div>
+            <div class="m-k">Team</div>
+            <div class="m-v">
+              Inayat Inayat<br />Taeri Lee<br />Mansimar Wadhera
+            </div>
           </div>
-        </div>
-        <div class="design-fr-img">
-          <img src="../Images/crop_typography.png" alt="BC Sans typography — host nations page">
-        </div>
-      </div>
-
-      <div class="design-fr">
-        <div class="design-fr-body">
-          <div class="fr-i">🔊</div>
           <div>
-            <div class="fr-t">QR code audio support</div>
-            <div class="fr-d">Optional listening via QR codes lets users hear correct pronunciation without relying on phonetics alone — especially important for sounds that don't exist in English.</div>
+            <div class="m-k">Tools</div>
+            <div class="m-v">
+              Adobe InDesign<br />Adobe Illustrator<br />BC Sans Typography
+            </div>
           </div>
-        </div>
-        <div class="design-fr-img">
-          <img src="../Images/crop_qr.png" alt="QR code listen — halq'emeylem practice page">
-        </div>
-      </div>
-
-      <div class="design-fr">
-        <div class="design-fr-body">
-          <div class="fr-i">✍️</div>
           <div>
-            <div class="fr-t">Fading writing practice lines</div>
-            <div class="fr-d">Fading lines from bold to ghost invite users to trace and write language phrases — turning a passive read into active, personal participation.</div>
+            <div class="m-k">Course</div>
+            <div class="m-v">PUB 438 — Design Awareness<br />in Publishing</div>
           </div>
         </div>
-        <div class="design-fr-img">
-          <img src="../Images/crop_fading.png" alt="Fading practice lines — p'áyak Squamish language page">
-        </div>
-      </div>
+      </header>
 
-      <div class="design-fr">
-        <div class="design-fr-body">
-          <div class="fr-i">💡</div>
-          <div>
-            <div class="fr-t">"Did You Know?" language facts</div>
-            <div class="fr-d">Short contextual facts — like why Squamish uses special characters ḵ, x̱, and 7 — add delight and help readers understand why the language looks the way it does.</div>
+      <!-- 00 OVERVIEW -->
+      <section id="overview" class="sec rev">
+        <div class="phase">
+          <div class="p-dot">0</div>
+          <span class="p-txt">Overview</span>
+        </div>
+        <h2 class="sec-h">The Project</h2>
+        <p class="sec-lead">
+          Vancouver is built on the unceded territories of the Musqueam,
+          Squamish, and Tsleil-Waututh Nations — yet many newcomers encounter
+          land acknowledgments without ever truly understanding their meaning.
+          This project shifts that from passive hearing to active learning.
+        </p>
+        <div class="rule"></div>
+        <div class="g3" style="margin-bottom: 2rem">
+          <div class="nc">
+            <div class="nc-n">8</div>
+            <div class="nc-t">Pages designed</div>
+            <div class="nc-d">
+              Cover, acknowledgment, host nations, two language learning
+              spreads, and a full Indigenous language map of Vancouver
+            </div>
+          </div>
+          <div class="nc">
+            <div class="nc-n" style="font-size: 1.3rem; margin-bottom: 7px">
+              Active
+            </div>
+            <div class="nc-t">Learning over listening</div>
+            <div class="nc-d">
+              Speak, write, and listen — three interaction types built into the
+              physical zine through prompts, practice lines, and QR audio codes
+            </div>
+          </div>
+          <div class="nc">
+            <div class="nc-n" style="font-size: 1.3rem; margin-bottom: 7px">
+              Portable
+            </div>
+            <div class="nc-t">Everyday spaces</div>
+            <div class="nc-d">
+              Designed for transit stations, campuses, airports, and community
+              centres — no app or internet required
+            </div>
           </div>
         </div>
-        <div class="design-fr-img">
-          <img src="../Images/crop_didyouknow.png" alt="Did You Know — sḵwx̱wú7mesh sníchim intro page">
+        <div class="quote">
+          <p>
+            "We redefined the problem by shifting focus from passive
+            acknowledgment to active learning — giving newcomers a way to engage
+            with Indigenous language through meaning, pronunciation, and
+            personal reflection."
+          </p>
         </div>
-      </div>
+      </section>
 
-    </div>
-  </section>
+      <!-- 01 THE ZINE -->
+      <section id="deliverables" class="sec rev">
+        <div class="phase">
+          <div class="p-dot">1</div>
+          <span class="p-txt">The Zine</span>
+        </div>
+        <h2 class="sec-h">Inside the<br /><em>Publication</em></h2>
+        <p class="sec-lead">
+          The zine unfolds across 8 pages, each with a distinct purpose —
+          guiding readers from acknowledgment through language learning to
+          personal reflection and finally a reimagined map of Vancouver.
+        </p>
+        <div class="rule"></div>
 
-  <!-- 03 PROCESS -->
-  <section id="process" class="sec rev">
-    <div class="phase"><div class="p-dot">3</div><span class="p-txt">Process</span></div>
-    <h2 class="sec-h">Iterative &amp;<br><em>Research-Informed</em></h2>
-    <p class="sec-lead">Multiple rounds of wireframing, content refinement, and physical print testing — guided by a clear design principle: simplify until nothing feels overwhelming.</p>
-    <div class="rule"></div>
-    <div class="slist" style="margin-bottom:2rem">
-      <div class="st"><div class="st-n">01</div><div><div class="st-t">Problem redefinition</div><div class="st-d">Shifted from "representing Indigenous land acknowledgment" to "helping newcomers actively learn" — a crucial reframe that shaped every subsequent decision.</div></div></div>
-      <div class="st"><div class="st-n">02</div><div><div class="st-t">Research &amp; content sourcing</div><div class="st-d">All language content sourced from Indigenous-led resources: FirstVoices, the Squamish Nation Talking Dictionary, and the City of Vancouver's official reconciliation pages. Content presented unchanged and uninterpreted.</div></div></div>
-      <div class="st"><div class="st-n">03</div><div><div class="st-t">Content-heavy wireframes → simplification</div><div class="st-d">Early versions were dense and overwhelming. Stripped back, reduced clutter, and established a clear reading flow: acknowledgment → learning → reflection → map.</div></div></div>
-      <div class="st"><div class="st-n">04</div><div><div class="st-t">Visual system development</div><div class="st-d">Finalised BC Sans hierarchy, colour palette, watermarks, patterns, and illustrations through multiple rounds of print testing until everything felt consistent and meaningful in hand.</div></div></div>
-      <div class="st"><div class="st-n">05</div><div><div class="st-t">Multiple print iterations</div><div class="st-d">Physically printed and tested across many iterations — layout, colour accuracy, legibility, and fold structure all required real-world testing that digital screens couldn't replicate.</div></div></div>
-      <div class="st"><div class="st-n">06</div><div><div class="st-t">Final delivery to CityStudio Vancouver</div><div class="st-d">Presented as a speculative, scalable design artifact — a starting point for potential Indigenous-led implementation rather than a finished product claiming authority.</div></div></div>
-    </div>
-  </section>
+        <!-- Page 01 -->
+        <div class="page-block">
+          <div class="sub">Page 01</div>
+          <div class="page-title">Cover — Indigenous Artwork</div>
+          <p class="page-desc">
+            Artwork by Davies S. as the cover — a surprise entry point rather
+            than a titled front page. Vibrant colours draw readers in and signal
+            that this is something different from an institutional pamphlet.
+          </p>
+          <div class="imgs c2">
+            <div class="iw">
+              <img src="../Images/Front.png" alt="Zine front page" />
+              <div class="icap">
+                Front page — full layout with all zine panels visible when
+                unfolded
+              </div>
+            </div>
+            <div class="iw">
+              <img src="../Images/Back.png" alt="Zine back page" />
+              <div class="icap">
+                Back page — Indigenous language map of Vancouver landmarks and
+                animals
+              </div>
+            </div>
+          </div>
+        </div>
 
-  <!-- 04 ETHICS -->
-  <section id="ethics" class="sec rev">
-    <div class="phase"><div class="p-dot">4</div><span class="p-txt">Design Ethics</span></div>
-    <h2 class="sec-h">Responsible &amp;<br><em>Positionality-Aware</em></h2>
-    <p class="sec-lead">Working with Indigenous languages as non-Indigenous designers required careful attention to representation, accuracy, and the limits of our authority.</p>
-    <div class="rule"></div>
-    <div class="g3">
-      <div class="ic"><div class="ic-ico">📚</div><div class="ic-t">Indigenous-led sources only</div><div class="ic-d">All language content from FirstVoices, the Squamish Nation Talking Dictionary, and official City of Vancouver reconciliation pages — presented unchanged.</div></div>
-      <div class="ic"><div class="ic-ico">🎓</div><div class="ic-t">Learners, not experts</div><div class="ic-d">The zine positions itself as a starting point, not a comprehensive source. We do not speak on behalf of Indigenous communities or claim authority over this knowledge.</div></div>
-      <div class="ic"><div class="ic-ico">🚫</div><div class="ic-t">No decorative appropriation</div><div class="ic-d">Indigenous visuals and symbols were not used for decoration. Focus stayed on the connection between language, land, and community — not aesthetic borrowing.</div></div>
-      <div class="ic"><div class="ic-ico">🤝</div><div class="ic-t">Consent-based framing</div><div class="ic-d">The zine is explicitly framed as speculative and exploratory. Any real implementation would need to be Indigenous-led, community-guided, and consent-based.</div></div>
-      <div class="ic"><div class="ic-ico">✅</div><div class="ic-t">Official text verbatim</div><div class="ic-d">The acknowledgment page uses the City of Vancouver's exact wording — not paraphrased. Accuracy was more important than editorial voice on content we had no authority to rewrite.</div></div>
-      <div class="ic"><div class="ic-ico">🌱</div><div class="ic-t">Entry point, not endpoint</div><div class="ic-d">Designed to spark curiosity and direct users toward deeper, community-led resources — not to replace them.</div></div>
-    </div>
-  </section>
+        <!-- Page 02 -->
+        <div class="page-block">
+          <div class="page-block-with-img">
+            <div class="page-content">
+              <div class="sub">Page 02</div>
+              <div class="page-title">
+                Acknowledging the Unceded Territories
+              </div>
+              <p class="page-desc">
+                Official City of Vancouver text explaining what "unceded" means
+                and why it matters. Using the exact institutional language
+                grounds the zine in accuracy while making it accessible to
+                someone encountering the concept for the first time.
+              </p>
+            </div>
+            <div class="page-preview">
+              <div class="page-preview-img tall">
+                <img
+                  src="../Images/Page2.png"
+                  alt="Page 02 — Acknowledging the Unceded Territories"
+                  class="flipped"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
 
-  <!-- 05 VISUAL RHETORIC -->
-  <section id="rhetoric" class="sec rev">
-    <div class="phase"><div class="p-dot">5</div><span class="p-txt">Visual Rhetoric</span></div>
-    <h2 class="sec-h">Language as<br><em>Place</em></h2>
-    <p class="sec-lead">The zine's visual language makes a single argument: Indigenous language is inseparable from the land it names. Every design choice reinforces that claim.</p>
-    <div class="rule"></div>
-    <div class="flist">
-      <div class="fr"><div class="fr-i">🌿</div><div><div class="fr-t">Colour as ecology</div><div class="fr-d">Teal for water, gold for land and warmth, earthy red for community and history. Colour here doesn't just organise the zine — it connects language to the natural world it describes.</div></div></div>
-      <div class="fr"><div class="fr-i">🗺️</div><div><div class="fr-t">The Indigenous language map</div><div class="fr-d">The back page reimagines Vancouver's landmarks through Indigenous language — familiar places made newly visible through their original names. Burrard Bridge becomes seṅáḵw. Orcas become yéwyews.</div></div></div>
-      <div class="fr"><div class="fr-i">✋</div><div><div class="fr-t">Interactivity as participation</div><div class="fr-d">Writing practice lines and QR codes turn readers into participants. The zine is not something you consume — it's something you do, even briefly. Co-design embedded in the physical format itself.</div></div></div>
-      <div class="fr"><div class="fr-i">📖</div><div><div class="fr-t">Slow reading over scanning</div><div class="fr-d">The physical foldable format encourages slower, more deliberate reading than a digital screen. Each fold reveals the next section — pacing the experience and preventing overwhelm.</div></div></div>
-    </div>
-  </section>
+        <!-- Page 03 -->
+        <div class="page-block">
+          <div class="page-block-with-img">
+            <div class="page-content">
+              <div class="sub">Page 03</div>
+              <div class="page-title">Learn About Our Host Nations</div>
+              <p class="page-desc">
+                Introduces the Musqueam (xʷməθkʷəy̓əm), Squamish (sḵwx̱wú7mesh),
+                and Tsleil-Waututh (səlilwətaɬ) Nations — their names,
+                traditional territories, and the meanings behind those names.
+              </p>
+            </div>
+            <div class="page-preview">
+              <div class="page-preview-img tall">
+                <img
+                  src="../Images/Page3.png"
+                  alt="Page 03 — Learn About Our Host Nations"
+                  class="flipped"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
 
-  <!-- 06 REFLECTION -->
-  <section id="reflection" class="sec rev">
-    <div class="phase"><div class="p-dot">6</div><span class="p-txt">Reflection</span></div>
-    <h2 class="sec-h">What I Learned</h2>
-    <p class="sec-lead">Leading this project deepened my understanding of ethical design practice, publication design for physical formats, and how design can support — without claiming to replace — community-led work.</p>
-    <div class="rule"></div>
-    <div class="g2" style="margin-bottom:2rem">
-      <div class="rc"><div class="rc-t">Ethical design in practice</div><div class="rc-d">Working with Indigenous content required a level of care and humility that went beyond typical design briefs. Every content decision had to be checked against: do we have the authority to present this this way?</div></div>
-      <div class="rc"><div class="rc-t">Physical format constraints</div><div class="rc-d">Designing for a foldable zine meant every panel had to work independently and as part of the whole — a constraint that forced clarity and economy in every layout decision.</div></div>
-      <div class="rc"><div class="rc-t">Leading a design team</div><div class="rc-d">As team leader, I coordinated research, content decisions, and visual direction across three people — learning how to align a team around shared design principles rather than just dividing tasks.</div></div>
-      <div class="rc"><div class="rc-t">Simplicity as a design skill</div><div class="rc-d">The hardest work was removing content, not adding it. Early versions were overwhelming — learning when to cut was as important as knowing what to include.</div></div>
-    </div>
-    <div class="sub">Future Iterations</div>
-    <div class="flist">
-      <div class="fr"><div class="fr-i">🤝</div><div><div class="fr-t">Direct Indigenous community collaboration</div><div class="fr-d">The most important next step — any real implementation must be led by and developed with Indigenous communities, not designed for them from the outside.</div></div></div>
-      <div class="fr"><div class="fr-i">🌐</div><div><div class="fr-t">Digital companion experience</div><div class="fr-d">A lightweight web version that expands on the audio and includes more language phrases — extending the zine's reach without replacing the physical experience.</div></div></div>
-      <div class="fr"><div class="fr-i">📍</div><div><div class="fr-t">Neighbourhood-specific editions</div><div class="fr-d">The zine framework is scalable — editions tailored to specific Vancouver neighbourhoods, each highlighting the Indigenous names and histories most relevant to that area.</div></div></div>
-    </div>
-    <div class="quote" style="margin-top:2rem;">
-      <p>"Start with one word. Carry it with you."</p>
-    </div>
-    <div class="sub" style="margin-top:2rem;">Tools &amp; Methods</div>
-    <div class="tools">
-      <span class="tool">Adobe InDesign</span>
-      <span class="tool">Adobe Illustrator</span>
-      <span class="tool">BC Sans Typography</span>
-      <span class="tool">Print Production</span>
-      <span class="tool">QR Code Integration</span>
-      <span class="tool">FirstVoices</span>
-      <span class="tool">Co-design Principles</span>
-      <span class="tool">Iterative Prototyping</span>
-    </div>
-  </section>
+        <!-- Pages 04–05 -->
+        <div class="page-block">
+          <div class="sub">Pages 04 – 05</div>
+          <div class="page-title">halq'emeylem — Musqueam Language</div>
+          <p class="page-desc">
+            Teaches "Lí chexw we ey o?" (How are you?) from the Musqueam and
+            Tsleil-Waututh language family. Each spread includes phonetic
+            pronunciation guides, fading practice writing lines, a "Did You
+            Know?" fact, and a QR code linking to audio.
+          </p>
+          <div class="imgs c2" style="margin-top: 1rem">
+            <div class="iw">
+              <img
+                src="../Images/Page4.jpg"
+                alt="Page 04 — halq'emeylem language introduction"
+              />
+              <div class="icap">
+                halq'emeylem intro — language context, dialect overview, and Did
+                You Know? fact
+              </div>
+            </div>
+            <div class="iw">
+              <img
+                src="../Images/Page5.jpg"
+                alt="Page 05 — Lí chexw we ey o? practice page"
+              />
+              <div class="icap">
+                Practice spread — speak, write, and listen via QR code audio
+              </div>
+            </div>
+          </div>
+        </div>
 
-</main>
+        <!-- Pages 06–07 -->
+        <div class="page-block">
+          <div class="sub">Pages 06 – 07</div>
+          <div class="page-title">sḵwx̱wú7mesh sníchim — Squamish Language</div>
+          <p class="page-desc">
+            Teaches "p'áyak" (Get Better!) from the Squamish language — deeply
+            connected to land, water, and community. Same interactive structure:
+            speak, write, and listen via QR code.
+          </p>
+          <div class="imgs c2" style="margin-top: 1rem">
+            <div class="iw">
+              <img
+                src="../Images/Page6.png"
+                alt="Page 06 — sḵwx̱wú7mesh sníchim introduction"
+              />
+              <div class="icap">
+                sḵwx̱wú7mesh sníchim intro — language identity, meaning, and Did
+                You Know? fact
+              </div>
+            </div>
+            <div class="iw">
+              <img
+                src="../Images/Page7.png"
+                alt="Page 07 — p'áyak practice page"
+              />
+              <div class="icap">
+                Practice spread — speak, write, and listen via QR code audio
+              </div>
+            </div>
+          </div>
+        </div>
 
-<footer>© 2025 Inayat. All rights reserved.</footer>
+        <!-- Page 08 -->
+        <div class="page-block">
+          <div class="page-block-with-img">
+            <div class="page-content">
+              <div class="sub">Page 08 — Back Cover</div>
+              <div class="page-title">Indigenous Language Map of Vancouver</div>
+              <p class="page-desc">
+                Reimagines Vancouver through Indigenous languages — familiar
+                landmarks paired with their Squamish and Musqueam names. Burrard
+                Bridge becomes seṅáḵw, orcas become yéwyews, salmon become
+                sth'óqwí. The map makes language visible in the city itself.
+              </p>
+            </div>
+            <div class="page-preview">
+              <div class="page-preview-img tall">
+                <img
+                  src="../Images/Page8.jpg"
+                  alt="Page 08 — New city, new life, new language panel"
+                  class="flipped"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-<script>
-const ro = new IntersectionObserver(
-  es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }),
-  { threshold: 0.06 }
-);
-document.querySelectorAll('.rev').forEach(el => ro.observe(el));
+      <!-- 02 DESIGN CHOICES -->
+      <section id="design" class="sec rev">
+        <div class="phase">
+          <div class="p-dot">2</div>
+          <span class="p-txt">Design Choices</span>
+        </div>
+        <h2 class="sec-h">Intentional &amp;<br /><em>Approachable</em></h2>
+        <p class="sec-lead">
+          Every decision — format, colour, typography, interaction — was made to
+          lower barriers and invite participation without overwhelming.
+        </p>
+        <div class="rule"></div>
+        <div class="flist">
+          <div class="design-fr">
+            <div class="design-fr-body">
+              <div class="fr-i">📄</div>
+              <div>
+                <div class="fr-t">Zine format over digital</div>
+                <div class="fr-d">
+                  No app download, no battery required. Tangible and portable —
+                  it exists in the everyday spaces where newcomers already are,
+                  and can be revisited at any pace.
+                </div>
+              </div>
+            </div>
+          </div>
 
-const links = document.querySelectorAll('.side-a');
-const secs  = document.querySelectorAll('.sec');
-const so = new IntersectionObserver(es => {
-  es.forEach(e => {
-    if (e.isIntersecting) {
-      links.forEach(l => l.classList.remove('active'));
-      const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
-      if (a) a.classList.add('active');
-    }
-  });
-}, { rootMargin: '-15% 0px -65% 0px' });
-secs.forEach(s => so.observe(s));
-</script>
-</body>
+          <div class="design-fr">
+            <div class="design-fr-body">
+              <div class="fr-i">🎨</div>
+              <div>
+                <div class="fr-t">
+                  Colour palette inspired by land and water
+                </div>
+                <div class="fr-d">
+                  Teal for water, gold for warmth and land, earthy red for
+                  community history. Each section is colour-coded — colour here
+                  doesn't just organise, it carries meaning.
+                </div>
+              </div>
+            </div>
+            <div class="design-fr-img">
+              <img
+                src="../Images/crop_colour.png"
+                alt="Teal colour — acknowledging the territories page"
+              />
+            </div>
+          </div>
+
+          <div class="design-fr">
+            <div class="design-fr-body">
+              <div class="fr-i">🔤</div>
+              <div>
+                <div class="fr-t">BC Sans typeface</div>
+                <div class="fr-d">
+                  Chosen for accessibility and readability across all hierarchy
+                  levels. A locally rooted typeface for a locally rooted subject
+                  — legible at small sizes for the pocket format.
+                </div>
+              </div>
+            </div>
+            <div class="design-fr-img">
+              <img
+                src="../Images/crop_typography.png"
+                alt="BC Sans typography — host nations page"
+              />
+            </div>
+          </div>
+
+          <div class="design-fr">
+            <div class="design-fr-body">
+              <div class="fr-i">🔊</div>
+              <div>
+                <div class="fr-t">QR code audio support</div>
+                <div class="fr-d">
+                  Optional listening via QR codes lets users hear correct
+                  pronunciation without relying on phonetics alone — especially
+                  important for sounds that don't exist in English.
+                </div>
+              </div>
+            </div>
+            <div class="design-fr-img">
+              <img
+                src="../Images/crop_qr.png"
+                alt="QR code listen — halq'emeylem practice page"
+              />
+            </div>
+          </div>
+
+          <div class="design-fr">
+            <div class="design-fr-body">
+              <div class="fr-i">✍️</div>
+              <div>
+                <div class="fr-t">Fading writing practice lines</div>
+                <div class="fr-d">
+                  Fading lines from bold to ghost invite users to trace and
+                  write language phrases — turning a passive read into active,
+                  personal participation.
+                </div>
+              </div>
+            </div>
+            <div class="design-fr-img">
+              <img
+                src="../Images/crop_fading.png"
+                alt="Fading practice lines — p'áyak Squamish language page"
+              />
+            </div>
+          </div>
+
+          <div class="design-fr">
+            <div class="design-fr-body">
+              <div class="fr-i">💡</div>
+              <div>
+                <div class="fr-t">"Did You Know?" language facts</div>
+                <div class="fr-d">
+                  Short contextual facts — like why Squamish uses special
+                  characters ḵ, x̱, and 7 — add delight and help readers
+                  understand why the language looks the way it does.
+                </div>
+              </div>
+            </div>
+            <div class="design-fr-img">
+              <img
+                src="../Images/crop_didyouknow.png"
+                alt="Did You Know — sḵwx̱wú7mesh sníchim intro page"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 PROCESS -->
+      <section id="process" class="sec rev">
+        <div class="phase">
+          <div class="p-dot">3</div>
+          <span class="p-txt">Process</span>
+        </div>
+        <h2 class="sec-h">Iterative &amp;<br /><em>Research-Informed</em></h2>
+        <p class="sec-lead">
+          Multiple rounds of wireframing, content refinement, and physical print
+          testing — guided by a clear design principle: simplify until nothing
+          feels overwhelming.
+        </p>
+        <div class="rule"></div>
+        <div class="slist" style="margin-bottom: 2rem">
+          <div class="st">
+            <div class="st-n">01</div>
+            <div>
+              <div class="st-t">Problem redefinition</div>
+              <div class="st-d">
+                Shifted from "representing Indigenous land acknowledgment" to
+                "helping newcomers actively learn" — a crucial reframe that
+                shaped every subsequent decision.
+              </div>
+            </div>
+          </div>
+          <div class="st">
+            <div class="st-n">02</div>
+            <div>
+              <div class="st-t">Research &amp; content sourcing</div>
+              <div class="st-d">
+                All language content sourced from Indigenous-led resources:
+                FirstVoices, the Squamish Nation Talking Dictionary, and the
+                City of Vancouver's official reconciliation pages. Content
+                presented unchanged and uninterpreted.
+              </div>
+            </div>
+          </div>
+          <div class="st">
+            <div class="st-n">03</div>
+            <div>
+              <div class="st-t">Content-heavy wireframes → simplification</div>
+              <div class="st-d">
+                Early versions were dense and overwhelming. Stripped back,
+                reduced clutter, and established a clear reading flow:
+                acknowledgment → learning → reflection → map.
+              </div>
+            </div>
+          </div>
+          <div class="st">
+            <div class="st-n">04</div>
+            <div>
+              <div class="st-t">Visual system development</div>
+              <div class="st-d">
+                Finalised BC Sans hierarchy, colour palette, watermarks,
+                patterns, and illustrations through multiple rounds of print
+                testing until everything felt consistent and meaningful in hand.
+              </div>
+            </div>
+          </div>
+          <div class="st">
+            <div class="st-n">05</div>
+            <div>
+              <div class="st-t">Multiple print iterations</div>
+              <div class="st-d">
+                Physically printed and tested across many iterations — layout,
+                colour accuracy, legibility, and fold structure all required
+                real-world testing that digital screens couldn't replicate.
+              </div>
+            </div>
+          </div>
+          <div class="st">
+            <div class="st-n">06</div>
+            <div>
+              <div class="st-t">Final delivery to CityStudio Vancouver</div>
+              <div class="st-d">
+                Presented as a speculative, scalable design artifact — a
+                starting point for potential Indigenous-led implementation
+                rather than a finished product claiming authority.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 ETHICS -->
+      <section id="ethics" class="sec rev">
+        <div class="phase">
+          <div class="p-dot">4</div>
+          <span class="p-txt">Design Ethics</span>
+        </div>
+        <h2 class="sec-h">
+          Responsible &amp;<br /><em>Positionality-Aware</em>
+        </h2>
+        <p class="sec-lead">
+          Working with Indigenous languages as non-Indigenous designers required
+          careful attention to representation, accuracy, and the limits of our
+          authority.
+        </p>
+        <div class="rule"></div>
+        <div class="g3">
+          <div class="ic">
+            <div class="ic-ico">📚</div>
+            <div class="ic-t">Indigenous-led sources only</div>
+            <div class="ic-d">
+              All language content from FirstVoices, the Squamish Nation Talking
+              Dictionary, and official City of Vancouver reconciliation pages —
+              presented unchanged.
+            </div>
+          </div>
+          <div class="ic">
+            <div class="ic-ico">🎓</div>
+            <div class="ic-t">Learners, not experts</div>
+            <div class="ic-d">
+              The zine positions itself as a starting point, not a comprehensive
+              source. We do not speak on behalf of Indigenous communities or
+              claim authority over this knowledge.
+            </div>
+          </div>
+          <div class="ic">
+            <div class="ic-ico">🚫</div>
+            <div class="ic-t">No decorative appropriation</div>
+            <div class="ic-d">
+              Indigenous visuals and symbols were not used for decoration. Focus
+              stayed on the connection between language, land, and community —
+              not aesthetic borrowing.
+            </div>
+          </div>
+          <div class="ic">
+            <div class="ic-ico">🤝</div>
+            <div class="ic-t">Consent-based framing</div>
+            <div class="ic-d">
+              The zine is explicitly framed as speculative and exploratory. Any
+              real implementation would need to be Indigenous-led,
+              community-guided, and consent-based.
+            </div>
+          </div>
+          <div class="ic">
+            <div class="ic-ico">✅</div>
+            <div class="ic-t">Official text verbatim</div>
+            <div class="ic-d">
+              The acknowledgment page uses the City of Vancouver's exact wording
+              — not paraphrased. Accuracy was more important than editorial
+              voice on content we had no authority to rewrite.
+            </div>
+          </div>
+          <div class="ic">
+            <div class="ic-ico">🌱</div>
+            <div class="ic-t">Entry point, not endpoint</div>
+            <div class="ic-d">
+              Designed to spark curiosity and direct users toward deeper,
+              community-led resources — not to replace them.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 VISUAL RHETORIC -->
+      <section id="rhetoric" class="sec rev">
+        <div class="phase">
+          <div class="p-dot">5</div>
+          <span class="p-txt">Visual Rhetoric</span>
+        </div>
+        <h2 class="sec-h">Language as<br /><em>Place</em></h2>
+        <p class="sec-lead">
+          The zine's visual language makes a single argument: Indigenous
+          language is inseparable from the land it names. Every design choice
+          reinforces that claim.
+        </p>
+        <div class="rule"></div>
+        <div class="flist">
+          <div class="fr">
+            <div class="fr-i">🌿</div>
+            <div>
+              <div class="fr-t">Colour as ecology</div>
+              <div class="fr-d">
+                Teal for water, gold for land and warmth, earthy red for
+                community and history. Colour here doesn't just organise the
+                zine — it connects language to the natural world it describes.
+              </div>
+            </div>
+          </div>
+          <div class="fr">
+            <div class="fr-i">🗺️</div>
+            <div>
+              <div class="fr-t">The Indigenous language map</div>
+              <div class="fr-d">
+                The back page reimagines Vancouver's landmarks through
+                Indigenous language — familiar places made newly visible through
+                their original names. Burrard Bridge becomes seṅáḵw. Orcas
+                become yéwyews.
+              </div>
+            </div>
+          </div>
+          <div class="fr">
+            <div class="fr-i">✋</div>
+            <div>
+              <div class="fr-t">Interactivity as participation</div>
+              <div class="fr-d">
+                Writing practice lines and QR codes turn readers into
+                participants. The zine is not something you consume — it's
+                something you do, even briefly. Co-design embedded in the
+                physical format itself.
+              </div>
+            </div>
+          </div>
+          <div class="fr">
+            <div class="fr-i">📖</div>
+            <div>
+              <div class="fr-t">Slow reading over scanning</div>
+              <div class="fr-d">
+                The physical foldable format encourages slower, more deliberate
+                reading than a digital screen. Each fold reveals the next
+                section — pacing the experience and preventing overwhelm.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 REFLECTION -->
+      <section id="reflection" class="sec rev">
+        <div class="phase">
+          <div class="p-dot">6</div>
+          <span class="p-txt">Reflection</span>
+        </div>
+        <h2 class="sec-h">What I Learned</h2>
+        <p class="sec-lead">
+          Leading this project deepened my understanding of ethical design
+          practice, publication design for physical formats, and how design can
+          support — without claiming to replace — community-led work.
+        </p>
+        <div class="rule"></div>
+        <div class="g2" style="margin-bottom: 2rem">
+          <div class="rc">
+            <div class="rc-t">Ethical design in practice</div>
+            <div class="rc-d">
+              Working with Indigenous content required a level of care and
+              humility that went beyond typical design briefs. Every content
+              decision had to be checked against: do we have the authority to
+              present this this way?
+            </div>
+          </div>
+          <div class="rc">
+            <div class="rc-t">Physical format constraints</div>
+            <div class="rc-d">
+              Designing for a foldable zine meant every panel had to work
+              independently and as part of the whole — a constraint that forced
+              clarity and economy in every layout decision.
+            </div>
+          </div>
+          <div class="rc">
+            <div class="rc-t">Leading a design team</div>
+            <div class="rc-d">
+              As team leader, I coordinated research, content decisions, and
+              visual direction across three people — learning how to align a
+              team around shared design principles rather than just dividing
+              tasks.
+            </div>
+          </div>
+          <div class="rc">
+            <div class="rc-t">Simplicity as a design skill</div>
+            <div class="rc-d">
+              The hardest work was removing content, not adding it. Early
+              versions were overwhelming — learning when to cut was as important
+              as knowing what to include.
+            </div>
+          </div>
+        </div>
+        <div class="sub">Future Iterations</div>
+        <div class="flist">
+          <div class="fr">
+            <div class="fr-i">🤝</div>
+            <div>
+              <div class="fr-t">Direct Indigenous community collaboration</div>
+              <div class="fr-d">
+                The most important next step — any real implementation must be
+                led by and developed with Indigenous communities, not designed
+                for them from the outside.
+              </div>
+            </div>
+          </div>
+          <div class="fr">
+            <div class="fr-i">🌐</div>
+            <div>
+              <div class="fr-t">Digital companion experience</div>
+              <div class="fr-d">
+                A lightweight web version that expands on the audio and includes
+                more language phrases — extending the zine's reach without
+                replacing the physical experience.
+              </div>
+            </div>
+          </div>
+          <div class="fr">
+            <div class="fr-i">📍</div>
+            <div>
+              <div class="fr-t">Neighbourhood-specific editions</div>
+              <div class="fr-d">
+                The zine framework is scalable — editions tailored to specific
+                Vancouver neighbourhoods, each highlighting the Indigenous names
+                and histories most relevant to that area.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="quote" style="margin-top: 2rem">
+          <p>"Start with one word. Carry it with you."</p>
+        </div>
+        <div class="sub" style="margin-top: 2rem">Tools &amp; Methods</div>
+        <div class="tools">
+          <span class="tool">Adobe InDesign</span>
+          <span class="tool">Adobe Illustrator</span>
+          <span class="tool">BC Sans Typography</span>
+          <span class="tool">Print Production</span>
+          <span class="tool">QR Code Integration</span>
+          <span class="tool">FirstVoices</span>
+          <span class="tool">Co-design Principles</span>
+          <span class="tool">Iterative Prototyping</span>
+        </div>
+      </section>
+    </main>
+
+    <footer>© 2025 Inayat. All rights reserved.</footer>
+
+    <script>
+      const ro = new IntersectionObserver(
+        (es) =>
+          es.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("in");
+          }),
+        { threshold: 0.06 },
+      );
+      document.querySelectorAll(".rev").forEach((el) => ro.observe(el));
+
+      const links = document.querySelectorAll(".side-a");
+      const secs = document.querySelectorAll(".sec");
+      const so = new IntersectionObserver(
+        (es) => {
+          es.forEach((e) => {
+            if (e.isIntersecting) {
+              links.forEach((l) => l.classList.remove("active"));
+              const a = document.querySelector(
+                `.side-a[href="#${e.target.id}"]`,
+              );
+              if (a) a.classList.add("active");
+            }
+          });
+        },
+        { rootMargin: "-15% 0px -65% 0px" },
+      );
+      secs.forEach((s) => so.observe(s));
+    </script>
+  </body>
 </html>
