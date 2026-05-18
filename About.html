@@ -1,675 +1,947 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About — Inayat</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-bg: #0a0a0a;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --accent: #14b8a6;
-            --accent-light: #2dd4bf;
-            --accent-dark: #0d9488;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.1);
-            --gradient-1: #14b8a6;
-            --gradient-2: #06b6d4;
-            --gradient-3: #0891b2;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Inayat</title>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Kalam:wght@300;400;700&family=DM+Serif+Display&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
-        body {
-            font-family: 'Work Sans', sans-serif;
-            background-color: var(--primary-bg);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+  <style>
+    :root {
+      --paper: #faf8f2;
+      --paper-dark: #f0ecdf;
+      --paper-worn: #e8e2d0;
+      --ink: #1a1612;
+      --ink-light: #3d3530;
+      --ink-faint: #8a7f72;
+      --pencil: #b8b0a0;
+      --pencil-light: #d4cfc4;
+      --accent-red: #c0392b;
+      --accent-blue: #2c5f8a;
+      --accent-yellow: #e8b84b;
+      --accent-green: #3a7d44;
+      --font-hand: 'Caveat', cursive;
+      --font-scrawl: 'Reenie Beanie', cursive;
+      --font-mono: 'Space Mono', monospace;
+    }
 
-        /* ── CURSOR ── */
-        #cursor-dot { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: #14b8a6; border-radius: 50%; pointer-events: none; z-index: 99999; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, background 0.2s, opacity 0.2s; }
-        #cursor-ring { position: fixed; top: 0; left: 0; width: 32px; height: 32px; border: 1.5px solid rgba(20,184,166,0.5); border-radius: 50%; pointer-events: none; z-index: 99998; transform: translate(-50%, -50%); transition: width 0.3s ease, height 0.3s ease, border-color 0.3s; }
-        body.cursor-hover #cursor-dot  { width: 12px; height: 12px; background: #2dd4bf; }
-        body.cursor-hover #cursor-ring { width: 44px; height: 44px; border-color: rgba(45,212,191,0.7); }
-        body.cursor-click #cursor-dot  { width: 6px; height: 6px; }
-        body.cursor-click #cursor-ring { width: 22px; height: 22px; border-color: #14b8a6; }
-        @media (pointer: coarse) { * { cursor: auto !important; } #cursor-dot, #cursor-ring { display: none; } }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        /* ── NAV ── */
-        nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(10,10,10,0.8); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); z-index: 1000; padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); animation: slideDown 0.6s ease; }
-        @keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; letter-spacing: 1px; color: var(--text-primary); text-decoration: none; }
-        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-        .nav-links a { color: var(--text-primary); text-decoration: none; font-weight: 400; font-size: 0.95rem; letter-spacing: 0.5px; position: relative; transition: color 0.3s ease; }
-        .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px; background: var(--accent); transition: width 0.3s ease; }
-        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
-        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
-        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
-        .hamburger span { width: 25px; height: 2px; background: var(--text-primary); transition: all 0.3s ease; }
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(7px, 7px); }
-        .hamburger.active span:nth-child(2) { opacity: 0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
+    html {
+      scroll-behavior: smooth;
+    }
 
-        /* ── HERO ── */
-        .hero {
-            padding: 10rem 2rem 4rem;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -20%; right: -10%;
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, var(--gradient-1) 0%, transparent 70%);
-            filter: blur(120px);
-            opacity: 0.4;
-            z-index: 0;
-        }
-        .hero-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-            text-align: center;
-        }
-        .page-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 4rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 50%, var(--gradient-3) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .page-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto;
-        }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-hand);
+      font-size: 18px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
 
-        /* ── POV BANNER ── */
-        .pov-banner {
-            padding: 0 2rem 0;
-            position: relative;
-            z-index: 1;
-        }
-        .pov-inner {
-            max-width: 900px;
-            margin: 0 auto;
-            border-left: 2px solid var(--accent);
-            padding: 1.5rem 2rem;
-            background: rgba(20,184,166,0.04);
-            border-radius: 0 12px 12px 0;
-        }
-        .pov-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 0.6rem;
-        }
-        .pov-text {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.45rem;
-            font-weight: 400;
-            color: rgba(255,255,255,0.85);
-            line-height: 1.55;
-            font-style: italic;
-        }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.13) 27px, rgba(180,170,155,0.13) 28px),
+        repeating-linear-gradient(90deg, transparent, transparent 27px, rgba(180,170,155,0.05) 27px, rgba(180,170,155,0.05) 28px);
+      pointer-events: none;
+      z-index: 0;
+    }
 
-        /* ── ABOUT BODY ── */
-        .about-body {
-            padding: 6rem 2rem 8rem;
-            position: relative;
-            overflow: hidden;
-        }
-        .about-body::after {
-            content: '';
-            position: absolute;
-            bottom: -20%; left: -10%;
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, var(--gradient-3) 0%, transparent 70%);
-            filter: blur(120px);
-            opacity: 0.25;
-            animation: float 15s ease-in-out infinite reverse;
-            z-index: 0;
-        }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
 
-        @keyframes float { 0%, 100% { transform: translate(0,0) scale(1); } 33% { transform: translate(30px,-30px) scale(1.1); } 66% { transform: translate(-20px,20px) scale(0.9); } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .spiral-binding {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 32px;
+      background: var(--paper-worn);
+      border-right: 2.5px solid var(--ink);
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 24px;
+      pointer-events: none;
+    }
 
-        .about-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1.3fr;
-            gap: 5rem;
-            align-items: start;
-            position: relative;
-            z-index: 1;
-        }
+    .spiral-hole {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--ink);
+      background: var(--paper);
+      margin-bottom: 28px;
+      flex-shrink: 0;
+      box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
+    }
 
-        /* Photo column */
-        .about-photo-col {
-            animation: fadeInUp 0.8s ease 0.2s both;
-        }
-        .about-photo-wrap {
-            position: relative;
-        }
-        .about-photo {
-            width: 100%;
-            aspect-ratio: 3/4;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            box-shadow: 0 30px 80px rgba(20,184,166,0.15);
-            position: relative;
-        }
-        .about-photo img {
-            width: 100%; height: 100%;
-            object-fit: cover; object-position: center top;
-            display: block;
-            transition: transform 0.6s ease;
-        }
-        .about-photo:hover img { transform: scale(1.03); }
-        .about-photo::after {
-            content: '';
-            position: absolute; inset: 0;
-            border-radius: 20px;
-            background: linear-gradient(180deg, transparent 60%, rgba(10,10,10,0.4) 100%);
-        }
+    nav,
+    section,
+    footer {
+      margin-left: 32px;
+    }
 
-        /* Floating tag */
-        .photo-tag {
-            position: absolute;
-            bottom: -16px; right: -16px;
-            background: rgba(10,10,10,0.9);
-            border: 1px solid rgba(20,184,166,0.4);
-            border-radius: 12px;
-            padding: 12px 18px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            z-index: 2;
-        }
-        .photo-tag span {
-            display: block;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--accent-light);
-        }
-        .photo-tag strong {
-            display: block;
-            font-size: 13px;
-            color: var(--text-primary);
-            margin-top: 2px;
-        }
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--paper);
+      border-bottom: 2.5px solid var(--ink);
+      padding: 14px 48px;
+    }
 
-        /* Caption below photo */
-        .photo-caption {
-            margin-top: 28px;
-            padding: 1.2rem 1.4rem;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-        }
-        .photo-caption-label {
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 0.8rem;
-        }
-        .photo-caption-fact {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            font-size: 0.88rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .photo-caption-fact:last-child { border-bottom: none; }
-        .photo-caption-dot {
-            width: 5px; height: 5px;
-            background: var(--accent);
-            border-radius: 50%;
-            flex-shrink: 0;
-            margin-top: 6px;
-        }
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        /* Bio content */
-        .about-content { animation: fadeInUp 0.8s ease 0.4s both; }
-        .about-label { font-size: 0.85rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; }
-        .about-heading {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 3rem; font-weight: 600;
-            line-height: 1.15; margin-bottom: 2rem;
-        }
-        .about-heading em {
-            font-style: normal;
-            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .about-text {
-            font-size: 1.05rem;
-            color: var(--text-secondary);
-            line-height: 1.85;
-            margin-bottom: 1.4rem;
-        }
-        .about-text:last-of-type { margin-bottom: 2.5rem; }
+    .logo {
+      font-family: var(--font-hand);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+      position: relative;
+    }
 
-        /* Currently section */
-        .currently-block {
-            margin-bottom: 2.5rem;
-            padding: 1.4rem 1.6rem;
-            background: rgba(20,184,166,0.05);
-            border: 1px solid rgba(20,184,166,0.2);
-            border-radius: 12px;
-        }
-        .currently-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 1rem;
-        }
-        .currently-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            margin-bottom: 0.6rem;
-        }
-        .currently-item:last-child { margin-bottom: 0; }
-        .currently-item strong {
-            color: rgba(255,255,255,0.7);
-            font-weight: 500;
-            min-width: 90px;
-            flex-shrink: 0;
-        }
+    .logo::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent-red);
+      border-radius: 2px;
+      transform: rotate(-0.8deg);
+    }
 
-        /* CTA row */
-        .about-ctas { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
-        .about-btn {
-            display: inline-block; padding: 0.9rem 2.2rem;
-            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 100%);
-            color: #fff; text-decoration: none; border-radius: 50px;
-            font-weight: 500; font-size: 0.95rem; letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 40px rgba(20,184,166,0.3);
-            position: relative; overflow: hidden;
-        }
-        .about-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s ease; }
-        .about-btn:hover::before { left: 100%; }
-        .about-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 50px rgba(20,184,166,0.5); }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
 
-        /* ── TIMELINE ── */
-        .journey { padding: 8rem 2rem; position: relative; overflow: hidden; }
-        .journey::before { content: ''; position: absolute; top: 20%; right: -5%; width: 400px; height: 400px; background: radial-gradient(circle, var(--gradient-3) 0%, transparent 70%); filter: blur(120px); opacity: 0.15; z-index: 0; }
-        .journey-container { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
-        .section-title { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 600; text-align: center; margin-bottom: 4rem; }
-        .section-title::after { content: ''; display: block; width: 80px; height: 2px; background: var(--accent); margin: 1.5rem auto 0; }
+    .nav-links a {
+      font-family: var(--font-hand);
+      font-size: 18px;
+      color: var(--ink);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 2px;
+    }
 
-        .timeline { position: relative; padding: 1rem 0; }
-        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--border); }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--ink);
+      transition: width 0.25s;
+    }
 
-        .timeline-item {
-            position: relative;
-            padding: 0 0 3rem 3rem;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        .timeline-item.visible { opacity: 1; transform: translateY(0); }
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
 
-        .timeline-dot {
-            position: absolute; left: -7px; top: 4px;
-            width: 16px; height: 16px;
-            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
-            border: 3px solid var(--primary-bg);
-            border-radius: 50%;
-            box-shadow: 0 0 16px rgba(20,184,166,0.5);
-        }
-        .timeline-year {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1rem; font-weight: 600;
-            color: var(--accent); letter-spacing: 1px;
-            margin-bottom: 0.4rem;
-        }
-        .timeline-title {
-            font-size: 1.15rem; font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.75rem;
-        }
-        .timeline-desc {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.75;
-            max-width: 680px;
-        }
-        .timeline-tags {
-            display: flex; flex-wrap: wrap; gap: 6px;
-            margin-top: 1rem;
-        }
-        .timeline-tag {
-            font-size: 10px; font-weight: 600;
-            letter-spacing: 0.08em; text-transform: uppercase;
-            color: var(--accent-light);
-            background: rgba(20,184,166,0.08);
-            padding: 3px 10px; border-radius: 99px;
-            border: 1px solid rgba(20,184,166,0.2);
-        }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+    }
 
-        /* ── CONTACT ── */
-        .contact { padding: 8rem 2rem; background: linear-gradient(180deg, var(--primary-bg) 0%, #0f0f1a 100%); position: relative; overflow: hidden; }
-        .contact::before { content: ''; position: absolute; top: -20%; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, var(--gradient-2) 0%, transparent 70%); filter: blur(140px); opacity: 0.3; z-index: 0; }
-        .contact-container { max-width: 1000px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
-        .contact-description { font-size: 1.1rem; color: rgba(255,255,255,0.7); margin-bottom: 3rem; max-width: 560px; margin-left: auto; margin-right: auto; }
-        .contact-links { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
-        .contact-item { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 2.5rem 2rem; background: var(--card-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 16px; min-width: 200px; text-decoration: none; color: #fff; transition: all 0.4s ease; border: 1px solid var(--border); position: relative; overflow: hidden; }
-        .contact-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(20,184,166,0.1), transparent); transition: left 0.6s ease; }
-        .contact-item:hover::before { left: 100%; }
-        .contact-item:hover { background: rgba(20,184,166,0.1); border-color: var(--accent); transform: translateY(-8px); box-shadow: 0 20px 50px rgba(20,184,166,0.3); }
-        .contact-icon { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 100%); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 10px 30px rgba(20,184,166,0.4); transition: all 0.3s ease; }
-        .contact-item:hover .contact-icon { transform: scale(1.1) rotate(5deg); }
-        .contact-label { font-weight: 500; font-size: 0.95rem; }
-        .contact-value { color: rgba(255,255,255,0.6); font-size: 0.9rem; }
+    .hamburger span {
+      width: 25px;
+      height: 2px;
+      background: var(--ink);
+      transition: all 0.3s ease;
+    }
 
-        footer { background: #050508; color: rgba(255,255,255,0.5); padding: 2rem; text-align: center; border-top: 1px solid var(--border); }
+    section {
+      position: relative;
+      padding: 80px 48px;
+      z-index: 1;
+    }
 
-        /* ── RESPONSIVE ── */
-        @media (max-width: 1024px) {
-            .about-container { grid-template-columns: 1fr; gap: 3rem; }
-            .about-photo { aspect-ratio: 4/3; }
-            .about-heading { font-size: 2.5rem; }
-        }
-        @media (max-width: 768px) {
-            nav { padding: 1rem 1.5rem; }
-            .nav-links { position: fixed; top: 70px; left: -100%; width: 100%; background: rgba(10,10,10,0.98); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); flex-direction: column; padding: 2rem; gap: 1.5rem; transition: left 0.3s ease; border-bottom: 1px solid var(--border); }
-            .nav-links.active { left: 0; }
-            .hamburger { display: flex; }
-            .hero { padding: 8rem 1.5rem 3rem; }
-            .page-title { font-size: 2.5rem; }
-            .page-subtitle { font-size: 1rem; }
-            .pov-banner { padding: 2rem 1.5rem 0; }
-            .pov-text { font-size: 1.2rem; }
-            .about-body { padding: 4rem 1.5rem 6rem; }
-            .about-heading { font-size: 2rem; }
-            .section-title { font-size: 2.2rem; }
-            .journey { padding: 4rem 1.5rem; }
-            .contact { padding: 4rem 1.5rem; }
-            .contact-links { flex-direction: column; align-items: center; }
-            .contact-item { width: 100%; max-width: 300px; }
-            .photo-tag { bottom: -12px; right: -8px; }
-            .about-ctas { flex-direction: column; align-items: flex-start; }
-        }
-        @media (max-width: 480px) {
-            .page-title { font-size: 2rem; }
-            .about-heading { font-size: 1.8rem; }
-            .section-title { font-size: 1.8rem; }
-        }
-    </style>
+    .page-edge::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      background: linear-gradient(90deg, rgba(0,0,0,0.06) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .margin-strip {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 44px;
+      border-right: 2px solid rgba(192,57,43,0.2);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 56px;
+    }
+
+    .section-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.1em;
+    }
+
+    .section-title {
+      font-family: var(--font-hand);
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      position: relative;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1.5px;
+      background: var(--ink);
+      opacity: 0.2;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .about-text {
+      font-family: var(--font-hand);
+      font-size: 20px;
+      line-height: 1.7;
+      color: var(--ink-light);
+      position: relative;
+    }
+
+    .about-text strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .highlight-yellow {
+      background: linear-gradient(120deg, rgba(232,184,75,0) 0%, rgba(232,184,75,0.45) 10%, rgba(232,184,75,0.45) 90%, rgba(232,184,75,0) 100%);
+      padding: 0 2px;
+    }
+
+    .highlight-blue {
+      background: linear-gradient(120deg, rgba(44,95,138,0) 0%, rgba(44,95,138,0.18) 10%, rgba(44,95,138,0.18) 90%, rgba(44,95,138,0) 100%);
+      padding: 0 2px;
+    }
+
+    .skills-board {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .skill-cluster {
+      border: 2px solid var(--ink);
+      padding: 16px;
+      position: relative;
+      background: var(--paper);
+      transition: transform 0.2s;
+    }
+
+    .skill-cluster:nth-child(1) {
+      transform: rotate(-0.4deg);
+    }
+
+    .skill-cluster:nth-child(2) {
+      transform: rotate(0.5deg);
+    }
+
+    .skill-cluster:nth-child(3) {
+      transform: rotate(0.3deg);
+    }
+
+    .skill-cluster:nth-child(4) {
+      transform: rotate(-0.5deg);
+    }
+
+    .skill-cluster:hover {
+      transform: rotate(0deg) translate(-2px, -2px);
+      box-shadow: 4px 4px 0 rgba(26,22,18,0.15);
+    }
+
+    .skill-cluster-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 10px;
+    }
+
+    .skill-item {
+      font-family: var(--font-hand);
+      font-size: 16px;
+      color: var(--ink-light);
+      padding: 2px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .skill-item::before {
+      content: '—';
+      color: var(--pencil);
+      font-size: 14px;
+    }
+
+    .process-strip {
+      display: flex;
+      gap: 0;
+      align-items: center;
+      flex-wrap: wrap;
+      border: 2px solid var(--ink);
+      background: var(--paper);
+      padding: 16px 20px;
+      transform: rotate(-0.5deg);
+      position: relative;
+      margin-top: 32px;
+    }
+
+    .process-strip::before {
+      content: '';
+      position: absolute;
+      top: -11px;
+      left: 20px;
+      width: 50px;
+      height: 22px;
+      background: rgba(232,184,75,0.4);
+      border-top: 1px solid rgba(232,184,75,0.5);
+      border-bottom: 1px solid rgba(232,184,75,0.5);
+      transform: rotate(1deg);
+    }
+
+    .process-strip-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 10px;
+      width: 100%;
+    }
+
+    .process-step {
+      font-family: var(--font-hand);
+      font-size: 16px;
+      color: var(--ink-light);
+      padding: 4px 10px;
+      border: 1.5px solid var(--pencil);
+      transition: background 0.2s;
+    }
+
+    .process-step.done {
+      color: var(--ink);
+      border-color: var(--ink);
+      background: var(--paper-dark);
+      font-weight: 700;
+    }
+
+    .process-arrow {
+      color: var(--pencil);
+      padding: 0 6px;
+    }
+
+    .about-note {
+      max-width: 1200px;
+      margin: 56px auto 0;
+      border: 2px solid var(--ink);
+      background: var(--paper);
+      padding: 22px 26px;
+      position: relative;
+      transform: rotate(-0.3deg);
+      box-shadow: 5px 5px 0 rgba(26,22,18,0.12);
+    }
+
+    .about-note::before {
+      content: '';
+      position: absolute;
+      top: -11px;
+      left: 26px;
+      width: 54px;
+      height: 22px;
+      background: rgba(232,184,75,0.4);
+      border-top: 1px solid rgba(232,184,75,0.5);
+      border-bottom: 1px solid rgba(232,184,75,0.5);
+    }
+
+    .about-note-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 8px;
+    }
+
+    .about-note-text {
+      font-size: 24px;
+      line-height: 1.45;
+      color: var(--ink);
+    }
+
+    .resume-row {
+      max-width: 1200px;
+      margin: 36px auto 0;
+    }
+
+    .btn-sketch {
+      font-family: var(--font-hand);
+      font-size: 18px;
+      font-weight: 700;
+      padding: 12px 28px;
+      border: 2.5px solid var(--ink);
+      background: var(--ink);
+      color: var(--paper);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      transition: all 0.2s;
+      transform: rotate(-0.4deg);
+    }
+
+    .btn-sketch:hover {
+      transform: rotate(0deg) translate(-2px, -2px);
+      box-shadow: 4px 4px 0 rgba(26,22,18,0.25);
+    }
+
+    .journey {
+      padding-top: 40px;
+    }
+
+    .timeline {
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+      padding-left: 28px;
+      border-left: 2px solid var(--ink);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 0 0 38px 28px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .timeline-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -38px;
+      top: 4px;
+      width: 18px;
+      height: 18px;
+      background: var(--paper);
+      border: 2.5px solid var(--ink);
+      border-radius: 50%;
+      box-shadow: 2px 2px 0 rgba(26,22,18,0.15);
+    }
+
+    .timeline-year {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--accent-red);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .timeline-title {
+      font-family: var(--font-hand);
+      font-size: 28px;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .timeline-desc {
+      font-size: 19px;
+      color: var(--ink-light);
+      line-height: 1.55;
+      max-width: 760px;
+    }
+
+    .timeline-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .timeline-tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 9px;
+      border: 1.5px solid var(--ink);
+      color: var(--ink-faint);
+      background: var(--paper);
+    }
+
+    .contact-section {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 80px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(255,255,255,0.04) 27px, rgba(255,255,255,0.04) 28px);
+      pointer-events: none;
+    }
+
+    .contact-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .contact-title {
+      font-family: var(--font-hand);
+      font-size: 56px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+    }
+
+    .contact-sub {
+      font-family: var(--font-hand);
+      font-size: 20px;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 36px;
+      line-height: 1.55;
+      max-width: 600px;
+    }
+
+    .contact-links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .contact-link {
+      border: 2px solid rgba(255,255,255,0.25);
+      color: var(--paper);
+      text-decoration: none;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .contact-link:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 5px 5px 0 rgba(255,255,255,0.12);
+      border-color: var(--paper);
+    }
+
+    .contact-link strong {
+      font-size: 26px;
+      font-family: var(--font-hand);
+    }
+
+    .contact-link span {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    footer {
+      border-top: 2px solid var(--ink);
+      padding: 22px 48px;
+      background: var(--paper);
+      position: relative;
+      z-index: 1;
+    }
+
+    footer p {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .spiral-binding {
+        display: none;
+      }
+
+      nav,
+      section,
+      footer {
+        margin-left: 0;
+      }
+
+      nav {
+        padding: 14px 24px;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 62px;
+        left: -100%;
+        width: 100%;
+        background: var(--paper);
+        border-bottom: 2px solid var(--ink);
+        flex-direction: column;
+        padding: 24px;
+        gap: 18px;
+        transition: left 0.3s ease;
+      }
+
+      .nav-links.active {
+        left: 0;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      section {
+        padding: 60px 24px;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .skills-board {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-links {
+        grid-template-columns: 1fr;
+      }
+
+      footer {
+        padding: 20px 24px;
+      }
+    }
+  </style>
 </head>
+
 <body>
+  <div class="spiral-binding" aria-hidden="true"></div>
 
-    <div id="cursor-dot"></div>
-    <div id="cursor-ring"></div>
+  <nav>
+    <div class="nav-container">
+      <a href="./index.html" class="logo">Inayat</a>
 
-    <nav>
-        <div class="nav-container">
-            <a href="./index.html" class="logo">INAYAT</a>
-            <ul class="nav-links">
-                <li><a href="./index.html">Home</a></li>
-                <li><a href="./About.html" class="active">About</a></li>
-                <li><a href="./Projects.html">Projects</a></li>
-                <li><a href="./Resume.html">Resume</a></li>
-                <li><a href="./index.html#contact">Contact</a></li>
-            </ul>
-            <div class="hamburger"><span></span><span></span><span></span></div>
-        </div>
-    </nav>
+      <ul class="nav-links">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./About.html" class="active">About</a></li>
+        <li><a href="./Projects.html">Projects</a></li>
+        <li><a href="./assets/Resume_InayatDesign.pdf" target="_blank">Résumé</a></li>
+        <li><a href="./index.html#contact">Contact</a></li>
+      </ul>
 
-    <!-- Hero -->
-    <section class="hero">
-        <div class="hero-container">
-            <h1 class="page-title">About Me</h1>
-            <p class="page-subtitle">UX/UI designer based in Vancouver — research-first, technically literate, and targeting full-time roles for fall 2026.</p>
-        </div>
-    </section>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
 
-    <!-- POV Banner -->
-    <div class="pov-banner">
-        <div class="pov-inner">
-            <p class="pov-label">Design philosophy</p>
-            <p class="pov-text">"Most products don't fail because of bad visuals — they fail because no one talked to the person using them first."</p>
-        </div>
+  <section id="about" class="page-edge about-page">
+    <div class="margin-strip"></div>
+
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">A bit about me</h2>
+      <div class="section-line"></div>
     </div>
 
-    <!-- About Body -->
-    <section class="about-body">
-        <div class="about-container">
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          I’m a <strong>Vancouver-based UX/UI designer</strong> with a background in
+          frontend development and a <span class="highlight-yellow">genuine passion for architecture</span> —
+          sketchbook always close by.
+        </p>
 
-            <!-- Photo column -->
-            <div class="about-photo-col">
-                <div class="about-photo-wrap">
-                    <div class="about-photo">
-                        <img src="./Images/Inayat.JPG" alt="Inayat">
-                    </div>
-                    <div class="photo-tag">
-                        <span>Based in</span>
-                        <strong>Vancouver, BC</strong>
-                    </div>
-                </div>
+        <br>
 
-                <!-- Human caption below photo -->
-                <div class="photo-caption">
-                    <p class="photo-caption-label">A few things about me</p>
-                    <div class="photo-caption-fact">
-                        <div class="photo-caption-dot"></div>
-                        <span>Quarry Rock in Deep Cove is my go-to reset — short enough to do on a whim, view good enough to justify it every time</span>
-                    </div>
-                    <div class="photo-caption-fact">
-                        <div class="photo-caption-dot"></div>
-                        <span>Architecture is my biggest design influence — especially how Tadao Ando uses concrete and light</span>
-                    </div>
-                    <div class="photo-caption-fact">
-                        <div class="photo-caption-dot"></div>
-                        <span>I've lived across cultures, which is why cross-cultural UX problems feel personal, not academic</span>
-                    </div>
-                </div>
-            </div>
+        <p>
+          I explored architecture for a while, and although I never finished the degree,
+          it left me with a <strong>deep love for sketching buildings</strong>,
+          thinking in systems, and caring obsessively about spatial logic.
+          That passion bleeds into everything I design.
+        </p>
 
-            <!-- Bio -->
-            <div class="about-content">
-                <p class="about-label">Who I am</p>
-                <h2 class="about-heading">Designer who makes things <em>actually work.</em></h2>
+        <br>
 
-                <p class="about-text">I'm a UX/UI designer at SFU studying Interactive Arts & Technology, with a concentration in Interaction Design and a foundation in frontend development. That combination — research brain, build instinct — is what I bring to every project.</p>
+        <p>
+          My work tends to live at the intersection of
+          <span class="highlight-blue">research, craft, and technical feasibility.</span>
+          I can actually <strong>build the things I design.</strong> No pixel left unjustified.
+        </p>
 
-                <p class="about-text">I got into UX because I kept encountering interfaces that looked polished but failed the person using them. I wanted to be someone who closed that gap. My approach is research-first by habit: I don't trust my first idea, I test it. And because I can read and write code, I design things that actually survive contact with a developer's hands.</p>
-
-                <p class="about-text">I'm drawn to messy, human problems — the kind where the real issue only surfaces after you've sat with a user for an hour. At Mastercard I worked across four countries and learned that designing for 15,000 people means designing for fifteen different mental models at once. That's the work I want more of.</p>
-
-                <!-- Currently block -->
-                <div class="currently-block">
-                    <p class="currently-label">Right now</p>
-                    <div class="currently-item">
-                        <strong>Building —</strong>
-                        <span>Pawth, a social platform for pet owners, handling UX and frontend in React</span>
-                    </div>
-                    <div class="currently-item">
-                        <strong>Learning —</strong>
-                        <span>AI interaction patterns and how to design for agentic, multi-step flows</span>
-                    </div>
-                    <div class="currently-item">
-                        <strong>Seeking —</strong>
-                        <span>Full-time UX roles for fall 2026 — open to product, enterprise, and consumer</span>
-                    </div>
-                </div>
-
-                <div class="about-ctas">
-                    <a href="./Resume.html" class="about-btn">Download Resume</a>
-                </div>
-            </div>
-
+        <div class="process-strip">
+          <div class="process-strip-label">Process</div>
+          <span class="process-step">Discover</span>
+          <span class="process-arrow">→</span>
+          <span class="process-step">Define</span>
+          <span class="process-arrow">→</span>
+          <span class="process-step">Sketch</span>
+          <span class="process-arrow">→</span>
+          <span class="process-step done">Ship ✓</span>
         </div>
-    </section>
+      </div>
 
-    <!-- Timeline -->
-    <section class="journey">
-        <div class="journey-container">
-            <h2 class="section-title">My Journey</h2>
-            <div class="timeline">
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-year">2022 – 2023</div>
-                    <h3 class="timeline-title">Where Creativity Meets Evidence</h3>
-                    <p class="timeline-desc">Discovered that the best design decisions aren't opinions — they're hypotheses tested against real user behavior. Started building fluency in Figma, usability testing, and information architecture while studying at SFU. Realized design isn't about making things look good. It's about making things work.</p>
-                    <div class="timeline-tags">
-                        <span class="timeline-tag">Figma</span>
-                        <span class="timeline-tag">User Research</span>
-                        <span class="timeline-tag">Information Architecture</span>
-                        <span class="timeline-tag">Prototyping</span>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-year">2023 – 2024</div>
-                    <h3 class="timeline-title">Research Changes Everything</h3>
-                    <p class="timeline-desc">Moved from designing for imagined users to designing for real ones. Ran first structured usability tests, conducted contextual interviews, and learned to translate messy qualitative data into clear design decisions. The biggest lesson: the best solution is almost never your first idea.</p>
-                    <div class="timeline-tags">
-                        <span class="timeline-tag">Usability Testing</span>
-                        <span class="timeline-tag">Journey Mapping</span>
-                        <span class="timeline-tag">Persona Development</span>
-                        <span class="timeline-tag">Iterative Design</span>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-year">Summer 2025</div>
-                    <h3 class="timeline-title">Enterprise UX at Mastercard</h3>
-                    <p class="timeline-desc">Interned at Mastercard's Vancouver Tech Hub, redesigning internal SharePoint platforms for 15,000+ global employees. Worked directly under the VP of Workplace Experience, ran cross-cultural research across Dublin, India, and the US, and learned how to ship UX at enterprise scale — within real business constraints.</p>
-                    <div class="timeline-tags">
-                        <span class="timeline-tag">Enterprise UX</span>
-                        <span class="timeline-tag">Cross-cultural Research</span>
-                        <span class="timeline-tag">SharePoint</span>
-                        <span class="timeline-tag">Stakeholder Communication</span>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-year">Fall 2025</div>
-                    <h3 class="timeline-title">From Design to Product — End to End</h3>
-                    <p class="timeline-desc">Led the design and development of Chemtrails, a full-stack mobile travel app built in React Native with Firebase. Went from user interviews to shipped product — handling UX research, interaction design, and front/backend development. Proved that design thinking and technical execution aren't separate skills.</p>
-                    <div class="timeline-tags">
-                        <span class="timeline-tag">React Native</span>
-                        <span class="timeline-tag">Firebase</span>
-                        <span class="timeline-tag">Mobile UX</span>
-                        <span class="timeline-tag">End-to-end Product Design</span>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-year">2026 — Now</div>
-                    <h3 class="timeline-title">Design Beyond the Screen</h3>
-                    <p class="timeline-desc">Deliberately stepping outside the digital. Attending startup events, design jams, and design festivals — finding that the best design thinking happens in rooms with people, not just in Figma files. Exploring how design principles translate across architecture, physical products, and service experiences. The more I study how a building moves people through space, or how a service touchpoint makes someone feel, the sharper my digital work gets.</p>
-                    <div class="timeline-tags">
-                        <span class="timeline-tag">Service Design</span>
-                        <span class="timeline-tag">Architecture</span>
-                        <span class="timeline-tag">Product Design</span>
-                        <span class="timeline-tag">Design Jams</span>
-                        <span class="timeline-tag">Community</span>
-                    </div>
-                </div>
-
-            </div>
+      <div class="skills-board">
+        <div class="skill-cluster">
+          <div class="skill-cluster-label">Design Tools</div>
+          <div class="skill-item">Figma</div>
+          <div class="skill-item">Framer</div>
+          <div class="skill-item">Prototyping</div>
+          <div class="skill-item">Design Systems</div>
         </div>
-    </section>
 
-    <!-- Contact -->
-    <section id="contact" class="contact">
-        <div class="contact-container">
-            <h2 class="section-title">Get in Touch</h2>
-            <p class="contact-description">I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions.</p>
-            <div class="contact-links">
-                <a href="https://www.linkedin.com/in/inayat-inayat" target="_blank" class="contact-item">
-                    <div class="contact-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></div>
-                    <span class="contact-label">LinkedIn</span>
-                    <span class="contact-value">Connect with me</span>
-                </a>
-                <a href="mailto:inayatgulati@gmail.com" class="contact-item">
-                    <div class="contact-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.779l5.513-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z"/></svg></div>
-                    <span class="contact-label">Email</span>
-                    <span class="contact-value">inayatgulati@gmail.com</span>
-                </a>
-            </div>
+        <div class="skill-cluster">
+          <div class="skill-cluster-label">Research</div>
+          <div class="skill-item">User Interviews</div>
+          <div class="skill-item">Usability Testing</div>
+          <div class="skill-item">Journey Mapping</div>
+          <div class="skill-item">Heuristics</div>
         </div>
-    </section>
 
-    <footer>
-        <div style="max-width:1400px;margin:0 auto;">
-            <p>&copy; 2025 Inayat. All rights reserved.</p>
+        <div class="skill-cluster">
+          <div class="skill-cluster-label">Frontend</div>
+          <div class="skill-item">HTML/CSS</div>
+          <div class="skill-item">JavaScript</div>
+          <div class="skill-item">React</div>
+          <div class="skill-item">Git</div>
         </div>
-    </footer>
 
-    <script>
-        // Mobile nav
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks  = document.querySelector('.nav-links');
-        hamburger.addEventListener('click', () => { hamburger.classList.toggle('active'); navLinks.classList.toggle('active'); });
-        document.querySelectorAll('.nav-links a').forEach(link => { link.addEventListener('click', () => { hamburger.classList.remove('active'); navLinks.classList.remove('active'); }); });
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { e.preventDefault(); const t = document.querySelector(this.getAttribute('href')); if (t) window.scrollTo({ top: t.offsetTop - 80, behavior: 'smooth' }); }); });
+        <div class="skill-cluster">
+          <div class="skill-cluster-label">Architecture</div>
+          <div class="skill-item">Spatial Design</div>
+          <div class="skill-item">Building Sketches</div>
+          <div class="skill-item">AutoCAD</div>
+          <div class="skill-item">Rhino</div>
+        </div>
+      </div>
+    </div>
 
-        // Timeline scroll reveal
-        const timelineItems = document.querySelectorAll('.timeline-item');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, i) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => entry.target.classList.add('visible'), i * 100);
-                }
-            });
-        }, { threshold: 0.15 });
-        timelineItems.forEach(item => observer.observe(item));
+    <div class="about-note">
+      <p class="about-note-label">Design philosophy</p>
+      <p class="about-note-text">
+        “Most products do not fail because of bad visuals — they fail because no one talked to the person using them first.”
+      </p>
+    </div>
 
-        // Custom cursor
-        (function () {
-            const dot  = document.getElementById('cursor-dot');
-            const ring = document.getElementById('cursor-ring');
-            let mx=0, my=0, rx=0, ry=0;
-            document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; });
-            function animRing() { rx+=(mx-rx)*0.14; ry+=(my-ry)*0.14; ring.style.left=Math.round(rx)+'px'; ring.style.top=Math.round(ry)+'px'; requestAnimationFrame(animRing); }
-            animRing();
-            document.addEventListener('mouseover', e => { if (e.target.closest('a, button, .contact-item, .about-btn, .hamburger')) document.body.classList.add('cursor-hover'); });
-            document.addEventListener('mouseout',  e => { if (e.target.closest('a, button, .contact-item, .about-btn, .hamburger')) document.body.classList.remove('cursor-hover'); });
-            document.addEventListener('mousedown', () => document.body.classList.add('cursor-click'));
-            document.addEventListener('mouseup',   () => document.body.classList.remove('cursor-click'));
-            document.addEventListener('mouseleave', () => { dot.style.opacity='0'; ring.style.opacity='0'; });
-            document.addEventListener('mouseenter', () => { dot.style.opacity='1'; ring.style.opacity='1'; });
-        })();
-    </script>
+    <div class="resume-row">
+      <a href="./assets/Resume_InayatDesign.pdf" target="_blank" class="btn-sketch">
+        Download Resume →
+      </a>
+    </div>
+  </section>
+
+  <section class="journey">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">My Journey</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2022 – 2023</div>
+        <h3 class="timeline-title">Where Creativity Meets Evidence</h3>
+        <p class="timeline-desc">
+          Started building fluency in Figma, usability testing, and information architecture while studying at SFU.
+          Realized design is not just about making things look good — it is about making things work.
+        </p>
+        <div class="timeline-tags">
+          <span class="timeline-tag">Figma</span>
+          <span class="timeline-tag">User Research</span>
+          <span class="timeline-tag">Information Architecture</span>
+          <span class="timeline-tag">Prototyping</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2023 – 2024</div>
+        <h3 class="timeline-title">Research Changes Everything</h3>
+        <p class="timeline-desc">
+          Moved from designing for imagined users to designing for real ones. Conducted interviews,
+          mapped journeys, and learned to turn messy qualitative insights into clear design decisions.
+        </p>
+        <div class="timeline-tags">
+          <span class="timeline-tag">Usability Testing</span>
+          <span class="timeline-tag">Journey Mapping</span>
+          <span class="timeline-tag">Personas</span>
+          <span class="timeline-tag">Iterative Design</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">Summer 2025</div>
+        <h3 class="timeline-title">Enterprise UX at Mastercard</h3>
+        <p class="timeline-desc">
+          Worked on internal SharePoint experiences for Mastercard’s Workplace Experience team,
+          learning how to design for large-scale systems, global teams, and real business constraints.
+        </p>
+        <div class="timeline-tags">
+          <span class="timeline-tag">Enterprise UX</span>
+          <span class="timeline-tag">SharePoint</span>
+          <span class="timeline-tag">Stakeholders</span>
+          <span class="timeline-tag">Cross-cultural UX</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2026 — Now</div>
+        <h3 class="timeline-title">Design Beyond the Screen</h3>
+        <p class="timeline-desc">
+          Exploring how design principles translate across digital products, architecture,
+          physical products, service experiences, startup events, and design jams.
+        </p>
+        <div class="timeline-tags">
+          <span class="timeline-tag">Service Design</span>
+          <span class="timeline-tag">Architecture</span>
+          <span class="timeline-tag">Product Design</span>
+          <span class="timeline-tag">Design Jams</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact-section">
+    <div class="contact-inner">
+      <h2 class="contact-title">Let’s talk</h2>
+      <p class="contact-sub">
+        I’m always open to discussing UX projects, design feedback, portfolio ideas, or new opportunities.
+      </p>
+
+      <div class="contact-links">
+        <a href="mailto:inayatgulati@gmail.com" class="contact-link">
+          <strong>Email</strong>
+          <span>inayatgulati@gmail.com</span>
+        </a>
+
+        <a href="https://www.linkedin.com/in/inayat-inayat" target="_blank" class="contact-link">
+          <strong>LinkedIn</strong>
+          <span>Connect with me</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Inayat. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const spiral = document.querySelector(".spiral-binding");
+    const holeCount = Math.floor(window.innerHeight / 44) + 2;
+
+    for (let i = 0; i < holeCount; i++) {
+      const hole = document.createElement("div");
+      hole.className = "spiral-hole";
+      spiral.appendChild(hole);
+    }
+
+    const hamburger = document.querySelector(".hamburger");
+    const navLinks = document.querySelector(".nav-links");
+
+    hamburger.addEventListener("click", () => {
+      navLinks.classList.toggle("active");
+    });
+
+    document.querySelectorAll(".nav-links a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("active");
+      });
+    });
+
+    const timelineItems = document.querySelectorAll(".timeline-item");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry, i) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => entry.target.classList.add("visible"), i * 100);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    timelineItems.forEach((item) => observer.observe(item));
+  </script>
 </body>
 </html>
