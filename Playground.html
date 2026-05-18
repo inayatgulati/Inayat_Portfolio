@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Playground — Inayat</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Kalam:wght@300;400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --paper: #faf8f2;
+      --paper-dark: #f0ecdf;
+      --paper-worn: #e8e2d0;
+      --ink: #1a1612;
+      --ink-light: #3d3530;
+      --ink-faint: #8a7f72;
+      --pencil: #b8b0a0;
+      --pencil-light: #d4cfc4;
+      --accent-red: #c0392b;
+      --accent-blue: #2c5f8a;
+      --accent-yellow: #e8b84b;
+      --accent-green: #3a7d44;
+      --font-hand: 'Caveat', cursive;
+      --font-scrawl: 'Reenie Beanie', cursive;
+      --font-mono: 'Space Mono', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-hand);
+      font-size: 18px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M3 17 L8 8 L14 14 Z' fill='%231a1612' stroke='%231a1612' stroke-width='0.5'/%3E%3Crect x='13' y='2' width='3' height='10' rx='1' transform='rotate(45 14.5 7)' fill='%231a1612'/%3E%3C/svg%3E"), auto;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.13) 27px, rgba(180,170,155,0.13) 28px),
+        repeating-linear-gradient(90deg, transparent, transparent 27px, rgba(180,170,155,0.05) 27px, rgba(180,170,155,0.05) 28px);
+      pointer-events: none; z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.5;
+    }
+
+    /* ===== SPIRAL ===== */
+    .spiral-binding {
+      position: fixed; left: 0; top: 0; bottom: 0;
+      width: 32px;
+      background: var(--paper-worn);
+      border-right: 2.5px solid var(--ink);
+      z-index: 50;
+      display: flex; flex-direction: column;
+      align-items: center; padding-top: 24px;
+      pointer-events: none;
+    }
+    .spiral-hole {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--ink);
+      background: var(--paper);
+      margin-bottom: 28px; flex-shrink: 0;
+      box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
+    }
+
+    nav, .hero, .play-wrap, footer { margin-left: 32px; }
+
+    /* ===== NAV ===== */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--paper);
+      border-bottom: 2.5px solid var(--ink);
+      padding: 14px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    nav::after {
+      content: '';
+      position: absolute; right: 160px; bottom: -18px;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(160,130,90,0.18);
+      pointer-events: none;
+    }
+    .nav-logo {
+      font-family: var(--font-hand);
+      font-size: 26px; font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--ink); text-decoration: none;
+      position: relative;
+    }
+    .nav-logo::after {
+      content: '';
+      position: absolute; bottom: -2px; left: 0; right: 0;
+      height: 3px; background: var(--accent-red);
+      border-radius: 2px; transform: rotate(-0.8deg);
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-family: var(--font-hand); font-size: 17px;
+      color: var(--ink); text-decoration: none;
+      position: relative; padding-bottom: 2px;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 0; width: 0; height: 2px;
+      background: var(--ink); transition: width 0.25s; border-radius: 1px;
+    }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+    .hamburger {
+      display: none; flex-direction: column;
+      gap: 5px; cursor: pointer;
+      background: none; border: none; padding: 4px;
+    }
+    .hamburger span { display: block; width: 25px; height: 2px; background: var(--ink); }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      padding: 72px 48px 48px;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 44px;
+      border-right: 2px solid rgba(192,57,43,0.2);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 2; max-width: 760px; }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-mono); font-size: 12px;
+      letter-spacing: 0.08em; color: var(--ink-faint);
+      margin-bottom: 20px; text-transform: uppercase;
+    }
+    .hero-tag::before {
+      content: ''; display: inline-block;
+      width: 24px; height: 2px; background: var(--accent-red);
+    }
+
+    .page-title {
+      font-family: var(--font-hand);
+      font-size: clamp(52px, 8vw, 92px);
+      font-weight: 700; line-height: 1;
+      letter-spacing: -2px; margin-bottom: 18px;
+    }
+    .page-title .squiggle { position: relative; display: inline-block; }
+    .page-title .squiggle svg {
+      position: absolute; bottom: -8px; left: -4px;
+      width: calc(100% + 8px); pointer-events: none;
+    }
+
+    .page-subtitle {
+      font-family: var(--font-hand); font-size: 21px;
+      color: var(--ink-light); line-height: 1.55;
+      max-width: 620px;
+    }
+
+    /* Sticky note */
+    .hero-note {
+      margin-top: 28px;
+      display: inline-block;
+      background: var(--accent-yellow);
+      padding: 16px 20px 22px;
+      border: 1.5px solid rgba(0,0,0,0.15);
+      box-shadow: 4px 5px 0 rgba(0,0,0,0.1);
+      font-family: var(--font-hand); font-size: 17px;
+      color: #2a1f00; line-height: 1.5;
+      transform: rotate(-1.5deg);
+      position: relative;
+      max-width: 300px;
+    }
+    .hero-note::before {
+      content: '';
+      position: absolute; top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 40px; height: 7px;
+      background: rgba(0,0,0,0.15);
+      border-radius: 0 0 2px 2px;
+    }
+    .hero-note-label {
+      font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(0,0,0,0.4); margin-bottom: 6px; display: block;
+    }
+
+    /* ===== FILTER BAR ===== */
+    .filter-bar {
+      display: flex; align-items: center;
+      gap: 10px; flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .filter-label {
+      font-family: var(--font-scrawl); font-size: 17px;
+      color: var(--ink-faint); transform: rotate(-2deg);
+      display: inline-block; margin-right: 4px;
+    }
+    .filter-tab {
+      font-family: var(--font-hand); font-size: 17px; font-weight: 700;
+      padding: 7px 16px;
+      background: transparent; border: 2px solid var(--ink);
+      color: var(--ink); cursor: pointer;
+      transition: all 0.18s; transform: rotate(-0.4deg);
+    }
+    .filter-tab:nth-child(even) { transform: rotate(0.5deg); }
+    .filter-tab:hover, .filter-tab.active {
+      background: var(--ink); color: var(--paper);
+      transform: translate(-2px,-2px) rotate(0deg);
+    }
+
+    /* ===== MASONRY GRID ===== */
+    .play-wrap { padding: 52px 48px 90px; position: relative; z-index: 1; }
+
+    .masonry {
+      columns: 3;
+      column-gap: 24px;
+    }
+
+    /* ===== PLAY CARD ===== */
+    .play-card {
+      break-inside: avoid;
+      margin-bottom: 24px;
+      border: 2px solid var(--ink);
+      background: var(--paper);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease;
+      display: block;
+    }
+    .play-card:nth-child(3n+1) { transform: rotate(-0.3deg); }
+    .play-card:nth-child(3n+2) { transform: rotate(0.4deg); }
+    .play-card:nth-child(3n)   { transform: rotate(-0.2deg); }
+
+    .play-card:hover {
+      transform: rotate(0deg) translate(-3px, -3px);
+      box-shadow: 6px 6px 0 rgba(26,22,18,0.18);
+    }
+
+    /* Corner fold */
+    .play-card::after {
+      content: '';
+      position: absolute; bottom: 0; right: 0;
+      width: 24px; height: 24px;
+      background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
+      border-top: 1px solid var(--pencil);
+      border-left: 1px solid var(--pencil);
+      pointer-events: none; z-index: 5;
+    }
+
+    .play-img {
+      width: 100%; display: block;
+      border-bottom: 2px solid var(--ink);
+      background: var(--paper-dark);
+      position: relative;
+    }
+    .play-img::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(
+        0deg, transparent, transparent 23px,
+        rgba(180,170,155,0.12) 23px, rgba(180,170,155,0.12) 24px
+      );
+      z-index: 2; pointer-events: none;
+    }
+    .play-img img {
+      width: 100%; display: block;
+      filter: saturate(0.92) contrast(0.97);
+      transition: transform 0.35s ease;
+    }
+    .play-card:hover .play-img img { transform: scale(1.03); }
+
+    .play-body {
+      padding: 18px 18px 22px;
+      position: relative; z-index: 1;
+    }
+    /* tape strip */
+    .play-body::before {
+      content: '';
+      position: absolute; top: -11px; left: 20px;
+      width: 48px; height: 22px;
+      background: rgba(232,184,75,0.38);
+      border-top: 1px solid rgba(232,184,75,0.5);
+      border-bottom: 1px solid rgba(232,184,75,0.5);
+      transform: rotate(-1.5deg); pointer-events: none;
+    }
+
+    .play-cat {
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink-faint); margin-bottom: 6px;
+    }
+    .play-title {
+      font-family: var(--font-hand); font-size: 22px;
+      font-weight: 700; line-height: 1.15;
+      margin-bottom: 6px; color: var(--ink);
+    }
+    .play-desc {
+      font-family: var(--font-hand); font-size: 16px;
+      color: var(--ink-light); line-height: 1.45;
+    }
+    .play-meta {
+      margin-top: 10px;
+      font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    /* Year stamp */
+    .year-stamp {
+      position: absolute; top: 12px; right: 12px;
+      font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: 0.1em; color: var(--ink-faint);
+      border: 1px solid var(--pencil-light);
+      padding: 2px 6px; transform: rotate(2deg);
+      z-index: 6; background: var(--paper);
+    }
+
+    /* hidden during filter */
+    .play-card.hidden {
+      display: none;
+    }
+
+    /* ===== SECTION LABEL ===== */
+    .section-header {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 32px;
+    }
+    .section-num {
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--ink-faint); letter-spacing: 0.1em;
+    }
+    .section-title {
+      font-family: var(--font-hand); font-size: 30px;
+      font-weight: 700; letter-spacing: -0.5px;
+    }
+    .section-line { flex: 1; height: 1.5px; background: var(--ink); opacity: 0.18; }
+    .section-note {
+      font-family: var(--font-scrawl); font-size: 16px;
+      color: var(--accent-red); transform: rotate(2deg);
+      display: inline-block; opacity: 0.8;
+    }
+
+    /* ===== CURSOR TRAIL ===== */
+    .cursor-dot {
+      position: fixed; width: 4px; height: 4px;
+      background: rgba(26,22,18,0.25); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transition: opacity 0.4s ease;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 2px solid var(--ink);
+      padding: 20px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: var(--paper); position: relative; z-index: 1;
+    }
+    footer p {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.06em; color: var(--ink-faint);
+      text-transform: uppercase;
+    }
+
+    /* ===== SCROLL REVEAL ===== */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1100px) {
+      .masonry { columns: 2; }
+    }
+    @media (max-width: 768px) {
+      .spiral-binding { display: none; }
+      nav, .hero, .play-wrap, footer { margin-left: 0; }
+      nav { padding: 14px 24px; }
+      .nav-links {
+        position: fixed; top: 62px; left: -100%;
+        width: 100%; background: var(--paper);
+        border-bottom: 2px solid var(--ink);
+        flex-direction: column; padding: 24px; gap: 18px;
+        transition: left 0.3s ease; z-index: 99;
+      }
+      .nav-links.open { left: 0; }
+      .hamburger { display: flex; }
+      .hero { padding: 56px 24px 36px; }
+      .play-wrap { padding: 36px 24px 70px; }
+      .masonry { columns: 1; }
+      footer { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="cursorTrail"></div>
+  <div class="spiral-binding" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="./index.html" class="nav-logo">Inayat</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="./index.html">Home</a></li>
+      <li><a href="./index.html#about">About</a></li>
+      <li><a href="./Projects.html">Projects</a></li>
+      <li><a href="./Playground.html" class="active">Playground</a></li>
+      <li><a href="./assets/Resume_InayatDesign.pdf" target="_blank">Résumé</a></li>
+      <li><a href="./index.html#contact">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-tag">Sketches · Models · Posters · Experiments</div>
+      <h1 class="page-title">Play<span class="squiggle">ground
+        <svg viewBox="0 0 220 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2,8 C22,3 52,14 82,7 C112,2 142,13 172,6 C195,2 212,10 218,7"
+            stroke="#c0392b" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </svg>
+      </span></h1>
+      <p class="page-subtitle">
+        Not every design process ends as a case study. This is where the physical models,
+        architectural sketches, posters, and experiments live — the work that shapes how I think.
+      </p>
+      <div class="hero-note">
+        <span class="hero-note-label">Why this page exists</span>
+        My architecture background lives here — the sketchbooks, the foam models, the Rhino renders built just to understand space. Design thinking that bleeds into everything else. ✏️
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAYGROUND -->
+  <div class="play-wrap">
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <span class="filter-label">filter →</span>
+      <button class="filter-tab active" data-filter="all">All</button>
+      <button class="filter-tab" data-filter="sketches">Sketches</button>
+      <button class="filter-tab" data-filter="models">Physical Models</button>
+      <button class="filter-tab" data-filter="posters">Posters</button>
+    </div>
+
+    <!-- Section: Sketches -->
+    <div class="section-header reveal">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Architectural sketches</h2>
+      <div class="section-line"></div>
+      <span class="section-note">hand-drawn ✏️</span>
+    </div>
+
+    <div class="masonry" id="masonryGrid">
+
+      <!-- SKETCHES -->
+      <div class="play-card reveal" data-category="sketches">
+        <div class="play-img"><img src="./playground_images/sketch_parthenon.png" alt="Parthenon sketch" loading="lazy"></div>
+        <div class="play-body">
+          <p class="play-cat">Sketchbook</p>
+          <h3 class="play-title">Greek Parthenon</h3>
+          <p class="play-desc">Doric order column study — fluted shafts, capital details, entablature, and stepped stylobate. Referenced from an 1878 illustration.</p>
+          <p class="play-meta">HB Pencil · Line Drawing</p>
+        </div>
+        <span class="year-stamp">2023</span>
+      </div>
+
+      <div class="play-card reveal" data-category="sketches">
+        <div class="play-img"><img src="./playground_images/sketch_colosseum.png" alt="Colosseum sketch" loading="lazy"></div>
+        <div class="play-body">
+          <p class="play-cat">Sketchbook</p>
+          <h3 class="play-title">Roman Colosseum</h3>
+          <p class="play-desc">Elevation study annotating all three orders — Doric at the base, Ionic in the middle, Corinthian at the top — with arched bays and structural rhythm.</p>
+          <p class="play-meta">HB Pencil · Line Drawing</p>
+        </div>
+        <span class="year-stamp">2023</span>
+      </div>
+
+      <div class="play-card reveal" data-category="sketches">
+        <div class="play-img"><img src="./playground_images/sketch_hagia.png" alt="Hagia Sophia sketch" loading="lazy"></div>
+        <div class="play-body">
+          <p class="play-cat">Sketchbook</p>
+          <h3 class="play-title">Hagia Sophia</h3>
+          <p class="play-desc">Front elevation with structural annotations — central dome, half domes, arcade, and gallery relationships. Note: multiple layered domes increase its beauty.</p>
+          <p class="play-meta">HB Pencil · Annotated Elevation</p>
+        </div>
+        <span class="year-stamp">2023</span>
+      </div>
+
+      <div class="play-card reveal" data-category="sketches">
+        <div class="play-img"><img src="./playground_images/sketch_temple.png" alt="Indian temple plan" loading="lazy"></div>
+        <div class="play-body">
+          <p class="play-cat">Sketchbook</p>
+          <h3 class="play-title">Vishwanatha Temple Plan</h3>
+          <p class="play-desc">Annotated floor plan — Khajuraho, India. Shikara, Garbagriha, Maha Mandapa, Mandapa porch, doorway, plinch, and stair relationships mapped in detail.</p>
+          <p class="play-meta">HB Pencil · Plan Drawing</p>
+        </div>
+        <span class="year-stamp">2023</span>
+      </div>
+
+      <div class="play-card reveal" data-category="sketches">
+        <div class="play-img"><img src="./playground_images/sketch_ziggurat.png" alt="Ziggurat sketch" loading="lazy"></div>
+        <div class="play-body">
+          <p class="play-cat">Sketchbook</p>
+          <h3 class="play-title">Ancient Ziggurat</h3>
+          <p class="play-desc">Isometric sketch of the Mesopotamian ziggurat — stepped form, ramps as "ladder to heaven," and annotation noting priests communicated with God here to solve people's problems.</p>
+          <p class="play-meta">HB Pencil · Isometric Drawing</p>
+        </div>
+        <span class="year-stamp">2023</span>
+      </div>
+
+      <div class="play-card reveal" data-category="sketches">
+        <div class="play-img"><img src="./playground_images/sketch_dome.png" alt="Dome of the Rock sketch" loading="lazy"></div>
+        <div class="play-body">
+          <p class="play-cat">Sketchbook</p>
+          <h3 class="play-title">Dome of the Rock</h3>
+          <p class="play-desc">Annotated elevation — gold-tiled dome, octagonal building base, arcade frieze, and arched window bays. Note: likely a tomb rather than a shrine.</p>
+          <p class="play-meta">HB Pencil · Line Drawing</p>
+        </div>
+        <span class="year-stamp">2023</span>
+      </div>
+
+      <!-- SECTION BREAK: Physical Models -->
+      <div class="section-header reveal" style="grid-column: 1/-1; break-before: column; margin-top: 16px;">
+        <span class="section-num">02</span>
+        <h2 class="section-title">Physical models</h2>
+        <div class="section-line"></div>
+        <span class="section-note">foam, wool, bangles</span>
+      </div>
+
+      <!-- Physical models -->
+      <div class="play-card reveal" data-category="models">
+        <div class="play-img"><img src="./playground_images/model_basil.png" alt="Balsa and foam building model" loading="lazy"></div>
+        <div class="play-body">
+          <p class="play-cat">Physical Model</p>
+          <h3 class="play-title">Layered Roof Structure</h3>
+          <p class="play-desc">Exploring vertical circulation and horizontal roof planes through a balsa timber frame with layered foam floor plates — human scale and structural rhythm.</p>
+          <p class="play-meta">Balsa Wood · Styrofoam · Photography</p>
+        </div>
+        <span class="year-stamp">2023</span>
+      </div>
+
+      <div class="play-card reveal" data-category="models">
+        <div class="play-img"><img src="./playground_images/model_building_ps.png" alt="Foam spiral model photoshopped at scale" loading="lazy"></div>
+        <div class="play-body">
+          <p class="play-cat">Physical Model · Photomontage</p>
+          <h3 class="play-title">Spiral Tower — At Scale</h3>
+          <p class="play-desc">The foam spiral model composited at urban scale with people — rotating disc layers create a dynamic, inhabitable tower form with open ground level.</p>
+          <p class="play-meta">Styrofoam · Photoshop · Scale Study</p>
+        </div>
+        <span class="year-stamp">2024</span>
+      </div>
+
+      <div class="play-card reveal" data-category="models">
+        <div class="play-img"><img src="./playground_images/model_stadium.png" alt="Red wool stadium tensile model" loading="lazy"></div>
+        <div class="play-body">
+          <p class="play-cat">Physical Model</p>
+          <h3 class="play-title">Tensile Stadium Ring</h3>
+          <p class="play-desc">Investigating tensile roof geometry through red wool and coloured sewing pins — the void at centre creates an open-air stadium typology under a woven canopy.</p>
+          <p class="play-meta">Wool · Sewing Pins · Photography</p>
+        </div>
+        <span class="year-stamp">2024</span>
+      </div>
+
+      <div class="play-card reveal" data-category="models">
+        <div class="play-img"><img src="./playground_images/model_station.png" alt="Glass Bangle arch station model" loading="lazy"></div>
+        <div class="play-body">
+          <p class="play-cat">Physical Model</p>
+          <h3 class="play-title">Arched Station Structure</h3>
+          <p class="play-desc">Examining organic arch systems and growth patterns using glass bangles and glue — looped rings form a sweeping canopy structure with open permeable edges.</p>
+          <p class="play-meta">Bangles · Glue Gun · Photography</p>
+        </div>
+        <span class="year-stamp">2024</span>
+      </div>
+
+      <div class="play-card reveal" data-category="models">
+        <div class="play-img"><img src="./playground_images/model_building.png" alt="Foam spiral model lit in pink" loading="lazy"></div>
+        <div class="play-body">
+          <p class="play-cat">Physical Model · Light Study</p>
+          <h3 class="play-title">Foam Spiral — Light Study</h3>
+          <p class="play-desc">Same spiral disc model photographed under dramatic pink light — studying how layered curved surfaces cast shadow and interact with coloured illumination.</p>
+          <p class="play-meta">Styrofoam · Coloured Light · Photography</p>
+        </div>
+        <span class="year-stamp">2024</span>
+      </div>
+
+      <!-- SECTION BREAK: Posters -->
+      <div class="section-header reveal" style="break-before: column; margin-top: 16px;">
+        <span class="section-num">03</span>
+        <h2 class="section-title">Posters</h2>
+        <div class="section-line"></div>
+        <span class="section-note">typography · visual lang</span>
+      </div>
+
+      <div class="play-card reveal" data-category="posters">
+        <div class="play-img"><img src="./playground_images/poster_signal.jpg" alt="Signal Lost poster" loading="lazy"></div>
+        <div class="play-body">
+          <p class="play-cat">Poster Design</p>
+          <h3 class="play-title">Signal Lost</h3>
+          <p class="play-desc">Digital glitch aesthetics and layered RGB distortion over a fragmented portrait — "Surrounded, yet unseen." Edition 01/17.</p>
+          <p class="play-meta">Figma · Digital · Limited Edition</p>
+        </div>
+      </div>
+
+      <div class="play-card reveal" data-category="posters">
+        <div class="play-img"><img src="./playground_images/poster_dance.jpg" alt="Dance poster" loading="lazy"></div>
+        <div class="play-body">
+          <p class="play-cat">Poster Design</p>
+          <h3 class="play-title">The Language of Movement</h3>
+          <p class="play-desc">Typography meets motion — a dancer silhouette releasing musical notes into open space. "Dance is the language I speak when words are not enough."</p>
+          <p class="play-meta">Figma · Print · Digital</p>
+        </div>
+      </div>
+
+    </div>
+    <!-- /masonry -->
+
+  </div>
+  <!-- /play-wrap -->
+
+  <footer>
+    <p>© 2025 Inayat Gulati</p>
+    <p>Vancouver, BC</p>
+    <p>UX/UI · Frontend · Architecture</p>
+  </footer>
+
+  <script>
+    // ===== SPIRAL HOLES =====
+    const spiral = document.querySelector('.spiral-binding');
+    const holeCount = Math.floor(window.innerHeight / 44) + 2;
+    for (let i = 0; i < holeCount; i++) {
+      const hole = document.createElement('div');
+      hole.className = 'spiral-hole';
+      spiral.appendChild(hole);
+    }
+
+    // ===== HAMBURGER =====
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    // ===== PENCIL CURSOR TRAIL =====
+    const trailContainer = document.getElementById('cursorTrail');
+    let trails = [];
+    document.addEventListener('mousemove', (e) => {
+      if (Math.random() > 0.4) return;
+      const dot = document.createElement('div');
+      dot.className = 'cursor-dot';
+      dot.style.left = e.clientX + (Math.random() - 0.5) * 6 + 'px';
+      dot.style.top  = e.clientY + (Math.random() - 0.5) * 6 + 'px';
+      dot.style.width  = Math.random() * 3 + 1 + 'px';
+      dot.style.height = Math.random() * 3 + 1 + 'px';
+      dot.style.opacity = (Math.random() * 0.3 + 0.1).toString();
+      trailContainer.appendChild(dot);
+      trails.push(dot);
+      setTimeout(() => {
+        dot.style.opacity = '0';
+        setTimeout(() => { if (dot.parentNode) dot.parentNode.removeChild(dot); }, 400);
+      }, 300);
+      if (trails.length > 40) {
+        const old = trails.shift();
+        if (old.parentNode) old.parentNode.removeChild(old);
+      }
+    });
+
+    // ===== SCROLL REVEAL =====
+    const reveals = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 50);
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
+    reveals.forEach(el => revealObserver.observe(el));
+
+    // ===== FILTER =====
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    const playCards = document.querySelectorAll('.play-card');
+
+    filterTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        filterTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const filter = tab.getAttribute('data-filter');
+
+        playCards.forEach((card) => {
+          const cats = card.getAttribute('data-category').split(' ');
+          const show = filter === 'all' || cats.includes(filter);
+          if (show) {
+            card.style.display = 'block';
+            card.style.opacity = '0';
+            setTimeout(() => { card.style.opacity = '1'; card.style.transform = ''; }, 30);
+          } else {
+            card.style.opacity = '0';
+            setTimeout(() => { card.style.display = 'none'; }, 220);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
