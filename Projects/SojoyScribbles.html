@@ -1,502 +1,1143 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sojoy Scribbles — Inayat</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg:     #0a0a0a;
-      --sur:    rgba(255,255,255,0.03);
-      --bdr:    rgba(255,255,255,0.08);
-      --text:   #f0f0f0;
-      --muted:  #888;
-      --dim:    #444;
-      --teal:   #14b8a6;
-      --teal-l: #2dd4bf;
-      --teal-d: #0d9488;
-      --nav-h:  64px;
-      --side-w: 200px;
-    }
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Work Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sojoy Scribbles — Inayat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper:      #faf8f2;
+        --paper-dark: #f0ecdf;
+        --paper-worn: #e8e2d0;
+        --ink:        #1a1612;
+        --ink-light:  #3d3530;
+        --ink-faint:  #8a7f72;
+        --pencil:     #b8b0a0;
+        --pencil-light: #d4cfc4;
 
-    /* NAV */
-    .topnav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); z-index: 200; display: flex; align-items: center; padding: 0 2rem; background: rgba(10,10,10,0.93); backdrop-filter: blur(16px); border-bottom: 1px solid var(--bdr); }
-    .topnav-in { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; letter-spacing: 1px; color: var(--text); text-decoration: none; }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; transition: color .2s; }
-    .nav-links a:hover { color: var(--teal); }
+        /* Sojoy accent — warm rose + sage */
+        --rose:   #b5465a;
+        --rose-l: #d4607a;
+        --sage:   #4a7c6a;
+        --sage-l: #5e9e88;
+        --yellow: #e8b84b;
 
-    /* SIDENAV */
-    .sidenav { position: fixed; top: var(--nav-h); left: 0; width: var(--side-w); height: calc(100vh - var(--nav-h)); padding: 2.5rem 1rem 2rem 2rem; border-right: 1px solid var(--bdr); background: var(--bg); display: flex; flex-direction: column; gap: 2rem; overflow-y: auto; overflow-x: hidden; z-index: 100; }
-    .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--teal); text-decoration: none; font-size: 0.78rem; font-weight: 500; transition: gap .2s; white-space: nowrap; }
-    .back-link:hover { gap: 10px; }
-    .side-lbl { font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--dim); font-weight: 600; margin-bottom: 0.75rem; }
-    .side-list { display: flex; flex-direction: column; }
-    .side-a { display: flex; align-items: center; gap: 8px; padding: 7px 0 7px 10px; color: var(--dim); text-decoration: none; font-size: 0.77rem; border-left: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
-    .side-a:hover { color: var(--text); border-left-color: var(--dim); }
-    .side-a.active { color: var(--teal-l); border-left-color: var(--teal); font-weight: 500; }
-    .side-num { font-size: 0.6rem; color: var(--dim); min-width: 16px; }
-    .side-a.active .side-num { color: var(--teal); }
+        --font-hand:   'Caveat', cursive;
+        --font-scrawl: 'Reenie Beanie', cursive;
+        --font-mono:   'Space Mono', monospace;
+        --font-serif:  'EB Garamond', serif;
 
-    /* MAIN */
-    .main { margin-left: var(--side-w); padding: calc(var(--nav-h) + 3rem) 3.5rem 6rem 3rem; max-width: calc(900px + var(--side-w)); }
-
-    /* HERO */
-    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
-    .tag { font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--teal); padding: 3px 10px; border: 1px solid rgba(20,184,166,.25); border-radius: 20px; background: rgba(20,184,166,.05); }
-    .hero-h { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem,5vw,4.2rem); font-weight: 300; line-height: 1.05; margin-bottom: 0.4rem; }
-    .hero-h em { font-style: italic; color: var(--teal-l); }
-    .hero-sub { font-size: 1rem; color: var(--muted); margin-bottom: 1rem; }
-    .hero-p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; max-width: 520px; margin-bottom: 1.75rem; }
-
-    /* HERO VIDEO */
-    .hero-video { width: 100%; border-radius: 14px; overflow: hidden; border: 1px solid var(--bdr); margin-bottom: 2rem; background: #111; }
-    .hero-video video { width: 100%; display: block; max-height: 460px; object-fit: cover; }
-
-    /* STATS */
-    .stats { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--bdr); border-radius: 14px; overflow: hidden; margin-bottom: 1.75rem; }
-    .stat { padding: 1.2rem 1.1rem; background: var(--sur); border-right: 1px solid var(--bdr); }
-    .stat:last-child { border-right: none; }
-    .s-n { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 700; color: var(--teal-l); line-height: 1; margin-bottom: 5px; }
-    .s-l { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
-    .s-sub { font-size: 0.65rem; color: var(--dim); margin-top: 2px; }
-
-    /* META */
-    .meta { display: flex; gap: 2rem; flex-wrap: wrap; padding-top: 1.25rem; border-top: 1px solid var(--bdr); margin-bottom: 5rem; }
-    .m-k { font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 4px; }
-    .m-v { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
-
-    /* SECTION */
-    .sec { margin-bottom: 5rem; }
-    .phase { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
-    .p-dot { width: 20px; height: 20px; border-radius: 50%; background: rgba(20,184,166,.1); border: 1px solid rgba(20,184,166,.3); display: flex; align-items: center; justify-content: center; font-size: 0.58rem; color: var(--teal); font-weight: 700; }
-    .p-txt { font-size: 0.65rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal); font-weight: 600; }
-    .sec-h { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 300; line-height: 1.15; margin-bottom: 0.5rem; }
-    .sec-lead { font-size: 0.875rem; color: var(--muted); line-height: 1.8; max-width: 580px; margin-bottom: 1.5rem; }
-    .rule { height: 1px; background: var(--bdr); margin-bottom: 1.5rem; }
-    .sub { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 0.875rem; }
-
-    /* GRIDS */
-    .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.5rem; }
-    .g2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 1.5rem; }
-
-    /* CARDS */
-    .nc { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
-    .nc-n { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--teal-l); line-height: 1; margin-bottom: 6px; }
-    .nc-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; }
-    .nc-d { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
-
-    .ic { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
-    .ic-ico { font-size: 1rem; margin-bottom: 0.6rem; }
-    .ic-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; }
-    .ic-d { font-size: 0.76rem; color: var(--muted); line-height: 1.55; }
-
-    /* FINDING ROW */
-    .flist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
-    .fr { display: flex; gap: 0.875rem; align-items: flex-start; padding: 0.875rem 1.1rem; background: var(--sur); border: 1px solid var(--bdr); border-radius: 8px; transition: border-color .2s; }
-    .fr:hover { border-color: rgba(20,184,166,.2); }
-    .fr-i { width: 30px; height: 30px; min-width: 30px; border-radius: 6px; background: rgba(20,184,166,.07); border: 1px solid rgba(20,184,166,.15); display: flex; align-items: center; justify-content: center; font-size: 0.82rem; }
-    .fr-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
-    .fr-d { font-size: 0.77rem; color: var(--muted); line-height: 1.55; }
-
-    /* STEP LIST */
-    .slist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
-    .st { display: flex; gap: 0.875rem; padding: 0.875rem 1.1rem; background: var(--sur); border: 1px solid var(--bdr); border-radius: 8px; }
-    .st-n { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 700; color: var(--teal); min-width: 20px; line-height: 1.5; }
-    .st-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
-    .st-d { font-size: 0.77rem; color: var(--muted); line-height: 1.5; }
-
-    /* QUOTE */
-    .quote { border-left: 2px solid var(--teal); padding: 0.875rem 1.25rem; margin: 1.25rem 0; background: rgba(20,184,166,.04); border-radius: 0 8px 8px 0; }
-    .quote p { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; line-height: 1.6; color: var(--text); }
-
-    /* TOOLS */
-    .tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
-    .tool { font-size: 0.72rem; padding: 4px 12px; border-radius: 20px; background: var(--sur); border: 1px solid var(--bdr); color: var(--muted); }
-
-    /* PAGE BLOCK — for site architecture section */
-    .page-block { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--bdr); }
-    .page-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-    .page-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; margin-bottom: 0.5rem; }
-    .page-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.8; max-width: 560px; margin-bottom: 1.25rem; }
-
-    /* IMAGES */
-    .imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
-    .imgs.c1 { grid-template-columns: 1fr; }
-    .imgs.c2 { grid-template-columns: 1fr 1fr; }
-    .iw { border-radius: 12px; overflow: hidden; border: 1px solid var(--bdr); background: #111; }
-    .iw img { width: 100%; display: block; }
-    .icap { padding: 7px 10px; font-size: 0.7rem; color: var(--dim); border-top: 1px solid var(--bdr); line-height: 1.4; }
-
-    /* REFLECTION */
-    .rc { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
-    .rc-t { font-size: 0.82rem; font-weight: 600; color: var(--teal-l); margin-bottom: 6px; }
-    .rc-d { font-size: 0.78rem; color: var(--muted); line-height: 1.7; }
-
-    /* FOOTER */
-    footer { background: #050508; border-top: 1px solid var(--bdr); padding: 1.5rem 2rem; text-align: center; font-size: 0.8rem; color: var(--dim); }
-
-    /* REVEAL */
-    .rev { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
-    .rev.in { opacity: 1; transform: none; }
-
-    /* RESPONSIVE */
-    @media (max-width: 860px) {
-      .sidenav { display: none; }
-      .main { margin-left: 0; padding: 5rem 1.5rem 5rem; }
-      .stats { grid-template-columns: repeat(2,1fr); }
-      .g3, .g2 { grid-template-columns: 1fr; }
-      .imgs.c2 { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 480px) {
-      .stats { grid-template-columns: 1fr 1fr; }
-      .hero-h { font-size: 2.4rem; }
-      .nav-links { display: none; }
-    }
-  </style>
-</head>
-<body>
-
-<!-- NAV -->
-<nav class="topnav">
-  <div class="topnav-in">
-    <a href="../index.html" class="logo">INAYAT</a>
-    <ul class="nav-links">
-      <li><a href="../index.html">Home</a></li>
-      <li><a href="../About.html">About</a></li>
-      <li><a href="../Projects.html">Projects</a></li>
-      <li><a href="../Resume.html">Resume</a></li>
-      <li><a href="../index.html#contact">Contact</a></li>
-    </ul>
-  </div>
-</nav>
-
-<!-- SIDENAV -->
-<aside class="sidenav">
-  <a href="../Projects.html" class="back-link">← Projects</a>
-  <div>
-    <div class="side-lbl">Case Study</div>
-    <nav class="side-list">
-      <a href="#overview"    class="side-a active"><span class="side-num">00</span>Overview</a>
-      <a href="#concept"     class="side-a"><span class="side-num">01</span>Design Concept</a>
-      <a href="#architecture" class="side-a"><span class="side-num">02</span>Site Architecture</a>
-      <a href="#contrib"     class="side-a"><span class="side-num">03</span>My Contributions</a>
-      <a href="#process"     class="side-a"><span class="side-num">04</span>Dev Process</a>
-      <a href="#features"    class="side-a"><span class="side-num">05</span>Design Features</a>
-      <a href="#reflection"  class="side-a"><span class="side-num">06</span>Reflection</a>
-    </nav>
-  </div>
-</aside>
-
-<!-- MAIN -->
-<main class="main">
-
-  <!-- HERO -->
-  <header style="margin-bottom:4rem;">
-    <div class="tags">
-      <span class="tag">E-Commerce</span>
-      <span class="tag">UX/UI Design</span>
-      <span class="tag">Front-End Dev</span>
-      <span class="tag">Team Lead</span>
-    </div>
-    <h1 class="hero-h">Sojoy <em>Scribbles</em></h1>
-    <p class="hero-sub">A Whimsical Sticker Shop — E-Commerce UX/UI Design &amp; Front-End Development</p>
-    <p class="hero-p">A playful, anime-inspired online sticker store designed to deliver a joyful shopping experience through hand-drawn artwork and clean, accessible UI.</p>
-
-    <div class="hero-video">
-      <video autoplay muted loop playsinline>
-        <source src="https://framerusercontent.com/assets/e3ld9onE19lfw32wlrNKnVae4ps.mp4" type="video/mp4">
-      </video>
-    </div>
-
-    <div class="stats">
-      <div class="stat"><div class="s-n">5</div><div class="s-l">Pages built</div><div class="s-sub">Full e-commerce flow</div></div>
-      <div class="stat"><div class="s-n">100%</div><div class="s-l">Responsive</div><div class="s-sub">All breakpoints</div></div>
-      <div class="stat"><div class="s-n">2</div><div class="s-l">Developers</div><div class="s-sub">Design-led team</div></div>
-      <div class="stat"><div class="s-n">1</div><div class="s-l">Cohesive brand</div><div class="s-sub">Anime-inspired identity</div></div>
-    </div>
-
-    <div class="meta">
-      <div><div class="m-k">Timeline</div><div class="m-v">Spring 2025</div></div>
-      <div><div class="m-k">My Role</div><div class="m-v">UX/UI Designer<br>Front-End Developer<br>Team Lead</div></div>
-      <div><div class="m-k">Team</div><div class="m-v">Inayat Inayat<br>Md. Kashfi Or Rashid Pranta</div></div>
-      <div><div class="m-k">Tools</div><div class="m-v">HTML5, CSS, JavaScript<br>GitHub, VS Code</div></div>
-    </div>
-  </header>
-
-  <!-- 00 OVERVIEW -->
-  <section id="overview" class="sec rev">
-    <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
-    <h2 class="sec-h">The Project</h2>
-    <p class="sec-lead">Sojoy Scribbles is a fully responsive, multi-page e-commerce site that reflects a distinct brand personality — bright, expressive, and user-friendly — while meeting accessibility and interaction standards.</p>
-    <div class="rule"></div>
-
-    <div class="g3" style="margin-bottom:2rem">
-      <div class="nc">
-        <div class="nc-n">5</div>
-        <div class="nc-t">Full pages</div>
-        <div class="nc-d">Home, Products, Cart, Billing, and Order Confirmation — a complete end-to-end shopping flow</div>
-      </div>
-      <div class="nc">
-        <div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Brand-first</div>
-        <div class="nc-t">Cohesive identity</div>
-        <div class="nc-d">Soft pastel palette, illustrated icons, and friendly typography echoing the handcrafted nature of the stickers</div>
-      </div>
-      <div class="nc">
-        <div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Accessible</div>
-        <div class="nc-t">ARIA standards</div>
-        <div class="nc-d">Buttons, labels, and form fields optimised with ARIA attributes and mobile-friendly responsive layouts</div>
-      </div>
-    </div>
-
-    <div class="quote">
-      <p>"Crafting joy, one scribble at a time — each page should feel personal and handcrafted, echoing the unique nature of the stickers themselves."</p>
-    </div>
-  </section>
-
-  <!-- 01 DESIGN CONCEPT -->
-  <section id="concept" class="sec rev">
-    <div class="phase"><div class="p-dot">1</div><span class="p-txt">Design Concept</span></div>
-    <h2 class="sec-h">Warm, Expressive<br>&amp; <em>Personal</em></h2>
-    <p class="sec-lead">The visual system was designed to feel like the stickers themselves — playful, personal, and immediately recognisable as something made with care.</p>
-    <div class="rule"></div>
-
-    <div class="flist">
-      <div class="fr"><div class="fr-i">🎨</div><div><div class="fr-t">Soft pastel palette and friendly typography</div><div class="fr-d">Warmth and approachability — every colour choice reinforces the handcrafted, joyful nature of the brand without feeling childish.</div></div></div>
-      <div class="fr"><div class="fr-i">🖼</div><div><div class="fr-t">Illustrated icons and imagery</div><div class="fr-d">A cohesive art-centric identity where the sticker artwork is always the hero — the UI frames and supports it rather than competing with it.</div></div></div>
-      <div class="fr"><div class="fr-i">⬛</div><div><div class="fr-t">Grid-based layouts</div><div class="fr-d">Consistent balance and readability across all five pages — especially important on the product grid where visual density could easily become overwhelming.</div></div></div>
-    </div>
-
-    <p style="font-size:0.875rem;color:var(--muted);line-height:1.8;max-width:580px">I contributed to the layout design, page structuring, and interaction styling across all major pages — ensuring consistency between the homepage, product listing, and checkout experience.</p>
-  </section>
-
-  <!-- 02 SITE ARCHITECTURE -->
-  <section id="architecture" class="sec rev">
-    <div class="phase"><div class="p-dot">2</div><span class="p-txt">Site Architecture</span></div>
-    <h2 class="sec-h">Five Pages,<br>One Shared System</h2>
-    <p class="sec-lead">All pages use a shared header and footer system for consistency and ease of navigation — each page has one clear job in the overall shopping flow.</p>
-    <div class="rule"></div>
-
-    <!-- Home -->
-    <div class="page-block">
-      <div class="sub">Page 01</div>
-      <div class="page-title">Home Page</div>
-      <p class="page-desc">Introduces the brand with a hero section, artist story, and message form. The hero section uses an engaging tagline and CTA for browsing stickers, while the About section builds relatability through personal narrative and anime-inspired imagery.</p>
-      <div class="imgs c2">
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/BIKsQjiFLhMIvZyvZDgVURq5Org.png" alt="Hero section">
-          <div class="icap">Hero section — engaging tagline and CTA for browsing stickers</div>
-        </div>
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/VLWpHvbPt2aOwf3WG003G2rfWwU.png" alt="About section">
-          <div class="icap">About section — personal narrative and anime-inspired imagery</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Products -->
-    <div class="page-block">
-      <div class="sub">Page 02</div>
-      <div class="page-title">Products Page</div>
-      <p class="page-desc">Displays sticker categories — Limited Edition and New Arrivals — with add-to-cart functionality. Visual-first display with hover animations and clear pricing.</p>
-      <div class="imgs c1">
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/QCmZgL7oiu4lHY8L3cRnFevj9xM.png" alt="Product grid">
-          <div class="icap">Product grid — visual-first display with hover animations and clear pricing</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Cart -->
-    <div class="page-block">
-      <div class="sub">Page 03</div>
-      <div class="page-title">Cart Page</div>
-      <p class="page-desc">Shows selected items with dynamic quantity controls and a live order summary — updating in real time as users add, remove, or adjust items.</p>
-      <div class="imgs c2">
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/kViceANsixK2GDYIRyb4Xk.png" alt="Cart page">
-          <div class="icap">Cart page — selected items with quantity controls and order summary</div>
-        </div>
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/XkHwGZFkvr62Ds9SjWkAkF8q4.png" alt="Cart interaction">
-          <div class="icap">Cart interaction — dynamic quantity controls and live order total</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Billing -->
-    <div class="page-block">
-      <div class="sub">Page 04</div>
-      <div class="page-title">Billing Page</div>
-      <p class="page-desc">Collects user shipping and payment details in a clean, structured layout. Related fields are grouped together and real-time validation reduces errors at checkout.</p>
-      <div class="imgs c1">
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/nTfIpzyA2oXaqKzBDjH1u164aKc.png" alt="Billing form">
-          <div class="icap">Billing form — structured input fields with clear visual hierarchy</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Confirmation -->
-    <div class="page-block">
-      <div class="sub">Page 05</div>
-      <div class="page-title">Order Confirmation Page</div>
-      <p class="page-desc">Confirms purchases with delivery details and order summary — designed to feel friendly and reassuring rather than clinical.</p>
-      <div class="imgs c1">
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/3oeqFU2AYT0r9VWjvWVfxHafztA.png" alt="Confirmation page">
-          <div class="icap">Order confirmation — friendly, trust-building order summary with delivery details</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 03 MY CONTRIBUTIONS -->
-  <section id="contrib" class="sec rev">
-    <div class="phase"><div class="p-dot">3</div><span class="p-txt">My Contributions</span></div>
-    <h2 class="sec-h">Team Lead &amp;<br>Primary Builder</h2>
-    <p class="sec-lead">As team leader, I handled both design and implementation — from the visual system to the working HTML, CSS, and JavaScript across every page.</p>
-    <div class="rule"></div>
-
-    <div class="g3">
-      <div class="ic"><div class="ic-ico">🎨</div><div class="ic-t">Visual &amp; Layout Design</div><div class="ic-d">Designed page structures using a responsive grid system and ensured visual consistency across all breakpoints.</div></div>
-      <div class="ic"><div class="ic-ico">💻</div><div class="ic-t">Front-End Development</div><div class="ic-d">Implemented HTML5 semantic structure and CSS3 styling for all five pages — index, product, billing, cart, and order-confirmation.</div></div>
-      <div class="ic"><div class="ic-ico">♿</div><div class="ic-t">Accessibility &amp; Responsiveness</div><div class="ic-d">Optimised buttons, labels, and form fields with ARIA standards and mobile-friendly layouts across all screen sizes.</div></div>
-      <div class="ic"><div class="ic-ico">⚡</div><div class="ic-t">Interactivity</div><div class="ic-d">Integrated JavaScript behaviours for quantity adjustment, cart updates, and form validation to enhance usability.</div></div>
-      <div class="ic"><div class="ic-ico">🧪</div><div class="ic-t">Testing &amp; Debugging</div><div class="ic-d">Conducted browser and device testing to ensure cross-platform consistency and verified layout integrity before submission.</div></div>
-    </div>
-
-    <div class="sub">Tools Used</div>
-    <div class="tools">
-      <span class="tool">HTML5</span>
-      <span class="tool">CSS3</span>
-      <span class="tool">JavaScript</span>
-      <span class="tool">GitHub</span>
-      <span class="tool">VS Code</span>
-      <span class="tool">Responsive Grid</span>
-      <span class="tool">ARIA Standards</span>
-    </div>
-  </section>
-
-  <!-- 04 DEV PROCESS -->
-  <section id="process" class="sec rev">
-    <div class="phase"><div class="p-dot">4</div><span class="p-txt">Development Process</span></div>
-    <h2 class="sec-h">Collaborative &amp;<br>Iterative Workflow</h2>
-    <p class="sec-lead">Built on a structured git branching workflow with clear division of responsibilities — ensuring neither design quality nor code quality was compromised.</p>
-    <div class="rule"></div>
-
-    <div class="slist" style="margin-bottom:2rem">
-      <div class="st"><div class="st-n">01</div><div><div class="st-t">Repository setup</div><div class="st-d">Initialised with .gitignore and .gitattributes for clean version control from day one.</div></div></div>
-      <div class="st"><div class="st-n">02</div><div><div class="st-t">Division of tasks</div><div class="st-d">Inayat: all page design, layout, and interactive features. Kashfi: repository management, CSS setup, and documentation.</div></div></div>
-      <div class="st"><div class="st-n">03</div><div><div class="st-t">Branch-based development</div><div class="st-d">Worked on separate branches (addingIndex, updatingReadme) and merged updates after code review to prevent conflicts.</div></div></div>
-      <div class="st"><div class="st-n">04</div><div><div class="st-t">Final testing</div><div class="st-d">Verified layout integrity, image optimisation, and full checkout flow before submission — including cross-browser and device testing.</div></div></div>
-    </div>
-
-    <div class="imgs c1">
-      <div class="iw">
-        <img src="https://framerusercontent.com/images/PfmDi0MF9yMs99BBqL4L176NRqw.png" alt="Development process">
-        <div class="icap">Development workflow — branch structure, task division, and version control process</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 05 DESIGN FEATURES -->
-  <section id="features" class="sec rev">
-    <div class="phase"><div class="p-dot">5</div><span class="p-txt">Design Features</span></div>
-    <h2 class="sec-h">Key Design<br>Decisions</h2>
-    <p class="sec-lead">Three areas where design choices most directly shaped the user experience.</p>
-    <div class="rule"></div>
-
-    <div class="page-block">
-      <div class="sub">Feature 01</div>
-      <div class="page-title">Product Catalogue</div>
-      <p class="page-desc">A clean, organised product page showcasing sticker collections with category filters and seamless navigation. The layout prioritises visual discovery while maintaining easy access to product details and pricing.</p>
-      <div class="imgs c1">
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/S7FexivFhfWJkymzJg0A1TxbJ8.png" alt="Product display">
-          <div class="icap">Product catalogue — category filters and visual-first browsing</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="page-block">
-      <div class="sub">Feature 02</div>
-      <div class="page-title">Interactive Product Grid</div>
-      <p class="page-desc">Visual-first display featuring hover animations that reveal product information. Each card includes clear pricing, product names, and smooth transitions that enhance the browsing experience without overwhelming the user.</p>
-      <div class="imgs c1">
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/AGCgsWNfkJ0jYZThFUrzFy2B8.png" alt="Product grid detail">
-          <div class="icap">Interactive grid — hover states reveal product info with smooth transitions</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="page-block">
-      <div class="sub">Feature 03</div>
-      <div class="page-title">Streamlined Checkout</div>
-      <p class="page-desc">A user-friendly billing interface with clearly structured form fields, visual hierarchy, and intuitive input validation. Grouping related information and providing real-time feedback reduces checkout friction and errors.</p>
-      <div class="imgs c1">
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/zkSk2oD6bXeF22XWrdgqEKqFxbc.png" alt="Billing page">
-          <div class="icap">Streamlined checkout — structured form with real-time validation and clear hierarchy</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 06 REFLECTION -->
-  <section id="reflection" class="sec rev">
-    <div class="phase"><div class="p-dot">6</div><span class="p-txt">Reflection</span></div>
-    <h2 class="sec-h">What I Learned</h2>
-    <p class="sec-lead">Building a full e-commerce site from design to shipped code deepened my understanding of design systems, user flow consistency, and front-end accessibility.</p>
-    <div class="rule"></div>
-
-    <div class="g2" style="margin-bottom:2rem">
-      <div class="rc"><div class="rc-t">Web design systems</div><div class="rc-d">Maintaining visual consistency across five different pages required a shared component approach — colour, spacing, and typography had to be systematised from the start, not retrofitted at the end.</div></div>
-      <div class="rc"><div class="rc-t">User flow consistency</div><div class="rc-d">Every design decision on the cart page affected what users expected on the billing page — thinking in flows rather than individual screens made the checkout experience feel seamless.</div></div>
-      <div class="rc"><div class="rc-t">Accessibility in practice</div><div class="rc-d">Implementing ARIA standards wasn't just a checkbox — it forced better form design, clearer error states, and more intentional button labelling that improved the experience for everyone.</div></div>
-      <div class="rc"><div class="rc-t">Design into code</div><div class="rc-d">Translating visual designs into working HTML and CSS revealed edge cases the Figma prototype couldn't surface — responsive behaviour, hover states, and form validation all required iteration in the browser.</div></div>
-    </div>
-
-    <div class="sub">Future Iterations</div>
-    <div class="flist">
-      <div class="fr"><div class="fr-i">🔍</div><div><div class="fr-t">Search and filter system</div><div class="fr-d">A responsive search bar and product filters for better discovery — especially important as the sticker catalogue grows.</div></div></div>
-      <div class="fr"><div class="fr-i">💾</div><div><div class="fr-t">Cart persistence via local storage</div><div class="fr-d">Cart state should survive page refreshes — users lose confidence in a store when their basket empties on reload.</div></div></div>
-      <div class="fr"><div class="fr-i">🌙</div><div><div class="fr-t">Light / Dark mode toggle</div><div class="fr-d">Inclusive design that respects system preferences — especially relevant for a pastel-heavy brand where dark mode would require a considered palette shift.</div></div></div>
-    </div>
-  </section>
-
-</main>
-
-<footer>© 2025 Inayat. All rights reserved.</footer>
-
-<script>
-  const ro = new IntersectionObserver(
-    es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }),
-    { threshold: 0.06 }
-  );
-  document.querySelectorAll('.rev').forEach(el => ro.observe(el));
-
-  const links = document.querySelectorAll('.side-a');
-  const secs  = document.querySelectorAll('.sec');
-  const so = new IntersectionObserver(es => {
-    es.forEach(e => {
-      if (e.isIntersecting) {
-        links.forEach(l => l.classList.remove('active'));
-        const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
-        if (a) a.classList.add('active');
+        --nav-h:  58px;
+        --side-w: 196px;
       }
-    });
-  }, { rootMargin: '-15% 0px -65% 0px' });
-  secs.forEach(s => so.observe(s));
-</script>
 
-</body>
+      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: var(--font-hand);
+        background: var(--paper);
+        color: var(--ink);
+        line-height: 1.6;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Ruled paper lines */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image:
+          repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.11) 27px, rgba(180,170,155,0.11) 28px);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Spiral binding */
+      .spiral-binding {
+        position: fixed;
+        left: 0; top: 0; bottom: 0;
+        width: 32px;
+        background: var(--paper-worn);
+        border-right: 2.5px solid var(--ink);
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 24px;
+        pointer-events: none;
+      }
+      .spiral-hole {
+        width: 16px; height: 16px;
+        border-radius: 50%;
+        border: 2px solid var(--ink);
+        background: var(--paper);
+        margin-bottom: 28px;
+        flex-shrink: 0;
+        box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
+      }
+
+      /* TOP NAV */
+      .topnav {
+        position: fixed;
+        top: 0; left: 32px; right: 0;
+        height: var(--nav-h);
+        z-index: 150;
+        background: var(--paper);
+        border-bottom: 2.5px solid var(--ink);
+        display: flex;
+        align-items: center;
+        padding: 0 2rem;
+      }
+      .topnav-in {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        font-family: var(--font-hand);
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--ink);
+        text-decoration: none;
+        position: relative;
+      }
+      .logo::after {
+        content: '';
+        position: absolute;
+        bottom: -2px; left: 0; right: 0;
+        height: 3px;
+        background: var(--rose);
+        border-radius: 2px;
+        transform: rotate(-0.8deg);
+      }
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+      }
+      .nav-links a {
+        font-family: var(--font-hand);
+        font-size: 16px;
+        color: var(--ink-faint);
+        text-decoration: none;
+        position: relative;
+        padding-bottom: 2px;
+        transition: color 0.2s;
+      }
+      .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0;
+        width: 0; height: 2px;
+        background: var(--ink);
+        transition: width 0.25s;
+      }
+      .nav-links a:hover { color: var(--ink); }
+      .nav-links a:hover::after { width: 100%; }
+
+      /* SIDENAV */
+      .sidenav {
+        position: fixed;
+        top: var(--nav-h);
+        left: 32px;
+        width: var(--side-w);
+        height: calc(100vh - var(--nav-h));
+        padding: 2rem 1rem 2rem 1.5rem;
+        border-right: 1.5px solid rgba(180,170,155,0.35);
+        background: var(--paper);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        overflow-y: auto;
+        z-index: 100;
+      }
+      .sidenav::before {
+        content: '';
+        position: absolute;
+        left: 44px; top: 0; bottom: 0;
+        width: 1.5px;
+        background: rgba(181,70,90,0.12);
+        pointer-events: none;
+      }
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--rose);
+        text-decoration: none;
+        font-family: var(--font-hand);
+        font-size: 15px;
+        font-weight: 600;
+        transition: gap 0.2s;
+        white-space: nowrap;
+      }
+      .back-link:hover { gap: 10px; }
+      .side-lbl {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--pencil);
+        margin-bottom: 0.5rem;
+      }
+      .side-list { display: flex; flex-direction: column; }
+      .side-a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 0 6px 10px;
+        color: var(--pencil);
+        text-decoration: none;
+        font-family: var(--font-hand);
+        font-size: 14px;
+        border-left: 2px solid transparent;
+        transition: color 0.2s, border-color 0.2s;
+        white-space: nowrap;
+      }
+      .side-a:hover { color: var(--ink-light); border-left-color: var(--pencil); }
+      .side-a.active { color: var(--rose); border-left-color: var(--rose); font-weight: 700; }
+      .side-num {
+        font-family: var(--font-mono);
+        font-size: 8px;
+        color: var(--pencil);
+        min-width: 16px;
+      }
+      .side-a.active .side-num { color: var(--rose); }
+
+      /* Doodle in sidenav */
+      .side-doodle {
+        margin-top: auto;
+        padding-top: 1rem;
+        opacity: 0.28;
+        pointer-events: none;
+      }
+
+      /* MAIN */
+      .main {
+        margin-left: calc(32px + var(--side-w));
+        padding: calc(var(--nav-h) + 3rem) 3.5rem 7rem 3rem;
+        max-width: calc(860px + var(--side-w));
+        position: relative;
+        z-index: 1;
+      }
+
+      /* TAGS */
+      .tags {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.25rem;
+      }
+      .tag {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--rose);
+        padding: 3px 10px;
+        border: 1.5px solid rgba(181,70,90,0.3);
+        background: rgba(181,70,90,0.05);
+        transform: rotate(-0.3deg);
+        display: inline-block;
+      }
+      .tag:nth-child(2) {
+        transform: rotate(0.5deg);
+        color: var(--sage);
+        border-color: rgba(74,124,106,0.3);
+        background: rgba(74,124,106,0.05);
+      }
+      .tag:nth-child(3) {
+        transform: rotate(-0.2deg);
+        color: var(--ink-faint);
+        border-color: rgba(138,127,114,0.3);
+        background: rgba(138,127,114,0.05);
+      }
+      .tag:nth-child(4) {
+        transform: rotate(0.4deg);
+        color: #b87a0a;
+        border-color: rgba(184,122,10,0.3);
+        background: rgba(184,122,10,0.05);
+      }
+
+      /* HERO */
+      .hero-h {
+        font-family: var(--font-hand);
+        font-size: clamp(2.6rem, 5vw, 4.2rem);
+        font-weight: 700;
+        line-height: 1.05;
+        margin-bottom: 0.5rem;
+        letter-spacing: -1px;
+      }
+      .hero-h .squiggle-wrap {
+        position: relative;
+        display: inline-block;
+      }
+      .hero-h .squiggle-wrap svg {
+        position: absolute;
+        bottom: -6px; left: -4px;
+        width: calc(100% + 8px);
+        pointer-events: none;
+      }
+      .hero-sub {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        margin-bottom: 0.75rem;
+        margin-top: 0.75rem;
+      }
+      .hero-p {
+        font-family: var(--font-hand);
+        font-size: 19px;
+        color: var(--ink-light);
+        line-height: 1.65;
+        max-width: 520px;
+        margin-bottom: 1.75rem;
+      }
+
+      /* HERO VIDEO */
+      .hero-video {
+        border: 2px solid var(--ink);
+        background: var(--paper-dark);
+        position: relative;
+        margin-bottom: 1.75rem;
+        transform: rotate(-0.3deg);
+        box-shadow: 5px 5px 0 rgba(26,22,18,0.12);
+      }
+      .hero-video::before {
+        content: '';
+        position: absolute;
+        top: -11px; left: 50%;
+        transform: translateX(-50%) rotate(-0.5deg);
+        width: 60px; height: 20px;
+        background: rgba(232,184,75,0.42);
+        border-top: 1px solid rgba(232,184,75,0.55);
+        border-bottom: 1px solid rgba(232,184,75,0.55);
+        z-index: 10;
+      }
+      .hero-video::after {
+        content: '';
+        position: absolute;
+        bottom: -5px; right: -5px;
+        width: 100%; height: 100%;
+        border: 1.5px solid rgba(26,22,18,0.15);
+        z-index: -1;
+      }
+      .hero-video video {
+        width: 100%;
+        display: block;
+        max-height: 460px;
+        object-fit: cover;
+      }
+
+      /* STATS */
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border: 2px solid var(--ink);
+        margin-bottom: 1.5rem;
+        transform: rotate(0.2deg);
+        box-shadow: 4px 4px 0 rgba(26,22,18,0.1);
+        background: var(--paper-dark);
+      }
+      .stat {
+        padding: 1.1rem 1rem;
+        border-right: 1.5px solid rgba(26,22,18,0.2);
+      }
+      .stat:last-child { border-right: none; }
+      .s-n {
+        font-family: var(--font-hand);
+        font-size: 2.4rem;
+        font-weight: 700;
+        color: var(--rose);
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+      .s-l {
+        font-family: var(--font-hand);
+        font-size: 14px;
+        color: var(--ink-light);
+        line-height: 1.35;
+      }
+      .s-sub {
+        font-family: var(--font-mono);
+        font-size: 8px;
+        letter-spacing: 1px;
+        color: var(--pencil);
+        margin-top: 2px;
+      }
+
+      /* META */
+      .meta {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        padding-top: 1.25rem;
+        border-top: 2px solid rgba(26,22,18,0.15);
+        margin-bottom: 5rem;
+      }
+      .m-k {
+        font-family: var(--font-mono);
+        font-size: 8px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--rose);
+        margin-bottom: 4px;
+      }
+      .m-v {
+        font-family: var(--font-hand);
+        font-size: 15px;
+        color: var(--ink-light);
+        line-height: 1.5;
+      }
+
+      /* SECTION */
+      .sec { margin-bottom: 5rem; }
+      .phase {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 0.75rem;
+      }
+      .p-dot {
+        width: 22px; height: 22px;
+        border-radius: 50%;
+        border: 2px solid var(--ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-mono);
+        font-size: 9px;
+        color: var(--ink);
+        font-weight: 700;
+      }
+      .p-txt {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+      }
+      .sec-h {
+        font-family: var(--font-hand);
+        font-size: 2.2rem;
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.5px;
+        display: inline-block;
+        position: relative;
+      }
+      .sec-h::after {
+        content: '';
+        display: block;
+        height: 3px;
+        background: var(--rose);
+        border-radius: 2px;
+        transform: rotate(-0.5deg);
+        margin-top: 3px;
+        width: 80%;
+      }
+      .sec-h em {
+        font-style: italic;
+        color: var(--rose-l);
+      }
+      .sec-lead {
+        font-family: var(--font-hand);
+        font-size: 18px;
+        color: var(--ink-light);
+        line-height: 1.75;
+        max-width: 560px;
+        margin-bottom: 1.5rem;
+        margin-top: 0.5rem;
+      }
+      .rule {
+        height: 1.5px;
+        background: rgba(26,22,18,0.12);
+        margin-bottom: 1.5rem;
+      }
+      .sub {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--rose);
+        margin-bottom: 0.875rem;
+      }
+
+      /* GRIDS */
+      .g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+      .g2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+
+      /* NUMBER CARD */
+      .nc {
+        background: var(--paper-dark);
+        border: 2px solid var(--ink);
+        padding: 1.1rem;
+        position: relative;
+        transition: transform 0.2s;
+      }
+      .nc:hover { transform: translate(-2px,-2px); }
+      .nc::after {
+        content: '';
+        position: absolute;
+        bottom: -4px; right: -4px;
+        width: 100%; height: 100%;
+        border: 1.5px solid rgba(26,22,18,0.18);
+        z-index: -1;
+      }
+      .nc-n {
+        font-family: var(--font-hand);
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--rose);
+        line-height: 1;
+        margin-bottom: 5px;
+      }
+      .nc-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+      .nc-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.5; }
+
+      /* ICON CARD */
+      .ic {
+        background: var(--paper-dark);
+        border: 2px solid var(--ink);
+        padding: 1.1rem;
+        position: relative;
+      }
+      .ic::after {
+        content: '';
+        position: absolute;
+        bottom: -4px; right: -4px;
+        width: 100%; height: 100%;
+        border: 1.5px solid rgba(26,22,18,0.18);
+        z-index: -1;
+      }
+      .ic-ico { font-size: 1rem; margin-bottom: 0.5rem; }
+      .ic-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+      .ic-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.55; }
+
+      /* FINDING ROW */
+      .flist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+      .fr {
+        display: flex;
+        gap: 0.875rem;
+        align-items: flex-start;
+        padding: 0.875rem 1rem;
+        background: var(--paper-dark);
+        border: 1.5px solid rgba(26,22,18,0.15);
+        transition: border-color 0.2s, transform 0.2s;
+      }
+      .fr:hover { border-color: rgba(181,70,90,0.35); transform: translateX(2px); }
+      .fr-i {
+        width: 30px; height: 30px; min-width: 30px;
+        border: 1.5px solid rgba(26,22,18,0.2);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.82rem;
+        background: var(--paper);
+      }
+      .fr-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+      .fr-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.55; }
+
+      /* STEP LIST */
+      .slist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+      .st {
+        display: flex;
+        gap: 0.875rem;
+        padding: 0.875rem 1rem;
+        background: var(--paper-dark);
+        border: 1.5px solid rgba(26,22,18,0.15);
+      }
+      .st-n { font-family: var(--font-hand); font-size: 1.3rem; font-weight: 700; color: var(--rose); min-width: 20px; line-height: 1.4; }
+      .st-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+      .st-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.5; }
+
+      /* QUOTE */
+      .quote {
+        border-left: 3px solid var(--rose);
+        padding: 0.875rem 1.25rem;
+        margin: 1.25rem 0;
+        background: rgba(181,70,90,0.04);
+        position: relative;
+        transform: rotate(-0.3deg);
+      }
+      .quote::before {
+        content: '';
+        position: absolute;
+        top: -11px; left: 20px;
+        width: 36px; height: 20px;
+        background: rgba(232,184,75,0.38);
+        border-top: 1px solid rgba(232,184,75,0.5);
+        border-bottom: 1px solid rgba(232,184,75,0.5);
+        transform: rotate(1.5deg);
+      }
+      .quote p {
+        font-family: var(--font-serif);
+        font-size: 1.25rem; font-style: italic;
+        line-height: 1.65; color: var(--ink);
+      }
+
+      /* TOOLS */
+      .tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+      .tool {
+        font-family: var(--font-mono);
+        font-size: 9px; letter-spacing: 1px;
+        padding: 3px 10px;
+        background: var(--paper-dark);
+        border: 1.5px solid rgba(26,22,18,0.2);
+        color: var(--ink-light);
+        text-transform: uppercase;
+      }
+
+      /* PAGE BLOCK */
+      .page-block {
+        margin-bottom: 3rem;
+        padding-bottom: 3rem;
+        border-bottom: 1.5px solid rgba(26,22,18,0.1);
+      }
+      .page-block:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+      .page-title {
+        font-family: var(--font-hand);
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      .page-desc {
+        font-family: var(--font-hand);
+        font-size: 16px;
+        color: var(--ink-light);
+        line-height: 1.75;
+        max-width: 560px;
+        margin-bottom: 1.25rem;
+      }
+
+      /* IMAGES */
+      .imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
+      .imgs.c1 { grid-template-columns: 1fr; }
+      .imgs.c2 { grid-template-columns: 1fr 1fr; }
+      .iw {
+        border: 2px solid var(--ink);
+        background: var(--paper-dark);
+        position: relative;
+        transition: transform 0.2s;
+      }
+      .iw:hover { transform: translate(-2px,-2px); }
+      .iw::after {
+        content: '';
+        position: absolute;
+        bottom: -4px; right: -4px;
+        width: 100%; height: 100%;
+        border: 1.5px solid rgba(26,22,18,0.15);
+        z-index: -1;
+      }
+      /* tape on images */
+      .iw::before {
+        content: '';
+        position: absolute;
+        top: -10px; left: 50%;
+        transform: translateX(-50%) rotate(-1deg);
+        width: 48px; height: 18px;
+        background: rgba(232,184,75,0.38);
+        border-top: 1px solid rgba(232,184,75,0.5);
+        border-bottom: 1px solid rgba(232,184,75,0.5);
+        z-index: 10;
+      }
+      .iw img { width: 100%; display: block; }
+      .icap {
+        padding: 7px 10px;
+        font-family: var(--font-hand);
+        font-size: 13px; color: var(--ink-faint);
+        border-top: 1px solid rgba(26,22,18,0.12); line-height: 1.4;
+      }
+
+      /* REFLECTION CARD */
+      .rc { background: var(--paper-dark); border: 1.5px solid rgba(26,22,18,0.15); padding: 1.1rem; }
+      .rc-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; color: var(--rose); margin-bottom: 5px; }
+      .rc-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.7; }
+
+      /* HIGHLIGHT */
+      .hl-y {
+        background: linear-gradient(120deg, rgba(232,184,75,0)0%, rgba(232,184,75,0.45)10%, rgba(232,184,75,0.45)90%, rgba(232,184,75,0)100%);
+        padding: 0 2px;
+      }
+
+      /* CORNER FOLD */
+      .corner-fold {
+        position: absolute;
+        bottom: 0; right: 0;
+        width: 24px; height: 24px;
+        background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
+        border-top: 1px solid var(--pencil);
+        border-left: 1px solid var(--pencil);
+        pointer-events: none;
+      }
+
+      /* SCROLL REVEAL */
+      .rev {
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+      .rev.in { opacity: 1; transform: none; }
+
+      /* FOOTER */
+      footer {
+        border-top: 2.5px solid var(--ink);
+        padding: 1.25rem 2rem;
+        text-align: center;
+        font-family: var(--font-mono);
+        font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+        color: var(--pencil);
+        margin-left: 32px;
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 860px) {
+        .sidenav { display: none; }
+        .main { margin-left: 32px; padding: 5rem 1.5rem 5rem; }
+        .stats { grid-template-columns: repeat(2, 1fr); }
+        .g3, .g2 { grid-template-columns: 1fr; }
+        .imgs.c2 { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 600px) {
+        .spiral-binding { display: none; }
+        .topnav, footer { margin-left: 0; left: 0; }
+        .main { margin-left: 0; padding: 5rem 1.25rem 4rem; }
+        .nav-links { display: none; }
+        .hero-h { font-size: 2.2rem; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- SPIRAL BINDING -->
+    <div class="spiral-binding" aria-hidden="true" id="spiralBinding"></div>
+
+    <!-- TOP NAV -->
+    <nav class="topnav">
+      <div class="topnav-in">
+        <a href="../index.html" class="logo">Inayat</a>
+        <ul class="nav-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../About.html">About</a></li>
+          <li><a href="../Projects.html">Projects</a></li>
+          <li><a href="../Resume.html">Resume</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- SIDENAV -->
+    <aside class="sidenav">
+      <a href="../Projects.html" class="back-link">← Projects</a>
+      <div>
+        <div class="side-lbl">Case Study</div>
+        <nav class="side-list">
+          <a href="#overview"      class="side-a active"><span class="side-num">00</span>Overview</a>
+          <a href="#concept"       class="side-a"><span class="side-num">01</span>Design Concept</a>
+          <a href="#architecture"  class="side-a"><span class="side-num">02</span>Site Architecture</a>
+          <a href="#contrib"       class="side-a"><span class="side-num">03</span>My Contributions</a>
+          <a href="#process"       class="side-a"><span class="side-num">04</span>Dev Process</a>
+          <a href="#features"      class="side-a"><span class="side-num">05</span>Design Features</a>
+          <a href="#reflection"    class="side-a"><span class="side-num">06</span>Reflection</a>
+        </nav>
+      </div>
+      <!-- Sticker doodle -->
+      <div class="side-doodle">
+        <svg viewBox="0 0 80 72" style="width:72px">
+          <rect x="10" y="8" width="30" height="38" rx="4" stroke="#b5465a" stroke-width="1.5" fill="rgba(181,70,90,0.07)" transform="rotate(-5 25 27)"/>
+          <rect x="42" y="16" width="26" height="32" rx="3" stroke="#4a7c6a" stroke-width="1.2" fill="rgba(74,124,106,0.07)" transform="rotate(4 55 32)"/>
+          <circle cx="22" cy="24" r="6" stroke="#b87a0a" stroke-width="1.2" fill="rgba(232,184,75,0.15)"/>
+          <text x="4" y="68" font-family="Reenie Beanie, cursive" font-size="9" fill="#8a7f72">sojoy scribbles</text>
+        </svg>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- HERO -->
+      <header style="margin-bottom:4rem">
+        <div class="tags">
+          <span class="tag">E-Commerce</span>
+          <span class="tag">UX/UI Design</span>
+          <span class="tag">Front-End Dev</span>
+          <span class="tag">Team Lead</span>
+        </div>
+
+        <h1 class="hero-h">
+          Sojoy
+          <span class="squiggle-wrap" style="color:var(--rose);">Scribbles
+            <svg viewBox="0 0 180 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2,8 C30,3 60,13 90,7 C120,2 150,11 178,7" stroke="#4a7c6a" stroke-width="3" fill="none" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </h1>
+
+        <p class="hero-sub">E-Commerce UX/UI Design &amp; Front-End Development · Spring 2025</p>
+
+        <p class="hero-p">
+          A playful, anime-inspired online sticker store designed to deliver a <span class="hl-y">joyful shopping experience</span> through hand-drawn artwork and clean, accessible UI.
+        </p>
+
+        <div class="hero-video">
+          <video autoplay muted loop playsinline>
+            <source src="https://framerusercontent.com/assets/e3ld9onE19lfw32wlrNKnVae4ps.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="s-n">5</div>
+            <div class="s-l">Pages built</div>
+            <div class="s-sub">Full e-commerce flow</div>
+          </div>
+          <div class="stat">
+            <div class="s-n">100%</div>
+            <div class="s-l">Responsive</div>
+            <div class="s-sub">All breakpoints</div>
+          </div>
+          <div class="stat">
+            <div class="s-n">2</div>
+            <div class="s-l">Developers</div>
+            <div class="s-sub">Design-led team</div>
+          </div>
+          <div class="stat">
+            <div class="s-n">1</div>
+            <div class="s-l">Cohesive brand</div>
+            <div class="s-sub">Anime-inspired identity</div>
+          </div>
+        </div>
+
+        <div class="meta">
+          <div><div class="m-k">Timeline</div><div class="m-v">Spring 2025</div></div>
+          <div><div class="m-k">My Role</div><div class="m-v">UX/UI Designer<br/>Front-End Developer<br/>Team Lead</div></div>
+          <div><div class="m-k">Team</div><div class="m-v">Inayat Inayat<br/>Md. Kashfi Or Rashid Pranta</div></div>
+          <div><div class="m-k">Tools</div><div class="m-v">HTML5, CSS, JavaScript<br/>GitHub, VS Code</div></div>
+        </div>
+      </header>
+
+      <!-- 00 OVERVIEW -->
+      <section id="overview" class="sec rev">
+        <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
+        <h2 class="sec-h">The Project</h2>
+        <p class="sec-lead">Sojoy Scribbles is a fully responsive, multi-page e-commerce site that reflects a distinct brand personality — bright, expressive, and user-friendly — while meeting accessibility and interaction standards.</p>
+        <div class="rule"></div>
+
+        <div class="g3" style="margin-bottom:2rem">
+          <div class="nc">
+            <div class="nc-n">5</div>
+            <div class="nc-t">Full pages</div>
+            <div class="nc-d">Home, Products, Cart, Billing, and Order Confirmation — a complete end-to-end shopping flow</div>
+          </div>
+          <div class="nc">
+            <div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Brand-first</div>
+            <div class="nc-t">Cohesive identity</div>
+            <div class="nc-d">Soft pastel palette, illustrated icons, and friendly typography echoing the handcrafted nature of the stickers</div>
+          </div>
+          <div class="nc">
+            <div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Accessible</div>
+            <div class="nc-t">ARIA standards</div>
+            <div class="nc-d">Buttons, labels, and form fields optimised with ARIA attributes and mobile-friendly responsive layouts</div>
+          </div>
+        </div>
+
+        <div class="quote">
+          <p>"Crafting joy, one scribble at a time — each page should feel personal and handcrafted, echoing the unique nature of the stickers themselves."</p>
+        </div>
+      </section>
+
+      <!-- 01 DESIGN CONCEPT -->
+      <section id="concept" class="sec rev">
+        <div class="phase"><div class="p-dot">1</div><span class="p-txt">Design Concept</span></div>
+        <h2 class="sec-h">Warm, Expressive &amp; <em>Personal</em></h2>
+        <p class="sec-lead">The visual system was designed to feel like the stickers themselves — playful, personal, and immediately recognisable as something made with care.</p>
+        <div class="rule"></div>
+
+        <div class="flist">
+          <div class="fr">
+            <div class="fr-i">🎨</div>
+            <div>
+              <div class="fr-t">Soft pastel palette and friendly typography</div>
+              <div class="fr-d">Warmth and approachability — every colour choice reinforces the handcrafted, joyful nature of the brand without feeling childish.</div>
+            </div>
+          </div>
+          <div class="fr">
+            <div class="fr-i">🖼</div>
+            <div>
+              <div class="fr-t">Illustrated icons and imagery</div>
+              <div class="fr-d">A cohesive art-centric identity where the sticker artwork is always the hero — the UI frames and supports it rather than competing with it.</div>
+            </div>
+          </div>
+          <div class="fr">
+            <div class="fr-i">⬛</div>
+            <div>
+              <div class="fr-t">Grid-based layouts</div>
+              <div class="fr-d">Consistent balance and readability across all five pages — especially important on the product grid where visual density could easily become overwhelming.</div>
+            </div>
+          </div>
+        </div>
+
+        <p style="font-family:var(--font-hand); font-size:16px; color:var(--ink-light); line-height:1.75; max-width:580px">
+          I contributed to the layout design, page structuring, and interaction styling across all major pages — ensuring consistency between the homepage, product listing, and checkout experience.
+        </p>
+      </section>
+
+      <!-- 02 SITE ARCHITECTURE -->
+      <section id="architecture" class="sec rev">
+        <div class="phase"><div class="p-dot">2</div><span class="p-txt">Site Architecture</span></div>
+        <h2 class="sec-h">Five Pages, One Shared System</h2>
+        <p class="sec-lead">All pages use a shared header and footer system for consistency and ease of navigation — each page has one clear job in the overall shopping flow.</p>
+        <div class="rule"></div>
+
+        <!-- Home -->
+        <div class="page-block">
+          <div class="sub">Page 01</div>
+          <div class="page-title">Home Page</div>
+          <p class="page-desc">Introduces the brand with a hero section, artist story, and message form. The hero uses an engaging tagline and CTA for browsing stickers, while the About section builds relatability through personal narrative and anime-inspired imagery.</p>
+          <div class="imgs c2">
+            <div class="iw">
+              <img src="https://framerusercontent.com/images/BIKsQjiFLhMIvZyvZDgVURq5Org.png" alt="Hero section"/>
+              <div class="icap">Hero section — engaging tagline and CTA for browsing stickers</div>
+            </div>
+            <div class="iw">
+              <img src="https://framerusercontent.com/images/VLWpHvbPt2aOwf3WG003G2rfWwU.png" alt="About section"/>
+              <div class="icap">About section — personal narrative and anime-inspired imagery</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Products -->
+        <div class="page-block">
+          <div class="sub">Page 02</div>
+          <div class="page-title">Products Page</div>
+          <p class="page-desc">Displays sticker categories — Limited Edition and New Arrivals — with add-to-cart functionality. Visual-first display with hover animations and clear pricing.</p>
+          <div class="imgs c1">
+            <div class="iw">
+              <img src="https://framerusercontent.com/images/QCmZgL7oiu4lHY8L3cRnFevj9xM.png" alt="Product grid"/>
+              <div class="icap">Product grid — visual-first display with hover animations and clear pricing</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cart -->
+        <div class="page-block">
+          <div class="sub">Page 03</div>
+          <div class="page-title">Cart Page</div>
+          <p class="page-desc">Shows selected items with dynamic quantity controls and a live order summary — updating in real time as users add, remove, or adjust items.</p>
+          <div class="imgs c2">
+            <div class="iw">
+              <img src="https://framerusercontent.com/images/kViceANsixK2GDYIRyb4Xk.png" alt="Cart page"/>
+              <div class="icap">Cart page — selected items with quantity controls and order summary</div>
+            </div>
+            <div class="iw">
+              <img src="https://framerusercontent.com/images/XkHwGZFkvr62Ds9SjWkAkF8q4.png" alt="Cart interaction"/>
+              <div class="icap">Cart interaction — dynamic quantity controls and live order total</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Billing -->
+        <div class="page-block">
+          <div class="sub">Page 04</div>
+          <div class="page-title">Billing Page</div>
+          <p class="page-desc">Collects user shipping and payment details in a clean, structured layout. Related fields are grouped together and real-time validation reduces errors at checkout.</p>
+          <div class="imgs c1">
+            <div class="iw">
+              <img src="https://framerusercontent.com/images/nTfIpzyA2oXaqKzBDjH1u164aKc.png" alt="Billing form"/>
+              <div class="icap">Billing form — structured input fields with clear visual hierarchy</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Confirmation -->
+        <div class="page-block">
+          <div class="sub">Page 05</div>
+          <div class="page-title">Order Confirmation Page</div>
+          <p class="page-desc">Confirms purchases with delivery details and order summary — designed to feel friendly and reassuring rather than clinical.</p>
+          <div class="imgs c1">
+            <div class="iw">
+              <img src="https://framerusercontent.com/images/3oeqFU2AYT0r9VWjvWVfxHafztA.png" alt="Confirmation page"/>
+              <div class="icap">Order confirmation — friendly, trust-building order summary with delivery details</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 MY CONTRIBUTIONS -->
+      <section id="contrib" class="sec rev">
+        <div class="phase"><div class="p-dot">3</div><span class="p-txt">My Contributions</span></div>
+        <h2 class="sec-h">Team Lead &amp; Primary Builder</h2>
+        <p class="sec-lead">As team leader, I handled both design and implementation — from the visual system to the working HTML, CSS, and JavaScript across every page.</p>
+        <div class="rule"></div>
+
+        <div class="g3">
+          <div class="ic"><div class="ic-ico">🎨</div><div class="ic-t">Visual &amp; Layout Design</div><div class="ic-d">Designed page structures using a responsive grid system and ensured visual consistency across all breakpoints.</div></div>
+          <div class="ic"><div class="ic-ico">💻</div><div class="ic-t">Front-End Development</div><div class="ic-d">Implemented HTML5 semantic structure and CSS3 styling for all five pages — index, product, billing, cart, and order-confirmation.</div></div>
+          <div class="ic"><div class="ic-ico">♿</div><div class="ic-t">Accessibility &amp; Responsiveness</div><div class="ic-d">Optimised buttons, labels, and form fields with ARIA standards and mobile-friendly layouts across all screen sizes.</div></div>
+          <div class="ic"><div class="ic-ico">⚡</div><div class="ic-t">Interactivity</div><div class="ic-d">Integrated JavaScript behaviours for quantity adjustment, cart updates, and form validation to enhance usability.</div></div>
+          <div class="ic"><div class="ic-ico">🧪</div><div class="ic-t">Testing &amp; Debugging</div><div class="ic-d">Conducted browser and device testing to ensure cross-platform consistency and verified layout integrity before submission.</div></div>
+        </div>
+
+        <div class="sub">Tools Used</div>
+        <div class="tools">
+          <span class="tool">HTML5</span>
+          <span class="tool">CSS3</span>
+          <span class="tool">JavaScript</span>
+          <span class="tool">GitHub</span>
+          <span class="tool">VS Code</span>
+          <span class="tool">Responsive Grid</span>
+          <span class="tool">ARIA Standards</span>
+        </div>
+      </section>
+
+      <!-- 04 DEV PROCESS -->
+      <section id="process" class="sec rev">
+        <div class="phase"><div class="p-dot">4</div><span class="p-txt">Development Process</span></div>
+        <h2 class="sec-h">Collaborative &amp; Iterative Workflow</h2>
+        <p class="sec-lead">Built on a structured git branching workflow with clear division of responsibilities — ensuring neither design quality nor code quality was compromised.</p>
+        <div class="rule"></div>
+
+        <div class="slist" style="margin-bottom:2rem">
+          <div class="st"><div class="st-n">01</div><div><div class="st-t">Repository setup</div><div class="st-d">Initialised with .gitignore and .gitattributes for clean version control from day one.</div></div></div>
+          <div class="st"><div class="st-n">02</div><div><div class="st-t">Division of tasks</div><div class="st-d">Inayat: all page design, layout, and interactive features. Kashfi: repository management, CSS setup, and documentation.</div></div></div>
+          <div class="st"><div class="st-n">03</div><div><div class="st-t">Branch-based development</div><div class="st-d">Worked on separate branches (addingIndex, updatingReadme) and merged updates after code review to prevent conflicts.</div></div></div>
+          <div class="st"><div class="st-n">04</div><div><div class="st-t">Final testing</div><div class="st-d">Verified layout integrity, image optimisation, and full checkout flow before submission — including cross-browser and device testing.</div></div></div>
+        </div>
+
+        <div class="imgs c1">
+          <div class="iw">
+            <img src="https://framerusercontent.com/images/PfmDi0MF9yMs99BBqL4L176NRqw.png" alt="Development process"/>
+            <div class="icap">Development workflow — branch structure, task division, and version control process</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 DESIGN FEATURES -->
+      <section id="features" class="sec rev">
+        <div class="phase"><div class="p-dot">5</div><span class="p-txt">Design Features</span></div>
+        <h2 class="sec-h">Key Design Decisions</h2>
+        <p class="sec-lead">Three areas where design choices most directly shaped the user experience.</p>
+        <div class="rule"></div>
+
+        <div class="page-block">
+          <div class="sub">Feature 01</div>
+          <div class="page-title">Product Catalogue</div>
+          <p class="page-desc">A clean, organised product page showcasing sticker collections with category filters and seamless navigation. The layout prioritises visual discovery while maintaining easy access to product details and pricing.</p>
+          <div class="imgs c1">
+            <div class="iw">
+              <img src="https://framerusercontent.com/images/S7FexivFhfWJkymzJg0A1TxbJ8.png" alt="Product display"/>
+              <div class="icap">Product catalogue — category filters and visual-first browsing</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="page-block">
+          <div class="sub">Feature 02</div>
+          <div class="page-title">Interactive Product Grid</div>
+          <p class="page-desc">Visual-first display featuring hover animations that reveal product information. Each card includes clear pricing, product names, and smooth transitions that enhance the browsing experience without overwhelming the user.</p>
+          <div class="imgs c1">
+            <div class="iw">
+              <img src="https://framerusercontent.com/images/AGCgsWNfkJ0jYZThFUrzFy2B8.png" alt="Product grid detail"/>
+              <div class="icap">Interactive grid — hover states reveal product info with smooth transitions</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="page-block">
+          <div class="sub">Feature 03</div>
+          <div class="page-title">Streamlined Checkout</div>
+          <p class="page-desc">A user-friendly billing interface with clearly structured form fields, visual hierarchy, and intuitive input validation. Grouping related information and providing real-time feedback reduces checkout friction and errors.</p>
+          <div class="imgs c1">
+            <div class="iw">
+              <img src="https://framerusercontent.com/images/zkSk2oD6bXeF22XWrdgqEKqFxbc.png" alt="Billing page"/>
+              <div class="icap">Streamlined checkout — structured form with real-time validation and clear hierarchy</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 REFLECTION -->
+      <section id="reflection" class="sec rev">
+        <div class="phase"><div class="p-dot">6</div><span class="p-txt">Reflection</span></div>
+        <h2 class="sec-h">What I Learned</h2>
+        <p class="sec-lead">Building a full e-commerce site from design to shipped code deepened my understanding of design systems, user flow consistency, and front-end accessibility.</p>
+        <div class="rule"></div>
+
+        <div class="g2" style="margin-bottom:2rem">
+          <div class="rc"><div class="rc-t">Web design systems</div><div class="rc-d">Maintaining visual consistency across five different pages required a shared component approach — colour, spacing, and typography had to be systematised from the start, not retrofitted at the end.</div></div>
+          <div class="rc"><div class="rc-t">User flow consistency</div><div class="rc-d">Every design decision on the cart page affected what users expected on the billing page — thinking in flows rather than individual screens made the checkout experience feel seamless.</div></div>
+          <div class="rc"><div class="rc-t">Accessibility in practice</div><div class="rc-d">Implementing ARIA standards wasn't just a checkbox — it forced better form design, clearer error states, and more intentional button labelling that improved the experience for everyone.</div></div>
+          <div class="rc"><div class="rc-t">Design into code</div><div class="rc-d">Translating visual designs into working HTML and CSS revealed edge cases the Figma prototype couldn't surface — responsive behaviour, hover states, and form validation all required iteration in the browser.</div></div>
+        </div>
+
+        <div class="sub">Future Iterations</div>
+        <div class="flist">
+          <div class="fr"><div class="fr-i">🔍</div><div><div class="fr-t">Search and filter system</div><div class="fr-d">A responsive search bar and product filters for better discovery — especially important as the sticker catalogue grows.</div></div></div>
+          <div class="fr"><div class="fr-i">💾</div><div><div class="fr-t">Cart persistence via local storage</div><div class="fr-d">Cart state should survive page refreshes — users lose confidence in a store when their basket empties on reload.</div></div></div>
+          <div class="fr"><div class="fr-i">🌙</div><div><div class="fr-t">Light / Dark mode toggle</div><div class="fr-d">Inclusive design that respects system preferences — especially relevant for a pastel-heavy brand where dark mode would require a considered palette shift.</div></div></div>
+        </div>
+
+        <!-- Closing note -->
+        <div style="margin-top:3rem; padding:1.5rem; border:1.5px solid rgba(26,22,18,0.12); background:var(--paper-dark); position:relative; transform:rotate(-0.3deg)">
+          <div style="position:absolute; top:-11px; left:20px; width:40px; height:20px; background:rgba(181,70,90,0.18); border-top:1px solid rgba(181,70,90,0.35); border-bottom:1px solid rgba(181,70,90,0.35); transform:rotate(1.5deg)"></div>
+          <p style="font-family:var(--font-serif); font-size:1.1rem; font-style:italic; color:var(--ink-light); line-height:1.7">
+            The biggest lesson was that <span class="hl-y">brand personality must be built into the system</span>, not applied at the end. When every component echoes the same warmth, the product feels alive — not just designed.
+          </p>
+          <p style="font-family:var(--font-scrawl); font-size:18px; color:var(--rose); margin-top:0.75rem; transform:rotate(-1deg); display:inline-block">— Inayat ✏️</p>
+          <div class="corner-fold"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>© 2025 Inayat &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; E-Commerce · UX/UI Design · Front-End Development</footer>
+
+    <script>
+      // Spiral holes
+      const spiral = document.getElementById('spiralBinding');
+      const count = Math.floor(window.innerHeight / 44) + 2;
+      for (let i = 0; i < count; i++) {
+        const h = document.createElement('div');
+        h.className = 'spiral-hole';
+        spiral.appendChild(h);
+      }
+
+      // Scroll reveal
+      const ro = new IntersectionObserver(es => es.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('in');
+      }), { threshold: 0.06 });
+      document.querySelectorAll('.rev').forEach(el => ro.observe(el));
+
+      // Active sidenav
+      const links = document.querySelectorAll('.side-a');
+      const secs  = document.querySelectorAll('.sec');
+      const so = new IntersectionObserver(es => {
+        es.forEach(e => {
+          if (e.isIntersecting) {
+            links.forEach(l => l.classList.remove('active'));
+            const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
+            if (a) a.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-15% 0px -65% 0px' });
+      secs.forEach(s => so.observe(s));
+    </script>
+  </body>
 </html>
