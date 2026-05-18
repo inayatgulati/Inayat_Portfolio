@@ -1,689 +1,808 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sculpture Pavilion - Inayat</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sculpture Pavilion — Inayat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --primary-bg: #0a0a0a;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --accent: #14b8a6;
-            --accent-light: #2dd4bf;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.1);
-            --gradient-1: #14b8a6;
-            --gradient-2: #06b6d4;
-            --gradient-3: #0891b2;
-        }
+      :root {
+        --paper: #faf8f2;
+        --paper-dark: #f0ecdf;
+        --paper-worn: #e8e2d0;
+        --ink: #1a1612;
+        --ink-light: #3d3530;
+        --ink-faint: #8a7f72;
+        --pencil: #b8b0a0;
+        --pencil-light: #d4cfc4;
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        --sp-blue: #1e3a5f;
+        --sp-blue-l: #2e5491;
+        --sp-amber: #b87a0a;
+        --sp-amber-l: #d4940e;
+        --yellow: #e8b84b;
 
-        body {
-            font-family: 'Work Sans', sans-serif;
-            background-color: var(--primary-bg);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+        --font-hand: 'Caveat', cursive;
+        --font-scrawl: 'Reenie Beanie', cursive;
+        --font-mono: 'Space Mono', monospace;
+        --font-serif: 'EB Garamond', serif;
 
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            z-index: 1000;
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid var(--border);
-        }
+        --nav-h: 58px;
+        --side-w: 196px;
+      }
 
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
 
-        .logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            color: var(--text-primary);
-            text-decoration: none;
-        }
+      body {
+        font-family: var(--font-hand);
+        background: var(--paper);
+        color: var(--ink);
+        line-height: 1.6;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
 
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.11) 27px, rgba(180,170,155,0.11) 28px);
+        pointer-events: none;
+        z-index: 0;
+      }
 
-        .nav-links a {
-            color: var(--text-primary);
-            text-decoration: none;
-            font-weight: 400;
-            font-size: 0.95rem;
-            letter-spacing: 0.5px;
-            position: relative;
-            transition: color 0.3s ease;
-        }
+      .spiral-binding {
+        position: fixed;
+        left: 0; top: 0; bottom: 0;
+        width: 32px;
+        background: var(--paper-worn);
+        border-right: 2.5px solid var(--ink);
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 24px;
+        pointer-events: none;
+      }
+      .spiral-hole {
+        width: 16px; height: 16px;
+        border-radius: 50%;
+        border: 2px solid var(--ink);
+        background: var(--paper);
+        margin-bottom: 28px;
+        flex-shrink: 0;
+        box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
+      }
 
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--accent);
-            transition: width 0.3s ease;
-        }
+      .topnav {
+        position: fixed;
+        top: 0; left: 32px; right: 0;
+        height: var(--nav-h);
+        z-index: 150;
+        background: var(--paper);
+        border-bottom: 2.5px solid var(--ink);
+        display: flex;
+        align-items: center;
+        padding: 0 2rem;
+      }
+      .topnav-in {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        font-family: var(--font-hand);
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--ink);
+        text-decoration: none;
+        position: relative;
+      }
+      .logo::after {
+        content: '';
+        position: absolute;
+        bottom: -2px; left: 0; right: 0;
+        height: 3px;
+        background: var(--sp-blue);
+        border-radius: 2px;
+        transform: rotate(-0.8deg);
+      }
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+      }
+      .nav-links a {
+        font-family: var(--font-hand);
+        font-size: 16px;
+        color: var(--ink-faint);
+        text-decoration: none;
+        position: relative;
+        padding-bottom: 2px;
+        transition: color 0.2s;
+      }
+      .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0;
+        width: 0; height: 2px;
+        background: var(--ink);
+        transition: width 0.25s;
+      }
+      .nav-links a:hover { color: var(--ink); }
+      .nav-links a:hover::after { width: 100%; }
 
-        .nav-links a:hover::after {
-            width: 100%;
-        }
+      .sidenav {
+        position: fixed;
+        top: var(--nav-h);
+        left: 32px;
+        width: var(--side-w);
+        height: calc(100vh - var(--nav-h));
+        padding: 2rem 1rem 2rem 1.5rem;
+        border-right: 1.5px solid rgba(180,170,155,0.35);
+        background: var(--paper);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        overflow-y: auto;
+        z-index: 100;
+      }
+      .sidenav::before {
+        content: '';
+        position: absolute;
+        left: 44px; top: 0; bottom: 0;
+        width: 1.5px;
+        background: rgba(30,58,95,0.12);
+        pointer-events: none;
+      }
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--sp-blue);
+        text-decoration: none;
+        font-family: var(--font-hand);
+        font-size: 15px;
+        font-weight: 600;
+        transition: gap 0.2s;
+        white-space: nowrap;
+      }
+      .back-link:hover { gap: 10px; }
+      .side-lbl {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--pencil);
+        margin-bottom: 0.5rem;
+      }
+      .side-list { display: flex; flex-direction: column; }
+      .side-a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 0 6px 10px;
+        color: var(--pencil);
+        text-decoration: none;
+        font-family: var(--font-hand);
+        font-size: 14px;
+        border-left: 2px solid transparent;
+        transition: color 0.2s, border-color 0.2s;
+        white-space: nowrap;
+      }
+      .side-a:hover { color: var(--ink-light); border-left-color: var(--pencil); }
+      .side-a.active { color: var(--sp-blue); border-left-color: var(--sp-blue); font-weight: 700; }
+      .side-num {
+        font-family: var(--font-mono);
+        font-size: 8px;
+        color: var(--pencil);
+        min-width: 16px;
+      }
+      .side-a.active .side-num { color: var(--sp-blue); }
 
-        .nav-links a:hover {
-            color: var(--accent);
-        }
+      .main {
+        margin-left: calc(32px + var(--side-w));
+        padding: calc(var(--nav-h) + 3rem) 3.5rem 7rem 3rem;
+        max-width: calc(860px + var(--side-w));
+        position: relative;
+        z-index: 1;
+      }
 
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-        }
+      .tags {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.25rem;
+      }
+      .tag {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--sp-blue);
+        padding: 3px 10px;
+        border: 1.5px solid rgba(30,58,95,0.3);
+        background: rgba(30,58,95,0.05);
+        transform: rotate(-0.3deg);
+        display: inline-block;
+      }
+      .tag:nth-child(2) {
+        transform: rotate(0.5deg);
+        color: var(--sp-amber);
+        border-color: rgba(184,122,10,0.3);
+        background: rgba(184,122,10,0.05);
+      }
+      .tag:nth-child(3) {
+        transform: rotate(-0.2deg);
+        color: var(--ink-faint);
+        border-color: rgba(138,127,114,0.3);
+        background: rgba(138,127,114,0.05);
+      }
 
-        .hamburger span {
-            width: 25px;
-            height: 2px;
-            background: var(--text-primary);
-            transition: all 0.3s ease;
-        }
+      .hero-h {
+        font-family: var(--font-hand);
+        font-size: clamp(2.6rem, 5vw, 4.2rem);
+        font-weight: 700;
+        line-height: 1.05;
+        margin-bottom: 0.5rem;
+        letter-spacing: -1px;
+      }
+      .hero-h .squiggle-wrap {
+        position: relative;
+        display: inline-block;
+        color: var(--sp-blue);
+      }
+      .hero-h .squiggle-wrap svg {
+        position: absolute;
+        bottom: -6px; left: -4px;
+        width: calc(100% + 8px);
+        pointer-events: none;
+      }
+      .hero-sub {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        margin-bottom: 0.75rem;
+        margin-top: 0.75rem;
+      }
+      .hero-p {
+        font-family: var(--font-hand);
+        font-size: 19px;
+        color: var(--ink-light);
+        line-height: 1.65;
+        max-width: 520px;
+        margin-bottom: 1.75rem;
+      }
 
-        /* Hero Section */
-        .project-hero {
-            padding: 10rem 2rem 4rem;
-            position: relative;
-            overflow: hidden;
-        }
+      .hero-img {
+        border: 2px solid var(--ink);
+        background: var(--paper-dark);
+        position: relative;
+        margin-bottom: 1.75rem;
+        transform: rotate(-0.3deg);
+        box-shadow: 5px 5px 0 rgba(26,22,18,0.12);
+      }
+      .hero-img::before {
+        content: '';
+        position: absolute;
+        top: -11px; left: 50%;
+        transform: translateX(-50%) rotate(-0.5deg);
+        width: 60px; height: 20px;
+        background: rgba(232,184,75,0.42);
+        border-top: 1px solid rgba(232,184,75,0.55);
+        border-bottom: 1px solid rgba(232,184,75,0.55);
+        z-index: 10;
+      }
+      .hero-img::after {
+        content: '';
+        position: absolute;
+        bottom: -5px; right: -5px;
+        width: 100%; height: 100%;
+        border: 1.5px solid rgba(26,22,18,0.15);
+        z-index: -1;
+      }
+      .hero-img img { width: 100%; display: block; }
 
-        .project-hero::before {
-            content: '';
-            position: absolute;
-            top: -20%;
-            right: -10%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, var(--gradient-1) 0%, transparent 70%);
-            filter: blur(120px);
-            opacity: 0.4;
-            z-index: 0;
-        }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        border: 2px solid var(--ink);
+        margin-bottom: 1.5rem;
+        transform: rotate(0.2deg);
+        box-shadow: 4px 4px 0 rgba(26,22,18,0.1);
+        background: var(--paper-dark);
+      }
+      .stat {
+        padding: 1.1rem 1rem;
+        border-right: 1.5px solid rgba(26,22,18,0.2);
+      }
+      .stat:last-child { border-right: none; }
+      .s-n {
+        font-family: var(--font-hand);
+        font-size: 2.4rem;
+        font-weight: 700;
+        color: var(--sp-blue);
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+      .s-l { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.35; }
+      .s-sub { font-family: var(--font-mono); font-size: 8px; letter-spacing: 1px; color: var(--pencil); margin-top: 2px; }
 
-        .project-hero-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
+      .meta {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        padding-top: 1.25rem;
+        border-top: 2px solid rgba(26,22,18,0.15);
+        margin-bottom: 5rem;
+      }
+      .m-k { font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--sp-blue); margin-bottom: 4px; }
+      .m-v { font-family: var(--font-hand); font-size: 15px; color: var(--ink-light); line-height: 1.5; }
 
-        .back-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 500;
-            margin-bottom: 3rem;
-            transition: gap 0.3s ease;
-        }
+      .sec { margin-bottom: 5rem; }
+      .phase { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
+      .p-dot {
+        width: 22px; height: 22px;
+        border-radius: 50%;
+        border: 2px solid var(--ink);
+        display: flex; align-items: center; justify-content: center;
+        font-family: var(--font-mono); font-size: 9px; color: var(--ink); font-weight: 700;
+      }
+      .p-txt { font-family: var(--font-mono); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--ink-faint); }
+      .sec-h {
+        font-family: var(--font-hand);
+        font-size: 2.2rem; font-weight: 700; line-height: 1.1;
+        margin-bottom: 0.5rem; letter-spacing: -0.5px;
+        display: inline-block; position: relative;
+      }
+      .sec-h::after {
+        content: ''; display: block; height: 3px;
+        background: var(--sp-blue); border-radius: 2px;
+        transform: rotate(-0.5deg); margin-top: 3px; width: 80%;
+      }
+      .sec-lead { font-family: var(--font-hand); font-size: 18px; color: var(--ink-light); line-height: 1.75; max-width: 560px; margin-bottom: 1.5rem; margin-top: 0.5rem; }
+      .rule { height: 1.5px; background: rgba(26,22,18,0.12); margin-bottom: 1.5rem; }
+      .sub { font-family: var(--font-mono); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--sp-blue); margin-bottom: 0.875rem; }
 
-        .back-button:hover {
-            gap: 1rem;
-        }
+      .g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+      .g2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 1.5rem; }
 
-        .hero-content-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
+      .nc {
+        background: var(--paper-dark); border: 2px solid var(--ink); padding: 1.1rem;
+        position: relative; transition: transform 0.2s;
+      }
+      .nc:hover { transform: translate(-2px,-2px); }
+      .nc::after { content: ''; position: absolute; bottom: -4px; right: -4px; width: 100%; height: 100%; border: 1.5px solid rgba(26,22,18,0.18); z-index: -1; }
+      .nc-label { font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--sp-amber); font-weight: 700; margin-bottom: 0.5rem; }
+      .nc-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+      .nc-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.55; }
+      .nc-sol { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.6; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid rgba(26,22,18,0.12); }
+      .nc-sol strong { color: var(--sp-blue); }
 
-        .hero-text {
-            text-align: left;
-        }
+      .ic { background: var(--paper-dark); border: 2px solid var(--ink); padding: 1.1rem; position: relative; }
+      .ic::after { content: ''; position: absolute; bottom: -4px; right: -4px; width: 100%; height: 100%; border: 1.5px solid rgba(26,22,18,0.18); z-index: -1; }
+      .ic-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+      .ic-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.55; }
 
-        .project-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 4rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-2) 50%, var(--gradient-3) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.2;
-        }
+      .flist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+      .fr {
+        display: flex; gap: 0.875rem; align-items: flex-start;
+        padding: 0.875rem 1rem; background: var(--paper-dark);
+        border: 1.5px solid rgba(26,22,18,0.15);
+        transition: border-color 0.2s, transform 0.2s;
+      }
+      .fr:hover { border-color: rgba(30,58,95,0.35); transform: translateX(2px); }
+      .fr-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+      .fr-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.55; }
 
-        .project-subtitle {
-            font-size: 1.3rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
+      .slist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+      .st { display: flex; gap: 0.875rem; padding: 0.875rem 1rem; background: var(--paper-dark); border: 1.5px solid rgba(26,22,18,0.15); }
+      .st-n { font-family: var(--font-hand); font-size: 1.3rem; font-weight: 700; color: var(--sp-blue); min-width: 20px; line-height: 1.4; }
+      .st-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+      .st-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.5; }
 
-        .hero-image {
-            width: 100%;
-            position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
+      .rc { background: var(--paper-dark); border: 1.5px solid rgba(26,22,18,0.15); padding: 1.1rem; }
+      .rc-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; color: var(--sp-blue); margin-bottom: 5px; }
+      .rc-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.7; }
 
-        .hero-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
+      .iw { border: 2px solid var(--ink); background: var(--paper-dark); position: relative; margin-bottom: 1.5rem; transition: transform 0.2s; }
+      .iw:hover { transform: translate(-2px,-2px); }
+      .iw::after { content: ''; position: absolute; bottom: -4px; right: -4px; width: 100%; height: 100%; border: 1.5px solid rgba(26,22,18,0.15); z-index: -1; }
+      .iw img { width: 100%; display: block; }
+      .icap { padding: 7px 10px; font-family: var(--font-hand); font-size: 13px; color: var(--ink-faint); border-top: 1px solid rgba(26,22,18,0.12); line-height: 1.4; }
 
-        /* Content Container */
-        .project-content {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 2rem 4rem;
-        }
+      .img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
+      .img-grid .iw { margin-bottom: 0; }
 
-        .content-section {
-            margin-bottom: 6rem;
-        }
+      .feature-callout {
+        background: rgba(30,58,95,0.04); border: 2px solid var(--sp-blue);
+        border-bottom: 4px solid var(--sp-blue); padding: 1.5rem; margin: 1.5rem 0; position: relative;
+      }
+      .feature-callout::before {
+        content: ''; position: absolute; top: -11px; left: 20px;
+        width: 40px; height: 20px; background: rgba(232,184,75,0.38);
+        border-top: 1px solid rgba(232,184,75,0.5); border-bottom: 1px solid rgba(232,184,75,0.5);
+        transform: rotate(-1.5deg);
+      }
+      .feature-callout .sub { margin-bottom: 0.4rem; }
+      .feature-callout-h { font-family: var(--font-hand); font-size: 1.4rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.5rem; }
+      .feature-callout-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.7; }
 
-        .section-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
-            text-align: left;
-        }
+      .quote {
+        border-left: 3px solid var(--sp-blue); padding: 0.875rem 1.25rem;
+        margin: 1.25rem 0; background: rgba(30,58,95,0.04);
+        position: relative; transform: rotate(-0.3deg);
+      }
+      .quote::before {
+        content: ''; position: absolute; top: -11px; left: 20px;
+        width: 36px; height: 20px; background: rgba(232,184,75,0.38);
+        border-top: 1px solid rgba(232,184,75,0.5); border-bottom: 1px solid rgba(232,184,75,0.5);
+        transform: rotate(1.5deg);
+      }
+      .quote p { font-family: var(--font-serif); font-size: 1.25rem; font-style: italic; line-height: 1.65; color: var(--ink); }
+      .quote-attr { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; color: var(--ink-faint); margin-top: 0.5rem; text-transform: uppercase; }
 
-        .section-description {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            text-align: left;
-            max-width: 100%;
-        }
+      .tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+      .tool { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; padding: 3px 10px; background: var(--paper-dark); border: 1.5px solid rgba(26,22,18,0.2); color: var(--ink-light); text-transform: uppercase; }
 
-        .section-description strong {
-            color: var(--text-primary);
-        }
+      .hl-y { background: linear-gradient(120deg, rgba(232,184,75,0)0%, rgba(232,184,75,0.45)10%, rgba(232,184,75,0.45)90%, rgba(232,184,75,0)100%); padding: 0 2px; }
 
-        /* Meta Info Grid */
-        .meta-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin: 3rem 0;
-            text-align: left;
-        }
+      .corner-fold { position: absolute; bottom: 0; right: 0; width: 24px; height: 24px; background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%); border-top: 1px solid var(--pencil); border-left: 1px solid var(--pencil); pointer-events: none; }
 
-        .meta-item h3 {
-            color: var(--accent);
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+      .rev { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+      .rev.in { opacity: 1; transform: none; }
 
-        .meta-item p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
+      footer { border-top: 2.5px solid var(--ink); padding: 1.25rem 2rem; text-align: center; font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--pencil); margin-left: 32px; }
 
-        /* Info Cards */
-        .info-cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin: 3rem 0;
-        }
-
-        .info-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2.5rem;
-            text-align: left;
-        }
-
-        .info-card h3 {
-            font-size: 1.5rem;
-            color: var(--accent-light);
-            margin-bottom: 1rem;
-        }
-
-        .info-card p {
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        /* Design Highlight */
-        .design-highlight {
-            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 3rem;
-            margin: 3rem 0;
-            text-align: left;
-        }
-
-        .design-highlight h3 {
-            font-size: 1.8rem;
-            font-weight: 500;
-            color: var(--accent-light);
-            margin-bottom: 1rem;
-        }
-
-        /* Lists */
-        .content-list {
-            margin: 2rem 0;
-            padding-left: 1.5rem;
-        }
-
-        .content-list li {
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-            line-height: 1.8;
-            font-size: 1.05rem;
-        }
-
-        .content-list li strong {
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        /* Step Sections */
-        .step-section {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-left: 4px solid var(--accent);
-            border-radius: 8px;
-            padding: 2rem;
-            margin: 2rem 0;
-        }
-
-        .step-section h4 {
-            font-size: 1.3rem;
-            color: var(--accent-light);
-            margin-bottom: 1rem;
-        }
-
-        /* Image Showcase */
-        .showcase-image {
-            width: 100%;
-            height: auto;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin: 2rem 0;
-        }
-
-        .showcase-image:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 40px rgba(20, 184, 166, 0.2);
-        }
-
-        /* Image Grid */
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-            margin: 3rem 0;
-        }
-
-        /* Learning Grid */
-        .learning-grid {
-            display: grid;
-            gap: 2rem;
-            margin: 3rem 0;
-        }
-
-        .learning-item {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-left: 4px solid var(--accent);
-            border-radius: 8px;
-            padding: 2rem;
-        }
-
-        .learning-item h4 {
-            font-size: 1.3rem;
-            color: var(--accent-light);
-            margin-bottom: 1rem;
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(255, 255, 255, 0.02);
-            padding: 2rem;
-            text-align: center;
-            border-top: 1px solid var(--border);
-            margin-top: 4rem;
-        }
-
-        .footer-content p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 968px) {
-            .hero-content-wrapper {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-
-            .hero-text {
-                text-align: center;
-            }
-
-            .meta-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .info-cards {
-                grid-template-columns: 1fr;
-            }
-
-            .image-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hamburger {
-                display: flex;
-            }
-
-            .nav-links {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: rgba(10, 10, 10, 0.95);
-                backdrop-filter: blur(20px);
-                flex-direction: column;
-                padding: 2rem;
-                gap: 1.5rem;
-                transform: translateY(-100%);
-                opacity: 0;
-                pointer-events: none;
-                transition: transform 0.3s ease, opacity 0.3s ease;
-            }
-
-            .nav-links.active {
-                transform: translateY(0);
-                opacity: 1;
-                pointer-events: all;
-            }
-
-            .project-title {
-                font-size: 2.5rem;
-            }
-        }
+      @media (max-width: 860px) {
+        .sidenav { display: none; }
+        .main { margin-left: 32px; padding: 5rem 1.5rem 5rem; }
+        .stats { grid-template-columns: repeat(2, 1fr); }
+        .g3, .g2, .img-grid { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 600px) {
+        .spiral-binding { display: none; }
+        .topnav, footer { margin-left: 0; left: 0; }
+        .main { margin-left: 0; padding: 5rem 1.25rem 4rem; }
+        .nav-links { display: none; }
+        .hero-h { font-size: 2.2rem; }
+      }
     </style>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <a href="index.html" class="logo">INAYAT</a>
-            <ul class="nav-links">
-                <li><a href="../index.html">Home</a></li>
-                <li><a href="../About.html">About</a></li>
-                <li><a href="../Projects.html">Projects</a></li>
-                <li><a href="../Resume.html">Resume</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
+  </head>
+  <body>
+
+    <div class="spiral-binding" aria-hidden="true" id="spiralBinding"></div>
+
+    <nav class="topnav">
+      <div class="topnav-in">
+        <a href="../index.html" class="logo">Inayat</a>
+        <ul class="nav-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../About.html">About</a></li>
+          <li><a href="../Projects.html">Projects</a></li>
+          <li><a href="../Resume.html">Resume</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+        </ul>
+      </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="project-hero">
-        <div class="project-hero-container">
-            <a href="../Projects.html" class="back-button">
-                ← Back to Projects
-            </a>
-            
-            <div class="hero-content-wrapper">
-                <div class="hero-text">
-                    <h1 class="project-title">Sculpture Pavilion</h1>
-                    <p class="project-subtitle">
-                        Spatial Design: A Conceptual Architectural Exhibition Space
-                    </p>
-                </div>
-                
-                <div class="hero-image">
-                    <img src="https://framerusercontent.com/images/I93FjO3d5qAuHQIx3N77npWzEk.png?width=1534&height=1082" alt="Sculpture Pavilion">
-                </div>
-            </div>
-        </div>
-    </section>
+    <aside class="sidenav">
+      <a href="../Projects.html" class="back-link">← Projects</a>
+      <div>
+        <div class="side-lbl">Case Study</div>
+        <nav class="side-list">
+          <a href="#overview"   class="side-a active"><span class="side-num">00</span>Overview</a>
+          <a href="#goals"      class="side-a"><span class="side-num">01</span>Goals</a>
+          <a href="#challenges" class="side-a"><span class="side-num">02</span>Challenges</a>
+          <a href="#process"    class="side-a"><span class="side-num">03</span>Process</a>
+          <a href="#visuals"    class="side-a"><span class="side-num">04</span>Final Visuals</a>
+          <a href="#outcome"    class="side-a"><span class="side-num">05</span>Outcome</a>
+          <a href="#reflection" class="side-a"><span class="side-num">06</span>Reflection</a>
+        </nav>
+      </div>
+      <div style="margin-top:auto; padding-top:1rem; opacity:0.28; pointer-events:none;">
+        <svg viewBox="0 0 80 64" style="width:70px">
+          <rect x="10" y="28" width="60" height="28" stroke="#1e3a5f" stroke-width="1.5" fill="rgba(30,58,95,0.08)"/>
+          <polygon points="40,6 8,28 72,28" stroke="#b87a0a" stroke-width="1.5" fill="rgba(184,122,10,0.08)"/>
+          <line x1="30" y1="56" x2="30" y2="38" stroke="#1e3a5f" stroke-width="1.2"/>
+          <line x1="50" y1="56" x2="50" y2="38" stroke="#1e3a5f" stroke-width="1.2"/>
+          <text x="4" y="64" font-family="Reenie Beanie, cursive" font-size="9" fill="#8a7f72">pavilion</text>
+        </svg>
+      </div>
+    </aside>
 
-    <!-- Project Content -->
-    <div class="project-content">
-        
-        <!-- Meta Info -->
-        <div class="meta-grid">
-            <div class="meta-item">
-                <h3>Timeline</h3>
-                <p>Feb '24 - Mar '24</p>
-            </div>
-            <div class="meta-item">
-                <h3>Project Type</h3>
-                <p>Solo Architectural Design</p>
-            </div>
-            <div class="meta-item">
-                <h3>Software</h3>
-                <p>Rhino 3D, Adobe Creative Suite</p>
-            </div>
+    <main class="main">
+
+      <header style="margin-bottom: 4rem">
+        <div class="tags">
+          <span class="tag">Solo Project</span>
+          <span class="tag">Spatial Design</span>
+          <span class="tag">Architecture</span>
         </div>
 
-        <!-- Overview -->
-        <section class="content-section">
-            <h2 class="section-title">Overview</h2>
-            <p class="section-description">
-                The <strong>Sculpture Pavilion</strong> is a conceptual architectural design that serves as an interactive exhibition space for sculptures. The project focuses on <strong>layered panelling, spatial hierarchy, and dynamic light interactions</strong>, offering visitors a unique sensory experience as they navigate the pavilion.
-            </p>
-        </section>
+        <h1 class="hero-h">
+          Sculpture<br/>
+          <span class="squiggle-wrap">Pavilion
+            <svg viewBox="0 0 160 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2,8 C35,3 70,13 105,7 C125,2 145,11 158,7" stroke="#b87a0a" stroke-width="3" fill="none" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </h1>
 
-        <!-- Project Goals -->
-        <section class="content-section">
-            <h2 class="section-title">Project Goals</h2>
-            <ul class="content-list">
-                <li>Create an <strong>immersive, multi-level exhibition space</strong> for sculpture displays</li>
-                <li>Integrate <strong>light and shadow dynamics</strong> to enhance spatial engagement</li>
-                <li>Design <strong>clear navigation pathways</strong> to ensure fluid visitor movement</li>
-                <li>Apply <strong>layered architecture principles</strong> to balance aesthetics with functionality</li>
-            </ul>
-        </section>
+        <p class="hero-sub">Solo Architectural Design · Feb '24 – Mar '24</p>
+        <p class="hero-p">A conceptual architectural exhibition space exploring <span class="hl-y">layered panelling, spatial hierarchy, and dynamic light interactions</span> — offering visitors a unique sensory experience as they navigate the pavilion.</p>
 
-        <!-- Challenges & Solutions -->
-        <section class="content-section">
-            <h2 class="section-title">Challenges & Solutions</h2>
-            
-            <div class="info-cards">
-                <div class="info-card">
-                    <h3>Challenge 1</h3>
-                    <p><strong>Ensuring fluid navigation through an open space</strong></p>
-                    <p style="margin-top: 1rem;"><em>Solution:</em> Defined pathways using layered panels and clear entry/exit points</p>
-                </div>
-                <div class="info-card">
-                    <h3>Challenge 2</h3>
-                    <p><strong>Balancing structural integrity with an open design</strong></p>
-                    <p style="margin-top: 1rem;"><em>Solution:</em> Used staggered and intersecting panels to maintain form while enhancing openness</p>
-                </div>
-                <div class="info-card">
-                    <h3>Challenge 3</h3>
-                    <p><strong>Maximizing light interaction without overwhelming the space</strong></p>
-                    <p style="margin-top: 1rem;"><em>Solution:</em> Placed voids in key areas to allow controlled natural light penetration</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Design Process -->
-        <section class="content-section">
-            <h2 class="section-title">Design Process</h2>
-
-            <!-- Step 1 -->
-            <div class="step-section">
-                <h4>Step 1: Initial Sketch & Conceptualization</h4>
-                <p class="section-description">
-                    The initial design envisioned a <strong>two-story structure with an inclined roof</strong>, emphasizing symmetry and balance. However, early explorations in Rhino revealed the potential for <strong>enhancing spatial generosity</strong> and refining movement pathways.
-                </p>
-            </div>
-
-            <img src="https://framerusercontent.com/images/yVted8lSMPDbRA290eo8v2MQkg.png?width=748&height=424" alt="Initial Sketch" class="showcase-image">
-
-            <!-- Step 2 -->
-            <div class="step-section">
-                <h4>Step 2: Refining Structure & Layout</h4>
-                <p class="section-description">
-                    Using <strong>Rules 1 and 3 of layered architecture</strong>, panels were designed to:
-                </p>
-                <ul class="content-list">
-                    <li>Overlap and intersect, creating <strong>depth and rhythm</strong></li>
-                    <li>Open voids for <strong>natural light penetration</strong> and visual contrast</li>
-                    <li>Establish a <strong>structured yet flexible navigation system</strong> for visitors</li>
-                </ul>
-            </div>
-
-            <img src="https://framerusercontent.com/images/5cgr89Pul2eLN94YJaoPOwraE.png?width=1894&height=1382" alt="Structure Layout" class="showcase-image">
-
-            <!-- Step 3 -->
-            <div class="step-section">
-                <h4>Step 3: Circulation & Interaction Design</h4>
-                <p class="section-description">
-                    <strong>Dual staircases</strong> offer two movement pathways:
-                </p>
-                <ul class="content-list">
-                    <li>Visitors can ascend from the right, following a structured route through sculptures</li>
-                    <li>Alternatively, they can start at the upper level, enjoying <strong>a bird's-eye view</strong> before descending</li>
-                </ul>
-            </div>
-
-            <img src="https://framerusercontent.com/images/xL2cduvC3QyNNyKUc8l0ehOJvjY.png?width=1854&height=1454" alt="Circulation Design" class="showcase-image">
-
-            <!-- Step 4 -->
-            <div class="step-section">
-                <h4>Step 4: Light & Shadow Experimentation</h4>
-                <p class="section-description">
-                    By positioning panels at strategic angles, the design creates a <strong>rhythmic interplay of light and shadow</strong>, dynamically shifting throughout the day. This enhances the sculptures' visual prominence while providing a changing visitor experience.
-                </p>
-            </div>
-        </section>
-
-        <!-- Final Visuals -->
-        <section class="content-section">
-            <h2 class="section-title">Final Sketches & Digital Views</h2>
-            
-            <div class="image-grid">
-                <img src="https://framerusercontent.com/images/LspBAKIJMj9r5XnYPczQ2NT6g.png?width=1706&height=970" alt="Final View 1" class="showcase-image">
-                <img src="https://framerusercontent.com/images/j8PDcvGiaopcK5RcXLVN9rKsTyY.png?width=1212&height=690" alt="Final View 2" class="showcase-image">
-            </div>
-
-            <img src="https://framerusercontent.com/images/rOpxniQTOjRXTQ9eVZWycs5N4.png?width=2108&height=628" alt="Rendered Perspective" class="showcase-image">
-
-            <div class="design-highlight">
-                <h3>Rendered Perspective</h3>
-                <p class="section-description">
-                    Examines how natural light <strong>filters through the layers</strong>, creating a dynamic spatial experience.
-                </p>
-            </div>
-        </section>
-
-        <!-- Final Outcome -->
-        <section class="content-section">
-            <h2 class="section-title">Final Outcome</h2>
-            <ul class="content-list">
-                <li><strong>A visually engaging pavilion</strong> that seamlessly blends art with architecture</li>
-                <li><strong>A multi-pathway exploration experience</strong> allowing visitors to engage with sculptures from different perspectives</li>
-                <li><strong>A rhythmic, light-sensitive environment</strong> where movement through the space changes how art is perceived</li>
-            </ul>
-        </section>
-
-        <!-- Key Takeaways -->
-        <section class="content-section">
-            <h2 class="section-title">Key Takeaways</h2>
-            
-            <div class="learning-grid">
-                <div class="learning-item">
-                    <h4>Spatial Hierarchy and Layered Architecture</h4>
-                    <p class="section-description">
-                        Enhance both function and form through thoughtful organization of space and materials.
-                    </p>
-                </div>
-
-                <div class="learning-item">
-                    <h4>Interactivity Through Circulation</h4>
-                    <p class="section-description">
-                        Perspective shifts improve visitor engagement and create dynamic experiences.
-                    </p>
-                </div>
-
-                <div class="learning-item">
-                    <h4>Light as an Architectural Element</h4>
-                    <p class="section-description">
-                        Can elevate a space from static to dynamic, transforming how visitors perceive art.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <p>&copy; 2025 Inayat. All rights reserved.</p>
+        <div class="hero-img">
+          <img src="https://framerusercontent.com/images/I93FjO3d5qAuHQIx3N77npWzEk.png?width=1534&height=1082" alt="Sculpture Pavilion" />
         </div>
-    </footer>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="s-n">2</div>
+            <div class="s-l">Visitor pathways</div>
+            <div class="s-sub">Dual staircase routes</div>
+          </div>
+          <div class="stat">
+            <div class="s-n">3</div>
+            <div class="s-l">Design principles</div>
+            <div class="s-sub">Layer, light, hierarchy</div>
+          </div>
+          <div class="stat">
+            <div class="s-n">4</div>
+            <div class="s-l">Process steps</div>
+            <div class="s-sub">Sketch to final render</div>
+          </div>
+        </div>
+
+        <div class="meta">
+          <div><div class="m-k">Timeline</div><div class="m-v">Feb '24 – Mar '24</div></div>
+          <div><div class="m-k">My Role</div><div class="m-v">Solo Designer<br/>Spatial Architect</div></div>
+          <div><div class="m-k">Type</div><div class="m-v">Conceptual Project</div></div>
+          <div><div class="m-k">Software</div><div class="m-v">Rhino 3D<br/>Adobe Creative Suite</div></div>
+        </div>
+      </header>
+
+      <!-- 00 OVERVIEW -->
+      <section id="overview" class="sec rev">
+        <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
+        <h2 class="sec-h">The Pavilion</h2>
+        <p class="sec-lead">The Sculpture Pavilion is a conceptual architectural design that serves as an interactive exhibition space for sculptures — where the structure itself becomes part of the art.</p>
+        <div class="rule"></div>
+
+        <div class="g3" style="margin-bottom:2rem">
+          <div class="ic">
+            <div class="ic-t">Layered Panelling</div>
+            <div class="ic-d">Overlapping and intersecting panels create depth, rhythm, and a dynamic architectural language that changes as visitors move through the space.</div>
+          </div>
+          <div class="ic">
+            <div class="ic-t">Spatial Hierarchy</div>
+            <div class="ic-d">Two levels and dual staircases establish a clear hierarchy — upper overview versus ground-level immersion — giving visitors agency over their experience.</div>
+          </div>
+          <div class="ic">
+            <div class="ic-t">Light Interactions</div>
+            <div class="ic-d">Strategic voids in the panels allow controlled natural light penetration — generating shifting shadows throughout the day that transform how sculptures are perceived.</div>
+          </div>
+        </div>
+
+        <div class="sub">Tools &amp; Methods</div>
+        <div class="tools">
+          <span class="tool">Rhino 3D</span>
+          <span class="tool">Adobe Illustrator</span>
+          <span class="tool">Adobe Photoshop</span>
+          <span class="tool">Spatial Design</span>
+          <span class="tool">Layered Architecture</span>
+          <span class="tool">Hand Sketching</span>
+        </div>
+      </section>
+
+      <!-- 01 GOALS -->
+      <section id="goals" class="sec rev">
+        <div class="phase"><div class="p-dot">1</div><span class="p-txt">Project Goals</span></div>
+        <h2 class="sec-h">Design Intentions</h2>
+        <p class="sec-lead">Four principles guided every decision — from panel placement to visitor pathways.</p>
+        <div class="rule"></div>
+        <div class="flist">
+          <div class="fr"><div><div class="fr-t">Immersive multi-level exhibition space</div><div class="fr-d">Create a space where sculpture displays feel embedded in the architecture itself — not placed within a neutral container.</div></div></div>
+          <div class="fr"><div><div class="fr-t">Integrate light and shadow dynamics</div><div class="fr-d">Use strategic panel angles and voids to generate a rhythmic interplay of light and shadow that shifts throughout the day, enhancing spatial engagement.</div></div></div>
+          <div class="fr"><div><div class="fr-t">Design clear navigation pathways</div><div class="fr-d">Ensure fluid visitor movement through the space — dual staircases offer two distinct journeys through the same architectural experience.</div></div></div>
+          <div class="fr"><div><div class="fr-t">Apply layered architecture principles</div><div class="fr-d">Balance aesthetics with functionality through overlapping, intersecting panels that create depth and rhythm without sacrificing structural clarity.</div></div></div>
+        </div>
+      </section>
+
+      <!-- 02 CHALLENGES -->
+      <section id="challenges" class="sec rev">
+        <div class="phase"><div class="p-dot">2</div><span class="p-txt">Challenges &amp; Solutions</span></div>
+        <h2 class="sec-h">Three Problems,<br/>Three Answers</h2>
+        <p class="sec-lead">Each structural and experiential challenge demanded a deliberate architectural response.</p>
+        <div class="rule"></div>
+        <div class="g3">
+          <div class="nc">
+            <div class="nc-label">Challenge 01</div>
+            <div class="nc-t">Fluid navigation through open space</div>
+            <div class="nc-d">An open exhibition space risks disorienting visitors — no clear sense of direction or flow.</div>
+            <div class="nc-sol"><strong>Solution:</strong> Defined pathways using layered panels and clear entry/exit points that guide movement without enclosing it.</div>
+          </div>
+          <div class="nc">
+            <div class="nc-label">Challenge 02</div>
+            <div class="nc-t">Structural integrity vs. openness</div>
+            <div class="nc-d">An open, airy design risks structural instability — especially across a two-story span.</div>
+            <div class="nc-sol"><strong>Solution:</strong> Staggered and intersecting panels maintain form while enhancing visual openness — structure becomes the aesthetic.</div>
+          </div>
+          <div class="nc">
+            <div class="nc-label">Challenge 03</div>
+            <div class="nc-t">Maximising light without overwhelming</div>
+            <div class="nc-d">Too much direct light flattens the sculpture; too little creates a dim, uninviting atmosphere.</div>
+            <div class="nc-sol"><strong>Solution:</strong> Voids placed in key panel areas allow controlled natural light — dappled, directional, and purposeful.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 PROCESS -->
+      <section id="process" class="sec rev">
+        <div class="phase"><div class="p-dot">3</div><span class="p-txt">Design Process</span></div>
+        <h2 class="sec-h">From Sketch<br/>to Structure</h2>
+        <p class="sec-lead">Four iterative phases took the pavilion from a rough two-story concept to a spatially nuanced, light-driven architectural experience.</p>
+        <div class="rule"></div>
+
+        <div class="sub">Step 01 — Initial Sketch &amp; Conceptualisation</div>
+        <p style="font-family:var(--font-hand); font-size:15px; color:var(--ink-light); line-height:1.8; max-width:580px; margin-bottom:1rem">The initial design envisioned a two-story structure with an inclined roof, emphasising symmetry and balance. Early explorations in Rhino revealed the potential for enhancing spatial generosity and refining movement pathways.</p>
+        <div class="iw">
+          <img src="https://framerusercontent.com/images/yVted8lSMPDbRA290eo8v2MQkg.png?width=748&height=424" alt="Initial Sketch" />
+          <div class="icap">Initial sketch — two-story concept with inclined roof and symmetrical layout</div>
+        </div>
+
+        <div class="sub">Step 02 — Refining Structure &amp; Layout</div>
+        <p style="font-family:var(--font-hand); font-size:15px; color:var(--ink-light); line-height:1.8; max-width:580px; margin-bottom:1rem">Using Rules 1 and 3 of layered architecture, panels were designed to overlap and intersect — creating depth and rhythm, with open voids for natural light penetration and a structured yet flexible navigation system.</p>
+        <div class="iw">
+          <img src="https://framerusercontent.com/images/5cgr89Pul2eLN94YJaoPOwraE.png?width=1894&height=1382" alt="Structure Layout" />
+          <div class="icap">Refined structure — overlapping panels, void placement, layered depth</div>
+        </div>
+
+        <div class="sub">Step 03 — Circulation &amp; Interaction Design</div>
+        <p style="font-family:var(--font-hand); font-size:15px; color:var(--ink-light); line-height:1.8; max-width:580px; margin-bottom:1rem">Dual staircases offer two movement pathways — visitors can ascend from the right following a structured route through sculptures, or start at the upper level enjoying a bird's-eye view before descending.</p>
+        <div class="iw">
+          <img src="https://framerusercontent.com/images/xL2cduvC3QyNNyKUc8l0ehOJvjY.png?width=1854&height=1454" alt="Circulation Design" />
+          <div class="icap">Circulation diagram — dual staircase pathways and visitor flow routes</div>
+        </div>
+
+        <div class="sub">Step 04 — Light &amp; Shadow Experimentation</div>
+        <div class="feature-callout">
+          <div class="sub">Key Design Insight</div>
+          <div class="feature-callout-h">Panels as light instruments</div>
+          <div class="feature-callout-d">By positioning panels at strategic angles, the design creates a rhythmic interplay of light and shadow that dynamically shifts throughout the day — enhancing the sculptures' visual prominence while providing a constantly changing visitor experience.</div>
+          <div class="corner-fold"></div>
+        </div>
+      </section>
+
+      <!-- 04 FINAL VISUALS -->
+      <section id="visuals" class="sec rev">
+        <div class="phase"><div class="p-dot">4</div><span class="p-txt">Final Visuals</span></div>
+        <h2 class="sec-h">Final Sketches<br/>&amp; Digital Views</h2>
+        <p class="sec-lead">Rendered perspectives and technical views showing the pavilion's layered spatial language at multiple scales.</p>
+        <div class="rule"></div>
+
+        <div class="img-grid">
+          <div class="iw">
+            <img src="https://framerusercontent.com/images/LspBAKIJMj9r5XnYPczQ2NT6g.png?width=1706&height=970" alt="Final View 1" />
+            <div class="icap">Exterior perspective — panel rhythm and shadow play</div>
+          </div>
+          <div class="iw">
+            <img src="https://framerusercontent.com/images/j8PDcvGiaopcK5RcXLVN9rKsTyY.png?width=1212&height=690" alt="Final View 2" />
+            <div class="icap">Interior view — dual staircase and upper level</div>
+          </div>
+        </div>
+
+        <div class="iw">
+          <img src="https://framerusercontent.com/images/rOpxniQTOjRXTQ9eVZWycs5N4.png?width=2108&height=628" alt="Rendered Perspective" />
+          <div class="icap">Rendered panoramic perspective — light filtering through layered panels across the full span</div>
+        </div>
+
+        <div class="quote">
+          <p>"Natural light filters through the layers — creating a dynamic spatial experience that reads differently at morning, noon, and dusk."</p>
+          <div class="quote-attr">— Rendered Perspective Note</div>
+        </div>
+      </section>
+
+      <!-- 05 OUTCOME -->
+      <section id="outcome" class="sec rev">
+        <div class="phase"><div class="p-dot">5</div><span class="p-txt">Final Outcome</span></div>
+        <h2 class="sec-h">What Was Built</h2>
+        <p class="sec-lead">Three outcomes that define the pavilion's success as both an architectural and experiential project.</p>
+        <div class="rule"></div>
+        <div class="g3">
+          <div class="ic">
+            <div class="ic-t">Visually engaging pavilion</div>
+            <div class="ic-d">Seamlessly blends art with architecture — the structure itself becomes part of the exhibition, not just a backdrop to it.</div>
+          </div>
+          <div class="ic">
+            <div class="ic-t">Multi-pathway exploration</div>
+            <div class="ic-d">Visitors engage with sculptures from different perspectives depending on their route — the same works feel different from above versus below.</div>
+          </div>
+          <div class="ic">
+            <div class="ic-t">Light-sensitive environment</div>
+            <div class="ic-d">Movement through the space changes how art is perceived — light shifts, shadows move, and the pavilion becomes a living frame for the sculptures within it.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 REFLECTION -->
+      <section id="reflection" class="sec rev">
+        <div class="phase"><div class="p-dot">6</div><span class="p-txt">Reflection</span></div>
+        <h2 class="sec-h">What I Learned</h2>
+        <p class="sec-lead">Three architectural insights that will carry into every spatial design project that follows.</p>
+        <div class="rule"></div>
+
+        <div class="g2" style="margin-bottom:2rem">
+          <div class="rc">
+            <div class="rc-t">Spatial hierarchy enhances function and form</div>
+            <div class="rc-d">Thoughtful organisation of space and materials doesn't just look good — it guides behaviour. The best architectural decisions serve both aesthetics and function without compromise.</div>
+          </div>
+          <div class="rc">
+            <div class="rc-t">Circulation is the design</div>
+            <div class="rc-d">A space that offers multiple paths rewards multiple visits. Perspective shifts improve visitor engagement and create dynamic experiences that can't be predicted in advance.</div>
+          </div>
+          <div class="rc">
+            <div class="rc-t">Light as an architectural element</div>
+            <div class="rc-d">Light isn't decoration — in this pavilion, it's structure. Controlling how it enters and moves through the space transforms everything from static to dynamic.</div>
+          </div>
+          <div class="rc">
+            <div class="rc-t">Structure becomes the aesthetic</div>
+            <div class="rc-d">The challenge of balancing structural integrity with openness taught me that constraints aren't limitations — staggered panels that solved an engineering problem became the pavilion's defining visual language.</div>
+          </div>
+        </div>
+
+        <div style="margin-top:3rem; padding:1.5rem; border:1.5px solid rgba(26,22,18,0.12); background:var(--paper-dark); position:relative; transform:rotate(-0.3deg)">
+          <div style="position:absolute; top:-11px; left:20px; width:40px; height:20px; background:rgba(30,58,95,0.22); border-top:1px solid rgba(30,58,95,0.35); border-bottom:1px solid rgba(30,58,95,0.35); transform:rotate(1.5deg)"></div>
+          <p style="font-family:var(--font-serif); font-size:1.1rem; font-style:italic; color:var(--ink-light); line-height:1.7">
+            The biggest realisation was that <span class="hl-y">architecture is choreography</span>. Every panel, void, and staircase is an instruction to the visitor's body — telling it where to look, pause, and move next.
+          </p>
+          <p style="font-family:var(--font-scrawl); font-size:18px; color:var(--sp-blue); margin-top:0.75rem; transform:rotate(-1deg); display:inline-block">— Inayat ✏️</p>
+          <div class="corner-fold"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>© 2025 Inayat &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; Spatial Design · Architectural Concept · Rhino 3D</footer>
 
     <script>
-        // Mobile Navigation Toggle
-        const hamburger = document.querySelector('.hamburger');
-        const navLinks = document.querySelector('.nav-links');
+      const spiral = document.getElementById('spiralBinding');
+      const count = Math.floor(window.innerHeight / 44) + 2;
+      for (let i = 0; i < count; i++) {
+        const h = document.createElement('div');
+        h.className = 'spiral-hole';
+        spiral.appendChild(h);
+      }
 
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
+      const ro = new IntersectionObserver(es => es.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('in');
+      }), { threshold: 0.06 });
+      document.querySelectorAll('.rev').forEach(el => ro.observe(el));
 
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-            });
+      const links = document.querySelectorAll('.side-a');
+      const secs  = document.querySelectorAll('.sec');
+      const so = new IntersectionObserver(es => {
+        es.forEach(e => {
+          if (e.isIntersecting) {
+            links.forEach(l => l.classList.remove('active'));
+            const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
+            if (a) a.classList.add('active');
+          }
         });
+      }, { rootMargin: '-15% 0px -65% 0px' });
+      secs.forEach(s => so.observe(s));
     </script>
-</body>
+  </body>
 </html>
