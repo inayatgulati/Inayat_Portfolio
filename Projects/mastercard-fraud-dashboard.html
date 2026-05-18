@@ -1,705 +1,1370 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fraud Detection Dashboard — Inayat</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg:     #0a0a0a;
-      --sur:    rgba(255,255,255,0.03);
-      --bdr:    rgba(255,255,255,0.08);
-      --text:   #f0f0f0;
-      --muted:  #888;
-      --dim:    #444;
-      --teal:   #14b8a6;
-      --teal-l: #2dd4bf;
-      --teal-d: #0d9488;
-      --nav-h:  64px;
-      --side-w: 200px;
-    }
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Work Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-
-    /* NAV */
-    .topnav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); z-index: 200; display: flex; align-items: center; padding: 0 2rem; background: rgba(10,10,10,0.93); backdrop-filter: blur(16px); border-bottom: 1px solid var(--bdr); }
-    .topnav-in { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; letter-spacing: 1px; color: var(--text); text-decoration: none; }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; transition: color .2s; }
-    .nav-links a:hover { color: var(--teal); }
-
-    /* SIDENAV */
-    .sidenav { position: fixed; top: var(--nav-h); left: 0; width: var(--side-w); height: calc(100vh - var(--nav-h)); padding: 2.5rem 1rem 2rem 2rem; border-right: 1px solid var(--bdr); background: var(--bg); display: flex; flex-direction: column; gap: 2rem; overflow-y: auto; overflow-x: hidden; z-index: 100; }
-    .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--teal); text-decoration: none; font-size: 0.78rem; font-weight: 500; transition: gap .2s; white-space: nowrap; }
-    .back-link:hover { gap: 10px; }
-    .side-lbl { font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--dim); font-weight: 600; margin-bottom: 0.75rem; }
-    .side-list { display: flex; flex-direction: column; }
-    .side-a { display: flex; align-items: center; gap: 8px; padding: 7px 0 7px 10px; color: var(--dim); text-decoration: none; font-size: 0.77rem; border-left: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
-    .side-a:hover { color: var(--text); border-left-color: var(--dim); }
-    .side-a.active { color: var(--teal-l); border-left-color: var(--teal); font-weight: 500; }
-    .side-num { font-size: 0.6rem; color: var(--dim); min-width: 16px; }
-    .side-a.active .side-num { color: var(--teal); }
-
-    /* MAIN */
-    .main { margin-left: var(--side-w); padding: calc(var(--nav-h) + 3rem) 3.5rem 6rem 3rem; max-width: calc(900px + var(--side-w)); }
-
-    /* HERO */
-    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
-    .tag { font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--teal); padding: 3px 10px; border: 1px solid rgba(20,184,166,.25); border-radius: 20px; background: rgba(20,184,166,.05); }
-    .hero-h { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.4rem,4vw,3.6rem); font-weight: 300; line-height: 1.08; margin-bottom: 0.5rem; }
-    .hero-h em { font-style: italic; color: var(--teal-l); }
-    .hero-sub { font-size: 0.95rem; color: var(--muted); margin-bottom: 1rem; }
-    .hero-p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; max-width: 520px; margin-bottom: 1.75rem; }
-
-    /* HERO VIDEO */
-    .hero-video { width: 100%; border-radius: 14px; overflow: hidden; border: 1px solid var(--bdr); margin-bottom: 2rem; background: #111; }
-    .hero-video video { width: 100%; display: block; max-height: 460px; object-fit: cover; }
-
-    /* STATS */
-    .stats { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--bdr); border-radius: 14px; overflow: hidden; margin-bottom: 1.75rem; }
-    .stat { padding: 1.2rem 1.1rem; background: var(--sur); border-right: 1px solid var(--bdr); }
-    .stat:last-child { border-right: none; }
-    .s-n { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 700; color: var(--teal-l); line-height: 1; margin-bottom: 5px; }
-    .s-l { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
-    .s-sub { font-size: 0.65rem; color: var(--dim); margin-top: 2px; }
-
-    /* META */
-    .meta { display: flex; gap: 2rem; flex-wrap: wrap; padding-top: 1.25rem; border-top: 1px solid var(--bdr); margin-bottom: 5rem; }
-    .m-k { font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 4px; }
-    .m-v { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
-
-    /* SECTION */
-    .sec { margin-bottom: 5rem; }
-    .phase { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
-    .p-dot { width: 20px; height: 20px; border-radius: 50%; background: rgba(20,184,166,.1); border: 1px solid rgba(20,184,166,.3); display: flex; align-items: center; justify-content: center; font-size: 0.58rem; color: var(--teal); font-weight: 700; }
-    .p-txt { font-size: 0.65rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal); font-weight: 600; }
-    .sec-h { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 300; line-height: 1.15; margin-bottom: 0.5rem; }
-    .sec-lead { font-size: 0.875rem; color: var(--muted); line-height: 1.8; max-width: 580px; margin-bottom: 1.5rem; }
-    .rule { height: 1px; background: var(--bdr); margin-bottom: 1.5rem; }
-    .sub { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 0.875rem; }
-
-    /* GRIDS */
-    .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.5rem; }
-    .g2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 1.5rem; }
-
-    /* NUMBER CARD */
-    .nc { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
-    .nc-n { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--teal-l); line-height: 1; margin-bottom: 6px; }
-    .nc-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; }
-    .nc-d { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
-
-    /* ICON CARD */
-    .ic { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
-    .ic-ico { font-size: 1rem; margin-bottom: 0.6rem; }
-    .ic-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; }
-    .ic-d { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
-
-    /* FINDING ROW */
-    .flist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
-    .fr { display: flex; gap: 0.875rem; align-items: flex-start; padding: 0.875rem 1.1rem; background: var(--sur); border: 1px solid var(--bdr); border-radius: 8px; transition: border-color .2s; }
-    .fr:hover { border-color: rgba(20,184,166,.2); }
-    .fr-i { width: 30px; height: 30px; min-width: 30px; border-radius: 6px; background: rgba(20,184,166,.07); border: 1px solid rgba(20,184,166,.15); display: flex; align-items: center; justify-content: center; font-size: 0.82rem; }
-    .fr-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
-    .fr-d { font-size: 0.77rem; color: var(--muted); line-height: 1.55; }
-
-    /* STEP LIST */
-    .slist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
-    .st { display: flex; gap: 0.875rem; padding: 0.875rem 1.1rem; background: var(--sur); border: 1px solid var(--bdr); border-radius: 8px; }
-    .st-n { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 700; color: var(--teal); min-width: 20px; line-height: 1.5; }
-    .st-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
-    .st-d { font-size: 0.77rem; color: var(--muted); line-height: 1.5; }
-
-    /* PERSONA CARD */
-    .pcard { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.5rem; border-bottom: 2px solid var(--teal-d); }
-    .pcard-av { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg,var(--teal-d),var(--teal)); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 700; color: white; margin-bottom: 0.875rem; }
-    .pcard-name { font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; }
-    .pcard-role { font-size: 0.72rem; color: var(--teal); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; margin-bottom: 0.75rem; }
-    .pcard-quote { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; color: var(--muted); line-height: 1.5; margin-bottom: 1rem; padding-left: 0.75rem; border-left: 2px solid rgba(20,184,166,.3); }
-    .pcard-sub { font-size: 0.65rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 0.5rem; margin-top: 0.875rem; }
-    .pcard-list { display: flex; flex-direction: column; gap: 3px; }
-    .pcard-item { font-size: 0.76rem; color: var(--muted); padding-left: 0.75rem; position: relative; line-height: 1.5; }
-    .pcard-item::before { content: '—'; position: absolute; left: 0; color: var(--dim); }
-
-    /* DIRECTION CARD */
-    .dcard { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.5rem; }
-    .dcard.chosen { border-color: rgba(20,184,166,.3); background: rgba(20,184,166,.04); }
-    .dcard-label { font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; margin-bottom: 0.5rem; }
-    .dcard.chosen .dcard-label { color: var(--teal); }
-    .dcard:not(.chosen) .dcard-label { color: var(--dim); }
-    .dcard-t { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .dcard-d { font-size: 0.77rem; color: var(--muted); line-height: 1.6; }
-
-    /* VIDEO BLOCK */
-    .vid-block { border-radius: 12px; overflow: hidden; border: 1px solid var(--bdr); background: #111; margin-bottom: 1.5rem; }
-    .vid-block video { width: 100%; display: block; }
-    .vid-cap { padding: 10px 14px; font-size: 0.75rem; color: var(--muted); border-top: 1px solid var(--bdr); line-height: 1.4; font-weight: 500; }
-    .vid-cap span { color: var(--dim); font-weight: 400; display: block; font-size: 0.7rem; margin-top: 2px; }
-
-    /* BEFORE / AFTER */
-    .ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
-    .ba-wrap { border-radius: 12px; overflow: hidden; border: 1px solid var(--bdr); background: #111; }
-    .ba-wrap img { width: 100%; display: block; }
-    .ba-label { padding: 8px 12px; font-size: 0.7rem; font-weight: 600; border-top: 1px solid var(--bdr); letter-spacing: 1px; text-transform: uppercase; }
-    .ba-wrap.before .ba-label { color: var(--dim); }
-    .ba-wrap.after  .ba-label { color: var(--teal); }
-
-    /* ITERATION */
-    .ilist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
-    .it { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: center; gap: 8px; }
-    .it-b { padding: 0.875rem 1rem; border-radius: 8px; border: 1px solid var(--bdr); }
-    .it-b.bef { background: var(--sur); }
-    .it-b.aft { background: rgba(20,184,166,.04); border-color: rgba(20,184,166,.15); }
-    .it-lbl { font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; margin-bottom: 3px; }
-    .it-b.bef .it-lbl { color: var(--dim); }
-    .it-b.aft .it-lbl { color: var(--teal); }
-    .it-txt { font-size: 0.77rem; color: var(--muted); line-height: 1.45; }
-    .it-b.aft .it-txt { color: var(--text); }
-    .it-arr { text-align: center; color: var(--teal); font-size: 0.85rem; }
-
-    /* QUOTE */
-    .quote { border-left: 2px solid var(--teal); padding: 0.875rem 1.25rem; margin: 1.25rem 0; background: rgba(20,184,166,.04); border-radius: 0 8px 8px 0; }
-    .quote p { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; line-height: 1.6; color: var(--text); }
-    .quote-attr { font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; }
-
-    /* REFLECTION */
-    .rc { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
-    .rc-t { font-size: 0.82rem; font-weight: 600; color: var(--teal-l); margin-bottom: 6px; }
-    .rc-d { font-size: 0.78rem; color: var(--muted); line-height: 1.7; }
-
-    /* IMAGES */
-    .imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
-    .imgs.c1 { grid-template-columns: 1fr; }
-    .iw { border-radius: 12px; overflow: hidden; border: 1px solid var(--bdr); background: #111; }
-    .iw img { width: 100%; display: block; }
-    .icap { padding: 7px 10px; font-size: 0.7rem; color: var(--dim); border-top: 1px solid var(--bdr); line-height: 1.4; }
-
-    /* TOOLS */
-    .tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
-    .tool { font-size: 0.72rem; padding: 4px 12px; border-radius: 20px; background: var(--sur); border: 1px solid var(--bdr); color: var(--muted); }
-
-    /* FOOTER */
-    footer { background: #050508; border-top: 1px solid var(--bdr); padding: 1.5rem 2rem; text-align: center; font-size: 0.8rem; color: var(--dim); }
-
-    /* REVEAL */
-    .rev { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
-    .rev.in { opacity: 1; transform: none; }
-
-    /* RESPONSIVE */
-    @media (max-width: 860px) {
-      .sidenav { display: none; }
-      .main { margin-left: 0; padding: 5rem 1.5rem 5rem; }
-      .stats { grid-template-columns: repeat(2,1fr); }
-      .g3, .g2 { grid-template-columns: 1fr; }
-      .ba-grid { grid-template-columns: 1fr; }
-      .it { grid-template-columns: 1fr; }
-      .it-arr { display: none; }
-    }
-    @media (max-width: 480px) {
-      .stats { grid-template-columns: 1fr 1fr; }
-      .hero-h { font-size: 2rem; }
-      .nav-links { display: none; }
-    }
-  </style>
-</head>
-<body>
-
-<!-- NAV -->
-<nav class="topnav">
-  <div class="topnav-in">
-    <a href="../index.html" class="logo">INAYAT</a>
-    <ul class="nav-links">
-      <li><a href="../index.html">Home</a></li>
-      <li><a href="../About.html">About</a></li>
-      <li><a href="../Projects.html">Projects</a></li>
-      <li><a href="../Resume.html">Resume</a></li>
-      <li><a href="../index.html#contact">Contact</a></li>
-    </ul>
-  </div>
-</nav>
-
-<!-- SIDENAV -->
-<aside class="sidenav">
-  <a href="../Projects.html" class="back-link">← Projects</a>
-  <div>
-    <div class="side-lbl">Case Study</div>
-    <nav class="side-list">
-      <a href="#overview"    class="side-a active"><span class="side-num">00</span>Overview</a>
-      <a href="#contrib"     class="side-a"><span class="side-num">01</span>My Role</a>
-      <a href="#personas"    class="side-a"><span class="side-num">02</span>Personas</a>
-      <a href="#directions"  class="side-a"><span class="side-num">03</span>Directions</a>
-      <a href="#journey"     class="side-a"><span class="side-num">04</span>Journey Map</a>
-      <a href="#workshop"    class="side-a"><span class="side-num">05</span>Workshop</a>
-      <a href="#solution"    class="side-a"><span class="side-num">06</span>Solution</a>
-      <a href="#problems"    class="side-a"><span class="side-num">07</span>Problems Solved</a>
-      <a href="#beforeafter" class="side-a"><span class="side-num">08</span>Before &amp; After</a>
-      <a href="#impact"      class="side-a"><span class="side-num">09</span>Impact</a>
-      <a href="#reflection"  class="side-a"><span class="side-num">10</span>Reflection</a>
-    </nav>
-  </div>
-</aside>
-
-<!-- MAIN -->
-<main class="main">
-
-  <!-- HERO -->
-  <header style="margin-bottom:4rem;">
-    <div class="tags">
-      <span class="tag">UX/UI Interaction Design</span>
-      <span class="tag">Data Visualisation</span>
-      <span class="tag">Lead Researcher</span>
-    </div>
-    <h1 class="hero-h">Fraud Detection<br><em>Dashboard</em></h1>
-    <p class="hero-sub">Case Study — Mastercard</p>
-    <p class="hero-p">Transforming complex fraud data into actionable insights — supporting faster, clearer, and more confident fraud investigations.</p>
-
-    <div class="hero-video">
-      <video autoplay muted loop playsinline>
-        <source src="../Images/Mastercard-IAT333.mp4" type="video/mp4">
-      </video>
-    </div>
-
-    <div class="stats">
-      <div class="stat"><div class="s-n">60%</div><div class="s-l">Less analysis time</div><div class="s-sub">Post-redesign</div></div>
-      <div class="stat"><div class="s-n">50+</div><div class="s-l">Rules trackable</div><div class="s-sub">All in one view</div></div>
-      <div class="stat"><div class="s-n">3</div><div class="s-l">Key personas</div><div class="s-sub">Identified via research</div></div>
-      <div class="stat"><div class="s-n">6</div><div class="s-l">Analyst interviews</div><div class="s-sub">Weekly sessions</div></div>
-    </div>
-
-    <div class="meta">
-      <div><div class="m-k">Timeline</div><div class="m-v">4 months</div></div>
-      <div><div class="m-k">My Role</div><div class="m-v">Lead Researcher<br>Comms Co-Lead</div></div>
-      <div><div class="m-k">Team</div><div class="m-v">5 members</div></div>
-      <div><div class="m-k">Tools</div><div class="m-v">Figma, User Research<br>Data Visualisation</div></div>
-    </div>
-  </header>
-
-  <!-- 00 OVERVIEW -->
-  <section id="overview" class="sec rev">
-    <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
-    <h2 class="sec-h">The Problem</h2>
-    <p class="sec-lead">Mastercard's fraud dashboard relied on dense data tables and fragmented views — making it difficult to spot trends, assess performance, and prioritise investigations.</p>
-    <div class="rule"></div>
-
-    <div class="g2" style="margin-bottom:2rem">
-      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Dense tables</div><div class="nc-t">No visual patterns</div><div class="nc-d">Critical fraud signals buried in rows and columns — analysts had to manually scroll and mentally reconstruct trends</div></div>
-      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Fragmented</div><div class="nc-t">Scattered across tabs</div><div class="nc-d">Information split across multiple views, forcing constant context-switching and loss of the bigger picture</div></div>
-      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">No context</div><div class="nc-t">Spikes unexplained</div><div class="nc-d">When fraud spikes occurred, analysts had no immediate reason why — leading to uncertainty and delayed responses</div></div>
-      <div class="nc"><div class="nc-n">50+</div><div class="nc-t">Rules, no overview</div><div class="nc-d">With 50+ detection rules running simultaneously, there was no way to compare performance or see which needed attention</div></div>
-    </div>
-
-    <div class="sub">Design Goals</div>
-    <div class="flist">
-      <div class="fr"><div class="fr-i">🎯</div><div><div class="fr-t">Improve data accuracy</div><div class="fr-d">Detect and reduce false positives that overwhelm analysts and erode trust in the system.</div></div></div>
-      <div class="fr"><div class="fr-i">🔄</div><div><div class="fr-t">Flexible data interpretation</div><div class="fr-d">Alerts must be comparable, well-documented, and audit-ready across teams.</div></div></div>
-      <div class="fr"><div class="fr-i">🛡</div><div><div class="fr-t">Protect customers and merchants</div><div class="fr-d">Showing direct fraud impact helps analysts connect data to real-world consequences.</div></div></div>
-      <div class="fr"><div class="fr-i">👥</div><div><div class="fr-t">Improve team collaboration</div><div class="fr-d">Shared knowledge and visibility across teams reduces risk and improves detection rates.</div></div></div>
-    </div>
-
-    <div class="sub">Tools &amp; Methods</div>
-    <div class="tools">
-      <span class="tool">Figma</span>
-      <span class="tool">User Interviews</span>
-      <span class="tool">Journey Mapping</span>
-      <span class="tool">Thematic Analysis</span>
-      <span class="tool">Data Visualisation</span>
-      <span class="tool">Workshop Facilitation</span>
-      <span class="tool">Stakeholder Comms</span>
-    </div>
-  </section>
-
-  <!-- 01 MY ROLE -->
-  <section id="contrib" class="sec rev">
-    <div class="phase"><div class="p-dot">1</div><span class="p-txt">My Role</span></div>
-    <h2 class="sec-h">My Contributions</h2>
-    <p class="sec-lead">As Lead Researcher and Communication Co-Lead, I owned the end of the process that turns ambiguous user needs into clear design decisions.</p>
-    <div class="rule"></div>
-
-    <div class="g3">
-      <div class="ic">
-        <div class="ic-ico">🔍</div>
-        <div class="ic-t">Lead Researcher</div>
-        <div class="ic-d">Conducted weekly stakeholder interviews with Mastercard's fraud analyst team. Created journey maps for Jordan and Chen. Led user workshops to validate design concepts.</div>
-      </div>
-      <div class="ic">
-        <div class="ic-ico">💬</div>
-        <div class="ic-t">Communication Co-Lead</div>
-        <div class="ic-d">Facilitated weekly syncs with Mastercard's Product Design team. Presented research findings and design iterations. Documented decisions and coordinated cross-functional collaboration.</div>
-      </div>
-      <div class="ic">
-        <div class="ic-ico">🎨</div>
-        <div class="ic-t">Design Contributions</div>
-        <div class="ic-d">Co-designed the Visual Insider dashboard concept. Created wireframes and prototypes for testing. Developed the data visualisation strategy for fraud metrics.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 02 PERSONAS -->
-  <section id="personas" class="sec rev">
-    <div class="phase"><div class="p-dot">2</div><span class="p-txt">User Personas</span></div>
-    <h2 class="sec-h">Three Users,<br>Three Different Needs</h2>
-    <p class="sec-lead">Through research, we identified three key personas representing the different types of users interacting with the fraud dashboard.</p>
-    <div class="rule"></div>
-
-    <div class="g3">
-      <div class="pcard">
-        <div class="pcard-av">J</div>
-        <div class="pcard-name">Jordan Mercer</div>
-        <div class="pcard-role">Fraud Rule Creator</div>
-        <div class="pcard-quote">"Every rule I write could protect thousands or block the wrong user."</div>
-        <div class="pcard-sub">Goals</div>
-        <div class="pcard-list">
-          <div class="pcard-item">Prevent new types of fraud</div>
-          <div class="pcard-item">Limit friction for legitimate customers</div>
-          <div class="pcard-item">Test rules in a safe environment</div>
-        </div>
-        <div class="pcard-sub">Frustrations</div>
-        <div class="pcard-list">
-          <div class="pcard-item">Hard to predict rule behaviour in real scenarios</div>
-          <div class="pcard-item">Complex audit processes and limited visibility</div>
-        </div>
-      </div>
-
-      <div class="pcard">
-        <div class="pcard-av">B</div>
-        <div class="pcard-name">Blair Nelson</div>
-        <div class="pcard-role">Senior Fraud Analyst</div>
-        <div class="pcard-quote">"Every rule must be designed given small oversights can cost millions."</div>
-        <div class="pcard-sub">Goals</div>
-        <div class="pcard-list">
-          <div class="pcard-item">Maintain fraud defenses to minimise losses</div>
-          <div class="pcard-item">Ensure detection complies with legal standards</div>
-          <div class="pcard-item">Advise junior analysts, promote collaboration</div>
-        </div>
-        <div class="pcard-sub">Frustrations</div>
-        <div class="pcard-list">
-          <div class="pcard-item">Legacy systems causing workflow delays</div>
-          <div class="pcard-item">Fragmented dashboards limiting team collaboration</div>
-        </div>
-      </div>
-
-      <div class="pcard">
-        <div class="pcard-av">C</div>
-        <div class="pcard-name">Chen Li</div>
-        <div class="pcard-role">Senior Executive</div>
-        <div class="pcard-quote">"Fraud down 10% isn't enough — every investment must be justified."</div>
-        <div class="pcard-sub">Goals</div>
-        <div class="pcard-list">
-          <div class="pcard-item">Lower fraud losses without harming customer experience</div>
-          <div class="pcard-item">Keep fraud strategies ahead of industry trends</div>
-        </div>
-        <div class="pcard-sub">Frustrations</div>
-        <div class="pcard-list">
-          <div class="pcard-item">Rule data disconnected from business-level impact</div>
-          <div class="pcard-item">High-value dashboards causing panic in teams</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 03 DESIGN DIRECTIONS -->
-  <section id="directions" class="sec rev">
-    <div class="phase"><div class="p-dot">3</div><span class="p-txt">Potential Directions</span></div>
-    <h2 class="sec-h">Three Directions<br>We Explored</h2>
-    <p class="sec-lead">We evaluated three distinct design directions before converging on the one that served all three personas most effectively.</p>
-    <div class="rule"></div>
-
-    <div class="g3">
-      <div class="dcard">
-        <div class="dcard-label">Direction A</div>
-        <div class="dcard-t">Safe Sandbox &amp; Simulation</div>
-        <div class="dcard-d">Enable safe, real-time rule testing in a secure sandbox. Addresses Jordan's need for side-by-side comparison of old vs new rule performance and bulk scoring simulations before go-live.</div>
-      </div>
-      <div class="dcard chosen">
-        <div class="dcard-label">✓ Chosen Direction</div>
-        <div class="dcard-t">Fraud Impact Dashboard</div>
-        <div class="dcard-d">Connect fraud rule performance to business outcomes and ROI. Translates metrics into money saved, shows timeline vs industry benchmarks, and provides storytelling visuals around rule deployment.</div>
-      </div>
-      <div class="dcard">
-        <div class="dcard-label">Direction C</div>
-        <div class="dcard-t">Compliance &amp; Audit Assistant</div>
-        <div class="dcard-d">Automate audit readiness and documentation. Addresses Blair's pain around audit prep — auto-generated reports, real-time compliance scoring, and evidence library linking transactions to triggered rules.</div>
-      </div>
-    </div>
-
-    <div class="quote">
-      <p>"We chose the Fraud Impact Dashboard because it directly addressed all three personas while providing the most immediate value to the organisation."</p>
-    </div>
-  </section>
-
-  <!-- 04 JOURNEY MAP -->
-  <section id="journey" class="sec rev">
-    <div class="phase"><div class="p-dot">4</div><span class="p-txt">Journey Mapping</span></div>
-    <h2 class="sec-h">Jordan's Workflow</h2>
-    <p class="sec-lead">We mapped Jordan's entire fraud rule creation process to identify exactly where friction occurred and where design could intervene.</p>
-    <div class="rule"></div>
-
-    <div class="slist" style="margin-bottom:2rem">
-      <div class="st"><div class="st-n">01</div><div><div class="st-t">Observe &amp; Analyse</div><div class="st-d">Understand emerging fraud patterns and identify weaknesses in current rule sets.</div></div></div>
-      <div class="st"><div class="st-n">02</div><div><div class="st-t">Ideate &amp; Preventative</div><div class="st-d">Design rules that pre-emptively stop emerging fraud patterns before they scale.</div></div></div>
-      <div class="st"><div class="st-n">03</div><div><div class="st-t">Detect &amp; Simulate</div><div class="st-d">Validate that the new rule detects fraud accurately and efficiently without false positives.</div></div></div>
-      <div class="st"><div class="st-n">04</div><div><div class="st-t">Deploy &amp; Mitigate</div><div class="st-d">Release the new rule into production to minimise active risk across transactions.</div></div></div>
-      <div class="st"><div class="st-n">05</div><div><div class="st-t">Evaluate &amp; Learn</div><div class="st-d">Measure post-deployment performance and feed insights back into the lifecycle.</div></div></div>
-    </div>
-
-    <div class="imgs c1">
-      <div class="iw">
-        <img src="https://inayatgulati.github.io/Inayat_Portfolio/Images/UJ2.png" alt="Fraud Rule Creator Journey Map">
-        <div class="icap">Jordan's user journey map — fraud rule creation lifecycle from pattern detection to post-deployment evaluation</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 05 WORKSHOP -->
-  <section id="workshop" class="sec rev">
-    <div class="phase"><div class="p-dot">5</div><span class="p-txt">Design Workshop</span></div>
-    <h2 class="sec-h">Testing With<br>Real Scenarios</h2>
-    <p class="sec-lead">We ran peer test workshops where participants role-played as fraud analysts — using game mechanics to surface real usability insights.</p>
-    <div class="rule"></div>
-
-    <div class="sub">Workshop Activities</div>
-    <div class="flist" style="margin-bottom:2rem">
-      <div class="fr"><div class="fr-i">👁</div><div><div class="fr-t">Eye Doctor Game</div><div class="fr-d">Participants compared visual designs to identify which presented risk signals more effectively — surfacing clarity and hierarchy issues.</div></div></div>
-      <div class="fr"><div class="fr-i">🔎</div><div><div class="fr-t">Murder Mystery Game</div><div class="fr-d">Teams analysed mock customer data to uncover fraudulent accounts — directly testing pattern recognition abilities in realistic conditions.</div></div></div>
-      <div class="fr"><div class="fr-i">✏️</div><div><div class="fr-t">Dashboard Creation</div><div class="fr-d">Participants designed their ideal fraud detection dashboard with pen and paper — revealing mental models and priority hierarchies.</div></div></div>
-    </div>
-
-    <div class="sub">Key Insights from Testing</div>
-    <div class="flist" style="margin-bottom:2rem">
-      <div class="fr"><div class="fr-i">✦</div><div><div class="fr-t">Clarity over density</div><div class="fr-d">Participants strongly preferred clearer, labelled designs — readability directly increased perceived trustworthiness of the data.</div></div></div>
-      <div class="fr"><div class="fr-i">📊</div><div><div class="fr-t">Key metrics must be prominent</div><div class="fr-d">Transaction spikes, total value, and pattern indicators need to be immediately visible — not buried below the fold.</div></div></div>
-      <div class="fr"><div class="fr-i">🗺</div><div><div class="fr-t">Context is non-negotiable</div><div class="fr-d">Legends, consistent scales, and regional context were specifically requested — data without context caused confusion and distrust.</div></div></div>
-      <div class="fr"><div class="fr-i">🖱</div><div><div class="fr-t">One-click drill-downs</div><div class="fr-d">Participants wanted to go deeper without leaving the main view — progressive disclosure, not navigation away.</div></div></div>
-    </div>
-
-    <div class="sub">Revisions Identified</div>
-    <div class="ilist">
-      <div class="it">
-        <div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Charts without regional or time context</div></div>
-        <div class="it-arr">→</div>
-        <div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Contextual data (regions, times, labels) added to all comparison charts</div></div>
-      </div>
-      <div class="it">
-        <div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Free-form dashboard layout causing confusion</div></div>
-        <div class="it-arr">→</div>
-        <div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Structured dashboard components with guided layout and pre-made visual examples</div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 06 SOLUTION -->
-  <section id="solution" class="sec rev">
-    <div class="phase"><div class="p-dot">6</div><span class="p-txt">Design Solution</span></div>
-    <h2 class="sec-h">The Redesigned<br>Dashboard</h2>
-    <p class="sec-lead">Three interconnected views — each solving a specific part of the analysts' workflow.</p>
-    <div class="rule"></div>
-
-    <div class="vid-block">
-      <video autoplay muted loop playsinline>
-        <source src="../Images/Main dashboard.mp4" type="video/mp4">
-      </video>
-      <div class="vid-cap">
-        Main Dashboard Overview
-        <span>Centralised view showing fraud trends, geographic patterns, merchant activity, and rule performance in real-time</span>
-      </div>
-    </div>
-
-    <div class="vid-block">
-      <video autoplay muted loop playsinline>
-        <source src="../Images/All rules.mp4" type="video/mp4">
-      </video>
-      <div class="vid-cap">
-        Rule Performance Analytics
-        <span>Interactive visualisation for all 50+ fraud rules — compare metrics, identify underperforming rules, and prioritise with colour-coded severity</span>
-      </div>
-    </div>
-
-    <div class="vid-block">
-      <video autoplay muted loop playsinline>
-        <source src="../Images/Ai spec.mp4" type="video/mp4">
-      </video>
-      <div class="vid-cap">
-        AI-Powered Spike Explanations
-        <span>Contextual insights that explain anomalies in fraud activity — reducing investigation setup time by 60%</span>
-      </div>
-    </div>
-
-    <div class="sub">Key Features</div>
-    <div class="flist">
-      <div class="fr"><div class="fr-i">📈</div><div><div class="fr-t">Main Dashboard</div><div class="fr-d">Centralised overview with fraud trends, geographic patterns, merchant activity, and rule performance all in one view.</div></div></div>
-      <div class="fr"><div class="fr-i">📋</div><div><div class="fr-t">Rule-Specific Pages</div><div class="fr-d">Dedicated views for each of the 50+ fraud rules with detailed metrics and transaction samples.</div></div></div>
-      <div class="fr"><div class="fr-i">🤖</div><div><div class="fr-t">Spike Explanation Engine</div><div class="fr-d">AI-generated insights that explain sudden changes in fraud activity — the "why" behind every anomaly.</div></div></div>
-      <div class="fr"><div class="fr-i">📅</div><div><div class="fr-t">Unified Date Filtering</div><div class="fr-d">Global time controls with chart-specific refinement — one system for the entire dashboard.</div></div></div>
-      <div class="fr"><div class="fr-i">🚦</div><div><div class="fr-t">Visual Hierarchy</div><div class="fr-d">Colour-coded severity indicators and progressive disclosure of complex information.</div></div></div>
-      <div class="fr"><div class="fr-i">📤</div><div><div class="fr-t">Export Capabilities</div><div class="fr-d">One-click report generation for stakeholder communication and audit documentation.</div></div></div>
-    </div>
-  </section>
-
-  <!-- 07 PROBLEMS SOLVED -->
-  <section id="problems" class="sec rev">
-    <div class="phase"><div class="p-dot">7</div><span class="p-txt">Problems Solved</span></div>
-    <h2 class="sec-h">Six Problems,<br>Six Solutions</h2>
-    <p class="sec-lead">Every design decision mapped directly back to a specific, research-validated pain point.</p>
-    <div class="rule"></div>
-
-    <div class="ilist">
-      <div class="it">
-        <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Critical patterns buried in endless rows and columns</div></div>
-        <div class="it-arr">→</div>
-        <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Interactive charts and visual representations that highlight patterns instantly</div></div>
-      </div>
-      <div class="it">
-        <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Information scattered across multiple tabs and views</div></div>
-        <div class="it-arr">→</div>
-        <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Centralised dashboard with all critical information in one view</div></div>
-      </div>
-      <div class="it">
-        <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Technical jargon creating cognitive friction and slowing decisions</div></div>
-        <div class="it-arr">→</div>
-        <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Plain language labels with contextual tooltips for clarity</div></div>
-      </div>
-      <div class="it">
-        <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">50+ rules with no way to compare or prioritise</div></div>
-        <div class="it-arr">→</div>
-        <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Interactive dot chart showing all rules at once with sorting and filtering</div></div>
-      </div>
-      <div class="it">
-        <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Fraud spikes with no immediate explanation</div></div>
-        <div class="it-arr">→</div>
-        <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">AI-powered explanations providing context for every spike automatically</div></div>
-      </div>
-      <div class="it">
-        <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Overly complex filter systems slowing investigation setup</div></div>
-        <div class="it-arr">→</div>
-        <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Unified date controls with quick presets and custom ranges</div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 08 BEFORE & AFTER -->
-  <section id="beforeafter" class="sec rev">
-    <div class="phase"><div class="p-dot">8</div><span class="p-txt">Before &amp; After</span></div>
-    <h2 class="sec-h">The Transformation</h2>
-    <p class="sec-lead">From a cluttered table view to a clear, hierarchical dashboard that surfaces the right information at the right time.</p>
-    <div class="rule"></div>
-
-    <div class="ba-grid">
-      <div class="ba-wrap before">
-        <img src="https://inayatgulati.github.io/Inayat_Portfolio/Images/before.png" alt="Before design">
-        <div class="ba-label">Before — cluttered, low clarity</div>
-      </div>
-      <div class="ba-wrap after">
-        <img src="https://inayatgulati.github.io/Inayat_Portfolio/Images/Chart 2.png" alt="After design">
-        <div class="ba-label">After — clear hierarchy + context</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 09 IMPACT -->
-  <section id="impact" class="sec rev">
-    <div class="phase"><div class="p-dot">9</div><span class="p-txt">Impact &amp; Results</span></div>
-    <h2 class="sec-h">Measured Outcomes</h2>
-    <p class="sec-lead">Validated through testing with the same fraud analyst team who informed the research.</p>
-    <div class="rule"></div>
-
-    <div class="g2" style="margin-bottom:2rem">
-      <div class="nc"><div class="nc-n">60%</div><div class="nc-t">Less time interpreting data</div><div class="nc-d">Analysts spend more time on strategic fraud prevention, less on manual comparison</div></div>
-      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Faster</div><div class="nc-t">Pattern recognition speed</div><div class="nc-d">Visual comparison across time periods replaced manual side-by-side analysis</div></div>
-      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Higher</div><div class="nc-t">Decision confidence</div><div class="nc-d">Context provided for anomalies increased analysts' confidence in their investigation conclusions</div></div>
-      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Improved</div><div class="nc-t">Team collaboration</div><div class="nc-d">Clear, exportable visualisations improved cross-team communication and shared knowledge</div></div>
-    </div>
-
-    <div class="quote">
-      <p>"The new dashboard completely transformed how we work. What used to take hours of manual comparison now takes minutes. The AI explanations give us confidence in our decisions."</p>
-      <div class="quote-attr">— Senior Fraud Analyst, Mastercard</div>
-    </div>
-  </section>
-
-  <!-- 10 VISUAL DESIGN SYSTEM -->
-  <section id="designsystem" class="sec rev">
-    <div class="phase"><div class="p-dot">10</div><span class="p-txt">Visual Design System</span></div>
-    <h2 class="sec-h">Consistency at Scale</h2>
-    <p class="sec-lead">We developed a comprehensive design system to ensure every element of the dashboard communicated meaning consistently across all 50+ rules and views.</p>
-    <div class="rule"></div>
-
-    <div class="g3">
-      <div class="ic">
-        <div class="ic-ico">🚦</div>
-        <div class="ic-t">Colour Coding</div>
-        <div class="ic-d">Severity-based system: <strong style="color:#f87171">Critical</strong> — immediate action required. <strong style="color:#fbbf24">Warning</strong> — needs attention. <strong style="color:#34d399">Success</strong> — performing well. <strong style="color:var(--muted)">Neutral</strong> — standard metrics.</div>
-      </div>
-      <div class="ic">
-        <div class="ic-ico">Aa</div>
-        <div class="ic-t">Typography Hierarchy</div>
-        <div class="ic-d">Headlines for key metrics and section titles. Body text for detailed explanations and data. Captions for supporting context and timestamps — three levels, no more.</div>
-      </div>
-      <div class="ic">
-        <div class="ic-ico">🖱</div>
-        <div class="ic-t">Interactive Elements</div>
-        <div class="ic-d">Hover states revealing additional details. Click-through for deep dives. Drag-and-drop for customisation. Export buttons for one-click reporting.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 11 FUTURE ITERATIONS -->
-  <section id="future" class="sec rev">
-    <div class="phase"><div class="p-dot">11</div><span class="p-txt">Future Iterations</span></div>
-    <h2 class="sec-h">Where This Could Go</h2>
-    <p class="sec-lead">If the project continued, these are the directions I'd prioritise based on unresolved needs from the research.</p>
-    <div class="rule"></div>
-
-    <div class="flist">
-      <div class="fr"><div class="fr-i">🔮</div><div><div class="fr-t">Predictive Analytics</div><div class="fr-d">Machine learning models to forecast fraud trends before they occur — shifting the dashboard from reactive to proactive fraud prevention.</div></div></div>
-      <div class="fr"><div class="fr-i">💬</div><div><div class="fr-t">Collaborative Features</div><div class="fr-d">Real-time annotation and commenting for team investigations — enabling knowledge sharing across shifts and departments without leaving the dashboard.</div></div></div>
-      <div class="fr"><div class="fr-i">📱</div><div><div class="fr-t">Mobile Optimisation</div><div class="fr-d">Responsive design for on-the-go fraud monitoring, allowing analysts to respond to alerts from anywhere in real time.</div></div></div>
-      <div class="fr"><div class="fr-i">🎛</div><div><div class="fr-t">Customisable Dashboards</div><div class="fr-d">Allow analysts to create personalised views based on their specific roles — Jordan's view vs Blair's vs Chen's would look quite different.</div></div></div>
-      <div class="fr"><div class="fr-i">🌐</div><div><div class="fr-t">External Data Integration</div><div class="fr-d">Connect with industry fraud databases and threat intelligence feeds for broader context around emerging fraud patterns.</div></div></div>
-      <div class="fr"><div class="fr-i">🧪</div><div><div class="fr-t">Advanced Simulation Environment</div><div class="fr-d">Full sandbox capabilities for testing rule changes before deployment — addressing Jordan's core frustration that wasn't fully solved in this version.</div></div></div>
-    </div>
-  </section>
-
-  <!-- 12 REFLECTION -->
-  <section id="reflection" class="sec rev">
-    <div class="phase"><div class="p-dot">12</div><span class="p-txt">Reflection</span></div>
-    <h2 class="sec-h">What I Learned</h2>
-    <p class="sec-lead">Enterprise dashboard design in a high-stakes environment taught me things no other project type could.</p>
-    <div class="rule"></div>
-    <div class="g2">
-      <div class="rc"><div class="rc-t">Context is king</div><div class="rc-d">Data without context leads to confusion and delayed decisions. Providing the "why" behind metrics is as important as the metrics themselves — especially in fraud detection where wrong calls have real consequences.</div></div>
-      <div class="rc"><div class="rc-t">Progressive disclosure</div><div class="rc-d">In complex systems, showing everything at once overwhelms users. Layering information through interaction creates clarity — the overview should earn the drill-down, not replace it.</div></div>
-      <div class="rc"><div class="rc-t">Test with real scenarios</div><div class="rc-d">Workshop activities that simulate actual work tasks reveal insights that interviews alone cannot. The Murder Mystery game surfaced pattern recognition issues we'd never have found in a standard usability test.</div></div>
-      <div class="rc"><div class="rc-t">Visual hierarchy is a design decision</div><div class="rc-d">Colour, size, and position guide attention. In a dashboard where every metric competes for focus, strategic visual hierarchy is the difference between a tool and a liability.</div></div>
-    </div>
-  </section>
-
-</main>
-
-<footer>© 2025 Inayat. All rights reserved.</footer>
-
-<script>
-  const ro = new IntersectionObserver(
-    es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }),
-    { threshold: 0.06 }
-  );
-  document.querySelectorAll('.rev').forEach(el => ro.observe(el));
-
-  const links = document.querySelectorAll('.side-a');
-  const secs  = document.querySelectorAll('.sec');
-  const so = new IntersectionObserver(es => {
-    es.forEach(e => {
-      if (e.isIntersecting) {
-        links.forEach(l => l.classList.remove('active'));
-        const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
-        if (a) a.classList.add('active');
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fraud Detection Dashboard — Inayat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper: #faf8f2;
+        --paper-dark: #f0ecdf;
+        --paper-worn: #e8e2d0;
+        --ink: #1a1612;
+        --ink-light: #3d3530;
+        --ink-faint: #8a7f72;
+        --pencil: #b8b0a0;
+        --pencil-light: #d4cfc4;
+
+        /* Fraud dashboard accent — deep navy + amber alert */
+        --fd-blue: #1e3a5f;
+        --fd-blue-l: #2e5491;
+        --fd-amber: #b87a0a;
+        --fd-amber-l: #d4940e;
+        --fd-red: #c0392b;
+        --fd-green: #2e7d44;
+        --yellow: #e8b84b;
+
+        --font-hand: 'Caveat', cursive;
+        --font-scrawl: 'Reenie Beanie', cursive;
+        --font-mono: 'Space Mono', monospace;
+        --font-serif: 'EB Garamond', serif;
+
+        --nav-h: 58px;
+        --side-w: 196px;
       }
-    });
-  }, { rootMargin: '-15% 0px -65% 0px' });
-  secs.forEach(s => so.observe(s));
-</script>
 
-</body>
+      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: var(--font-hand);
+        background: var(--paper);
+        color: var(--ink);
+        line-height: 1.6;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Ruled paper lines */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image:
+          repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.11) 27px, rgba(180,170,155,0.11) 28px);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Spiral binding */
+      .spiral-binding {
+        position: fixed;
+        left: 0; top: 0; bottom: 0;
+        width: 32px;
+        background: var(--paper-worn);
+        border-right: 2.5px solid var(--ink);
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 24px;
+        pointer-events: none;
+      }
+      .spiral-hole {
+        width: 16px; height: 16px;
+        border-radius: 50%;
+        border: 2px solid var(--ink);
+        background: var(--paper);
+        margin-bottom: 28px;
+        flex-shrink: 0;
+        box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
+      }
+
+      /* TOP NAV */
+      .topnav {
+        position: fixed;
+        top: 0; left: 32px; right: 0;
+        height: var(--nav-h);
+        z-index: 150;
+        background: var(--paper);
+        border-bottom: 2.5px solid var(--ink);
+        display: flex;
+        align-items: center;
+        padding: 0 2rem;
+      }
+      .topnav-in {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        font-family: var(--font-hand);
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--ink);
+        text-decoration: none;
+        position: relative;
+      }
+      .logo::after {
+        content: '';
+        position: absolute;
+        bottom: -2px; left: 0; right: 0;
+        height: 3px;
+        background: var(--fd-blue);
+        border-radius: 2px;
+        transform: rotate(-0.8deg);
+      }
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+      }
+      .nav-links a {
+        font-family: var(--font-hand);
+        font-size: 16px;
+        color: var(--ink-faint);
+        text-decoration: none;
+        position: relative;
+        padding-bottom: 2px;
+        transition: color 0.2s;
+      }
+      .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0;
+        width: 0; height: 2px;
+        background: var(--ink);
+        transition: width 0.25s;
+      }
+      .nav-links a:hover { color: var(--ink); }
+      .nav-links a:hover::after { width: 100%; }
+
+      /* SIDENAV */
+      .sidenav {
+        position: fixed;
+        top: var(--nav-h);
+        left: 32px;
+        width: var(--side-w);
+        height: calc(100vh - var(--nav-h));
+        padding: 2rem 1rem 2rem 1.5rem;
+        border-right: 1.5px solid rgba(180,170,155,0.35);
+        background: var(--paper);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        overflow-y: auto;
+        z-index: 100;
+      }
+      .sidenav::before {
+        content: '';
+        position: absolute;
+        left: 44px; top: 0; bottom: 0;
+        width: 1.5px;
+        background: rgba(30,58,95,0.12);
+        pointer-events: none;
+      }
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--fd-blue);
+        text-decoration: none;
+        font-family: var(--font-hand);
+        font-size: 15px;
+        font-weight: 600;
+        transition: gap 0.2s;
+        white-space: nowrap;
+      }
+      .back-link:hover { gap: 10px; }
+      .side-lbl {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--pencil);
+        margin-bottom: 0.5rem;
+      }
+      .side-list { display: flex; flex-direction: column; }
+      .side-a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 0 6px 10px;
+        color: var(--pencil);
+        text-decoration: none;
+        font-family: var(--font-hand);
+        font-size: 14px;
+        border-left: 2px solid transparent;
+        transition: color 0.2s, border-color 0.2s;
+        white-space: nowrap;
+      }
+      .side-a:hover { color: var(--ink-light); border-left-color: var(--pencil); }
+      .side-a.active { color: var(--fd-blue); border-left-color: var(--fd-blue); font-weight: 700; }
+      .side-num {
+        font-family: var(--font-mono);
+        font-size: 8px;
+        color: var(--pencil);
+        min-width: 16px;
+      }
+      .side-a.active .side-num { color: var(--fd-blue); }
+
+      /* MAIN */
+      .main {
+        margin-left: calc(32px + var(--side-w));
+        padding: calc(var(--nav-h) + 3rem) 3.5rem 7rem 3rem;
+        max-width: calc(860px + var(--side-w));
+        position: relative;
+        z-index: 1;
+      }
+
+      /* TAGS */
+      .tags {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.25rem;
+      }
+      .tag {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--fd-blue);
+        padding: 3px 10px;
+        border: 1.5px solid rgba(30,58,95,0.3);
+        background: rgba(30,58,95,0.05);
+        transform: rotate(-0.3deg);
+        display: inline-block;
+      }
+      .tag:nth-child(2) {
+        transform: rotate(0.5deg);
+        color: var(--fd-amber);
+        border-color: rgba(184,122,10,0.3);
+        background: rgba(184,122,10,0.05);
+      }
+      .tag:nth-child(3) {
+        transform: rotate(-0.2deg);
+        color: var(--ink-faint);
+        border-color: rgba(138,127,114,0.3);
+        background: rgba(138,127,114,0.05);
+      }
+
+      .hero-h {
+        font-family: var(--font-hand);
+        font-size: clamp(2.6rem, 5vw, 4.2rem);
+        font-weight: 700;
+        line-height: 1.05;
+        margin-bottom: 0.5rem;
+        letter-spacing: -1px;
+      }
+      .hero-h .squiggle-wrap {
+        position: relative;
+        display: inline-block;
+      }
+      .hero-h .squiggle-wrap svg {
+        position: absolute;
+        bottom: -6px; left: -4px;
+        width: calc(100% + 8px);
+        pointer-events: none;
+      }
+      .hero-sub {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        margin-bottom: 0.75rem;
+        margin-top: 0.75rem;
+      }
+      .hero-p {
+        font-family: var(--font-hand);
+        font-size: 19px;
+        color: var(--ink-light);
+        line-height: 1.65;
+        max-width: 520px;
+        margin-bottom: 1.75rem;
+      }
+
+      /* HERO VIDEO */
+      .hero-video {
+        border: 2px solid var(--ink);
+        background: var(--paper-dark);
+        position: relative;
+        margin-bottom: 1.75rem;
+        transform: rotate(-0.3deg);
+        box-shadow: 5px 5px 0 rgba(26,22,18,0.12);
+      }
+      .hero-video::before {
+        content: '';
+        position: absolute;
+        top: -11px; left: 50%;
+        transform: translateX(-50%) rotate(-0.5deg);
+        width: 60px; height: 20px;
+        background: rgba(232,184,75,0.42);
+        border-top: 1px solid rgba(232,184,75,0.55);
+        border-bottom: 1px solid rgba(232,184,75,0.55);
+        z-index: 10;
+      }
+      .hero-video::after {
+        content: '';
+        position: absolute;
+        bottom: -5px; right: -5px;
+        width: 100%; height: 100%;
+        border: 1.5px solid rgba(26,22,18,0.15);
+        z-index: -1;
+      }
+      .hero-video video {
+        width: 100%;
+        display: block;
+        max-height: 460px;
+        object-fit: cover;
+      }
+
+      /* STATS */
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border: 2px solid var(--ink);
+        margin-bottom: 1.5rem;
+        transform: rotate(0.2deg);
+        box-shadow: 4px 4px 0 rgba(26,22,18,0.1);
+        background: var(--paper-dark);
+      }
+      .stat {
+        padding: 1.1rem 1rem;
+        border-right: 1.5px solid rgba(26,22,18,0.2);
+      }
+      .stat:last-child { border-right: none; }
+      .s-n {
+        font-family: var(--font-hand);
+        font-size: 2.4rem;
+        font-weight: 700;
+        color: var(--fd-blue);
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+      .s-l {
+        font-family: var(--font-hand);
+        font-size: 14px;
+        color: var(--ink-light);
+        line-height: 1.35;
+      }
+      .s-sub {
+        font-family: var(--font-mono);
+        font-size: 8px;
+        letter-spacing: 1px;
+        color: var(--pencil);
+        margin-top: 2px;
+      }
+
+      /* META */
+      .meta {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        padding-top: 1.25rem;
+        border-top: 2px solid rgba(26,22,18,0.15);
+        margin-bottom: 5rem;
+      }
+      .m-k {
+        font-family: var(--font-mono);
+        font-size: 8px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--fd-blue);
+        margin-bottom: 4px;
+      }
+      .m-v {
+        font-family: var(--font-hand);
+        font-size: 15px;
+        color: var(--ink-light);
+        line-height: 1.5;
+      }
+
+      /* SECTION */
+      .sec { margin-bottom: 5rem; }
+      .phase {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 0.75rem;
+      }
+      .p-dot {
+        width: 22px; height: 22px;
+        border-radius: 50%;
+        border: 2px solid var(--ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-mono);
+        font-size: 9px;
+        color: var(--ink);
+        font-weight: 700;
+      }
+      .p-txt {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+      }
+      .sec-h {
+        font-family: var(--font-hand);
+        font-size: 2.2rem;
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.5px;
+        display: inline-block;
+        position: relative;
+      }
+      .sec-h::after {
+        content: '';
+        display: block;
+        height: 3px;
+        background: var(--fd-blue);
+        border-radius: 2px;
+        transform: rotate(-0.5deg);
+        margin-top: 3px;
+        width: 80%;
+      }
+      .sec-lead {
+        font-family: var(--font-hand);
+        font-size: 18px;
+        color: var(--ink-light);
+        line-height: 1.75;
+        max-width: 560px;
+        margin-bottom: 1.5rem;
+        margin-top: 0.5rem;
+      }
+      .rule {
+        height: 1.5px;
+        background: rgba(26,22,18,0.12);
+        margin-bottom: 1.5rem;
+      }
+      .sub {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--fd-blue);
+        margin-bottom: 0.875rem;
+      }
+
+      /* GRIDS */
+      .g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+      .g2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+
+      /* NOTEBOOK CARD */
+      .nc {
+        background: var(--paper-dark);
+        border: 2px solid var(--ink);
+        padding: 1.1rem;
+        position: relative;
+        transition: transform 0.2s;
+      }
+      .nc:hover { transform: translate(-2px,-2px); }
+      .nc::after {
+        content: '';
+        position: absolute;
+        bottom: -4px; right: -4px;
+        width: 100%; height: 100%;
+        border: 1.5px solid rgba(26,22,18,0.18);
+        z-index: -1;
+      }
+      .nc-n {
+        font-family: var(--font-hand);
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--fd-blue);
+        line-height: 1;
+        margin-bottom: 5px;
+      }
+      .nc-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+      .nc-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.5; }
+
+      /* ICON CARD */
+      .ic {
+        background: var(--paper-dark);
+        border: 2px solid var(--ink);
+        padding: 1.1rem;
+        position: relative;
+      }
+      .ic::after {
+        content: '';
+        position: absolute;
+        bottom: -4px; right: -4px;
+        width: 100%; height: 100%;
+        border: 1.5px solid rgba(26,22,18,0.18);
+        z-index: -1;
+      }
+      .ic-ico { font-size: 1rem; margin-bottom: 0.5rem; }
+      .ic-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+      .ic-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.55; }
+
+      /* FINDING ROW */
+      .flist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+      .fr {
+        display: flex;
+        gap: 0.875rem;
+        align-items: flex-start;
+        padding: 0.875rem 1rem;
+        background: var(--paper-dark);
+        border: 1.5px solid rgba(26,22,18,0.15);
+        transition: border-color 0.2s, transform 0.2s;
+      }
+      .fr:hover { border-color: rgba(30,58,95,0.35); transform: translateX(2px); }
+      .fr-i {
+        width: 30px; height: 30px; min-width: 30px;
+        border: 1.5px solid rgba(26,22,18,0.2);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.82rem;
+        background: var(--paper);
+      }
+      .fr-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+      .fr-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.55; }
+
+      /* STEP LIST */
+      .slist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+      .st {
+        display: flex;
+        gap: 0.875rem;
+        padding: 0.875rem 1rem;
+        background: var(--paper-dark);
+        border: 1.5px solid rgba(26,22,18,0.15);
+      }
+      .st-n { font-family: var(--font-hand); font-size: 1.3rem; font-weight: 700; color: var(--fd-blue); min-width: 20px; line-height: 1.4; }
+      .st-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+      .st-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.5; }
+
+      /* PERSONA CARD */
+      .pcard {
+        background: var(--paper-dark);
+        border: 2px solid var(--ink);
+        padding: 1.25rem;
+        border-bottom: 4px solid var(--fd-blue);
+        position: relative;
+        transition: transform 0.2s;
+      }
+      .pcard:hover { transform: translate(-2px,-2px); }
+      .pcard::after {
+        content: '';
+        position: absolute;
+        bottom: -6px; right: -5px;
+        width: 100%; height: 100%;
+        border: 1.5px solid rgba(26,22,18,0.15);
+        z-index: -1;
+      }
+      .pcard::before {
+        content: '';
+        position: absolute;
+        top: -11px; left: 20px;
+        width: 40px; height: 20px;
+        background: rgba(232,184,75,0.38);
+        border-top: 1px solid rgba(232,184,75,0.5);
+        border-bottom: 1px solid rgba(232,184,75,0.5);
+        transform: rotate(-1.5deg);
+      }
+      .pcard-av {
+        width: 40px; height: 40px;
+        border-radius: 50%;
+        border: 2px solid var(--fd-blue);
+        display: flex; align-items: center; justify-content: center;
+        font-family: var(--font-hand);
+        font-size: 1.4rem; font-weight: 700;
+        color: var(--fd-blue);
+        margin-bottom: 0.75rem;
+      }
+      .pcard-name { font-family: var(--font-hand); font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+      .pcard-role {
+        font-family: var(--font-mono);
+        font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
+        color: var(--fd-blue); margin-bottom: 0.75rem;
+      }
+      .pcard-quote {
+        font-family: var(--font-serif);
+        font-size: 1rem; font-style: italic;
+        color: var(--ink-light); line-height: 1.5;
+        margin-bottom: 1rem;
+        padding-left: 0.75rem;
+        border-left: 2.5px solid rgba(30,58,95,0.3);
+      }
+      .pcard-sub {
+        font-family: var(--font-mono);
+        font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase;
+        color: var(--fd-blue); font-weight: 600;
+        margin-bottom: 0.5rem; margin-top: 0.875rem;
+      }
+      .pcard-list { display: flex; flex-direction: column; gap: 3px; }
+      .pcard-item {
+        font-family: var(--font-hand);
+        font-size: 13px; color: var(--ink-light);
+        padding-left: 0.75rem; position: relative; line-height: 1.5;
+      }
+      .pcard-item::before { content: "—"; position: absolute; left: 0; color: var(--pencil); }
+
+      /* DIRECTION CARD */
+      .dcard {
+        background: var(--paper-dark);
+        border: 2px solid var(--ink);
+        padding: 1.25rem;
+        position: relative;
+      }
+      .dcard::after {
+        content: '';
+        position: absolute;
+        bottom: -4px; right: -4px;
+        width: 100%; height: 100%;
+        border: 1.5px solid rgba(26,22,18,0.15);
+        z-index: -1;
+      }
+      .dcard.chosen {
+        border-color: var(--fd-blue);
+        background: rgba(30,58,95,0.04);
+        border-bottom: 4px solid var(--fd-blue);
+      }
+      .dcard.chosen::before {
+        content: '';
+        position: absolute;
+        top: -11px; left: 20px;
+        width: 40px; height: 20px;
+        background: rgba(232,184,75,0.38);
+        border-top: 1px solid rgba(232,184,75,0.5);
+        border-bottom: 1px solid rgba(232,184,75,0.5);
+        transform: rotate(1.5deg);
+      }
+      .dcard-label {
+        font-family: var(--font-mono);
+        font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
+        font-weight: 600; margin-bottom: 0.5rem;
+      }
+      .dcard.chosen .dcard-label { color: var(--fd-blue); }
+      .dcard:not(.chosen) .dcard-label { color: var(--pencil); }
+      .dcard-t { font-family: var(--font-hand); font-size: 16px; font-weight: 700; margin-bottom: 0.5rem; }
+      .dcard-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.6; }
+
+      /* VIDEO BLOCK */
+      .vid-block {
+        border: 2px solid var(--ink);
+        background: var(--paper-dark);
+        position: relative;
+        margin-bottom: 1.5rem;
+        transition: transform 0.2s;
+      }
+      .vid-block:hover { transform: translate(-2px,-2px); }
+      .vid-block::after {
+        content: '';
+        position: absolute;
+        bottom: -4px; right: -4px;
+        width: 100%; height: 100%;
+        border: 1.5px solid rgba(26,22,18,0.15);
+        z-index: -1;
+      }
+      .vid-block video { width: 100%; display: block; }
+      .vid-cap {
+        padding: 10px 14px;
+        font-family: var(--font-hand);
+        font-size: 14px; font-weight: 700;
+        color: var(--ink);
+        border-top: 1.5px solid rgba(26,22,18,0.15);
+        line-height: 1.4;
+      }
+      .vid-cap span {
+        font-family: var(--font-hand);
+        font-size: 13px; font-weight: 400;
+        color: var(--ink-faint); display: block; margin-top: 2px;
+      }
+
+      /* BEFORE / AFTER */
+      .ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
+      .ba-wrap {
+        border: 2px solid var(--ink);
+        background: var(--paper-dark);
+        position: relative;
+        transition: transform 0.2s;
+      }
+      .ba-wrap:hover { transform: translate(-2px,-2px); }
+      .ba-wrap::after {
+        content: '';
+        position: absolute;
+        bottom: -4px; right: -4px;
+        width: 100%; height: 100%;
+        border: 1.5px solid rgba(26,22,18,0.15);
+        z-index: -1;
+      }
+      .ba-wrap img { width: 100%; display: block; }
+      .ba-label {
+        padding: 8px 12px;
+        font-family: var(--font-mono);
+        font-size: 8px; letter-spacing: 2px; font-weight: 700;
+        border-top: 1.5px solid rgba(26,22,18,0.15);
+        text-transform: uppercase;
+      }
+      .ba-wrap.before .ba-label { color: var(--pencil); }
+      .ba-wrap.after  .ba-label { color: var(--fd-blue); }
+
+      /* ITERATION */
+      .ilist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+      .it { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: center; gap: 8px; }
+      .it-b {
+        padding: 0.875rem 1rem;
+        border: 1.5px solid rgba(26,22,18,0.15);
+      }
+      .it-b.bef { background: var(--paper-dark); }
+      .it-b.aft { background: rgba(30,58,95,0.04); border-color: rgba(30,58,95,0.3); }
+      .it-lbl {
+        font-family: var(--font-mono);
+        font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
+        font-weight: 600; margin-bottom: 3px;
+      }
+      .it-b.bef .it-lbl { color: var(--pencil); }
+      .it-b.aft .it-lbl { color: var(--fd-blue); }
+      .it-txt { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.45; }
+      .it-b.aft .it-txt { color: var(--ink); }
+      .it-arr { text-align: center; color: var(--fd-blue); font-size: 1rem; font-weight: 700; }
+
+      /* QUOTE */
+      .quote {
+        border-left: 3px solid var(--fd-blue);
+        padding: 0.875rem 1.25rem;
+        margin: 1.25rem 0;
+        background: rgba(30,58,95,0.04);
+        position: relative;
+        transform: rotate(-0.3deg);
+      }
+      .quote::before {
+        content: '';
+        position: absolute;
+        top: -11px; left: 20px;
+        width: 36px; height: 20px;
+        background: rgba(232,184,75,0.38);
+        border-top: 1px solid rgba(232,184,75,0.5);
+        border-bottom: 1px solid rgba(232,184,75,0.5);
+        transform: rotate(1.5deg);
+      }
+      .quote p {
+        font-family: var(--font-serif);
+        font-size: 1.25rem; font-style: italic;
+        line-height: 1.65; color: var(--ink);
+      }
+      .quote-attr {
+        font-family: var(--font-mono);
+        font-size: 9px; letter-spacing: 1px;
+        color: var(--ink-faint); margin-top: 0.5rem; text-transform: uppercase;
+      }
+
+      /* REFLECTION CARD */
+      .rc { background: var(--paper-dark); border: 1.5px solid rgba(26,22,18,0.15); padding: 1.1rem; }
+      .rc-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; color: var(--fd-blue); margin-bottom: 5px; }
+      .rc-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.7; }
+
+      /* IMAGES */
+      .imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
+      .imgs.c1 { grid-template-columns: 1fr; }
+      .iw {
+        border: 2px solid var(--ink);
+        background: var(--paper-dark);
+        position: relative;
+        transition: transform 0.2s;
+      }
+      .iw:hover { transform: translate(-2px,-2px); }
+      .iw::after {
+        content: '';
+        position: absolute;
+        bottom: -4px; right: -4px;
+        width: 100%; height: 100%;
+        border: 1.5px solid rgba(26,22,18,0.15);
+        z-index: -1;
+      }
+      .iw img { width: 100%; display: block; }
+      .icap {
+        padding: 7px 10px;
+        font-family: var(--font-hand);
+        font-size: 13px; color: var(--ink-faint);
+        border-top: 1px solid rgba(26,22,18,0.12); line-height: 1.4;
+      }
+
+      /* TOOLS PILLS */
+      .tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+      .tool {
+        font-family: var(--font-mono);
+        font-size: 9px; letter-spacing: 1px;
+        padding: 3px 10px;
+        background: var(--paper-dark);
+        border: 1.5px solid rgba(26,22,18,0.2);
+        color: var(--ink-light);
+        text-transform: uppercase;
+      }
+
+      /* HIGHLIGHT */
+      .hl-y {
+        background: linear-gradient(120deg, rgba(232,184,75,0)0%, rgba(232,184,75,0.45)10%, rgba(232,184,75,0.45)90%, rgba(232,184,75,0)100%);
+        padding: 0 2px;
+      }
+
+      /* CORNER FOLD */
+      .corner-fold {
+        position: absolute;
+        bottom: 0; right: 0;
+        width: 24px; height: 24px;
+        background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
+        border-top: 1px solid var(--pencil);
+        border-left: 1px solid var(--pencil);
+        pointer-events: none;
+      }
+
+      /* SCROLL REVEAL */
+      .rev {
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+      .rev.in { opacity: 1; transform: none; }
+
+      /* FOOTER */
+      footer {
+        border-top: 2.5px solid var(--ink);
+        padding: 1.25rem 2rem;
+        text-align: center;
+        font-family: var(--font-mono);
+        font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+        color: var(--pencil);
+        margin-left: 32px;
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 860px) {
+        .sidenav { display: none; }
+        .main { margin-left: 32px; padding: 5rem 1.5rem 5rem; }
+        .stats { grid-template-columns: repeat(2, 1fr); }
+        .g3, .g2 { grid-template-columns: 1fr; }
+        .ba-grid { grid-template-columns: 1fr; }
+        .it { grid-template-columns: 1fr; }
+        .it-arr { display: none; }
+      }
+      @media (max-width: 600px) {
+        .spiral-binding { display: none; }
+        .topnav, footer { margin-left: 0; left: 0; }
+        .main { margin-left: 0; padding: 5rem 1.25rem 4rem; }
+        .nav-links { display: none; }
+        .hero-h { font-size: 2.2rem; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- SPIRAL BINDING -->
+    <div class="spiral-binding" aria-hidden="true" id="spiralBinding"></div>
+
+    <!-- TOP NAV -->
+    <nav class="topnav">
+      <div class="topnav-in">
+        <a href="../index.html" class="logo">Inayat</a>
+        <ul class="nav-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../About.html">About</a></li>
+          <li><a href="../Projects.html">Projects</a></li>
+          <li><a href="../Resume.html">Résumé</a></li>
+          <li><a href="../index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- SIDENAV -->
+    <aside class="sidenav">
+      <a href="../Projects.html" class="back-link">← Projects</a>
+      <div>
+        <div class="side-lbl">Case Study</div>
+        <nav class="side-list">
+          <a href="#overview"     class="side-a active"><span class="side-num">00</span>Overview</a>
+          <a href="#contrib"      class="side-a"><span class="side-num">01</span>My Role</a>
+          <a href="#personas"     class="side-a"><span class="side-num">02</span>Personas</a>
+          <a href="#directions"   class="side-a"><span class="side-num">03</span>Directions</a>
+          <a href="#journey"      class="side-a"><span class="side-num">04</span>Journey Map</a>
+          <a href="#workshop"     class="side-a"><span class="side-num">05</span>Workshop</a>
+          <a href="#solution"     class="side-a"><span class="side-num">06</span>Solution</a>
+          <a href="#problems"     class="side-a"><span class="side-num">07</span>Problems Solved</a>
+          <a href="#beforeafter"  class="side-a"><span class="side-num">08</span>Before &amp; After</a>
+          <a href="#impact"       class="side-a"><span class="side-num">09</span>Impact</a>
+          <a href="#reflection"   class="side-a"><span class="side-num">10</span>Reflection</a>
+        </nav>
+      </div>
+      <!-- Fraud doodle -->
+      <div style="margin-top:auto; padding-top:1rem; opacity:0.28; pointer-events:none;">
+        <svg viewBox="0 0 80 64" style="width:70px">
+          <!-- Shield -->
+          <path d="M40,8 L58,16 L58,34 C58,46 40,56 40,56 C40,56 22,46 22,34 L22,16 Z" stroke="#1e3a5f" stroke-width="1.5" fill="rgba(30,58,95,0.08)"/>
+          <!-- Magnifier -->
+          <circle cx="38" cy="30" r="8" stroke="#b87a0a" stroke-width="1.2" fill="none"/>
+          <line x1="44" y1="36" x2="50" y2="42" stroke="#b87a0a" stroke-width="1.5" stroke-linecap="round"/>
+          <text x="4" y="60" font-family="Reenie Beanie, cursive" font-size="9" fill="#8a7f72">fraud detect</text>
+        </svg>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- HERO -->
+      <header style="margin-bottom:4rem">
+        <div class="tags">
+          <span class="tag">UX/UI Interaction Design</span>
+          <span class="tag">Data Visualisation</span>
+          <span class="tag">Lead Researcher</span>
+        </div>
+
+        <h1 class="hero-h">
+          Fraud Detection<br/>
+          <span class="squiggle-wrap" style="color: var(--fd-blue);">Dashboard
+            <svg viewBox="0 0 210 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2,8 C35,3 70,13 105,7 C140,2 175,11 208,7" stroke="#b87a0a" stroke-width="3" fill="none" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </h1>
+
+        <p class="hero-sub">Case Study — Mastercard · 4 months</p>
+
+        <p class="hero-p">
+          Transforming complex fraud data into <span class="hl-y">actionable insights</span> — supporting faster, clearer, and more confident fraud investigations.
+        </p>
+
+        <div class="hero-video">
+          <video autoplay muted loop playsinline>
+            <source src="../Images/Mastercard-IAT333.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="s-n">60%</div>
+            <div class="s-l">Less analysis time</div>
+            <div class="s-sub">Post-redesign</div>
+          </div>
+          <div class="stat">
+            <div class="s-n">50+</div>
+            <div class="s-l">Rules trackable</div>
+            <div class="s-sub">All in one view</div>
+          </div>
+          <div class="stat">
+            <div class="s-n">3</div>
+            <div class="s-l">Key personas</div>
+            <div class="s-sub">Identified via research</div>
+          </div>
+          <div class="stat">
+            <div class="s-n">6</div>
+            <div class="s-l">Analyst interviews</div>
+            <div class="s-sub">Weekly sessions</div>
+          </div>
+        </div>
+
+        <div class="meta">
+          <div><div class="m-k">Timeline</div><div class="m-v">4 months</div></div>
+          <div><div class="m-k">My Role</div><div class="m-v">Lead Researcher<br/>Comms Co-Lead</div></div>
+          <div><div class="m-k">Team</div><div class="m-v">5 members</div></div>
+          <div><div class="m-k">Tools</div><div class="m-v">Figma, User Research<br/>Data Visualisation</div></div>
+        </div>
+      </header>
+
+      <!-- 00 OVERVIEW -->
+      <section id="overview" class="sec rev">
+        <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
+        <h2 class="sec-h">The Problem</h2>
+        <p class="sec-lead">Mastercard's fraud dashboard relied on dense data tables and fragmented views — making it difficult to spot trends, assess performance, and prioritise investigations.</p>
+        <div class="rule"></div>
+
+        <div class="g2" style="margin-bottom:2rem">
+          <div class="nc">
+            <div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Dense tables</div>
+            <div class="nc-t">No visual patterns</div>
+            <div class="nc-d">Critical fraud signals buried in rows and columns — analysts had to manually scroll and mentally reconstruct trends</div>
+          </div>
+          <div class="nc">
+            <div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Fragmented</div>
+            <div class="nc-t">Scattered across tabs</div>
+            <div class="nc-d">Information split across multiple views, forcing constant context-switching and loss of the bigger picture</div>
+          </div>
+          <div class="nc">
+            <div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">No context</div>
+            <div class="nc-t">Spikes unexplained</div>
+            <div class="nc-d">When fraud spikes occurred, analysts had no immediate reason why — leading to uncertainty and delayed responses</div>
+          </div>
+          <div class="nc">
+            <div class="nc-n">50+</div>
+            <div class="nc-t">Rules, no overview</div>
+            <div class="nc-d">With 50+ detection rules running simultaneously, there was no way to compare performance or see which needed attention</div>
+          </div>
+        </div>
+
+        <div class="sub">Design Goals</div>
+        <div class="flist">
+          <div class="fr"><div class="fr-i">🎯</div><div><div class="fr-t">Improve data accuracy</div><div class="fr-d">Detect and reduce false positives that overwhelm analysts and erode trust in the system.</div></div></div>
+          <div class="fr"><div class="fr-i">🔄</div><div><div class="fr-t">Flexible data interpretation</div><div class="fr-d">Alerts must be comparable, well-documented, and audit-ready across teams.</div></div></div>
+          <div class="fr"><div class="fr-i">🛡</div><div><div class="fr-t">Protect customers and merchants</div><div class="fr-d">Showing direct fraud impact helps analysts connect data to real-world consequences.</div></div></div>
+          <div class="fr"><div class="fr-i">👥</div><div><div class="fr-t">Improve team collaboration</div><div class="fr-d">Shared knowledge and visibility across teams reduces risk and improves detection rates.</div></div></div>
+        </div>
+
+        <div class="sub">Tools &amp; Methods</div>
+        <div class="tools">
+          <span class="tool">Figma</span>
+          <span class="tool">User Interviews</span>
+          <span class="tool">Journey Mapping</span>
+          <span class="tool">Thematic Analysis</span>
+          <span class="tool">Data Visualisation</span>
+          <span class="tool">Workshop Facilitation</span>
+          <span class="tool">Stakeholder Comms</span>
+        </div>
+      </section>
+
+      <!-- 01 MY ROLE -->
+      <section id="contrib" class="sec rev">
+        <div class="phase"><div class="p-dot">1</div><span class="p-txt">My Role</span></div>
+        <h2 class="sec-h">My Contributions</h2>
+        <p class="sec-lead">As Lead Researcher and Communication Co-Lead, I owned the end of the process that turns ambiguous user needs into clear design decisions.</p>
+        <div class="rule"></div>
+
+        <div class="g3">
+          <div class="ic"><div class="ic-ico">🔍</div><div class="ic-t">Lead Researcher</div><div class="ic-d">Conducted weekly stakeholder interviews with Mastercard's fraud analyst team. Created journey maps for Jordan and Chen. Led user workshops to validate design concepts.</div></div>
+          <div class="ic"><div class="ic-ico">💬</div><div class="ic-t">Communication Co-Lead</div><div class="ic-d">Facilitated weekly syncs with Mastercard's Product Design team. Presented research findings and design iterations. Documented decisions and coordinated cross-functional collaboration.</div></div>
+          <div class="ic"><div class="ic-ico">🎨</div><div class="ic-t">Design Contributions</div><div class="ic-d">Co-designed the Visual Insider dashboard concept. Created wireframes and prototypes for testing. Developed the data visualisation strategy for fraud metrics.</div></div>
+        </div>
+      </section>
+
+      <!-- 02 PERSONAS -->
+      <section id="personas" class="sec rev">
+        <div class="phase"><div class="p-dot">2</div><span class="p-txt">User Personas</span></div>
+        <h2 class="sec-h">Three Users,<br/>Three Different Needs</h2>
+        <p class="sec-lead">Through research, we identified three key personas representing the different types of users interacting with the fraud dashboard.</p>
+        <div class="rule"></div>
+
+        <div class="g3">
+          <div class="pcard">
+            <div class="pcard-av">J</div>
+            <div class="pcard-name">Jordan Mercer</div>
+            <div class="pcard-role">Fraud Rule Creator</div>
+            <div class="pcard-quote">"Every rule I write could protect thousands or block the wrong user."</div>
+            <div class="pcard-sub">Goals</div>
+            <div class="pcard-list">
+              <div class="pcard-item">Prevent new types of fraud</div>
+              <div class="pcard-item">Limit friction for legitimate customers</div>
+              <div class="pcard-item">Test rules in a safe environment</div>
+            </div>
+            <div class="pcard-sub">Frustrations</div>
+            <div class="pcard-list">
+              <div class="pcard-item">Hard to predict rule behaviour in real scenarios</div>
+              <div class="pcard-item">Complex audit processes and limited visibility</div>
+            </div>
+          </div>
+          <div class="pcard">
+            <div class="pcard-av">B</div>
+            <div class="pcard-name">Blair Nelson</div>
+            <div class="pcard-role">Senior Fraud Analyst</div>
+            <div class="pcard-quote">"Every rule must be designed given small oversights can cost millions."</div>
+            <div class="pcard-sub">Goals</div>
+            <div class="pcard-list">
+              <div class="pcard-item">Maintain fraud defenses to minimise losses</div>
+              <div class="pcard-item">Ensure detection complies with legal standards</div>
+              <div class="pcard-item">Advise junior analysts, promote collaboration</div>
+            </div>
+            <div class="pcard-sub">Frustrations</div>
+            <div class="pcard-list">
+              <div class="pcard-item">Legacy systems causing workflow delays</div>
+              <div class="pcard-item">Fragmented dashboards limiting team collaboration</div>
+            </div>
+          </div>
+          <div class="pcard">
+            <div class="pcard-av">C</div>
+            <div class="pcard-name">Chen Li</div>
+            <div class="pcard-role">Senior Executive</div>
+            <div class="pcard-quote">"Fraud down 10% isn't enough — every investment must be justified."</div>
+            <div class="pcard-sub">Goals</div>
+            <div class="pcard-list">
+              <div class="pcard-item">Lower fraud losses without harming customer experience</div>
+              <div class="pcard-item">Keep fraud strategies ahead of industry trends</div>
+            </div>
+            <div class="pcard-sub">Frustrations</div>
+            <div class="pcard-list">
+              <div class="pcard-item">Rule data disconnected from business-level impact</div>
+              <div class="pcard-item">High-value dashboards causing panic in teams</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 DIRECTIONS -->
+      <section id="directions" class="sec rev">
+        <div class="phase"><div class="p-dot">3</div><span class="p-txt">Potential Directions</span></div>
+        <h2 class="sec-h">Three Directions<br/>We Explored</h2>
+        <p class="sec-lead">We evaluated three distinct design directions before converging on the one that served all three personas most effectively.</p>
+        <div class="rule"></div>
+
+        <div class="g3">
+          <div class="dcard">
+            <div class="dcard-label">Direction A</div>
+            <div class="dcard-t">Safe Sandbox &amp; Simulation</div>
+            <div class="dcard-d">Enable safe, real-time rule testing in a secure sandbox. Addresses Jordan's need for side-by-side comparison and bulk scoring simulations before go-live.</div>
+          </div>
+          <div class="dcard chosen">
+            <div class="dcard-label">✓ Chosen Direction</div>
+            <div class="dcard-t">Fraud Impact Dashboard</div>
+            <div class="dcard-d">Connect fraud rule performance to business outcomes and ROI. Translates metrics into money saved, shows timeline vs industry benchmarks, and provides storytelling visuals around rule deployment.</div>
+          </div>
+          <div class="dcard">
+            <div class="dcard-label">Direction C</div>
+            <div class="dcard-t">Compliance &amp; Audit Assistant</div>
+            <div class="dcard-d">Automate audit readiness and documentation. Addresses Blair's pain around audit prep — auto-generated reports, real-time compliance scoring, and evidence library.</div>
+          </div>
+        </div>
+
+        <div class="quote">
+          <p>"We chose the Fraud Impact Dashboard because it directly addressed all three personas while providing the most immediate value to the organisation."</p>
+        </div>
+      </section>
+
+      <!-- 04 JOURNEY MAP -->
+      <section id="journey" class="sec rev">
+        <div class="phase"><div class="p-dot">4</div><span class="p-txt">Journey Mapping</span></div>
+        <h2 class="sec-h">Jordan's Workflow</h2>
+        <p class="sec-lead">We mapped Jordan's entire fraud rule creation process to identify exactly where friction occurred and where design could intervene.</p>
+        <div class="rule"></div>
+
+        <div class="slist" style="margin-bottom:2rem">
+          <div class="st"><div class="st-n">01</div><div><div class="st-t">Observe &amp; Analyse</div><div class="st-d">Understand emerging fraud patterns and identify weaknesses in current rule sets.</div></div></div>
+          <div class="st"><div class="st-n">02</div><div><div class="st-t">Ideate &amp; Preventative</div><div class="st-d">Design rules that pre-emptively stop emerging fraud patterns before they scale.</div></div></div>
+          <div class="st"><div class="st-n">03</div><div><div class="st-t">Detect &amp; Simulate</div><div class="st-d">Validate that the new rule detects fraud accurately and efficiently without false positives.</div></div></div>
+          <div class="st"><div class="st-n">04</div><div><div class="st-t">Deploy &amp; Mitigate</div><div class="st-d">Release the new rule into production to minimise active risk across transactions.</div></div></div>
+          <div class="st"><div class="st-n">05</div><div><div class="st-t">Evaluate &amp; Learn</div><div class="st-d">Measure post-deployment performance and feed insights back into the lifecycle.</div></div></div>
+        </div>
+
+        <div class="imgs c1">
+          <div class="iw">
+            <img src="https://inayatgulati.github.io/Inayat_Portfolio/Images/UJ2.png" alt="Fraud Rule Creator Journey Map"/>
+            <div class="icap">Jordan's user journey map — fraud rule creation lifecycle from pattern detection to post-deployment evaluation</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 WORKSHOP -->
+      <section id="workshop" class="sec rev">
+        <div class="phase"><div class="p-dot">5</div><span class="p-txt">Design Workshop</span></div>
+        <h2 class="sec-h">Testing With<br/>Real Scenarios</h2>
+        <p class="sec-lead">We ran peer test workshops where participants role-played as fraud analysts — using game mechanics to surface real usability insights.</p>
+        <div class="rule"></div>
+
+        <div class="sub">Workshop Activities</div>
+        <div class="flist" style="margin-bottom:2rem">
+          <div class="fr"><div class="fr-i">👁</div><div><div class="fr-t">Eye Doctor Game</div><div class="fr-d">Participants compared visual designs to identify which presented risk signals more effectively — surfacing clarity and hierarchy issues.</div></div></div>
+          <div class="fr"><div class="fr-i">🔎</div><div><div class="fr-t">Murder Mystery Game</div><div class="fr-d">Teams analysed mock customer data to uncover fraudulent accounts — directly testing pattern recognition abilities in realistic conditions.</div></div></div>
+          <div class="fr"><div class="fr-i">✏️</div><div><div class="fr-t">Dashboard Creation</div><div class="fr-d">Participants designed their ideal fraud detection dashboard with pen and paper — revealing mental models and priority hierarchies.</div></div></div>
+        </div>
+
+        <div class="sub">Key Insights from Testing</div>
+        <div class="flist" style="margin-bottom:2rem">
+          <div class="fr"><div class="fr-i">✦</div><div><div class="fr-t">Clarity over density</div><div class="fr-d">Participants strongly preferred clearer, labelled designs — readability directly increased perceived trustworthiness of the data.</div></div></div>
+          <div class="fr"><div class="fr-i">📊</div><div><div class="fr-t">Key metrics must be prominent</div><div class="fr-d">Transaction spikes, total value, and pattern indicators need to be immediately visible — not buried below the fold.</div></div></div>
+          <div class="fr"><div class="fr-i">🗺</div><div><div class="fr-t">Context is non-negotiable</div><div class="fr-d">Legends, consistent scales, and regional context were specifically requested — data without context caused confusion and distrust.</div></div></div>
+          <div class="fr"><div class="fr-i">🖱</div><div><div class="fr-t">One-click drill-downs</div><div class="fr-d">Participants wanted to go deeper without leaving the main view — progressive disclosure, not navigation away.</div></div></div>
+        </div>
+
+        <div class="sub">Revisions Identified</div>
+        <div class="ilist">
+          <div class="it">
+            <div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Charts without regional or time context</div></div>
+            <div class="it-arr">→</div>
+            <div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Contextual data (regions, times, labels) added to all comparison charts</div></div>
+          </div>
+          <div class="it">
+            <div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Free-form dashboard layout causing confusion</div></div>
+            <div class="it-arr">→</div>
+            <div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Structured dashboard components with guided layout and pre-made visual examples</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 SOLUTION -->
+      <section id="solution" class="sec rev">
+        <div class="phase"><div class="p-dot">6</div><span class="p-txt">Design Solution</span></div>
+        <h2 class="sec-h">The Redesigned<br/>Dashboard</h2>
+        <p class="sec-lead">Three interconnected views — each solving a specific part of the analysts' workflow.</p>
+        <div class="rule"></div>
+
+        <div class="vid-block">
+          <video autoplay muted loop playsinline>
+            <source src="../Images/Main dashboard.mp4" type="video/mp4" />
+          </video>
+          <div class="vid-cap">Main Dashboard Overview<span>Centralised view showing fraud trends, geographic patterns, merchant activity, and rule performance in real-time</span></div>
+        </div>
+        <div class="vid-block">
+          <video autoplay muted loop playsinline>
+            <source src="../Images/All rules.mp4" type="video/mp4" />
+          </video>
+          <div class="vid-cap">Rule Performance Analytics<span>Interactive visualisation for all 50+ fraud rules — compare metrics, identify underperforming rules, and prioritise with colour-coded severity</span></div>
+        </div>
+        <div class="vid-block">
+          <video autoplay muted loop playsinline>
+            <source src="../Images/Ai spec.mp4" type="video/mp4" />
+          </video>
+          <div class="vid-cap">AI-Powered Spike Explanations<span>Contextual insights that explain anomalies in fraud activity — reducing investigation setup time by 60%</span></div>
+        </div>
+
+        <div class="sub">Key Features</div>
+        <div class="flist">
+          <div class="fr"><div class="fr-i">📈</div><div><div class="fr-t">Main Dashboard</div><div class="fr-d">Centralised overview with fraud trends, geographic patterns, merchant activity, and rule performance all in one view.</div></div></div>
+          <div class="fr"><div class="fr-i">📋</div><div><div class="fr-t">Rule-Specific Pages</div><div class="fr-d">Dedicated views for each of the 50+ fraud rules with detailed metrics and transaction samples.</div></div></div>
+          <div class="fr"><div class="fr-i">🤖</div><div><div class="fr-t">Spike Explanation Engine</div><div class="fr-d">AI-generated insights that explain sudden changes in fraud activity — the "why" behind every anomaly.</div></div></div>
+          <div class="fr"><div class="fr-i">📅</div><div><div class="fr-t">Unified Date Filtering</div><div class="fr-d">Global time controls with chart-specific refinement — one system for the entire dashboard.</div></div></div>
+          <div class="fr"><div class="fr-i">🚦</div><div><div class="fr-t">Visual Hierarchy</div><div class="fr-d">Colour-coded severity indicators and progressive disclosure of complex information.</div></div></div>
+          <div class="fr"><div class="fr-i">📤</div><div><div class="fr-t">Export Capabilities</div><div class="fr-d">One-click report generation for stakeholder communication and audit documentation.</div></div></div>
+        </div>
+      </section>
+
+      <!-- 07 PROBLEMS SOLVED -->
+      <section id="problems" class="sec rev">
+        <div class="phase"><div class="p-dot">7</div><span class="p-txt">Problems Solved</span></div>
+        <h2 class="sec-h">Six Problems,<br/>Six Solutions</h2>
+        <p class="sec-lead">Every design decision mapped directly back to a specific, research-validated pain point.</p>
+        <div class="rule"></div>
+
+        <div class="ilist">
+          <div class="it">
+            <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Critical patterns buried in endless rows and columns</div></div>
+            <div class="it-arr">→</div>
+            <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Interactive charts and visual representations that highlight patterns instantly</div></div>
+          </div>
+          <div class="it">
+            <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Information scattered across multiple tabs and views</div></div>
+            <div class="it-arr">→</div>
+            <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Centralised dashboard with all critical information in one view</div></div>
+          </div>
+          <div class="it">
+            <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Technical jargon creating cognitive friction and slowing decisions</div></div>
+            <div class="it-arr">→</div>
+            <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Plain language labels with contextual tooltips for clarity</div></div>
+          </div>
+          <div class="it">
+            <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">50+ rules with no way to compare or prioritise</div></div>
+            <div class="it-arr">→</div>
+            <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Interactive dot chart showing all rules at once with sorting and filtering</div></div>
+          </div>
+          <div class="it">
+            <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Fraud spikes with no immediate explanation</div></div>
+            <div class="it-arr">→</div>
+            <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">AI-powered explanations providing context for every spike automatically</div></div>
+          </div>
+          <div class="it">
+            <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Overly complex filter systems slowing investigation setup</div></div>
+            <div class="it-arr">→</div>
+            <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Unified date controls with quick presets and custom ranges</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 08 BEFORE & AFTER -->
+      <section id="beforeafter" class="sec rev">
+        <div class="phase"><div class="p-dot">8</div><span class="p-txt">Before &amp; After</span></div>
+        <h2 class="sec-h">The Transformation</h2>
+        <p class="sec-lead">From a cluttered table view to a clear, hierarchical dashboard that surfaces the right information at the right time.</p>
+        <div class="rule"></div>
+
+        <div class="ba-grid">
+          <div class="ba-wrap before">
+            <img src="https://inayatgulati.github.io/Inayat_Portfolio/Images/before.png" alt="Before design"/>
+            <div class="ba-label">Before — cluttered, low clarity</div>
+          </div>
+          <div class="ba-wrap after">
+            <img src="https://inayatgulati.github.io/Inayat_Portfolio/Images/Chart 2.png" alt="After design"/>
+            <div class="ba-label">After — clear hierarchy + context</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 09 IMPACT -->
+      <section id="impact" class="sec rev">
+        <div class="phase"><div class="p-dot">9</div><span class="p-txt">Impact &amp; Results</span></div>
+        <h2 class="sec-h">Measured Outcomes</h2>
+        <p class="sec-lead">Validated through testing with the same fraud analyst team who informed the research.</p>
+        <div class="rule"></div>
+
+        <div class="g2" style="margin-bottom:2rem">
+          <div class="nc"><div class="nc-n">60%</div><div class="nc-t">Less time interpreting data</div><div class="nc-d">Analysts spend more time on strategic fraud prevention, less on manual comparison</div></div>
+          <div class="nc"><div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Faster</div><div class="nc-t">Pattern recognition speed</div><div class="nc-d">Visual comparison across time periods replaced manual side-by-side analysis</div></div>
+          <div class="nc"><div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Higher</div><div class="nc-t">Decision confidence</div><div class="nc-d">Context provided for anomalies increased analysts' confidence in their investigation conclusions</div></div>
+          <div class="nc"><div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Improved</div><div class="nc-t">Team collaboration</div><div class="nc-d">Clear, exportable visualisations improved cross-team communication and shared knowledge</div></div>
+        </div>
+
+        <div class="quote">
+          <p>"The new dashboard completely transformed how we work. What used to take hours of manual comparison now takes minutes. The AI explanations give us confidence in our decisions."</p>
+          <div class="quote-attr">— Senior Fraud Analyst, Mastercard</div>
+        </div>
+      </section>
+
+      <!-- 10 REFLECTION -->
+      <section id="reflection" class="sec rev">
+        <div class="phase"><div class="p-dot">10</div><span class="p-txt">Reflection</span></div>
+        <h2 class="sec-h">What I Learned</h2>
+        <p class="sec-lead">Enterprise dashboard design in a high-stakes environment taught me things no other project type could.</p>
+        <div class="rule"></div>
+
+        <div class="g2">
+          <div class="rc"><div class="rc-t">Context is king</div><div class="rc-d">Data without context leads to confusion and delayed decisions. Providing the "why" behind metrics is as important as the metrics themselves — especially in fraud detection where wrong calls have real consequences.</div></div>
+          <div class="rc"><div class="rc-t">Progressive disclosure</div><div class="rc-d">In complex systems, showing everything at once overwhelms users. Layering information through interaction creates clarity — the overview should earn the drill-down, not replace it.</div></div>
+          <div class="rc"><div class="rc-t">Test with real scenarios</div><div class="rc-d">Workshop activities that simulate actual work tasks reveal insights that interviews alone cannot. The Murder Mystery game surfaced pattern recognition issues we'd never have found in a standard usability test.</div></div>
+          <div class="rc"><div class="rc-t">Visual hierarchy is a design decision</div><div class="rc-d">Colour, size, and position guide attention. In a dashboard where every metric competes for focus, strategic visual hierarchy is the difference between a tool and a liability.</div></div>
+        </div>
+
+        <!-- Closing scrawl -->
+        <div style="margin-top:3rem; padding:1.5rem; border:1.5px solid rgba(26,22,18,0.12); background:var(--paper-dark); position:relative; transform:rotate(-0.3deg)">
+          <div style="position:absolute; top:-11px; left:20px; width:40px; height:20px; background:rgba(30,58,95,0.22); border-top:1px solid rgba(30,58,95,0.35); border-bottom:1px solid rgba(30,58,95,0.35); transform:rotate(1.5deg)"></div>
+          <p style="font-family:var(--font-serif); font-size:1.1rem; font-style:italic; color:var(--ink-light); line-height:1.7">
+            The biggest insight was that <span class="hl-y">clarity is a form of trust</span>. When analysts can see not just what is happening but why, they stop second-guessing the tool and start using it to do their best work.
+          </p>
+          <p style="font-family:var(--font-scrawl); font-size:18px; color:var(--fd-blue); margin-top:0.75rem; transform:rotate(-1deg); display:inline-block">— Inayat ✏️</p>
+          <div class="corner-fold"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>© 2025 Inayat &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; Enterprise UX · Data Visualisation · Research</footer>
+
+    <script>
+      // Spiral holes
+      const spiral = document.getElementById('spiralBinding');
+      const count = Math.floor(window.innerHeight / 44) + 2;
+      for (let i = 0; i < count; i++) {
+        const h = document.createElement('div');
+        h.className = 'spiral-hole';
+        spiral.appendChild(h);
+      }
+
+      // Scroll reveal
+      const ro = new IntersectionObserver(es => es.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('in');
+      }), { threshold: 0.06 });
+      document.querySelectorAll('.rev').forEach(el => ro.observe(el));
+
+      // Active sidenav
+      const links = document.querySelectorAll('.side-a');
+      const secs  = document.querySelectorAll('.sec');
+      const so = new IntersectionObserver(es => {
+        es.forEach(e => {
+          if (e.isIntersecting) {
+            links.forEach(l => l.classList.remove('active'));
+            const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
+            if (a) a.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-15% 0px -65% 0px' });
+      secs.forEach(s => so.observe(s));
+    </script>
+  </body>
 </html>
