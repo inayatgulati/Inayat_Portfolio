@@ -1,533 +1,1274 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Discover Isola — Inayat</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Kalam:wght@300;400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:     #0a0a0a;
-      --sur:    rgba(255,255,255,0.03);
-      --bdr:    rgba(255,255,255,0.08);
-      --text:   #f0f0f0;
-      --muted:  #888;
-      --dim:    #444;
-      --teal:   #14b8a6;
-      --teal-l: #2dd4bf;
-      --teal-d: #0d9488;
-      --nav-h:  64px;
-      --side-w: 200px;
+      --paper: #faf8f2;
+      --paper-dark: #f0ecdf;
+      --paper-worn: #e8e2d0;
+      --ink: #1a1612;
+      --ink-light: #3d3530;
+      --ink-faint: #8a7f72;
+      --pencil: #b8b0a0;
+      --pencil-light: #d4cfc4;
+      --red: #c0392b;
+      --blue: #2c5f8a;
+      --teal: #2e7d6e;
+      --teal-l: #3a9e8c;
+      /* Isola accent colours — pink/purple/lime from the project's palette, softened for paper */
+      --isola-pink: #b5416b;
+      --isola-purple: #6b4fa8;
+      --isola-lime: #5a8a1e;
+      --yellow: #e8b84b;
+      --green: #3a7d44;
+      --font-hand: 'Caveat', cursive;
+      --font-scrawl: 'Reenie Beanie', cursive;
+      --font-mono: 'Space Mono', monospace;
+      --font-serif: 'EB Garamond', serif;
+      --nav-h: 58px;
+      --side-w: 196px;
     }
+
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Work Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: var(--font-hand);
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ruled paper lines */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.11) 27px, rgba(180,170,155,0.11) 28px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Spiral binding */
+    .spiral-binding {
+      position: fixed;
+      left: 0; top: 0; bottom: 0;
+      width: 32px;
+      background: var(--paper-worn);
+      border-right: 2.5px solid var(--ink);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 24px;
+      gap: 0;
+      pointer-events: none;
+    }
+    .spiral-hole {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--ink);
+      background: var(--paper);
+      margin-bottom: 28px;
+      flex-shrink: 0;
+      box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
+    }
 
     /* NAV */
-    .topnav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); z-index: 200; display: flex; align-items: center; padding: 0 2rem; background: rgba(10,10,10,0.93); backdrop-filter: blur(16px); border-bottom: 1px solid var(--bdr); }
-    .topnav-in { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; letter-spacing: 1px; color: var(--text); text-decoration: none; }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; transition: color .2s; }
-    .nav-links a:hover { color: var(--teal); }
+    .topnav {
+      position: fixed;
+      top: 0; left: 32px; right: 0;
+      height: var(--nav-h);
+      z-index: 150;
+      background: var(--paper);
+      border-bottom: 2.5px solid var(--ink);
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+    }
+    .topnav-in {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-family: var(--font-hand);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+      position: relative;
+    }
+    .logo::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0; right: 0;
+      height: 3px;
+      background: var(--isola-pink);
+      border-radius: 2px;
+      transform: rotate(-0.8deg);
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--font-hand);
+      font-size: 16px;
+      color: var(--ink-faint);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 2px;
+      transition: color 0.2s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--ink);
+      transition: width 0.25s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a:hover::after { width: 100%; }
 
     /* SIDENAV */
-    .sidenav { position: fixed; top: var(--nav-h); left: 0; width: var(--side-w); height: calc(100vh - var(--nav-h)); padding: 2.5rem 1rem 2rem 2rem; border-right: 1px solid var(--bdr); background: var(--bg); display: flex; flex-direction: column; gap: 2rem; overflow-y: auto; overflow-x: hidden; z-index: 100; }
-    .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--teal); text-decoration: none; font-size: 0.78rem; font-weight: 500; transition: gap .2s; white-space: nowrap; }
+    .sidenav {
+      position: fixed;
+      top: var(--nav-h);
+      left: 32px;
+      width: var(--side-w);
+      height: calc(100vh - var(--nav-h));
+      padding: 2rem 1rem 2rem 1.5rem;
+      border-right: 1.5px solid rgba(180,170,155,0.35);
+      background: var(--paper);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      overflow-y: auto;
+      z-index: 100;
+    }
+    .sidenav::before {
+      content: '';
+      position: absolute;
+      left: 44px; top: 0; bottom: 0;
+      width: 1.5px;
+      background: rgba(181,65,107,0.12);
+      pointer-events: none;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--isola-purple);
+      text-decoration: none;
+      font-family: var(--font-hand);
+      font-size: 15px;
+      font-weight: 600;
+      transition: gap 0.2s;
+      white-space: nowrap;
+    }
     .back-link:hover { gap: 10px; }
-    .side-lbl { font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--dim); font-weight: 600; margin-bottom: 0.75rem; }
+
+    .side-lbl {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--pencil);
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+    }
     .side-list { display: flex; flex-direction: column; }
-    .side-a { display: flex; align-items: center; gap: 8px; padding: 7px 0 7px 10px; color: var(--dim); text-decoration: none; font-size: 0.77rem; border-left: 2px solid transparent; transition: color .2s, border-color .2s; white-space: nowrap; }
-    .side-a:hover { color: var(--text); border-left-color: var(--dim); }
-    .side-a.active { color: var(--teal-l); border-left-color: var(--teal); font-weight: 500; }
-    .side-num { font-size: 0.6rem; color: var(--dim); min-width: 16px; }
-    .side-a.active .side-num { color: var(--teal); }
+    .side-a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 0 6px 10px;
+      color: var(--pencil);
+      text-decoration: none;
+      font-family: var(--font-hand);
+      font-size: 15px;
+      border-left: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .side-a:hover { color: var(--ink-light); border-left-color: var(--pencil); }
+    .side-a.active { color: var(--isola-purple); border-left-color: var(--isola-purple); font-weight: 700; }
+    .side-num {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--pencil);
+      min-width: 16px;
+    }
+    .side-a.active .side-num { color: var(--isola-purple); }
+
+    /* Doodle map at bottom of sidenav */
+    .side-doodle {
+      margin-top: auto;
+      padding-top: 1rem;
+      opacity: 0.3;
+      pointer-events: none;
+    }
 
     /* MAIN */
-    .main { margin-left: var(--side-w); padding: calc(var(--nav-h) + 3rem) 3.5rem 6rem 3rem; max-width: calc(900px + var(--side-w)); }
+    .main {
+      margin-left: calc(32px + var(--side-w));
+      padding: calc(var(--nav-h) + 3rem) 3.5rem 7rem 3rem;
+      max-width: calc(860px + var(--side-w));
+      position: relative;
+      z-index: 1;
+    }
 
     /* HERO */
-    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
-    .tag { font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--teal); padding: 3px 10px; border: 1px solid rgba(20,184,166,.25); border-radius: 20px; background: rgba(20,184,166,.05); }
-    .hero-h { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.4rem,4vw,3.6rem); font-weight: 300; line-height: 1.08; margin-bottom: 0.5rem; }
-    .hero-h em { font-style: italic; color: var(--teal-l); }
-    .hero-sub { font-size: 0.95rem; color: var(--muted); margin-bottom: 1rem; }
-    .hero-p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; max-width: 520px; margin-bottom: 1.75rem; }
+    .tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--isola-purple);
+      padding: 3px 10px;
+      border: 1.5px solid rgba(107,79,168,0.3);
+      background: rgba(107,79,168,0.05);
+      transform: rotate(-0.3deg);
+      display: inline-block;
+    }
+    .tag:nth-child(2) { transform: rotate(0.5deg); color: var(--isola-pink); border-color: rgba(181,65,107,0.3); background: rgba(181,65,107,0.05); }
+    .tag:nth-child(3) { transform: rotate(-0.2deg); color: var(--isola-lime); border-color: rgba(90,138,30,0.3); background: rgba(90,138,30,0.05); }
+
+    .hero-h {
+      font-family: var(--font-hand);
+      font-size: clamp(2.6rem, 5vw, 4.2rem);
+      font-weight: 700;
+      line-height: 1.05;
+      margin-bottom: 0.5rem;
+      letter-spacing: -1px;
+      position: relative;
+    }
+    .hero-h .squiggle-wrap {
+      position: relative;
+      display: inline-block;
+    }
+    .hero-h .squiggle-wrap svg {
+      position: absolute;
+      bottom: -6px; left: -4px;
+      width: calc(100% + 8px);
+      pointer-events: none;
+    }
+    .hero-sub {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.75rem;
+    }
+    .hero-p {
+      font-family: var(--font-hand);
+      font-size: 19px;
+      color: var(--ink-light);
+      line-height: 1.65;
+      max-width: 520px;
+      margin-bottom: 1.75rem;
+    }
 
     /* HERO VIDEO */
-    .hero-video { width: 100%; border-radius: 14px; overflow: hidden; border: 1px solid var(--bdr); margin-bottom: 2rem; background: #111; }
-    .hero-video video { width: 100%; display: block; max-height: 460px; object-fit: cover; }
+    .hero-video {
+      width: 100%;
+      overflow: hidden;
+      border: 2px solid var(--ink);
+      margin-bottom: 1.5rem;
+      background: #111;
+      position: relative;
+      transform: rotate(-0.3deg);
+      box-shadow: 5px 5px 0 rgba(26,22,18,0.12);
+    }
+    /* tape strip */
+    .hero-video::before {
+      content: '';
+      position: absolute;
+      top: -11px; left: 30px;
+      width: 50px; height: 22px;
+      background: rgba(107,79,168,0.32);
+      border-top: 1px solid rgba(107,79,168,0.4);
+      border-bottom: 1px solid rgba(107,79,168,0.4);
+      transform: rotate(-1deg);
+      z-index: 10;
+    }
+    .hero-video video {
+      width: 100%;
+      display: block;
+      max-height: 460px;
+      object-fit: cover;
+    }
 
     /* STATS */
-    .stats { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--bdr); border-radius: 14px; overflow: hidden; margin-bottom: 1.75rem; }
-    .stat { padding: 1.2rem 1.1rem; background: var(--sur); border-right: 1px solid var(--bdr); }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 2px solid var(--ink);
+      margin-bottom: 1.5rem;
+      transform: rotate(0.2deg);
+      box-shadow: 4px 4px 0 rgba(26,22,18,0.1);
+      background: var(--paper-dark);
+    }
+    .stat {
+      padding: 1.1rem 1rem;
+      border-right: 1.5px solid rgba(26,22,18,0.2);
+      position: relative;
+    }
     .stat:last-child { border-right: none; }
-    .s-n { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 700; color: var(--teal-l); line-height: 1; margin-bottom: 5px; }
-    .s-l { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
-    .s-sub { font-size: 0.65rem; color: var(--dim); margin-top: 2px; }
+    .s-n {
+      font-family: var(--font-hand);
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--isola-purple);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .s-l {
+      font-family: var(--font-hand);
+      font-size: 14px;
+      color: var(--ink-light);
+      line-height: 1.35;
+    }
+    .s-sub {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 1px;
+      color: var(--pencil);
+      margin-top: 2px;
+    }
 
     /* META */
-    .meta { display: flex; gap: 2rem; flex-wrap: wrap; padding-top: 1.25rem; border-top: 1px solid var(--bdr); margin-bottom: 5rem; }
-    .m-k { font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 4px; }
-    .m-v { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+    .meta {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      padding-top: 1.25rem;
+      border-top: 2px solid rgba(26,22,18,0.15);
+      margin-bottom: 5rem;
+    }
+    .m-k {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--isola-purple);
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+    .m-v {
+      font-family: var(--font-hand);
+      font-size: 15px;
+      color: var(--ink-light);
+      line-height: 1.5;
+    }
 
     /* SECTION */
     .sec { margin-bottom: 5rem; }
-    .phase { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
-    .p-dot { width: 20px; height: 20px; border-radius: 50%; background: rgba(20,184,166,.1); border: 1px solid rgba(20,184,166,.3); display: flex; align-items: center; justify-content: center; font-size: 0.58rem; color: var(--teal); font-weight: 700; }
-    .p-txt { font-size: 0.65rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--teal); font-weight: 600; }
-    .sec-h { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 300; line-height: 1.15; margin-bottom: 0.5rem; }
-    .sec-lead { font-size: 0.875rem; color: var(--muted); line-height: 1.8; max-width: 580px; margin-bottom: 1.5rem; }
-    .rule { height: 1px; background: var(--bdr); margin-bottom: 1.5rem; }
-    .sub { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 0.875rem; }
+
+    .phase {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 0.75rem;
+    }
+    .p-dot {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--ink);
+      font-weight: 700;
+    }
+    .p-txt {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+    .sec-h {
+      font-family: var(--font-hand);
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+      position: relative;
+      display: inline-block;
+    }
+    .sec-h::after {
+      content: '';
+      display: block;
+      height: 3px;
+      background: var(--isola-pink);
+      border-radius: 2px;
+      transform: rotate(-0.5deg);
+      margin-top: 3px;
+      width: 80%;
+    }
+    .sec-lead {
+      font-family: var(--font-hand);
+      font-size: 18px;
+      color: var(--ink-light);
+      line-height: 1.75;
+      max-width: 560px;
+      margin-bottom: 1.5rem;
+      margin-top: 0.5rem;
+    }
+    .rule {
+      height: 1.5px;
+      background: rgba(26,22,18,0.12);
+      margin-bottom: 1.5rem;
+    }
+    .sub {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--isola-purple);
+      margin-bottom: 0.875rem;
+    }
 
     /* GRIDS */
-    .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.5rem; }
-    .g2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 1.5rem; }
+    .g3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 1.5rem;
+    }
+    .g2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 1.5rem;
+    }
 
-    /* NUMBER CARD */
-    .nc { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
-    .nc-n { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--teal-l); line-height: 1; margin-bottom: 6px; }
-    .nc-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; }
-    .nc-d { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
+    /* NOTEBOOK CARD */
+    .nc {
+      background: var(--paper-dark);
+      border: 2px solid var(--ink);
+      padding: 1.1rem;
+      position: relative;
+      transition: transform 0.2s;
+    }
+    .nc:hover { transform: translate(-2px,-2px); }
+    .nc::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; right: -4px;
+      width: 100%; height: 100%;
+      border: 1.5px solid rgba(26,22,18,0.18);
+      z-index: -1;
+    }
+    .nc-n {
+      font-family: var(--font-hand);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--isola-purple);
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+    .nc-t {
+      font-family: var(--font-hand);
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .nc-d {
+      font-family: var(--font-hand);
+      font-size: 14px;
+      color: var(--ink-light);
+      line-height: 1.5;
+    }
 
     /* ICON CARD */
-    .ic { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
-    .ic-ico { font-size: 1rem; margin-bottom: 0.6rem; }
-    .ic-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; }
-    .ic-d { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
+    .ic {
+      background: var(--paper-dark);
+      border: 2px solid var(--ink);
+      padding: 1.1rem;
+      position: relative;
+    }
+    .ic::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; right: -4px;
+      width: 100%; height: 100%;
+      border: 1.5px solid rgba(26,22,18,0.18);
+      z-index: -1;
+    }
+    .ic-ico { font-size: 1rem; margin-bottom: 0.5rem; }
+    .ic-t {
+      font-family: var(--font-hand);
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .ic-d {
+      font-family: var(--font-hand);
+      font-size: 13px;
+      color: var(--ink-light);
+      line-height: 1.55;
+    }
 
     /* FINDING ROW */
-    .flist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
-    .fr { display: flex; gap: 0.875rem; align-items: flex-start; padding: 0.875rem 1.1rem; background: var(--sur); border: 1px solid var(--bdr); border-radius: 8px; transition: border-color .2s; }
-    .fr:hover { border-color: rgba(20,184,166,.2); }
-    .fr-i { width: 30px; height: 30px; min-width: 30px; border-radius: 6px; background: rgba(20,184,166,.07); border: 1px solid rgba(20,184,166,.15); display: flex; align-items: center; justify-content: center; font-size: 0.82rem; }
-    .fr-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
-    .fr-d { font-size: 0.77rem; color: var(--muted); line-height: 1.55; }
+    .flist {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 1.5rem;
+    }
+    .fr {
+      display: flex;
+      gap: 0.875rem;
+      align-items: flex-start;
+      padding: 0.875rem 1rem;
+      background: var(--paper-dark);
+      border: 1.5px solid rgba(26,22,18,0.15);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .fr:hover {
+      border-color: rgba(107,79,168,0.4);
+      transform: translateX(2px);
+    }
+    .fr-i {
+      width: 30px; height: 30px; min-width: 30px;
+      border: 1.5px solid rgba(26,22,18,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      background: var(--paper);
+    }
+    .fr-t {
+      font-family: var(--font-hand);
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .fr-d {
+      font-family: var(--font-hand);
+      font-size: 14px;
+      color: var(--ink-light);
+      line-height: 1.55;
+    }
 
     /* STEP LIST */
-    .slist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
-    .st { display: flex; gap: 0.875rem; padding: 0.875rem 1.1rem; background: var(--sur); border: 1px solid var(--bdr); border-radius: 8px; }
-    .st-n { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 700; color: var(--teal); min-width: 20px; line-height: 1.5; }
-    .st-t { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
-    .st-d { font-size: 0.77rem; color: var(--muted); line-height: 1.5; }
+    .slist {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 1.5rem;
+    }
+    .st {
+      display: flex;
+      gap: 0.875rem;
+      padding: 0.875rem 1rem;
+      background: var(--paper-dark);
+      border: 1.5px solid rgba(26,22,18,0.15);
+    }
+    .st-n {
+      font-family: var(--font-hand);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--isola-purple);
+      min-width: 20px;
+      line-height: 1.4;
+    }
+    .st-t {
+      font-family: var(--font-hand);
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .st-d {
+      font-family: var(--font-hand);
+      font-size: 13px;
+      color: var(--ink-light);
+      line-height: 1.5;
+    }
 
     /* ITERATION */
-    .ilist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
-    .it { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: center; gap: 8px; }
-    .it-b { padding: 0.875rem 1rem; border-radius: 8px; border: 1px solid var(--bdr); }
-    .it-b.bef { background: var(--sur); }
-    .it-b.aft { background: rgba(20,184,166,.04); border-color: rgba(20,184,166,.15); }
-    .it-lbl { font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; margin-bottom: 3px; }
-    .it-b.bef .it-lbl { color: var(--dim); }
-    .it-b.aft .it-lbl { color: var(--teal); }
-    .it-txt { font-size: 0.77rem; color: var(--muted); line-height: 1.45; }
-    .it-b.aft .it-txt { color: var(--text); }
-    .it-arr { text-align: center; color: var(--teal); font-size: 0.85rem; }
+    .ilist {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 1.5rem;
+    }
+    .it {
+      display: grid;
+      grid-template-columns: 1fr 28px 1fr;
+      align-items: center;
+      gap: 8px;
+    }
+    .it-b {
+      padding: 0.875rem 1rem;
+      border: 1.5px solid rgba(26,22,18,0.15);
+    }
+    .it-b.bef { background: var(--paper-dark); }
+    .it-b.aft { background: rgba(107,79,168,0.04); border-color: rgba(107,79,168,0.3); }
+    .it-lbl {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .it-b.bef .it-lbl { color: var(--pencil); }
+    .it-b.aft .it-lbl { color: var(--isola-purple); }
+    .it-txt { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.45; }
+    .it-b.aft .it-txt { color: var(--ink); }
+    .it-arr { text-align: center; color: var(--isola-purple); font-size: 1rem; font-weight: 700; }
 
     /* QUOTE */
-    .quote { border-left: 2px solid var(--teal); padding: 0.875rem 1.25rem; margin: 1.25rem 0; background: rgba(20,184,166,.04); border-radius: 0 8px 8px 0; }
-    .quote p { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; line-height: 1.6; color: var(--text); }
-    .quote-attr { font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; }
+    .quote {
+      border-left: 3px solid var(--isola-pink);
+      padding: 0.875rem 1.25rem;
+      margin: 1.25rem 0;
+      background: rgba(181,65,107,0.04);
+      position: relative;
+      transform: rotate(-0.3deg);
+    }
+    .quote::before {
+      content: '';
+      position: absolute;
+      top: -11px; left: 20px;
+      width: 36px; height: 20px;
+      background: rgba(232,184,75,0.38);
+      border-top: 1px solid rgba(232,184,75,0.5);
+      border-bottom: 1px solid rgba(232,184,75,0.5);
+      transform: rotate(1.5deg);
+    }
+    .quote p {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-style: italic;
+      line-height: 1.65;
+      color: var(--ink);
+    }
+    .quote-attr {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: var(--ink-faint);
+      margin-top: 0.5rem;
+      text-transform: uppercase;
+    }
 
     /* REFLECTION */
-    .rc { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 1.25rem; }
-    .rc-t { font-size: 0.82rem; font-weight: 600; color: var(--teal-l); margin-bottom: 6px; }
-    .rc-d { font-size: 0.78rem; color: var(--muted); line-height: 1.7; }
+    .rc {
+      background: var(--paper-dark);
+      border: 1.5px solid rgba(26,22,18,0.15);
+      padding: 1.1rem;
+    }
+    .rc-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; color: var(--isola-purple); margin-bottom: 5px; }
+    .rc-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.7; }
 
     /* IMAGES */
     .imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
     .imgs.c1 { grid-template-columns: 1fr; }
     .imgs.c2 { grid-template-columns: 1fr 1fr; }
-    .imgs.c3 { grid-template-columns: repeat(3,1fr); }
-    .iw { border-radius: 12px; overflow: hidden; border: 1px solid var(--bdr); background: #111; }
+    .imgs.c3 { grid-template-columns: repeat(3, 1fr); }
+    .iw {
+      border: 2px solid var(--ink);
+      background: var(--paper-dark);
+      position: relative;
+      transition: transform 0.2s;
+    }
+    .iw:hover { transform: translate(-2px,-2px); }
+    .iw::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; right: -4px;
+      width: 100%; height: 100%;
+      border: 1.5px solid rgba(26,22,18,0.15);
+      z-index: -1;
+    }
     .iw img { width: 100%; display: block; }
-    .icap { padding: 7px 10px; font-size: 0.7rem; color: var(--dim); border-top: 1px solid var(--bdr); line-height: 1.4; }
+    .icap {
+      padding: 7px 10px;
+      font-family: var(--font-hand);
+      font-size: 13px;
+      color: var(--ink-faint);
+      border-top: 1px solid rgba(26,22,18,0.12);
+      line-height: 1.4;
+    }
 
     /* TOOLS */
-    .tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
-    .tool { font-size: 0.72rem; padding: 4px 12px; border-radius: 20px; background: var(--sur); border: 1px solid var(--bdr); color: var(--muted); }
+    .tools {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .tool {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1.5px solid var(--ink);
+      background: var(--paper);
+      color: var(--ink-light);
+      transform: rotate(-0.5deg);
+      display: inline-block;
+    }
+    .tool:nth-child(2n) { transform: rotate(0.4deg); }
+    .tool:nth-child(3n) { transform: rotate(-0.2deg); }
+
+    /* HIGHLIGHT */
+    .hl-y {
+      background: linear-gradient(120deg, rgba(232,184,75,0)0%, rgba(232,184,75,0.45)10%, rgba(232,184,75,0.45)90%, rgba(232,184,75,0)100%);
+      padding: 0 2px;
+    }
+    .hl-p {
+      background: linear-gradient(120deg, rgba(107,79,168,0)0%, rgba(107,79,168,0.15)10%, rgba(107,79,168,0.15)90%, rgba(107,79,168,0)100%);
+      padding: 0 2px;
+    }
+
+    /* COLOUR SWATCH STRIP */
+    .palette-strip {
+      display: flex;
+      gap: 0;
+      margin-bottom: 1.5rem;
+      border: 2px solid var(--ink);
+      overflow: hidden;
+      transform: rotate(0.3deg);
+      box-shadow: 4px 4px 0 rgba(26,22,18,0.1);
+    }
+    .swatch {
+      flex: 1;
+      height: 56px;
+      display: flex;
+      align-items: flex-end;
+      padding: 5px 7px;
+    }
+    .swatch-lbl {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      mix-blend-mode: difference;
+    }
+
+    /* CORNER FOLD */
+    .corner-fold {
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 24px; height: 24px;
+      background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
+      border-top: 1px solid var(--pencil);
+      border-left: 1px solid var(--pencil);
+      pointer-events: none;
+    }
+
+    /* SCROLL REVEAL */
+    .rev {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .rev.in { opacity: 1; transform: none; }
 
     /* FOOTER */
-    footer { background: #050508; border-top: 1px solid var(--bdr); padding: 1.5rem 2rem; text-align: center; font-size: 0.8rem; color: var(--dim); }
-
-    /* REVEAL */
-    .rev { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
-    .rev.in { opacity: 1; transform: none; }
+    footer {
+      border-top: 2.5px solid var(--ink);
+      padding: 1.25rem 2rem;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--pencil);
+      margin-left: 32px;
+    }
 
     /* RESPONSIVE */
     @media (max-width: 860px) {
       .sidenav { display: none; }
-      .main { margin-left: 0; padding: 5rem 1.5rem 5rem; }
-      .stats { grid-template-columns: repeat(2,1fr); }
+      .main { margin-left: 32px; padding: 5rem 1.5rem 5rem; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
       .g3, .g2 { grid-template-columns: 1fr; }
       .it { grid-template-columns: 1fr; }
       .it-arr { display: none; }
       .imgs.c2, .imgs.c3 { grid-template-columns: 1fr; }
     }
-    @media (max-width: 480px) {
-      .stats { grid-template-columns: 1fr 1fr; }
-      .hero-h { font-size: 2rem; }
+    @media (max-width: 600px) {
+      .spiral-binding { display: none; }
+      .topnav, footer { margin-left: 0; left: 0; }
+      .main { margin-left: 0; padding: 5rem 1.25rem 4rem; }
       .nav-links { display: none; }
+      .hero-h { font-size: 2.2rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav class="topnav">
-  <div class="topnav-in">
-    <a href="../index.html" class="logo">INAYAT</a>
-    <ul class="nav-links">
-      <li><a href="../index.html">Home</a></li>
-      <li><a href="../About.html">About</a></li>
-      <li><a href="../Projects.html">Projects</a></li>
-      <li><a href="../Resume.html">Resume</a></li>
-      <li><a href="../index.html#contact">Contact</a></li>
-    </ul>
-  </div>
-</nav>
+  <!-- SPIRAL BINDING -->
+  <div class="spiral-binding" aria-hidden="true" id="spiralBinding"></div>
 
-<!-- SIDENAV -->
-<aside class="sidenav">
-  <a href="../Projects.html" class="back-link">← Projects</a>
-  <div>
-    <div class="side-lbl">Case Study</div>
-    <nav class="side-list">
-      <a href="#overview"    class="side-a active"><span class="side-num">00</span>Overview</a>
-      <a href="#goals"       class="side-a"><span class="side-num">01</span>Goals</a>
-      <a href="#microsite"   class="side-a"><span class="side-num">02</span>Microsite</a>
-      <a href="#poster"      class="side-a"><span class="side-num">03</span>Poster</a>
-      <a href="#designsystem" class="side-a"><span class="side-num">04</span>Design System</a>
-      <a href="#integration" class="side-a"><span class="side-num">05</span>Integration</a>
-      <a href="#challenges"  class="side-a"><span class="side-num">06</span>Challenges</a>
-      <a href="#tools"       class="side-a"><span class="side-num">07</span>Tools</a>
-      <a href="#outcomes"    class="side-a"><span class="side-num">08</span>Outcomes</a>
-    </nav>
-  </div>
-</aside>
-
-<!-- MAIN -->
-<main class="main">
-
-  <!-- HERO -->
-  <header style="margin-bottom:4rem;">
-    <div class="tags">
-      <span class="tag">UX/UI Design</span>
-      <span class="tag">Graphic Design</span>
-      <span class="tag">Interactive Exhibition</span>
+  <!-- NAV -->
+  <nav class="topnav">
+    <div class="topnav-in">
+      <a href="../index.html" class="logo">Inayat</a>
+      <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../About.html">About</a></li>
+        <li><a href="../Projects.html">Projects</a></li>
+        <li><a href="../Resume.html">Résumé</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
     </div>
-    <h1 class="hero-h">Discover<br><em>Isola—</em></h1>
-    <p class="hero-sub">Case Study — Fuorisalone Design Festival</p>
-    <p class="hero-p">An interactive exhibition locator and microsite for Milan's Isola Design District — bridging print and digital through a unified visual language.</p>
+  </nav>
 
-    <div class="hero-video">
-      <video autoplay muted loop playsinline>
-        <source src="https://framerusercontent.com/assets/RwpA4gvZogiuA4rlry0jmyMPWI.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
+  <!-- SIDENAV -->
+  <aside class="sidenav">
+    <a href="../Projects.html" class="back-link">← Projects</a>
+    <div>
+      <div class="side-lbl">Case Study</div>
+      <nav class="side-list">
+        <a href="#overview"      class="side-a active"><span class="side-num">00</span>Overview</a>
+        <a href="#goals"         class="side-a"><span class="side-num">01</span>Goals</a>
+        <a href="#microsite"     class="side-a"><span class="side-num">02</span>Microsite</a>
+        <a href="#poster"        class="side-a"><span class="side-num">03</span>Poster</a>
+        <a href="#designsystem"  class="side-a"><span class="side-num">04</span>Design System</a>
+        <a href="#integration"   class="side-a"><span class="side-num">05</span>Integration</a>
+        <a href="#challenges"    class="side-a"><span class="side-num">06</span>Challenges</a>
+        <a href="#tools"         class="side-a"><span class="side-num">07</span>Tools</a>
+        <a href="#outcomes"      class="side-a"><span class="side-num">08</span>Outcomes</a>
+      </nav>
     </div>
 
-    <div class="stats">
-      <div class="stat"><div class="s-n">2</div><div class="s-l">Mediums designed</div><div class="s-sub">Print + digital</div></div>
-      <div class="stat"><div class="s-n">6</div><div class="s-l">Project goals</div><div class="s-sub">Defined at brief</div></div>
-      <div class="stat"><div class="s-n">3</div><div class="s-l">Challenge areas</div><div class="s-sub">Visual, technical, balance</div></div>
-      <div class="stat"><div class="s-n">2mo</div><div class="s-l">Timeline</div><div class="s-sub">Nov — Dec '23</div></div>
+    <!-- Small doodle at bottom of sidenav -->
+    <div class="side-doodle">
+      <svg viewBox="0 0 80 70" style="width:70px">
+        <!-- simplified district map doodle -->
+        <rect x="8" y="8" width="28" height="18" stroke="#1a1612" stroke-width="1" fill="none"/>
+        <rect x="42" y="8" width="30" height="12" stroke="#1a1612" stroke-width="1" fill="none"/>
+        <rect x="8" y="32" width="18" height="22" stroke="#1a1612" stroke-width="1" fill="none"/>
+        <rect x="32" y="32" width="22" height="14" stroke="#1a1612" stroke-width="1" fill="none"/>
+        <rect x="58" y="26" width="14" height="28" stroke="#1a1612" stroke-width="1" fill="none"/>
+        <line x1="6" y1="58" x2="76" y2="58" stroke="#1a1612" stroke-width="1.5"/>
+        <text x="10" y="68" font-family="Reenie Beanie, cursive" font-size="9" fill="#b5416b">✦ isola</text>
+      </svg>
     </div>
+  </aside>
 
-    <div class="meta">
-      <div><div class="m-k">Timeline</div><div class="m-v">Nov '23 – Dec '23</div></div>
-      <div><div class="m-k">My Role</div><div class="m-v">UX/UI Designer</div></div>
-      <div><div class="m-k">Client</div><div class="m-v">Fuorisalone<br>Design Festival</div></div>
-      <div><div class="m-k">Team</div><div class="m-v">Collaborative<br>Design Project</div></div>
-      <div><div class="m-k">Tools</div><div class="m-v">Figma, After Effects<br>GIS Mapping</div></div>
-    </div>
-  </header>
+  <!-- MAIN -->
+  <main class="main">
 
-  <!-- 00 OVERVIEW -->
-  <section id="overview" class="sec rev">
-    <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
-    <h2 class="sec-h">Project Overview</h2>
-    <p class="sec-lead">I specialised in developing the interactive elements for the Isola Design District microsite — creating an engaging digital platform that enhances exploration of Milan's vibrant design district while promoting local tourism and art exhibitions.</p>
-    <div class="rule"></div>
-
-    <div class="g2" style="margin-bottom:2rem;">
-      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px;">Microsite</div><div class="nc-t">Interactive digital experience</div><div class="nc-d">An intuitive interface where visitors could navigate the district, discover exhibitions, and plan their route — all in one place.</div></div>
-      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px;">Poster</div><div class="nc-t">Print-to-digital bridge</div><div class="nc-d">A graphic design system that mirrored the microsite's visual language — creating a seamless transition between physical and digital touchpoints.</div></div>
-      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px;">Isola</div><div class="nc-t">Milan's design district</div><div class="nc-d">The Isola neighbourhood during Fuorisalone — one of Milan's most vibrant creative hubs with exhibitions, installations, and local venues across the district.</div></div>
-      <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px;">Mission</div><div class="nc-t">Wayfinding + discovery</div><div class="nc-d">Create an engaging digital platform that would enhance exploration of the district while promoting local tourism and art exhibitions to festival visitors.</div></div>
-    </div>
-
-    <div class="sub">Tools &amp; Methods</div>
-    <div class="tools">
-      <span class="tool">Figma</span>
-      <span class="tool">After Effects</span>
-      <span class="tool">GIS Mapping</span>
-      <span class="tool">Prototyping</span>
-      <span class="tool">Poster Design</span>
-      <span class="tool">Interaction Design</span>
-      <span class="tool">Typography</span>
-    </div>
-  </section>
-
-  <!-- 01 GOALS -->
-  <section id="goals" class="sec rev">
-    <div class="phase"><div class="p-dot">1</div><span class="p-txt">Project Goals</span></div>
-    <h2 class="sec-h">Six Goals,<br>One Unified Brief</h2>
-    <p class="sec-lead">Our brief from Fuorisalone set six clear goals — spanning wayfinding, culture, and seamless cross-medium experience design.</p>
-    <div class="rule"></div>
-
-    <div class="slist">
-      <div class="st"><div class="st-n">01</div><div><div class="st-t">Intuitive wayfinding system</div><div class="st-d">Create a navigation experience that guides district visitors naturally through Isola's streets and exhibition spaces.</div></div></div>
-      <div class="st"><div class="st-n">02</div><div><div class="st-t">Showcase local art exhibitions and venues</div><div class="st-d">Surface the rich programme of exhibitions and local attractions within the district in an engaging, browseable format.</div></div></div>
-      <div class="st"><div class="st-n">03</div><div><div class="st-t">Encourage exploration</div><div class="st-d">Design an experience that sparks curiosity and motivates visitors to move through the district and discover unexpected spaces.</div></div></div>
-      <div class="st"><div class="st-n">04</div><div><div class="st-t">Integrate navigation with interactive elements</div><div class="st-d">Combine practical guide map functionality with previews, distances, and venue information in a single cohesive interface.</div></div></div>
-      <div class="st"><div class="st-n">05</div><div><div class="st-t">Represent the district's creative culture</div><div class="st-d">Reflect Isola's vibrant, design-forward identity through both the print poster and the digital microsite.</div></div></div>
-      <div class="st"><div class="st-n">06</div><div><div class="st-t">Seamless print-to-digital transition</div><div class="st-d">Ensure the poster and microsite speak the same visual language — a unified experience across both mediums.</div></div></div>
-    </div>
-  </section>
-
-  <!-- 02 MICROSITE -->
-  <section id="microsite" class="sec rev">
-    <div class="phase"><div class="p-dot">2</div><span class="p-txt">Interactive Microsite</span></div>
-    <h2 class="sec-h">The Digital<br>Experience</h2>
-    <p class="sec-lead">The microsite centred on an intuitive interface where users could navigate the district, discover exhibitions, and plan their visit — all without leaving the page.</p>
-    <div class="rule"></div>
-
-    <div class="sub">Core Interactions</div>
-    <div class="flist" style="margin-bottom:2rem;">
-      <div class="fr"><div class="fr-i">🗺</div><div><div class="fr-t">Interactive guide map</div><div class="fr-d">Navigate through the district using a spatial, interactive map that places exhibitions and venues in their real geographic context.</div></div></div>
-      <div class="fr"><div class="fr-i">🎨</div><div><div class="fr-t">Exhibition discovery</div><div class="fr-d">Discover art exhibitions and local attractions through browseable cards — each linked to location previews and venue details.</div></div></div>
-      <div class="fr"><div class="fr-i">🎞</div><div><div class="fr-t">Atmosphere preview videos</div><div class="fr-d">Experience the district's energy through embedded preview videos — giving visitors a feel for each space before arriving.</div></div></div>
-      <div class="fr"><div class="fr-i">📏</div><div><div class="fr-t">Distance calculator</div><div class="fr-d">Calculate distances between locations to help visitors plan efficient routes through the district across a busy festival day.</div></div></div>
-      <div class="fr"><div class="fr-i">ℹ️</div><div><div class="fr-t">Venue information</div><div class="fr-d">Access detailed information about venues and events — opening hours, exhibition descriptions, and practical visitor details.</div></div></div>
-    </div>
-
-    <div class="imgs c1">
-      <div class="iw">
-        <img src="https://framerusercontent.com/images/HUaa0HUx0GrTDk9osIOxwvHQhY.png" alt="Interactive Map Interface">
-        <div class="icap">Interactive map interface — the core navigation experience for the Isola district</div>
+    <!-- HERO -->
+    <header style="margin-bottom:4rem">
+      <div class="tags">
+        <span class="tag">UX/UI Design</span>
+        <span class="tag">Graphic Design</span>
+        <span class="tag">Interactive Exhibition</span>
       </div>
-    </div>
-  </section>
 
-  <!-- 03 POSTER -->
-  <section id="poster" class="sec rev">
-    <div class="phase"><div class="p-dot">3</div><span class="p-txt">Poster Design</span></div>
-    <h2 class="sec-h">Print Meets<br><em>Digital</em></h2>
-    <p class="sec-lead">The poster was designed to mirror and extend the microsite's visual language — creating a physical touchpoint that flows naturally into the digital experience.</p>
-    <div class="rule"></div>
+      <h1 class="hero-h">
+        Discover<br/>
+        <span class="squiggle-wrap" style="color: var(--isola-pink);">Isola—
+          <svg viewBox="0 0 280 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2,8 C25,3 55,13 85,7 C115,2 145,12 175,6 C205,1 235,11 258,6 C268,4 276,9 278,7" stroke="#6b4fa8" stroke-width="3" fill="none" stroke-linecap="round"/>
+          </svg>
+        </span>
+      </h1>
 
-    <div class="g3">
-      <div class="ic">
-        <div class="ic-ico">⬛</div>
-        <div class="ic-t">Visual Sync</div>
-        <div class="ic-d">Sliding bars that mirror the microsite's loading animation — the poster physically enacts the transition from static to digital.</div>
+      <p class="hero-sub" style="margin-top:0.75rem">Case Study — Fuorisalone Design Festival · Nov–Dec '23</p>
+
+      <p class="hero-p">
+        An <span class="hl-y">interactive exhibition locator and microsite</span> for Milan's Isola Design District — bridging print and digital through a unified visual language.
+      </p>
+
+      <div class="hero-video">
+        <video autoplay muted loop playsinline>
+          <source src="https://framerusercontent.com/assets/RwpA4gvZogiuA4rlry0jmyMPWI.mp4" type="video/mp4" />
+        </video>
       </div>
-      <div class="ic">
-        <div class="ic-ico">🎨</div>
-        <div class="ic-t">Colour Palette</div>
-        <div class="ic-d">Pink, purple, and lime green — a vibrant palette that captures Isola's energy while maintaining consistency across both print and digital formats.</div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="s-n">2</div>
+          <div class="s-l">Mediums designed</div>
+          <div class="s-sub">Print + digital</div>
+        </div>
+        <div class="stat">
+          <div class="s-n">6</div>
+          <div class="s-l">Project goals</div>
+          <div class="s-sub">Defined at brief</div>
+        </div>
+        <div class="stat">
+          <div class="s-n">3</div>
+          <div class="s-l">Challenge areas</div>
+          <div class="s-sub">Visual, technical, balance</div>
+        </div>
+        <div class="stat">
+          <div class="s-n">2mo</div>
+          <div class="s-l">Timeline</div>
+          <div class="s-sub">Nov — Dec '23</div>
+        </div>
       </div>
-      <div class="ic">
-        <div class="ic-ico">⊞</div>
-        <div class="ic-t">Layout</div>
-        <div class="ic-d">Dynamic grid with district imagery — a flexible structure that could shift between the fixed proportions of print and the fluid layout of the microsite.</div>
+
+      <div class="meta">
+        <div>
+          <div class="m-k">Timeline</div>
+          <div class="m-v">Nov '23 – Dec '23</div>
+        </div>
+        <div>
+          <div class="m-k">My Role</div>
+          <div class="m-v">UX/UI Designer</div>
+        </div>
+        <div>
+          <div class="m-k">Client</div>
+          <div class="m-v">Fuorisalone<br/>Design Festival</div>
+        </div>
+        <div>
+          <div class="m-k">Team</div>
+          <div class="m-v">Collaborative<br/>Design Project</div>
+        </div>
+        <div>
+          <div class="m-k">Tools</div>
+          <div class="m-v">Figma, After Effects<br/>GIS Mapping</div>
+        </div>
       </div>
-      <div class="ic">
-        <div class="ic-ico">Aa</div>
-        <div class="ic-t">Typography</div>
-        <div class="ic-d">Suisse Int'l Bold paired with IBM Plex Mono — a combination that balances editorial strength with technical precision, used consistently across both mediums.</div>
+    </header>
+
+    <!-- 00 OVERVIEW -->
+    <section id="overview" class="sec rev">
+      <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
+      <h2 class="sec-h">Project Overview</h2>
+      <p class="sec-lead">
+        I specialised in developing the interactive elements for the Isola Design District microsite — creating an engaging digital platform that enhances exploration of Milan's vibrant design district while promoting local tourism and art exhibitions.
+      </p>
+      <div class="rule"></div>
+
+      <div class="g2" style="margin-bottom:2rem">
+        <div class="nc">
+          <div class="nc-n" style="font-size:1.4rem; margin-bottom:6px">Microsite</div>
+          <div class="nc-t">Interactive digital experience</div>
+          <div class="nc-d">An intuitive interface where visitors could navigate the district, discover exhibitions, and plan their route — all in one place.</div>
+        </div>
+        <div class="nc">
+          <div class="nc-n" style="font-size:1.4rem; margin-bottom:6px">Poster</div>
+          <div class="nc-t">Print-to-digital bridge</div>
+          <div class="nc-d">A graphic design system that mirrored the microsite's visual language — creating a seamless transition between physical and digital touchpoints.</div>
+        </div>
+        <div class="nc">
+          <div class="nc-n" style="font-size:1.4rem; margin-bottom:6px">Isola</div>
+          <div class="nc-t">Milan's design district</div>
+          <div class="nc-d">The Isola neighbourhood during Fuorisalone — one of Milan's most vibrant creative hubs with exhibitions, installations, and local venues.</div>
+        </div>
+        <div class="nc">
+          <div class="nc-n" style="font-size:1.4rem; margin-bottom:6px">Mission</div>
+          <div class="nc-t">Wayfinding + discovery</div>
+          <div class="nc-d">Create an engaging digital platform that enhances exploration of the district while promoting local tourism and art exhibitions to festival visitors.</div>
+        </div>
       </div>
-      <div class="ic">
-        <div class="ic-ico">🔗</div>
-        <div class="ic-t">Interactivity Bridge</div>
-        <div class="ic-d">The static poster acts as a visual entry point — its geometric elements and colour system directly translate into animated, interactive components on the microsite.</div>
+
+      <div class="sub">Tools &amp; Methods</div>
+      <div class="tools">
+        <span class="tool">Figma</span>
+        <span class="tool">After Effects</span>
+        <span class="tool">GIS Mapping</span>
+        <span class="tool">Prototyping</span>
+        <span class="tool">Poster Design</span>
+        <span class="tool">Interaction Design</span>
+        <span class="tool">Typography</span>
       </div>
-      <div class="ic">
-        <div class="ic-ico">✦</div>
-        <div class="ic-t">Geometric Elements</div>
-        <div class="ic-d">Unified geometric shapes appear in both poster and microsite — creating visual continuity and reinforcing the district's design-forward identity.</div>
+    </section>
+
+    <!-- 01 GOALS -->
+    <section id="goals" class="sec rev">
+      <div class="phase"><div class="p-dot">1</div><span class="p-txt">Project Goals</span></div>
+      <h2 class="sec-h">Six Goals, One Brief</h2>
+      <p class="sec-lead">
+        Our brief from Fuorisalone set six clear goals — spanning wayfinding, culture, and seamless cross-medium experience design.
+      </p>
+      <div class="rule"></div>
+
+      <div class="slist">
+        <div class="st"><div class="st-n">01</div><div><div class="st-t">Intuitive wayfinding system</div><div class="st-d">Create a navigation experience that guides district visitors naturally through Isola's streets and exhibition spaces.</div></div></div>
+        <div class="st"><div class="st-n">02</div><div><div class="st-t">Showcase local art exhibitions and venues</div><div class="st-d">Surface the rich programme of exhibitions and local attractions within the district in an engaging, browseable format.</div></div></div>
+        <div class="st"><div class="st-n">03</div><div><div class="st-t">Encourage exploration</div><div class="st-d">Design an experience that sparks curiosity and motivates visitors to move through the district and discover unexpected spaces.</div></div></div>
+        <div class="st"><div class="st-n">04</div><div><div class="st-t">Integrate navigation with interactive elements</div><div class="st-d">Combine practical guide map functionality with previews, distances, and venue information in a single cohesive interface.</div></div></div>
+        <div class="st"><div class="st-n">05</div><div><div class="st-t">Represent the district's creative culture</div><div class="st-d">Reflect Isola's vibrant, design-forward identity through both the print poster and the digital microsite.</div></div></div>
+        <div class="st"><div class="st-n">06</div><div><div class="st-t">Seamless print-to-digital transition</div><div class="st-d">Ensure the poster and microsite speak the same visual language — a unified experience across both mediums.</div></div></div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- 04 DESIGN SYSTEM -->
-  <section id="designsystem" class="sec rev">
-    <div class="phase"><div class="p-dot">4</div><span class="p-txt">Design System</span></div>
-    <h2 class="sec-h">A System Built<br>for Both Mediums</h2>
-    <p class="sec-lead">The design system was carefully crafted to work across print and digital — ensuring visual elements from the poster could be animated in the digital space without losing coherence.</p>
-    <div class="rule"></div>
+    <!-- 02 MICROSITE -->
+    <section id="microsite" class="sec rev">
+      <div class="phase"><div class="p-dot">2</div><span class="p-txt">Interactive Microsite</span></div>
+      <h2 class="sec-h">The Digital Experience</h2>
+      <p class="sec-lead">
+        The microsite centred on an intuitive interface where users could navigate the district, discover exhibitions, and plan their visit — all without leaving the page.
+      </p>
+      <div class="rule"></div>
 
-    <div class="imgs c1" style="margin-bottom:1rem;">
-      <div class="iw">
-        <img src="https://framerusercontent.com/images/MBQM5eJgPjJo6MrxjTsPfUSm0i8.png" alt="Design System 1">
-        <div class="icap">Design system — colour, typography, and component overview</div>
+      <div class="sub">Core Interactions</div>
+      <div class="flist" style="margin-bottom:2rem">
+        <div class="fr"><div class="fr-i">🗺</div><div><div class="fr-t">Interactive guide map</div><div class="fr-d">Navigate through the district using a spatial, interactive map that places exhibitions and venues in their real geographic context.</div></div></div>
+        <div class="fr"><div class="fr-i">🎨</div><div><div class="fr-t">Exhibition discovery</div><div class="fr-d">Discover art exhibitions and local attractions through browseable cards — each linked to location previews and venue details.</div></div></div>
+        <div class="fr"><div class="fr-i">🎞</div><div><div class="fr-t">Atmosphere preview videos</div><div class="fr-d">Experience the district's energy through embedded preview videos — giving visitors a feel for each space before arriving.</div></div></div>
+        <div class="fr"><div class="fr-i">📏</div><div><div class="fr-t">Distance calculator</div><div class="fr-d">Calculate distances between locations to help visitors plan efficient routes through the district across a busy festival day.</div></div></div>
+        <div class="fr"><div class="fr-i">ℹ️</div><div><div class="fr-t">Venue information</div><div class="fr-d">Access detailed information about venues and events — opening hours, exhibition descriptions, and practical visitor details.</div></div></div>
       </div>
-    </div>
-    <div class="imgs c1" style="margin-bottom:1rem;">
-      <div class="iw">
-        <img src="https://framerusercontent.com/images/iLhai8smOLlTUbBVp52E7lS88ZQ.png" alt="Design System 2">
-        <div class="icap">Design system — grid structure and layout principles</div>
+
+      <div class="imgs c1">
+        <div class="iw">
+          <img src="https://framerusercontent.com/images/HUaa0HUx0GrTDk9osIOxwvHQhY.png" alt="Interactive Map Interface"/>
+          <div class="icap">Interactive map interface — the core navigation experience for the Isola district</div>
+        </div>
       </div>
-    </div>
-    <div class="imgs c1" style="margin-bottom:2rem;">
-      <div class="iw">
-        <img src="https://framerusercontent.com/images/ZtumSL7BtKXUw3iaoNv7JjGviMk.png" alt="Full Design System">
-        <div class="icap">Full design system — complete component library and visual language</div>
+    </section>
+
+    <!-- 03 POSTER -->
+    <section id="poster" class="sec rev">
+      <div class="phase"><div class="p-dot">3</div><span class="p-txt">Poster Design</span></div>
+      <h2 class="sec-h">Print Meets <span class="hl-p">Digital</span></h2>
+      <p class="sec-lead">
+        The poster was designed to mirror and extend the microsite's visual language — creating a physical touchpoint that flows naturally into the digital experience.
+      </p>
+      <div class="rule"></div>
+
+      <!-- Isola colour palette as notebook colour strip -->
+      <div class="sub">Project Colour Palette</div>
+      <div class="palette-strip" style="margin-bottom:2rem">
+        <div class="swatch" style="background:#b5416b"><span class="swatch-lbl">Pink</span></div>
+        <div class="swatch" style="background:#6b4fa8"><span class="swatch-lbl">Purple</span></div>
+        <div class="swatch" style="background:#a3c430"><span class="swatch-lbl">Lime</span></div>
+        <div class="swatch" style="background:#1a1612"><span class="swatch-lbl">Ink</span></div>
+        <div class="swatch" style="background:#faf8f2"><span class="swatch-lbl" style="color:var(--ink-faint)">Paper</span></div>
       </div>
-    </div>
 
-    <div class="sub">System Principles</div>
-    <div class="ilist">
-      <div class="it">
-        <div class="it-b bef"><div class="it-lbl">Print</div><div class="it-txt">Static geometric elements and fixed colour blocks on the poster</div></div>
-        <div class="it-arr">→</div>
-        <div class="it-b aft"><div class="it-lbl">Digital</div><div class="it-txt">Same elements animated and made interactive in the microsite — visual continuity across mediums</div></div>
+      <div class="g3">
+        <div class="ic"><div class="ic-ico">⬛</div><div class="ic-t">Visual Sync</div><div class="ic-d">Sliding bars that mirror the microsite's loading animation — the poster physically enacts the transition from static to digital.</div></div>
+        <div class="ic"><div class="ic-ico">🎨</div><div class="ic-t">Colour Palette</div><div class="ic-d">Pink, purple, and lime green — a vibrant palette that captures Isola's energy while maintaining consistency across print and digital formats.</div></div>
+        <div class="ic"><div class="ic-ico">⊞</div><div class="ic-t">Layout</div><div class="ic-d">Dynamic grid with district imagery — a flexible structure that shifts between the fixed proportions of print and the fluid layout of the microsite.</div></div>
+        <div class="ic"><div class="ic-ico">Aa</div><div class="ic-t">Typography</div><div class="ic-d">Suisse Int'l Bold paired with IBM Plex Mono — editorial strength balanced with technical precision, used consistently across both mediums.</div></div>
+        <div class="ic"><div class="ic-ico">🔗</div><div class="ic-t">Interactivity Bridge</div><div class="ic-d">The static poster acts as a visual entry point — its geometric elements and colour system directly translate into animated, interactive components on the microsite.</div></div>
+        <div class="ic"><div class="ic-ico">✦</div><div class="ic-t">Geometric Elements</div><div class="ic-d">Unified geometric shapes appear in both poster and microsite — creating visual continuity and reinforcing the district's design-forward identity.</div></div>
       </div>
-      <div class="it">
-        <div class="it-b bef"><div class="it-lbl">Print</div><div class="it-txt">Fixed grid proportions for poster layout</div></div>
-        <div class="it-arr">→</div>
-        <div class="it-b aft"><div class="it-lbl">Digital</div><div class="it-txt">Flexible grid that adapts to screen sizes while maintaining the same visual rhythm</div></div>
+    </section>
+
+    <!-- 04 DESIGN SYSTEM -->
+    <section id="designsystem" class="sec rev">
+      <div class="phase"><div class="p-dot">4</div><span class="p-txt">Design System</span></div>
+      <h2 class="sec-h">A System Built for Both Mediums</h2>
+      <p class="sec-lead">
+        The design system was carefully crafted to work across print and digital — ensuring visual elements from the poster could be animated in the digital space without losing coherence.
+      </p>
+      <div class="rule"></div>
+
+      <div class="imgs c1" style="margin-bottom:1rem">
+        <div class="iw">
+          <img src="https://framerusercontent.com/images/MBQM5eJgPjJo6MrxjTsPfUSm0i8.png" alt="Design System 1"/>
+          <div class="icap">Design system — colour, typography, and component overview</div>
+        </div>
       </div>
-      <div class="it">
-        <div class="it-b bef"><div class="it-lbl">Print</div><div class="it-txt">Vibrant palette as flat ink on paper</div></div>
-        <div class="it-arr">→</div>
-        <div class="it-b aft"><div class="it-lbl">Digital</div><div class="it-txt">Same palette applied to interactive states, hover effects, and loading transitions</div></div>
+      <div class="imgs c1" style="margin-bottom:1rem">
+        <div class="iw">
+          <img src="https://framerusercontent.com/images/iLhai8smOLlTUbBVp52E7lS88ZQ.png" alt="Design System 2"/>
+          <div class="icap">Design system — grid structure and layout principles</div>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <!-- 05 INTEGRATION -->
-  <section id="integration" class="sec rev">
-    <div class="phase"><div class="p-dot">5</div><span class="p-txt">Integration Strategy</span></div>
-    <h2 class="sec-h">One Visual Language,<br>Two Mediums</h2>
-    <p class="sec-lead">The integration strategy ensured visitors experienced Discover Isola as a single cohesive world — whether encountering the poster first or arriving directly at the microsite.</p>
-    <div class="rule"></div>
-
-    <div class="flist" style="margin-bottom:2rem;">
-      <div class="fr"><div class="fr-i">✦</div><div><div class="fr-t">Animatable poster elements</div><div class="fr-d">Every visual element in the poster was designed with digital animation in mind — shapes, bars, and grids that could move and respond to user interaction.</div></div></div>
-      <div class="fr"><div class="fr-i">🎨</div><div><div class="fr-t">Vibrant colour consistency</div><div class="fr-d">The pink, purple, and lime green palette remained consistent and legible across both ink-on-paper and screen — tested across multiple contexts and light conditions.</div></div></div>
-      <div class="fr"><div class="fr-i">📖</div><div><div class="fr-t">Readability across formats</div><div class="fr-d">Typography choices (Suisse Int'l Bold, IBM Plex Mono) were validated for legibility against vibrant backgrounds in both print and on-screen contexts.</div></div></div>
-      <div class="fr"><div class="fr-i">⊞</div><div><div class="fr-t">Flexible grid system</div><div class="fr-d">The underlying grid structure flexed between the fixed poster format and the dynamic, responsive layout of the microsite without breaking visual coherence.</div></div></div>
-    </div>
-
-    <div class="imgs c1">
-      <div class="iw">
-        <img src="https://framerusercontent.com/images/Rs8uaZGhauqfAZkXRynKMlmCdM.png" alt="Integration Example">
-        <div class="icap">Integration example — print and digital elements sharing the same visual system</div>
+      <div class="imgs c1" style="margin-bottom:2rem">
+        <div class="iw">
+          <img src="https://framerusercontent.com/images/ZtumSL7BtKXUw3iaoNv7JjGviMk.png" alt="Full Design System"/>
+          <div class="icap">Full design system — complete component library and visual language</div>
+        </div>
       </div>
-    </div>
-  </section>
 
-  <!-- 06 CHALLENGES -->
-  <section id="challenges" class="sec rev">
-    <div class="phase"><div class="p-dot">6</div><span class="p-txt">Challenges</span></div>
-    <h2 class="sec-h">Three Challenge<br>Areas</h2>
-    <p class="sec-lead">The project spanned visual, technical, and design balance challenges — each requiring a different kind of problem-solving.</p>
-    <div class="rule"></div>
-
-    <div class="sub">Visual Integration</div>
-    <div class="flist" style="margin-bottom:2rem;">
-      <div class="fr"><div class="fr-i">🖼</div><div><div class="fr-t">Finding the right imagery</div><div class="fr-d">Sourcing photography that authentically captured both Isola's neighbourhood character and Milan's broader design culture — without feeling generic or touristic.</div></div></div>
-      <div class="fr"><div class="fr-i">🔗</div><div><div class="fr-t">Coherent visual language across formats</div><div class="fr-d">Creating a design system that worked equally well as static ink on paper and as animated, interactive components on screen — a constraint that shaped every element.</div></div></div>
-      <div class="fr"><div class="fr-i">👁</div><div><div class="fr-t">Text contrast on vibrant backgrounds</div><div class="fr-d">Maintaining readable typography against the pink, purple, and lime green palette required careful contrast testing across both print and digital colour profiles.</div></div></div>
-    </div>
-
-    <div class="sub">Technical Implementation</div>
-    <div class="flist" style="margin-bottom:2rem;">
-      <div class="fr"><div class="fr-i">⚡</div><div><div class="fr-t">Smooth interaction transitions</div><div class="fr-d">Developing fluid transitions between different interactive states — map views, venue previews, distance calculations — without jarring jumps or loading delays.</div></div></div>
-      <div class="fr"><div class="fr-i">🗺</div><div><div class="fr-t">Guide map + location previews</div><div class="fr-d">Integrating GIS-based map functionality with real-time location previews required careful coordination between geographic data layers and the visual interface.</div></div></div>
-      <div class="fr"><div class="fr-i">📱</div><div><div class="fr-t">Cross-device performance</div><div class="fr-d">Ensuring consistent performance and visual fidelity across different devices and screen sizes — from desktop browsers to mobile phones used during festival navigation.</div></div></div>
-    </div>
-
-    <div class="sub">Design Balance</div>
-    <div class="flist">
-      <div class="fr"><div class="fr-i">🎨</div><div><div class="fr-t">Harmonising the vibrant palette</div><div class="fr-d">Applying a high-energy colour system across all elements without creating visual fatigue or reducing the legibility of practical information.</div></div></div>
-      <div class="fr"><div class="fr-i">✨</div><div><div class="fr-t">Engaging without overwhelming</div><div class="fr-d">Balancing rich interactions and visual interest with clarity of purpose — visitors needed to find exhibitions and navigate efficiently, not just admire the interface.</div></div></div>
-      <div class="fr"><div class="fr-i">⊞</div><div><div class="fr-t">Hierarchy with dynamic elements</div><div class="fr-d">Maintaining clear visual hierarchy while incorporating animated and interactive components — ensuring the most important information always read first.</div></div></div>
-    </div>
-  </section>
-
-  <!-- 07 TOOLS -->
-  <section id="tools" class="sec rev">
-    <div class="phase"><div class="p-dot">7</div><span class="p-txt">Tools &amp; Technologies</span></div>
-    <h2 class="sec-h">Design, Animation<br>&amp; Mapping</h2>
-    <p class="sec-lead">Three specialist tools combined to produce the full scope of the project — from initial prototyping through to animated transitions and geographic data integration.</p>
-    <div class="rule"></div>
-
-    <div class="g3">
-      <div class="ic">
-        <div class="ic-ico">🎨</div>
-        <div class="ic-t">Figma</div>
-        <div class="ic-d">Prototyping the interactive microsite and designing the poster — including the full component library, interaction flows, and cross-medium design system.</div>
+      <div class="sub">System Principles — Print → Digital</div>
+      <div class="ilist">
+        <div class="it">
+          <div class="it-b bef"><div class="it-lbl">Print</div><div class="it-txt">Static geometric elements and fixed colour blocks on the poster</div></div>
+          <div class="it-arr">→</div>
+          <div class="it-b aft"><div class="it-lbl">Digital</div><div class="it-txt">Same elements animated and interactive in the microsite — visual continuity across mediums</div></div>
+        </div>
+        <div class="it">
+          <div class="it-b bef"><div class="it-lbl">Print</div><div class="it-txt">Fixed grid proportions for poster layout</div></div>
+          <div class="it-arr">→</div>
+          <div class="it-b aft"><div class="it-lbl">Digital</div><div class="it-txt">Flexible grid that adapts to screen sizes while maintaining the same visual rhythm</div></div>
+        </div>
+        <div class="it">
+          <div class="it-b bef"><div class="it-lbl">Print</div><div class="it-txt">Vibrant palette as flat ink on paper</div></div>
+          <div class="it-arr">→</div>
+          <div class="it-b aft"><div class="it-lbl">Digital</div><div class="it-txt">Same palette applied to interactive states, hover effects, and loading transitions</div></div>
+        </div>
       </div>
-      <div class="ic">
-        <div class="ic-ico">🎞</div>
-        <div class="ic-t">After Effects</div>
-        <div class="ic-d">Designing smooth transitions between interactive states — animating the geometric elements from the poster into motion for the digital microsite experience.</div>
+    </section>
+
+    <!-- 05 INTEGRATION -->
+    <section id="integration" class="sec rev">
+      <div class="phase"><div class="p-dot">5</div><span class="p-txt">Integration Strategy</span></div>
+      <h2 class="sec-h">One Visual Language, Two Mediums</h2>
+      <p class="sec-lead">
+        The integration strategy ensured visitors experienced Discover Isola as a single cohesive world — whether encountering the poster first or arriving directly at the microsite.
+      </p>
+      <div class="rule"></div>
+
+      <div class="flist" style="margin-bottom:2rem">
+        <div class="fr"><div class="fr-i">✦</div><div><div class="fr-t">Animatable poster elements</div><div class="fr-d">Every visual element in the poster was designed with digital animation in mind — shapes, bars, and grids that could move and respond to user interaction.</div></div></div>
+        <div class="fr"><div class="fr-i">🎨</div><div><div class="fr-t">Vibrant colour consistency</div><div class="fr-d">The pink, purple, and lime green palette remained consistent and legible across both ink-on-paper and screen — tested across multiple contexts and light conditions.</div></div></div>
+        <div class="fr"><div class="fr-i">📖</div><div><div class="fr-t">Readability across formats</div><div class="fr-d">Typography choices were validated for legibility against vibrant backgrounds in both print and on-screen contexts.</div></div></div>
+        <div class="fr"><div class="fr-i">⊞</div><div><div class="fr-t">Flexible grid system</div><div class="fr-d">The underlying grid structure flexed between the fixed poster format and the dynamic, responsive layout of the microsite without breaking visual coherence.</div></div></div>
       </div>
-      <div class="ic">
-        <div class="ic-ico">🗺</div>
-        <div class="ic-t">GIS Mapping</div>
-        <div class="ic-d">Geographic Information Systems for the interactive guide map — placing exhibitions and venues in accurate spatial context for visitor wayfinding across the district.</div>
+
+      <div class="imgs c1">
+        <div class="iw">
+          <img src="https://framerusercontent.com/images/Rs8uaZGhauqfAZkXRynKMlmCdM.png" alt="Integration Example"/>
+          <div class="icap">Integration example — print and digital elements sharing the same visual system</div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- 08 OUTCOMES -->
-  <section id="outcomes" class="sec rev">
-    <div class="phase"><div class="p-dot">8</div><span class="p-txt">Learning Outcomes</span></div>
-    <h2 class="sec-h">What I Learned</h2>
-    <p class="sec-lead">The project deepened my skills across UX, technical prototyping, and design principles — with the cross-medium constraint pushing each area in new directions.</p>
-    <div class="rule"></div>
+    <!-- 06 CHALLENGES -->
+    <section id="challenges" class="sec rev">
+      <div class="phase"><div class="p-dot">6</div><span class="p-txt">Challenges</span></div>
+      <h2 class="sec-h">Three Challenge Areas</h2>
+      <p class="sec-lead">
+        The project spanned visual, technical, and design balance challenges — each requiring a different kind of problem-solving.
+      </p>
+      <div class="rule"></div>
 
-    <div class="imgs c1" style="margin-bottom:2rem;">
-      <div class="iw">
-        <img src="https://framerusercontent.com/images/BHu0QIsaGS7LP7JACfPPmAXjik.jpg" alt="Final Design">
-        <div class="icap">Final design — Discover Isola microsite and poster system</div>
+      <div class="sub">Visual Integration</div>
+      <div class="flist" style="margin-bottom:2rem">
+        <div class="fr"><div class="fr-i">🖼</div><div><div class="fr-t">Finding the right imagery</div><div class="fr-d">Sourcing photography that authentically captured Isola's neighbourhood character and Milan's broader design culture — without feeling generic or touristic.</div></div></div>
+        <div class="fr"><div class="fr-i">🔗</div><div><div class="fr-t">Coherent visual language across formats</div><div class="fr-d">Creating a design system that worked equally well as static ink on paper and as animated, interactive components on screen — a constraint that shaped every element.</div></div></div>
+        <div class="fr"><div class="fr-i">👁</div><div><div class="fr-t">Text contrast on vibrant backgrounds</div><div class="fr-d">Maintaining readable typography against the pink, purple, and lime green palette required careful contrast testing across both print and digital colour profiles.</div></div></div>
       </div>
-    </div>
 
-    <div class="g2" style="margin-bottom:1.5rem;">
-      <div class="rc"><div class="rc-t">UX/UI Mastery</div><div class="rc-d">Developed expertise in creating interactive experiences for specific audience needs — learning to balance aesthetic appeal with functional navigation across a physically-situated context.</div></div>
-      <div class="rc"><div class="rc-t">Collaborative Design</div><div class="rc-d">Gained proficiency working within a collaborative design environment — coordinating visual decisions across team members while maintaining a coherent, unified output.</div></div>
-      <div class="rc"><div class="rc-t">Technical Prototyping</div><div class="rc-d">Mastered prototyping complex interactions in Figma and advanced transition design in After Effects — including skills in GIS integration for the interactive map component.</div></div>
-      <div class="rc"><div class="rc-t">Cross-Medium Thinking</div><div class="rc-d">Strengthened understanding of typography, colour theory, and visual hierarchy in both print and digital contexts — learning how constraints in one medium can inform and improve decisions in the other.</div></div>
-    </div>
+      <div class="sub">Technical Implementation</div>
+      <div class="flist" style="margin-bottom:2rem">
+        <div class="fr"><div class="fr-i">⚡</div><div><div class="fr-t">Smooth interaction transitions</div><div class="fr-d">Developing fluid transitions between different interactive states — map views, venue previews, distance calculations — without jarring jumps or loading delays.</div></div></div>
+        <div class="fr"><div class="fr-i">🗺</div><div><div class="fr-t">Guide map + location previews</div><div class="fr-d">Integrating GIS-based map functionality with real-time location previews required careful coordination between geographic data layers and the visual interface.</div></div></div>
+        <div class="fr"><div class="fr-i">📱</div><div><div class="fr-t">Cross-device performance</div><div class="fr-d">Ensuring consistent performance and visual fidelity across different devices and screen sizes — from desktop browsers to mobile phones used during festival navigation.</div></div></div>
+      </div>
 
-    <div class="quote">
-      <p>"The cross-medium constraint — designing for both print and digital simultaneously — pushed every decision to be more considered, more intentional, and ultimately more coherent."</p>
-      <div class="quote-attr">— Project Reflection</div>
-    </div>
-  </section>
+      <div class="sub">Design Balance</div>
+      <div class="flist">
+        <div class="fr"><div class="fr-i">🎨</div><div><div class="fr-t">Harmonising the vibrant palette</div><div class="fr-d">Applying a high-energy colour system across all elements without creating visual fatigue or reducing the legibility of practical information.</div></div></div>
+        <div class="fr"><div class="fr-i">✨</div><div><div class="fr-t">Engaging without overwhelming</div><div class="fr-d">Balancing rich interactions and visual interest with clarity of purpose — visitors needed to find exhibitions and navigate efficiently, not just admire the interface.</div></div></div>
+        <div class="fr"><div class="fr-i">⊞</div><div><div class="fr-t">Hierarchy with dynamic elements</div><div class="fr-d">Maintaining clear visual hierarchy while incorporating animated and interactive components — ensuring the most important information always read first.</div></div></div>
+      </div>
+    </section>
 
-</main>
+    <!-- 07 TOOLS -->
+    <section id="tools" class="sec rev">
+      <div class="phase"><div class="p-dot">7</div><span class="p-txt">Tools &amp; Technologies</span></div>
+      <h2 class="sec-h">Design, Animation &amp; Mapping</h2>
+      <p class="sec-lead">
+        Three specialist tools combined to produce the full scope of the project — from initial prototyping through to animated transitions and geographic data integration.
+      </p>
+      <div class="rule"></div>
 
-<footer>© 2025 Inayat. All rights reserved.</footer>
+      <div class="g3">
+        <div class="ic"><div class="ic-ico">🎨</div><div class="ic-t">Figma</div><div class="ic-d">Prototyping the interactive microsite and designing the poster — including the full component library, interaction flows, and cross-medium design system.</div></div>
+        <div class="ic"><div class="ic-ico">🎞</div><div class="ic-t">After Effects</div><div class="ic-d">Designing smooth transitions between interactive states — animating the geometric elements from the poster into motion for the digital microsite experience.</div></div>
+        <div class="ic"><div class="ic-ico">🗺</div><div class="ic-t">GIS Mapping</div><div class="ic-d">Geographic Information Systems for the interactive guide map — placing exhibitions and venues in accurate spatial context for visitor wayfinding across the district.</div></div>
+      </div>
+    </section>
 
-<script>
-  const ro = new IntersectionObserver(
-    es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }),
-    { threshold: 0.06 }
-  );
-  document.querySelectorAll('.rev').forEach(el => ro.observe(el));
+    <!-- 08 OUTCOMES -->
+    <section id="outcomes" class="sec rev">
+      <div class="phase"><div class="p-dot">8</div><span class="p-txt">Learning Outcomes</span></div>
+      <h2 class="sec-h">What I Learned</h2>
+      <p class="sec-lead">
+        The project deepened my skills across UX, technical prototyping, and design principles — with the cross-medium constraint pushing each area in new directions.
+      </p>
+      <div class="rule"></div>
 
-  const links = document.querySelectorAll('.side-a');
-  const secs  = document.querySelectorAll('.sec');
-  const so = new IntersectionObserver(es => {
-    es.forEach(e => {
-      if (e.isIntersecting) {
-        links.forEach(l => l.classList.remove('active'));
-        const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
-        if (a) a.classList.add('active');
-      }
-    });
-  }, { rootMargin: '-15% 0px -65% 0px' });
-  secs.forEach(s => so.observe(s));
-</script>
+      <div class="imgs c1" style="margin-bottom:2rem">
+        <div class="iw">
+          <img src="https://framerusercontent.com/images/BHu0QIsaGS7LP7JACfPPmAXjik.jpg" alt="Final Design"/>
+          <div class="icap">Final design — Discover Isola microsite and poster system</div>
+        </div>
+      </div>
 
+      <div class="g2" style="margin-bottom:1.5rem">
+        <div class="rc"><div class="rc-t">UX/UI Mastery</div><div class="rc-d">Developed expertise in creating interactive experiences for specific audience needs — learning to balance aesthetic appeal with functional navigation across a physically-situated context.</div></div>
+        <div class="rc"><div class="rc-t">Collaborative Design</div><div class="rc-d">Gained proficiency working within a collaborative design environment — coordinating visual decisions across team members while maintaining a coherent, unified output.</div></div>
+        <div class="rc"><div class="rc-t">Technical Prototyping</div><div class="rc-d">Mastered prototyping complex interactions in Figma and advanced transition design in After Effects — including skills in GIS integration for the interactive map component.</div></div>
+        <div class="rc"><div class="rc-t">Cross-Medium Thinking</div><div class="rc-d">Strengthened understanding of typography, colour theory, and visual hierarchy in both print and digital contexts — learning how constraints in one medium can inform and improve decisions in the other.</div></div>
+      </div>
+
+      <div class="quote">
+        <p>"The cross-medium constraint — designing for both print and digital simultaneously — pushed every decision to be more considered, more intentional, and ultimately more coherent."</p>
+        <div class="quote-attr">— Project Reflection</div>
+      </div>
+
+      <!-- Closing scrawl note -->
+      <div style="margin-top:3rem; padding:1.5rem; border:1.5px solid rgba(26,22,18,0.12); background:var(--paper-dark); position:relative; transform:rotate(-0.3deg)">
+        <div style="position:absolute; top:-11px; left:20px; width:40px; height:20px; background:rgba(107,79,168,0.28); border-top:1px solid rgba(107,79,168,0.4); border-bottom:1px solid rgba(107,79,168,0.4); transform:rotate(1.5deg)"></div>
+        <p style="font-family:var(--font-serif); font-size:1.1rem; font-style:italic; color:var(--ink-light); line-height:1.7">
+          Designing across mediums forced every decision to be <span class="hl-y">intentional</span> — a constraint that made the work sharper, not harder.
+        </p>
+        <p style="font-family:var(--font-scrawl); font-size:18px; color:var(--isola-pink); margin-top:0.75rem; transform:rotate(-1deg); display:inline-block">— Inayat ✏️</p>
+        <div class="corner-fold"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>© 2025 Inayat Gulati &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; UX/UI · Graphic Design · Interactive</footer>
+
+  <script>
+    // Spiral holes
+    const spiral = document.getElementById('spiralBinding');
+    const count = Math.floor(window.innerHeight / 44) + 2;
+    for (let i = 0; i < count; i++) {
+      const h = document.createElement('div');
+      h.className = 'spiral-hole';
+      spiral.appendChild(h);
+    }
+
+    // Scroll reveal
+    const ro = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('in');
+    }), { threshold: 0.06 });
+    document.querySelectorAll('.rev').forEach(el => ro.observe(el));
+
+    // Active sidenav
+    const links = document.querySelectorAll('.side-a');
+    const secs = document.querySelectorAll('.sec');
+    const so = new IntersectionObserver(es => {
+      es.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.remove('active'));
+          const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
+          if (a) a.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-15% 0px -65% 0px' });
+    secs.forEach(s => so.observe(s));
+  </script>
 </body>
 </html>
