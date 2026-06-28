@@ -168,7 +168,7 @@
     .nav-links a:hover::after,
     .nav-links a.active::after { width: 100%; }
 
-    /* ===== HAMBURGER — hidden by default, shown on mobile ===== */
+    /* ===== HAMBURGER ===== */
     .hamburger {
       display: none;
       flex-direction: column;
@@ -684,7 +684,6 @@
 
       .nav-links.open { left: 0; }
 
-      /* Show hamburger on mobile */
       .hamburger { display: flex; }
 
       .hero { padding: 56px 24px 36px; }
@@ -768,7 +767,7 @@
         A collection of work spanning UX/UI design, frontend development, mobile interfaces, and spatial experiments — all research-backed and built to ship.
       </p>
       <div class="project-count-badge">
-        <strong id="visibleCount">8</strong> projects · across 4 disciplines
+        <strong id="visibleCount">6</strong> projects · across 4 disciplines
       </div>
     </div>
   </section>
@@ -780,10 +779,9 @@
       <span class="filter-label">filter →</span>
       <button class="filter-tab active" data-filter="all">All</button>
       <button class="filter-tab" data-filter="internship">Internship</button>
-      <button class="filter-tab" data-filter="ui-ux">UI / UX</button>
-      <button class="filter-tab" data-filter="web">Web Dev</button>
+      <button class="filter-tab" data-filter="case-study">Case Study</button>
+      <button class="filter-tab" data-filter="web">Microsite</button>
       <button class="filter-tab" data-filter="mobile">Mobile</button>
-      <button class="filter-tab" data-filter="3d">3D / Spatial</button>
     </div>
 
     <div class="projects-grid" id="projectsGrid">
@@ -791,7 +789,7 @@
       <!-- 1. FEATURED: Mastercard Fraud Dashboard -->
       <a href="./Projects/mastercard-fraud-dashboard.html"
          class="project-card featured reveal"
-         data-category="internship ui-ux">
+         data-category="case-study">
         <div class="card-image">
           <img src="./Images/Chart 2.png" alt="Fraud Detection Dashboard" />
           <span class="scrawl-note" style="bottom: 24px; left: 20px;">← AI-driven flags!</span>
@@ -802,7 +800,7 @@
             <span class="card-tag">Interaction Design</span>
             <span class="card-tag">2025</span>
           </div>
-          <p class="card-category">Internship · UX/UI Design</p>
+          <p class="card-category">Case Study · UX/UI Design</p>
           <h3 class="card-title">Fraud Detection Dashboard</h3>
           <p class="card-desc">
             Embedded with a real Mastercard PM on a live initiative. Led user research with fraud analysts, mapped workflows, and co-designed an AI-driven dashboard — zero critical failures across two usability rounds.
@@ -816,7 +814,7 @@
       <!-- 2. Mastercard Workplace -->
       <a href="./Projects/Mastercard_Project.html"
          class="project-card reveal"
-         data-category="internship ui-ux web">
+         data-category="internship case-study">
         <div class="card-image">
           <img src="./Images/Mastercard.png" alt="Mastercard SharePoint" />
         </div>
@@ -839,7 +837,7 @@
       <!-- 3. Pawth Pet App -->
       <a href="./Projects/Pawth_Project.html"
          class="project-card reveal"
-         data-category="mobile ui-ux">
+         data-category="mobile case-study">
         <div class="card-image">
           <video src="./Images/Pawth.mp4" autoplay muted loop playsinline></video>
         </div>
@@ -861,7 +859,7 @@
       <!-- 4. Chemtrails Travel App -->
       <a href="./Projects/Chemtrails_Project.html"
          class="project-card reveal"
-         data-category="mobile ui-ux">
+         data-category="mobile case-study">
         <div class="card-image">
           <img src="./Images/SigninPage.png" alt="Chemtrails Travel App" />
         </div>
@@ -883,7 +881,7 @@
       <!-- 5. Fitness App -->
       <a href="./Projects/Fitness_App.html"
          class="project-card reveal"
-         data-category="mobile ui-ux">
+         data-category="mobile case-study">
         <div class="card-image">
           <img src="./Images/Interface.png" alt="Fitness App" />
         </div>
@@ -906,7 +904,7 @@
       <!-- 6. Discover Isola -->
       <a href="./Projects/Discoverisola_project.html"
          class="project-card reveal"
-         data-category="ui-ux web">
+         data-category="case-study web">
         <div class="card-image">
           <img src="./Images/IsolaDesign.png" alt="Discover Isola Milan" />
         </div>
@@ -925,50 +923,6 @@
         </div>
         <div class="year-stamp">2024</div>
       </a>
-
-      <!-- 7. Sojoy Scribbles
-      <a href="./Projects/SojoyScribbles.html"
-         class="project-card reveal"
-         data-category="web ui-ux">
-        <div class="card-image">
-          <img src="./Images/Sojoy Scribble.png" alt="Sojoy Scribbles" />
-        </div>
-        <div class="card-body">
-          <div class="card-tags">
-            <span class="card-tag">Web Dev</span>
-            <span class="card-tag">Responsive</span>
-          </div>
-          <p class="card-category">Web Development · UI Design</p>
-          <h3 class="card-title">Sojoy Scribbles Website</h3>
-          <p class="card-desc">
-            A responsive product website designed for accessibility and easy navigation, helping users explore illustrations and place personalized orders.
-          </p>
-          <span class="card-arrow">Explore project →</span>
-        </div>
-        <div class="year-stamp">2024</div>
-      </a>  -->
-
-      <!-- 8. Sculpture Pavilion 
-      <a href="./Projects/Sculpturepavilion.html"
-         class="project-card reveal"
-         data-category="3d">
-        <div class="card-image">
-          <img src="./Images/Sculpture.png" alt="Sculpture Pavilion" />
-        </div>
-        <div class="card-body">
-          <div class="card-tags">
-            <span class="card-tag">Spatial Design</span>
-            <span class="card-tag">3D Modelling</span>
-          </div>
-          <p class="card-category">Spatial Design · 3D Modelling</p>
-          <h3 class="card-title">Sculpture Pavilion</h3>
-          <p class="card-desc">
-            A two-storey pavilion featuring layered panels, dynamic pathways, natural light choreography, and an immersive accessible space for art and events.
-          </p>
-          <span class="card-arrow">Explore project →</span>
-        </div>
-        <div class="year-stamp">2023</div>
-      </a> -->
 
     </div>
     <!-- /projects-grid -->
