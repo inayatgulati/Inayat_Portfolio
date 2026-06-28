@@ -196,7 +196,7 @@
         pointer-events: none; z-index: 2;
       }
       .card-image img, .card-image video {
-        width: 100%; height: 100%; object-fit: cover; display: block;
+        width: 100%; height: 100%; object-fit: fill; display: block;
         filter: saturate(0.92) contrast(0.97); transition: transform 0.35s ease;
       }
       .project-card:hover .card-image img,
@@ -509,7 +509,7 @@
 
         <!-- 3. Pawth Pet App -->
         <a href="./Projects/Pawth_Project.html" class="project-card reveal">
-          <div class="card-image">
+          <div class="card-image-box">
             <video src="./Images/Pawth.mp4" autoplay muted loop playsinline></video>
           </div>
           <div class="card-body">
