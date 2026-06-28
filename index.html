@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inayat Gulati — UX/UI Designer</title>
-
     <meta name="description" content="Inayat Gulati — Vancouver-based UX/UI designer and frontend developer. Research-backed, technically feasible, built to ship." />
     <meta property="og:title" content="Inayat Gulati — UX/UI Designer" />
     <meta property="og:description" content="Vancouver-based UX/UI designer with frontend chops. Research-backed, technically feasible, built to ship." />
@@ -14,12 +13,8 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Inayat Gulati — UX/UI Designer" />
     <meta name="twitter:description" content="Vancouver-based UX/UI designer and frontend dev. Built to ship." />
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Kalam:wght@300;400;700&family=DM+Serif+Display&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Kalam:wght@300;400;700&family=DM+Serif+Display&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
     <style>
       :root {
         --paper: #faf8f2;
@@ -39,10 +34,8 @@
         --font-scrawl: "Reenie Beanie", cursive;
         --font-mono: "Space Mono", monospace;
       }
-
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html { scroll-behavior: smooth; }
-
       body {
         background: var(--paper);
         color: var(--ink);
@@ -52,7 +45,6 @@
         overflow-x: hidden;
         cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M3 17 L8 8 L14 14 Z' fill='%231a1612' stroke='%231a1612' stroke-width='0.5'/%3E%3Crect x='13' y='2' width='3' height='10' rx='1' transform='rotate(45 14.5 7)' fill='%231a1612'/%3E%3C/svg%3E"), auto;
       }
-
       body::before {
         content: "";
         position: fixed;
@@ -63,468 +55,182 @@
         pointer-events: none;
         z-index: 0;
       }
-
       .corner-fold {
-        position: absolute;
-        bottom: 0; right: 0;
+        position: absolute; bottom: 0; right: 0;
         width: 28px; height: 28px;
         background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
         border-top: 1px solid var(--pencil);
         border-left: 1px solid var(--pencil);
-        z-index: 5;
-        pointer-events: none;
+        z-index: 5; pointer-events: none;
       }
 
-      /* ====== NAV ====== */
+      /* NAV */
       nav {
-        position: sticky;
-        top: 0;
-        z-index: 100;
+        position: sticky; top: 0; z-index: 100;
         background: var(--paper);
         border-bottom: 2.5px solid var(--ink);
         padding: 14px 48px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        display: flex; justify-content: space-between; align-items: center;
       }
-
       .nav-logo {
-        font-family: var(--font-hand);
-        font-size: 26px;
-        font-weight: 700;
-        letter-spacing: -0.5px;
-        position: relative;
-        text-decoration: none;
-        color: var(--ink);
+        font-family: var(--font-hand); font-size: 26px; font-weight: 700;
+        letter-spacing: -0.5px; position: relative; text-decoration: none; color: var(--ink);
       }
       .nav-logo::after {
-        content: "";
-        position: absolute;
-        bottom: -2px; left: 0; right: 0;
-        height: 3px;
-        background: var(--accent-red);
-        border-radius: 2px;
-        transform: rotate(-0.8deg);
+        content: ""; position: absolute; bottom: -2px; left: 0; right: 0;
+        height: 3px; background: var(--accent-red); border-radius: 2px; transform: rotate(-0.8deg);
       }
-
       .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
       .nav-links a {
-        font-family: var(--font-hand);
-        font-size: 17px;
-        color: var(--ink);
-        text-decoration: none;
-        position: relative;
-        padding-bottom: 2px;
-        transition: color 0.2s;
+        font-family: var(--font-hand); font-size: 17px; color: var(--ink);
+        text-decoration: none; position: relative; padding-bottom: 2px; transition: color 0.2s;
       }
       .nav-links a::after {
-        content: "";
-        position: absolute;
-        bottom: 0; left: 0;
-        width: 0; height: 2px;
-        background: var(--ink);
-        transition: width 0.25s;
-        border-radius: 1px;
+        content: ""; position: absolute; bottom: 0; left: 0;
+        width: 0; height: 2px; background: var(--ink); transition: width 0.25s; border-radius: 1px;
       }
       .nav-links a:hover::after { width: 100%; }
-
       .nav-hamburger {
-        display: none;
-        flex-direction: column;
-        gap: 5px;
-        cursor: pointer;
-        background: none;
-        border: none;
-        padding: 4px;
+        display: none; flex-direction: column; gap: 5px;
+        cursor: pointer; background: none; border: none; padding: 4px;
       }
-      .nav-hamburger span {
-        display: block;
-        width: 24px;
-        height: 2px;
-        background: var(--ink);
-        border-radius: 2px;
-        transition: all 0.25s;
-      }
+      .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: all 0.25s; }
       .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
       .nav-hamburger.open span:nth-child(2) { opacity: 0; }
       .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
       .nav-mobile-menu {
-        display: none;
-        position: fixed;
-        top: 0; left: 0; right: 0;
-        background: var(--paper);
-        border-bottom: 2.5px solid var(--ink);
-        padding: 72px 20px 24px;
-        z-index: 98;
-        flex-direction: column;
-        gap: 0;
+        display: none; position: fixed; top: 0; left: 0; right: 0;
+        background: var(--paper); border-bottom: 2.5px solid var(--ink);
+        padding: 72px 20px 24px; z-index: 98; flex-direction: column; gap: 0;
       }
       .nav-mobile-menu.open { display: flex; }
       .nav-mobile-menu a {
-        font-family: var(--font-hand);
-        font-size: 22px;
-        color: var(--ink);
-        text-decoration: none;
-        padding: 10px 0;
-        border-bottom: 1px solid var(--pencil-light);
+        font-family: var(--font-hand); font-size: 22px; color: var(--ink);
+        text-decoration: none; padding: 10px 0; border-bottom: 1px solid var(--pencil-light);
       }
       .nav-mobile-menu a:last-child { border-bottom: none; }
 
-      /* ======= HERO ======= */
-      .hero {
-        position: relative;
-        min-height: 90vh;
-        display: flex;
-        align-items: center;
-        padding: 80px 48px 60px;
-        overflow: hidden;
-      }
-
-      .hero-bg-doodles {
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        opacity: 0.55;
-      }
-
-      .hero-content {
-        position: relative;
-        z-index: 2;
-        max-width: 680px;
-      }
-
+      /* HERO */
+      .hero { position: relative; min-height: 90vh; display: flex; align-items: center; padding: 80px 48px 60px; overflow: hidden; }
+      .hero-bg-doodles { position: absolute; inset: 0; pointer-events: none; opacity: 0.55; }
+      .hero-content { position: relative; z-index: 2; max-width: 680px; }
       .hero-tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-family: var(--font-mono);
-        font-size: 12px;
-        letter-spacing: 0.08em;
-        color: var(--ink-faint);
-        margin-bottom: 24px;
-        text-transform: uppercase;
+        display: inline-flex; align-items: center; gap: 8px;
+        font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em;
+        color: var(--ink-faint); margin-bottom: 24px; text-transform: uppercase;
       }
-      .hero-tag::before {
-        content: "";
-        display: inline-block;
-        width: 24px; height: 2px;
-        background: var(--accent-red);
-      }
-
-      .hero-name {
-        font-family: var(--font-hand);
-        font-size: clamp(52px, 8vw, 96px);
-        font-weight: 700;
-        line-height: 1;
-        letter-spacing: -2px;
-        margin-bottom: 8px;
-      }
+      .hero-tag::before { content: ""; display: inline-block; width: 24px; height: 2px; background: var(--accent-red); }
+      .hero-name { font-family: var(--font-hand); font-size: clamp(52px, 8vw, 96px); font-weight: 700; line-height: 1; letter-spacing: -2px; margin-bottom: 8px; }
       .hero-name .underline-squiggle { position: relative; display: inline-block; }
-      .hero-name .underline-squiggle svg {
-        position: absolute;
-        bottom: -8px; left: -4px;
-        width: calc(100% + 8px);
-        pointer-events: none;
-      }
-
+      .hero-name .underline-squiggle svg { position: absolute; bottom: -8px; left: -4px; width: calc(100% + 8px); pointer-events: none; }
       .hero-roles { display: flex; gap: 12px; flex-wrap: wrap; margin: 24px 0 32px; }
       .role-pill {
-        font-family: var(--font-mono);
-        font-size: 11px;
-        letter-spacing: 0.06em;
-        padding: 6px 14px;
-        border: 2px solid var(--ink);
-        background: transparent;
-        text-transform: uppercase;
-        position: relative;
-        transform: rotate(-0.5deg);
-        transition: transform 0.2s, background 0.2s;
+        font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em;
+        padding: 6px 14px; border: 2px solid var(--ink); background: transparent;
+        text-transform: uppercase; position: relative; transform: rotate(-0.5deg); transition: transform 0.2s, background 0.2s;
       }
       .role-pill:nth-child(2) { transform: rotate(0.8deg); }
-      .role-pill:nth-child(3) { transform: rotate(-0.3deg); }
       .role-pill.filled { background: var(--ink); color: var(--paper); }
-
-      .hero-mobile-skills {
-        display: none;
-        gap: 8px;
-        flex-wrap: wrap;
-        margin: 20px 0 28px;
-      }
-      .mobile-skill-pill {
-        font-family: var(--font-mono);
-        font-size: 10px;
-        letter-spacing: 0.06em;
-        padding: 4px 10px;
-        border: 1.5px solid var(--ink);
-        text-transform: uppercase;
-        color: var(--ink-light);
-      }
+      .hero-mobile-skills { display: none; gap: 8px; flex-wrap: wrap; margin: 20px 0 28px; }
+      .mobile-skill-pill { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; padding: 4px 10px; border: 1.5px solid var(--ink); text-transform: uppercase; color: var(--ink-light); }
       .mobile-skill-pill.blue { border-color: var(--accent-blue); color: var(--accent-blue); }
       .mobile-skill-pill.green { border-color: var(--accent-green); color: var(--accent-green); }
       .mobile-skill-pill.orange { border-color: var(--accent-orange); color: var(--accent-orange); }
-
-      .hero-desc {
-        font-family: var(--font-hand);
-        font-size: 20px;
-        color: var(--ink-light);
-        max-width: 520px;
-        line-height: 1.55;
-        margin-bottom: 40px;
-      }
-
+      .hero-desc { font-family: var(--font-hand); font-size: 20px; color: var(--ink-light); max-width: 520px; line-height: 1.55; margin-bottom: 40px; }
       .hero-cta-group { display: flex; gap: 16px; flex-wrap: wrap; }
-
       .btn-sketch {
-        font-family: var(--font-hand);
-        font-size: 18px;
-        font-weight: 700;
-        padding: 12px 28px;
-        border: 2.5px solid var(--ink);
-        background: transparent;
-        color: var(--ink);
-        cursor: pointer;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        position: relative;
-        transition: all 0.2s;
-        transform: rotate(-0.4deg);
+        font-family: var(--font-hand); font-size: 18px; font-weight: 700;
+        padding: 12px 28px; border: 2.5px solid var(--ink); background: transparent;
+        color: var(--ink); cursor: pointer; text-decoration: none;
+        display: inline-flex; align-items: center; gap: 8px;
+        position: relative; transition: all 0.2s; transform: rotate(-0.4deg);
       }
       .btn-sketch::after {
-        content: "";
-        position: absolute;
-        bottom: -4px; right: -4px;
-        width: 100%; height: 100%;
-        border: 2px solid var(--ink);
-        z-index: -1;
-        opacity: 0.3;
-        transition: all 0.2s;
+        content: ""; position: absolute; bottom: -4px; right: -4px;
+        width: 100%; height: 100%; border: 2px solid var(--ink);
+        z-index: -1; opacity: 0.3; transition: all 0.2s;
       }
       .btn-sketch:hover { transform: rotate(0deg) translate(-2px,-2px); }
       .btn-sketch:hover::after { bottom: -6px; right: -6px; opacity: 0.5; }
       .btn-sketch.primary { background: var(--ink); color: var(--paper); }
-
-      .hero-sticky {
-        position: absolute;
-        right: 8%;
-        top: 50%;
-        transform: translateY(-50%) rotate(3deg);
-        z-index: 3;
-        width: 220px;
-        transition: transform 0.3s ease;
-      }
+      .hero-sticky { position: absolute; right: 8%; top: 50%; transform: translateY(-50%) rotate(3deg); z-index: 3; width: 220px; transition: transform 0.3s ease; }
       .hero-sticky:hover { transform: translateY(-52%) rotate(1deg) scale(1.04); }
+      .sticky-note { background: var(--accent-yellow); padding: 20px 20px 32px; border: 1.5px solid rgba(0,0,0,0.15); box-shadow: 4px 5px 0 rgba(0,0,0,0.12); font-family: var(--font-hand); font-size: 16px; line-height: 1.5; color: #2a1f00; position: relative; }
+      .sticky-note::before { content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 40px; height: 8px; background: rgba(0,0,0,0.15); border-radius: 0 0 2px 2px; }
+      .sticky-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(0,0,0,0.4); margin-bottom: 8px; display: block; }
+      .hero-rope-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 4; overflow: visible; }
+      .margin-strip { position: absolute; left: 0; top: 0; bottom: 0; width: 44px; border-right: 2px solid rgba(192,57,43,0.2); pointer-events: none; z-index: 1; }
 
-      .sticky-note {
-        background: var(--accent-yellow);
-        padding: 20px 20px 32px;
-        border: 1.5px solid rgba(0,0,0,0.15);
-        box-shadow: 4px 5px 0 rgba(0,0,0,0.12);
-        font-family: var(--font-hand);
-        font-size: 16px;
-        line-height: 1.5;
-        color: #2a1f00;
-        position: relative;
-      }
-      .sticky-note::before {
-        content: "";
-        position: absolute;
-        top: 0; left: 50%;
-        transform: translateX(-50%);
-        width: 40px; height: 8px;
-        background: rgba(0,0,0,0.15);
-        border-radius: 0 0 2px 2px;
-      }
-      .sticky-label {
-        font-family: var(--font-mono);
-        font-size: 9px;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: rgba(0,0,0,0.4);
-        margin-bottom: 8px;
-        display: block;
-      }
-
-      .hero-rope-layer {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        pointer-events: none;
-        z-index: 4;
-        overflow: visible;
-      }
-
-      .margin-strip {
-        position: absolute;
-        left: 0; top: 0; bottom: 0;
-        width: 44px;
-        border-right: 2px solid rgba(192,57,43,0.2);
-        pointer-events: none;
-        z-index: 1;
-      }
-
-      section {
-        position: relative;
-        padding: 80px 48px;
-      }
-
-      .section-header {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        margin-bottom: 56px;
-      }
+      /* SECTIONS */
+      section { position: relative; padding: 80px 48px; }
+      .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 56px; }
       .section-num { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.1em; }
-      .section-title {
-        font-family: var(--font-hand);
-        font-size: 36px;
-        font-weight: 700;
-        letter-spacing: -0.5px;
-        position: relative;
-      }
+      .section-title { font-family: var(--font-hand); font-size: 36px; font-weight: 700; letter-spacing: -0.5px; }
       .section-line { flex: 1; height: 1.5px; background: var(--ink); opacity: 0.2; }
 
+      /* PROJECT CARDS */
       .projects-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 28px; }
-
       .project-card {
-        border: 2px solid var(--ink);
-        background: var(--paper);
-        position: relative;
-        overflow: hidden;
-        transition: transform 0.25s, box-shadow 0.25s;
-        text-decoration: none;
-        color: var(--ink);
-        display: block;
-        cursor: pointer;
+        border: 2px solid var(--ink); background: var(--paper);
+        position: relative; overflow: hidden;
+        transition: transform 0.25s; text-decoration: none; color: var(--ink); display: block;
       }
       .project-card::after {
-        content: "";
-        position: absolute;
-        bottom: -5px; right: -5px;
-        width: 100%; height: 100%;
-        border: 2px solid var(--ink);
-        opacity: 0.2; z-index: 0;
-        transition: all 0.25s;
+        content: ""; position: absolute; bottom: -5px; right: -5px;
+        width: 100%; height: 100%; border: 2px solid var(--ink);
+        opacity: 0.2; z-index: 0; transition: all 0.25s;
       }
       .project-card:hover { transform: translate(-3px,-3px); }
       .project-card:hover::after { bottom: -8px; right: -8px; opacity: 0.35; }
       .project-card.featured { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; }
 
-      .project-card.coming-soon { cursor: default; }
-      .project-card.coming-soon:hover { transform: none; }
-      .project-card.coming-soon::after { display: none; }
-      .coming-soon-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-family: var(--font-mono);
-        font-size: 9px;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        padding: 4px 10px;
-        border: 1.5px dashed var(--ink-faint);
-        color: var(--ink-faint);
-        margin-bottom: 12px;
+      /* REAL IMAGE area */
+      .card-image {
+        position: relative; overflow: hidden;
+        background: var(--paper-dark); min-height: 200px;
+        border-bottom: 2px solid var(--ink);
+      }
+      .card-image::before {
+        content: ""; position: absolute; inset: 0;
+        background-image: repeating-linear-gradient(0deg, transparent, transparent 23px, rgba(180,170,155,0.15) 23px, rgba(180,170,155,0.15) 24px);
+        pointer-events: none; z-index: 2;
+      }
+      .card-image img, .card-image video {
+        width: 100%; height: 100%; object-fit: cover; display: block;
+        filter: saturate(0.92) contrast(0.97); transition: transform 0.35s ease;
+      }
+      .project-card:hover .card-image img,
+      .project-card:hover .card-image video { transform: scale(1.04); }
+      .project-card.featured .card-image {
+        min-height: 280px; border-right: 2px solid var(--ink); border-bottom: none;
       }
 
-      .card-visual {
-        background: var(--paper-dark);
-        min-height: 200px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-bottom: 2px solid var(--ink);
-        position: relative;
-        overflow: hidden;
-        padding: 32px;
-      }
-      .card-visual::before {
-        content: "";
-        position: absolute; inset: 0;
-        background-image: repeating-linear-gradient(0deg, transparent, transparent 23px, rgba(180,170,155,0.15) 23px, rgba(180,170,155,0.15) 24px);
-        pointer-events: none;
-      }
-      .project-card.featured .card-visual { border-bottom: none; border-right: 2px solid var(--ink); min-height: 280px; }
       .card-body { padding: 24px; position: relative; z-index: 1; }
       .card-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-      .card-tag {
-        font-family: var(--font-mono);
-        font-size: 9px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        padding: 3px 8px;
-        border: 1.5px solid var(--ink);
-        opacity: 0.6;
-      }
+      .card-tag { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border: 1.5px solid var(--ink); opacity: 0.6; }
       .card-title { font-family: var(--font-hand); font-size: 22px; font-weight: 700; margin-bottom: 8px; line-height: 1.2; }
       .card-desc { font-family: var(--font-hand); font-size: 16px; color: var(--ink-light); margin-bottom: 16px; line-height: 1.5; }
-      .card-metric {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-family: var(--font-mono);
-        font-size: 11px;
-        letter-spacing: 0.06em;
-        color: var(--accent-green);
-        font-weight: 700;
-        text-transform: uppercase;
-      }
+      .card-metric { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--accent-green); font-weight: 700; text-transform: uppercase; }
       .card-metric::before { content: "↑"; font-size: 14px; }
-      .card-arrow {
-        display: inline-block;
-        margin-top: 16px;
-        font-family: var(--font-hand);
-        font-size: 15px;
-        color: var(--ink-faint);
-        text-decoration: none;
-        transition: all 0.2s;
-        border-bottom: 1.5px solid var(--pencil);
-      }
+      .card-arrow { display: inline-block; margin-top: 16px; font-family: var(--font-hand); font-size: 15px; color: var(--ink-faint); text-decoration: none; transition: all 0.2s; border-bottom: 1.5px solid var(--pencil); }
       .project-card:hover .card-arrow { color: var(--ink); border-color: var(--ink); }
 
+      .view-all-wrap { margin-top: 36px; text-align: right; }
+      .view-all-link { font-family: var(--font-hand); font-size: 18px; font-weight: 700; color: var(--ink); text-decoration: none; border-bottom: 2px solid var(--ink); padding-bottom: 2px; transition: opacity 0.2s; }
+      .view-all-link:hover { opacity: 0.6; }
+
+      /* ABOUT */
       .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
-      .about-text { font-family: var(--font-hand); font-size: 20px; line-height: 1.7; color: var(--ink-light); position: relative; }
+      .about-text { font-family: var(--font-hand); font-size: 20px; line-height: 1.7; color: var(--ink-light); }
       .about-text strong { color: var(--ink); font-weight: 700; }
       .highlight-yellow { background: linear-gradient(120deg, rgba(232,184,75,0) 0%, rgba(232,184,75,0.45) 10%, rgba(232,184,75,0.45) 90%, rgba(232,184,75,0) 100%); padding: 0 2px; }
       .highlight-blue { background: linear-gradient(120deg, rgba(44,95,138,0) 0%, rgba(44,95,138,0.18) 10%, rgba(44,95,138,0.18) 90%, rgba(44,95,138,0) 100%); padding: 0 2px; }
-
-      .about-photo-area { position: relative; padding-left: 0; }
-      .about-photo-frame {
-        width: 100%;
-        max-width: 260px;
-        aspect-ratio: 3/4;
-        border: 2px solid var(--ink);
-        background: var(--paper-dark);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        margin-bottom: 28px;
-        transform: rotate(-1.2deg);
-      }
-      .about-photo-frame::after {
-        content: "";
-        position: absolute;
-        bottom: -5px; right: -5px;
-        width: 100%; height: 100%;
-        border: 2px solid var(--ink);
-        opacity: 0.2;
-      }
-      .photo-tape {
-        position: absolute;
-        top: -10px; left: 50%;
-        transform: translateX(-50%);
-        width: 60px; height: 20px;
-        background: rgba(232,184,75,0.4);
-        border-top: 1px solid rgba(232,184,75,0.5);
-        border-bottom: 1px solid rgba(232,184,75,0.5);
-        z-index: 2;
-      }
-
+      .about-photo-area { position: relative; }
+      .about-photo-frame { width: 100%; max-width: 260px; aspect-ratio: 3/4; border: 2px solid var(--ink); background: var(--paper-dark); display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 28px; transform: rotate(-1.2deg); }
+      .about-photo-frame::after { content: ""; position: absolute; bottom: -5px; right: -5px; width: 100%; height: 100%; border: 2px solid var(--ink); opacity: 0.2; }
+      .photo-tape { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 60px; height: 20px; background: rgba(232,184,75,0.4); border-top: 1px solid rgba(232,184,75,0.5); border-bottom: 1px solid rgba(232,184,75,0.5); z-index: 2; }
       .skills-board { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-      .skill-cluster { border: 2px solid var(--ink); padding: 16px; position: relative; background: var(--paper); transition: transform 0.2s; }
+      .skill-cluster { border: 2px solid var(--ink); padding: 16px; background: var(--paper); transition: transform 0.2s; }
       .skill-cluster:hover { transform: rotate(0deg) !important; }
       .skill-cluster-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 10px; }
       .skill-item { font-family: var(--font-hand); font-size: 16px; color: var(--ink-light); padding: 2px 0; display: flex; align-items: center; gap: 6px; }
@@ -534,48 +240,27 @@
       .page-edge::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: linear-gradient(90deg, rgba(0,0,0,0.06) 0%, transparent 100%); pointer-events: none; }
 
       .washi-banner {
-        position: relative;
-        padding: 10px 48px;
+        position: relative; padding: 10px 48px;
         background: rgba(44,95,138,0.12);
         border-top: 1.5px solid rgba(44,95,138,0.25);
         border-bottom: 1.5px solid rgba(44,95,138,0.25);
-        font-family: var(--font-scrawl);
-        font-size: 18px;
-        color: var(--accent-blue);
-        letter-spacing: 0.08em;
-        overflow: hidden;
-        white-space: nowrap;
-        transform: rotate(-0.3deg);
-        width: 100%;
+        font-family: var(--font-scrawl); font-size: 18px; color: var(--accent-blue);
+        letter-spacing: 0.08em; overflow: hidden; white-space: nowrap;
+        transform: rotate(-0.3deg); width: 100%;
       }
       .washi-banner-inner { display: inline-block; animation: marquee 22s linear infinite; }
       @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-      .process-strip {
-        display: flex; gap: 0; align-items: center; flex-wrap: wrap;
-        border: 2px solid var(--ink); background: var(--paper);
-        padding: 16px 20px; transform: rotate(-0.5deg);
-        position: relative; margin-top: 32px;
-      }
+      .process-strip { display: flex; gap: 0; align-items: center; flex-wrap: wrap; border: 2px solid var(--ink); background: var(--paper); padding: 16px 20px; transform: rotate(-0.5deg); position: relative; margin-top: 32px; }
       .process-strip-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 10px; width: 100%; }
       .process-step { font-family: var(--font-hand); font-size: 16px; color: var(--ink-light); padding: 4px 10px; border: 1.5px solid var(--pencil); transition: background 0.2s; }
       .process-step:hover { background: var(--paper-dark); }
       .process-step.done { color: var(--ink); border-color: var(--ink); background: var(--paper-dark); font-weight: 700; }
       .process-arrow { color: var(--pencil); padding: 0 6px; }
 
-      .contact-section {
-        background: var(--ink);
-        color: var(--paper);
-        padding: 80px 48px;
-        position: relative;
-        overflow: hidden;
-      }
-      .contact-section::before {
-        content: "";
-        position: absolute; inset: 0;
-        background-image: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(255,255,255,0.04) 27px, rgba(255,255,255,0.04) 28px);
-        pointer-events: none;
-      }
+      /* CONTACT */
+      .contact-section { background: var(--ink); color: var(--paper); padding: 80px 48px; position: relative; overflow: hidden; }
+      .contact-section::before { content: ""; position: absolute; inset: 0; background-image: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(255,255,255,0.04) 27px, rgba(255,255,255,0.04) 28px); pointer-events: none; }
       .contact-inner { position: relative; z-index: 1; max-width: 600px; }
       .contact-title { font-family: var(--font-hand); font-size: 56px; font-weight: 700; line-height: 1; margin-bottom: 20px; letter-spacing: -1px; }
       .contact-sub { font-family: var(--font-hand); font-size: 18px; color: rgba(255,255,255,0.6); margin-bottom: 40px; line-height: 1.55; }
@@ -583,54 +268,19 @@
       .contact-link { font-family: var(--font-hand); font-size: 22px; font-weight: 700; color: var(--paper); text-decoration: none; display: inline-flex; align-items: center; gap: 12px; transition: opacity 0.2s; border-bottom: 2px solid rgba(255,255,255,0.2); padding-bottom: 6px; }
       .contact-link:hover { opacity: 0.7; }
 
-      footer {
-        border-top: 2px solid var(--ink);
-        padding: 20px 48px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: var(--paper);
-      }
+      footer { border-top: 2px solid var(--ink); padding: 20px 48px; display: flex; justify-content: space-between; align-items: center; background: var(--paper); }
       footer p { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--ink-faint); text-transform: uppercase; }
-
-      .sketch-illustration { width: 100%; height: 100%; }
 
       .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.5s ease, transform 0.5s ease; }
       .reveal.visible { opacity: 1; transform: translateY(0); }
-
       .cursor-dot { position: fixed; width: 4px; height: 4px; background: rgba(26,22,18,0.25); border-radius: 50%; pointer-events: none; z-index: 9999; transition: opacity 0.4s ease; }
-
-      .spiral-binding {
-        position: fixed;
-        left: 0; top: 0; bottom: 0;
-        width: 32px;
-        background: var(--paper-worn);
-        border-right: 2.5px solid var(--ink);
-        z-index: 50;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        padding-top: 24px;
-        gap: 0;
-        pointer-events: none;
-      }
-      .spiral-hole {
-        width: 16px; height: 16px;
-        border-radius: 50%;
-        border: 2px solid var(--ink);
-        background: var(--paper);
-        margin-bottom: 28px;
-        flex-shrink: 0;
-        box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
-      }
+      .spiral-binding { position: fixed; left: 0; top: 0; bottom: 0; width: 32px; background: var(--paper-worn); border-right: 2.5px solid var(--ink); z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 24px; gap: 0; pointer-events: none; }
+      .spiral-hole { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--ink); background: var(--paper); margin-bottom: 28px; flex-shrink: 0; box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1); }
 
       nav, .hero, section, .washi-banner, .contact-section, footer { margin-left: 32px; }
 
-      /* --- 1024px --- */
       @media (max-width: 1024px) {
         .nav-links { gap: 20px; }
-        .nav-links a { font-size: 15px; }
         .hero { padding: 60px 36px 48px; }
         .hero-content { max-width: 55%; }
         .hero-sticky { width: 180px; right: 4%; }
@@ -639,14 +289,9 @@
         footer { padding: 20px 36px; }
         nav { padding: 14px 36px; }
         nav, .hero, section, .washi-banner, .contact-section, footer { margin-left: 32px; }
-        .about-grid { gap: 32px; }
         .projects-grid { gap: 20px; }
-        .card-title { font-size: 19px; }
-        .card-desc { font-size: 15px; }
         .washi-banner { padding: 10px 36px; }
       }
-
-      /* --- 768px --- */
       @media (max-width: 768px) {
         .spiral-binding { display: none; }
         nav, .hero, section, .washi-banner, .contact-section, footer { margin-left: 0; }
@@ -658,9 +303,7 @@
         .hero-sticky { display: none; }
         .hero-rope-layer { display: none; }
         .hero-mobile-skills { display: flex; }
-        .hero-name { letter-spacing: -1px; }
         .hero-desc { font-size: 18px; max-width: 100%; margin-bottom: 28px; }
-        .hero-cta-group { gap: 12px; }
         .btn-sketch { font-size: 16px; padding: 10px 22px; }
         section { padding: 48px 20px; }
         .section-header { margin-bottom: 36px; gap: 10px; }
@@ -668,68 +311,41 @@
         .washi-banner { padding: 10px 20px; }
         .projects-grid { grid-template-columns: 1fr; gap: 20px; }
         .project-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
-        .project-card.featured .card-visual { border-right: none; border-bottom: 2px solid var(--ink); min-height: 200px; }
+        .project-card.featured .card-image { border-right: none; border-bottom: 2px solid var(--ink); min-height: 200px; }
         .card-body { padding: 18px; }
-        .card-title { font-size: 20px; }
-        .card-desc { font-size: 15px; }
         .about-grid { grid-template-columns: 1fr; gap: 28px; }
         .about-photo-frame { max-width: 200px; }
         .about-text { font-size: 18px; }
         .skills-board { grid-template-columns: 1fr 1fr; gap: 12px; }
-        .process-strip { padding: 14px 16px; }
-        .process-step { font-size: 14px; padding: 3px 8px; }
         .contact-section { padding: 48px 20px; }
         .contact-title { font-size: 44px; }
         .contact-link { font-size: 18px; }
         footer { flex-direction: column; gap: 6px; text-align: center; padding: 16px 20px; }
       }
-
-      /* --- 480px --- */
       @media (max-width: 480px) {
         nav { padding: 12px 16px; }
         .nav-logo { font-size: 22px; }
-        .nav-mobile-menu { top: 52px; }
         .hero { padding: 40px 16px 36px; }
-        .hero-tag { font-size: 10px; margin-bottom: 16px; }
-        .hero-name { letter-spacing: -0.5px; margin-bottom: 4px; }
-        .hero-roles { margin: 16px 0 0; gap: 8px; }
-        .role-pill { font-size: 10px; padding: 5px 10px; }
-        .hero-mobile-skills { margin: 12px 0 20px; gap: 6px; }
-        .mobile-skill-pill { font-size: 9px; padding: 3px 8px; }
         .hero-desc { font-size: 17px; margin-bottom: 24px; }
         .btn-sketch { font-size: 15px; padding: 10px 18px; width: 100%; justify-content: center; }
         .hero-cta-group { flex-direction: column; gap: 10px; }
         section { padding: 40px 16px; }
-        .section-header { flex-wrap: wrap; margin-bottom: 28px; }
         .section-title { font-size: 26px; }
-        .section-header > span:last-child { display: none; }
-        .washi-banner { padding: 8px 16px; font-size: 15px; }
         .projects-grid { gap: 16px; }
-        .card-visual { min-height: 160px; padding: 20px; }
-        .project-card.featured .card-visual { min-height: 180px; }
+        .card-image { min-height: 160px; }
         .card-body { padding: 16px; }
         .card-title { font-size: 18px; }
         .card-desc { font-size: 14px; }
-        .card-tag { font-size: 8px; }
         .about-photo-frame { max-width: 160px; }
-        .about-text { font-size: 17px; }
         .skills-board { grid-template-columns: 1fr; gap: 10px; }
-        .skill-item { font-size: 15px; }
-        .process-strip { flex-wrap: wrap; row-gap: 8px; transform: none; }
-        .process-step { font-size: 13px; }
-        .process-arrow { font-size: 12px; padding: 0 4px; }
         .contact-section { padding: 40px 16px; }
         .contact-title { font-size: 36px; }
-        .contact-sub { font-size: 16px; }
-        .contact-link { font-size: 16px; }
         footer { padding: 14px 16px; }
-        footer p { font-size: 10px; }
       }
     </style>
   </head>
   <body>
     <div id="cursorTrail"></div>
-
     <div class="spiral-binding" aria-hidden="true"></div>
 
     <div class="nav-mobile-menu" id="mobileMenu">
@@ -754,9 +370,9 @@
       </button>
     </nav>
 
+    <!-- HERO -->
     <section class="hero">
       <div class="margin-strip"></div>
-
       <svg class="hero-bg-doodles" viewBox="0 0 1400 800" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <rect x="940" y="80" width="160" height="100" stroke="#1a1612" stroke-width="1" fill="none" opacity="0.4"/>
         <rect x="1100" y="80" width="90" height="60" stroke="#1a1612" stroke-width="1" fill="none" opacity="0.4"/>
@@ -768,7 +384,6 @@
           <line x1="0" y1="140" x2="145" y2="140" stroke="#1a1612" stroke-width="1.5"/>
         </g>
       </svg>
-
       <svg class="hero-rope-layer" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:4;">
         <defs>
           <filter id="ropeJitter" x="-5%" y="-5%" width="110%" height="110%">
@@ -781,54 +396,28 @@
         <circle cx="1082" cy="342" r="6" fill="#8a7f72"/><circle cx="1082" cy="342" r="3" fill="#1a1612"/>
         <line x1="566" y1="103" x2="564" y2="148" stroke="#3d3530" stroke-width="1.6" stroke-linecap="round"/>
         <circle cx="564" cy="145" r="4" stroke="#3d3530" stroke-width="1.5" fill="#faf8f2"/>
-        <g transform="rotate(-5, 564, 185)">
-          <rect x="534" y="149" width="68" height="52" rx="3" fill="#faf8f2" stroke="#1a1612" stroke-width="2"/>
-          <text x="540" y="178" font-family="Space Mono, monospace" font-size="12" font-weight="700" fill="#1a1612">Figma</text>
-          <text x="540" y="193" font-family="Space Mono, monospace" font-size="8" fill="#8a7f72">design</text>
-        </g>
+        <g transform="rotate(-5, 564, 185)"><rect x="534" y="149" width="68" height="52" rx="3" fill="#faf8f2" stroke="#1a1612" stroke-width="2"/><text x="540" y="178" font-family="Space Mono, monospace" font-size="12" font-weight="700" fill="#1a1612">Figma</text><text x="540" y="193" font-family="Space Mono, monospace" font-size="8" fill="#8a7f72">design</text></g>
         <line x1="627" y1="152" x2="625" y2="197" stroke="#3d3530" stroke-width="1.6" stroke-linecap="round"/>
         <circle cx="625" cy="194" r="4" stroke="#3d3530" stroke-width="1.5" fill="#faf8f2"/>
-        <g transform="rotate(4, 625, 238)">
-          <rect x="590" y="198" width="80" height="52" rx="3" fill="#e8e2d0" stroke="#1a1612" stroke-width="2"/>
-          <text x="598" y="227" font-family="Space Mono, monospace" font-size="11" font-weight="700" fill="#1a1612">Research</text>
-          <text x="598" y="242" font-family="Space Mono, monospace" font-size="8" fill="#8a7f72">UX</text>
-        </g>
+        <g transform="rotate(4, 625, 238)"><rect x="590" y="198" width="80" height="52" rx="3" fill="#e8e2d0" stroke="#1a1612" stroke-width="2"/><text x="598" y="227" font-family="Space Mono, monospace" font-size="11" font-weight="700" fill="#1a1612">Research</text><text x="598" y="242" font-family="Space Mono, monospace" font-size="8" fill="#8a7f72">UX</text></g>
         <line x1="722" y1="216" x2="720" y2="261" stroke="#3d3530" stroke-width="1.6" stroke-linecap="round"/>
         <circle cx="720" cy="258" r="4" stroke="#3d3530" stroke-width="1.5" fill="#faf8f2"/>
-        <g transform="rotate(-3, 720, 302)">
-          <rect x="688" y="262" width="68" height="52" rx="3" fill="#faf8f2" stroke="#2c5f8a" stroke-width="2"/>
-          <text x="696" y="291" font-family="Space Mono, monospace" font-size="12" font-weight="700" fill="#2c5f8a">React</text>
-          <text x="696" y="306" font-family="Space Mono, monospace" font-size="8" fill="#8a7f72">frontend</text>
-        </g>
+        <g transform="rotate(-3, 720, 302)"><rect x="688" y="262" width="68" height="52" rx="3" fill="#faf8f2" stroke="#2c5f8a" stroke-width="2"/><text x="696" y="291" font-family="Space Mono, monospace" font-size="12" font-weight="700" fill="#2c5f8a">React</text><text x="696" y="306" font-family="Space Mono, monospace" font-size="8" fill="#8a7f72">frontend</text></g>
         <line x1="832" y1="270" x2="830" y2="315" stroke="#3d3530" stroke-width="1.6" stroke-linecap="round"/>
         <circle cx="830" cy="312" r="4" stroke="#3d3530" stroke-width="1.5" fill="#faf8f2"/>
-        <g transform="rotate(3.5, 830, 358)">
-          <rect x="796" y="316" width="72" height="52" rx="3" fill="#1a1612" stroke="#1a1612" stroke-width="2"/>
-          <text x="804" y="345" font-family="Space Mono, monospace" font-size="10" font-weight="700" fill="#faf8f2">UX / UI</text>
-          <text x="804" y="360" font-family="Space Mono, monospace" font-size="8" fill="rgba(255,255,255,0.5)">design</text>
-        </g>
+        <g transform="rotate(3.5, 830, 358)"><rect x="796" y="316" width="72" height="52" rx="3" fill="#1a1612" stroke="#1a1612" stroke-width="2"/><text x="804" y="345" font-family="Space Mono, monospace" font-size="10" font-weight="700" fill="#faf8f2">UX / UI</text><text x="804" y="360" font-family="Space Mono, monospace" font-size="8" fill="rgba(255,255,255,0.5)">design</text></g>
         <line x1="944" y1="312" x2="942" y2="357" stroke="#3d3530" stroke-width="1.6" stroke-linecap="round"/>
         <circle cx="942" cy="354" r="4" stroke="#3d3530" stroke-width="1.5" fill="#faf8f2"/>
-        <g transform="rotate(-2.5, 942, 398)">
-          <rect x="906" y="358" width="80" height="52" rx="3" fill="#faf8f2" stroke="#3a7d44" stroke-width="2"/>
-          <text x="914" y="386" font-family="Space Mono, monospace" font-size="10" font-weight="700" fill="#3a7d44">AutoCAD</text>
-          <text x="914" y="402" font-family="Space Mono, monospace" font-size="8" fill="#8a7f72">arch</text>
-        </g>
+        <g transform="rotate(-2.5, 942, 398)"><rect x="906" y="358" width="80" height="52" rx="3" fill="#faf8f2" stroke="#3a7d44" stroke-width="2"/><text x="914" y="386" font-family="Space Mono, monospace" font-size="10" font-weight="700" fill="#3a7d44">AutoCAD</text><text x="914" y="402" font-family="Space Mono, monospace" font-size="8" fill="#8a7f72">arch</text></g>
         <line x1="1030" y1="334" x2="1028" y2="379" stroke="#3d3530" stroke-width="1.6" stroke-linecap="round"/>
         <circle cx="1028" cy="376" r="4" stroke="#3d3530" stroke-width="1.5" fill="#faf8f2"/>
-        <g transform="rotate(2, 1028, 420)">
-          <rect x="992" y="380" width="74" height="52" rx="3" fill="#e8e2d0" stroke="#c96a2b" stroke-width="2"/>
-          <text x="1000" y="409" font-family="Space Mono, monospace" font-size="11" font-weight="700" fill="#c96a2b">Framer</text>
-          <text x="1000" y="424" font-family="Space Mono, monospace" font-size="8" fill="#8a7f72">prototype</text>
-        </g>
+        <g transform="rotate(2, 1028, 420)"><rect x="992" y="380" width="74" height="52" rx="3" fill="#e8e2d0" stroke="#c96a2b" stroke-width="2"/><text x="1000" y="409" font-family="Space Mono, monospace" font-size="11" font-weight="700" fill="#c96a2b">Framer</text><text x="1000" y="424" font-family="Space Mono, monospace" font-size="8" fill="#8a7f72">prototype</text></g>
       </svg>
-
       <div class="hero-content">
         <div class="hero-tag">Vancouver-based designer</div>
         <h1 class="hero-name">
           Hi, I'm
-          <span class="underline-squiggle">
-            Inayat
+          <span class="underline-squiggle">Inayat
             <svg viewBox="0 0 200 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2,8 C20,3 45,14 70,7 C95,2 120,13 145,6 C165,2 185,10 198,7" stroke="#c0392b" stroke-width="3" fill="none" stroke-linecap="round"/>
             </svg>
@@ -846,23 +435,18 @@
           <span class="mobile-skill-pill orange">Framer</span>
           <span class="mobile-skill-pill blue">UX/UI</span>
         </div>
-        <p class="hero-desc">
-          Turning messy problems into tested solutions — research-backed,
-          technically feasible, and built to actually ship.
-        </p>
+        <p class="hero-desc">Turning messy problems into tested solutions — research-backed, technically feasible, and built to actually ship.</p>
         <div class="hero-cta-group">
           <a href="#work" class="btn-sketch primary">View my work →</a>
           <a href="#contact" class="btn-sketch">Say hello</a>
         </div>
       </div>
-
       <div class="hero-sticky">
         <div class="sticky-note">
           <span class="sticky-label">Note to self</span>
           Bridge design &amp; build.<br />Always.<br /><br />— Research first<br />— Sketch it out<br />— Test, test, test<br />— Ship it ✓
         </div>
       </div>
-
       <div class="corner-fold" style="bottom:0;right:0"></div>
     </section>
 
@@ -873,6 +457,7 @@
       </span>
     </div>
 
+    <!-- SELECTED WORK -->
     <section id="work" class="page-edge">
       <div class="margin-strip"></div>
       <div class="section-header">
@@ -881,25 +466,20 @@
         <div class="section-line"></div>
         <span style="font-family:'Reenie Beanie',cursive;font-size:16px;color:var(--accent-red);transform:rotate(3deg);display:inline-block;margin-left:8px;opacity:0.8;">← click to explore!</span>
       </div>
+
       <div class="projects-grid">
-        <a href="https://inayatgulati.github.io/Inayat_Portfolio/Projects/mastercard-fraud-dashboard.html" class="project-card featured reveal">
-          <div class="card-visual">
-            <svg viewBox="0 0 320 220" class="sketch-illustration" xmlns="http://www.w3.org/2000/svg">
-              <rect x="10" y="10" width="300" height="200" rx="4" stroke="#1a1612" stroke-width="1.5" fill="none"/>
-              <rect x="10" y="10" width="60" height="200" stroke="#1a1612" stroke-width="1" fill="rgba(26,22,18,0.04)"/>
-              <rect x="70" y="10" width="240" height="22" stroke="#1a1612" stroke-width="1" fill="rgba(26,22,18,0.03)"/>
-              <rect x="78" y="40" width="60" height="40" rx="2" stroke="#1a1612" stroke-width="1" fill="rgba(192,57,43,0.08)"/>
-              <text x="108" y="60" font-family="Space Mono,monospace" font-size="11" text-anchor="middle" fill="#c0392b" font-weight="bold">60%</text>
-              <text x="108" y="72" font-family="Space Mono,monospace" font-size="6" text-anchor="middle" fill="#1a1612" opacity="0.5">less time</text>
-              <rect x="146" y="40" width="60" height="40" rx="2" stroke="#1a1612" stroke-width="1" fill="none"/>
-              <text x="176" y="60" font-family="Space Mono,monospace" font-size="11" text-anchor="middle" fill="#3a7d44" font-weight="bold">0</text>
-              <text x="176" y="72" font-family="Space Mono,monospace" font-size="6" text-anchor="middle" fill="#1a1612" opacity="0.5">critical fails</text>
-              <rect x="78" y="90" width="130" height="80" rx="2" stroke="#1a1612" stroke-width="1" fill="none"/>
-              <polyline points="90,155 100,140 115,145 130,125 145,130 160,110 175,118 190,105" stroke="#c0392b" stroke-width="1.5" fill="none"/>
-            </svg>
+
+        <!-- 1. FEATURED: Mastercard Fraud Dashboard -->
+        <a href="./Projects/mastercard-fraud-dashboard.html" class="project-card featured reveal">
+          <div class="card-image">
+            <img src="./Images/Chart 2.png" alt="Fraud Detection Dashboard" />
           </div>
           <div class="card-body">
-            <div class="card-tags"><span class="card-tag">Mastercard</span><span class="card-tag">Interaction Design</span><span class="card-tag">2025</span></div>
+            <div class="card-tags">
+              <span class="card-tag">Mastercard</span>
+              <span class="card-tag">Interaction Design</span>
+              <span class="card-tag">2025</span>
+            </div>
             <h3 class="card-title">Fraud Detection Dashboard</h3>
             <p class="card-desc">Embedded with a real Mastercard PM on a live initiative. Led user research with analysts, mapped workflows, and co-designed an AI-driven dashboard — zero critical failures across two usability rounds.</p>
             <div class="card-metric">60% less analysis time</div><br/>
@@ -908,50 +488,51 @@
           <div class="corner-fold"></div>
         </a>
 
-        <div class="project-card coming-soon reveal">
-          <div class="card-visual" style="min-height:160px;padding:24px">
-            <svg viewBox="0 0 260 140" class="sketch-illustration" xmlns="http://www.w3.org/2000/svg">
-              <rect x="100" y="8" width="60" height="24" rx="2" stroke="#1a1612" stroke-width="1.5" fill="rgba(26,22,18,0.06)"/>
-              <text x="130" y="23" font-family="Space Mono,monospace" font-size="7" text-anchor="middle" fill="#1a1612">Home</text>
-              <line x1="130" y1="32" x2="130" y2="44" stroke="#1a1612" stroke-width="1"/>
-              <line x1="40" y1="44" x2="220" y2="44" stroke="#1a1612" stroke-width="1"/>
-              <rect x="10" y="56" width="60" height="20" rx="2" stroke="#1a1612" stroke-width="1" fill="none"/>
-              <text x="40" y="69" font-family="Space Mono,monospace" font-size="6" text-anchor="middle" fill="#1a1612">News</text>
-              <rect x="100" y="56" width="60" height="20" rx="2" stroke="#1a1612" stroke-width="1" fill="none"/>
-              <text x="130" y="69" font-family="Space Mono,monospace" font-size="6" text-anchor="middle" fill="#1a1612">Tools</text>
-              <text x="4" y="106" font-family="Caveat,cursive" font-size="13" fill="#2c5f8a">15,000+ employees</text>
-            </svg>
+        <!-- 2. Mastercard Workplace UX -->
+        <a href="./Projects/Mastercard_Project.html" class="project-card reveal">
+          <div class="card-image">
+            <img src="./Images/Mastercard.png" alt="Mastercard SharePoint" />
           </div>
           <div class="card-body">
-            <span class="coming-soon-badge">✏️ Case study</span>
-            <div class="card-tags"><span class="card-tag">Enterprise UX</span><span class="card-tag">2025</span></div>
+            <div class="card-tags">
+              <span class="card-tag">Internship</span>
+              <span class="card-tag">Enterprise UX</span>
+              <span class="card-tag">2025</span>
+            </div>
             <h3 class="card-title">Mastercard Workplace UX</h3>
-            <p class="card-desc">Redesigned internal SharePoint for 15,000+ global employees. Full case study coming soon.</p>
+            <p class="card-desc">Redesigned internal SharePoint for 15,000+ global employees across Vancouver, Dublin, India, and the US.</p>
             <div class="card-metric">40% faster navigation</div>
+            <span class="card-arrow">Explore project →</span>
           </div>
           <div class="corner-fold"></div>
-        </div>
+        </a>
 
-        <div class="project-card coming-soon reveal">
-          <div class="card-visual" style="min-height:160px;padding:24px">
-            <svg viewBox="0 0 260 140" class="sketch-illustration" xmlns="http://www.w3.org/2000/svg">
-              <rect x="30" y="10" width="70" height="120" rx="8" stroke="#1a1612" stroke-width="1.5" fill="none"/>
-              <rect x="38" y="24" width="54" height="74" stroke="#1a1612" stroke-width="0.8" fill="rgba(26,22,18,0.04)"/>
-              <circle cx="65" cy="51" r="18" stroke="#1a1612" stroke-width="0.8" fill="rgba(26,22,18,0.06)"/>
-              <text x="65" y="55" font-family="Caveat,cursive" font-size="16" text-anchor="middle" fill="#1a1612">🐾</text>
-            </svg>
+        <!-- 3. Pawth Pet App -->
+        <a href="./Projects/Pawth_Project.html" class="project-card reveal">
+          <div class="card-image">
+            <video src="./Images/Pawth.mp4" autoplay muted loop playsinline></video>
           </div>
           <div class="card-body">
-            <span class="coming-soon-badge">✏️ Case study</span>
-            <div class="card-tags"><span class="card-tag">UX/UI</span><span class="card-tag">Frontend</span><span class="card-tag">2026</span></div>
+            <div class="card-tags">
+              <span class="card-tag">UX/UI</span>
+              <span class="card-tag">Frontend</span>
+              <span class="card-tag">2026</span>
+            </div>
             <h3 class="card-title">Pawth Pet App</h3>
-            <p class="card-desc">Social platform for pet owners — share moments, find pet-friendly places, connect with fellow pet lovers.</p>
+            <p class="card-desc">Social platform for pet owners — share moments, find pet-friendly places, connect with fellow pet lovers. Designed and built the frontend.</p>
+            <span class="card-arrow">Explore project →</span>
           </div>
           <div class="corner-fold"></div>
-        </div>
+        </a>
+
+      </div>
+
+      <div class="view-all-wrap">
+        <a href="./Projects.html" class="view-all-link">View all projects →</a>
       </div>
     </section>
 
+    <!-- ABOUT -->
     <section id="about" style="background:var(--paper-dark)" class="page-edge">
       <div class="margin-strip"></div>
       <div class="section-header">
@@ -1011,6 +592,7 @@
       </div>
     </section>
 
+    <!-- CONTACT -->
     <div id="contact" class="contact-section">
       <div class="contact-inner">
         <h2 class="contact-title">Let's work<br/>together.</h2>
@@ -1029,7 +611,6 @@
     </footer>
 
     <script>
-      // ===== SPIRAL HOLES =====
       const spiral = document.querySelector(".spiral-binding");
       const holeCount = Math.floor(window.innerHeight / 44) + 2;
       for (let i = 0; i < holeCount; i++) {
@@ -1037,8 +618,6 @@
         hole.className = "spiral-hole";
         spiral.appendChild(hole);
       }
-
-      // ===== CURSOR TRAIL =====
       const trailContainer = document.getElementById("cursorTrail");
       let trails = [];
       document.addEventListener("mousemove", (e) => {
@@ -1058,8 +637,6 @@
         }, 300);
         if (trails.length > 40) { const old = trails.shift(); if (old.parentNode) old.parentNode.removeChild(old); }
       });
-
-      // ===== SCROLL REVEAL =====
       const reveals = document.querySelectorAll(".reveal");
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry, i) => {
@@ -1070,8 +647,6 @@
         });
       }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
       reveals.forEach(el => observer.observe(el));
-
-      // ===== MOBILE NAV =====
       function toggleMobileMenu() {
         const menu = document.getElementById("mobileMenu");
         const hamburger = document.getElementById("hamburger");
