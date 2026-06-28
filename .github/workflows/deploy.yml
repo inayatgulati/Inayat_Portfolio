@@ -12,11 +12,20 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+
       - name: Inject API key
-        run: sed -i 's/ANTHROPIC_API_KEY/${{ secrets.ANTHROPIC_API_KEY }}/g' index.html
+        env:
+          API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: sed -i "s/ANTHROPIC_API_KEY/${API_KEY}/g" index.html
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
-      - uses: actions/deploy-pages@v4
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
