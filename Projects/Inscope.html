@@ -1,0 +1,3166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>InScope — Inayat</title>
+<meta name="description" content="InScope: a financial planning app for Coast Capital Savings. UI design and user flow case study — including the self-audit and the nine screens built after the final presentation." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://api.fontshare.com" />
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
+<style>
+/* ---------- the app's own token + component layer (scoped to .screen) ---------- */
+/* ============================================================
+   InScope — design tokens extracted from Figma
+   File: 438-Client-Phase-DESIGN-EXPERIENCE (WETSwBRjp8T4BeznvPJ0Rq)
+   Source of truth: node 1848:36 (Home) + get_variable_defs
+   ============================================================ */
+
+/* ============================================================
+   THEMES
+   Colour is the only thing that changes between themes. Type,
+   shape and layout tokens are shared, so a rebrand is a swap of
+   one block — not a redraw of 32 screens.
+
+   `--gold` is the historical name for the accent role (links,
+   active tab, primary CTA). Kept so screen markup stays stable
+   across themes; it is not literally gold outside the original.
+
+   WCAG AA contrast measured against each theme's card surface:
+     original  accent 5.23  muted 5.18
+     cc-dark   accent 5.55  muted 6.47
+     cc-light  accent 5.56  muted 6.22
+
+   NOTE: Coast Capital's true Blue Ribbon #0056FF scores only
+   2.46 on the cc-dark card — it FAILS AA as an accent on a dark
+   navy surface. cc-dark therefore lightens it to #6fa5ff; the
+   authentic #0056FF is used in cc-light, where it passes at 5.56.
+   ============================================================ */
+
+/* ---- Theme: original (student green/gold, as designed) ---- */
+:root,
+[data-theme="original"] {
+  --bg:            #0c3a28;  /* app canvas / deepest green            */
+  --card:          #135139;  /* Figma variable: GreenTab              */
+  --card-2:        #17603f;  /* raised surface inside a card          */
+  --border:        #3c6359;  /* hairline on outlined cards            */
+  --text:          #f2fbf5;  /* primary type                          */
+  --muted:         #a9c9b6;  /* secondary type, meta, inactive tabs   */
+  --gold:          #dfc05b;  /* accent: links, active tab, CTAs       */
+  --gold-ink:      #1a2e14;  /* type on accent fills                  */
+
+  --track:         #e3ded1;
+  --fill:          #3f8047;
+  --track-gold:    #b2ab48;
+  --fill-gold:     #6a652a;
+
+  --danger:        #e2725b;
+  --warn:          #dfc05b;
+  --ok:            #6fbf8a;
+
+  --overlay:       rgba(242, 251, 245, 0.12);
+  --hairline:      rgba(242, 251, 245, 0.14);
+  --sunken:        rgba(0, 0, 0, 0.20);
+  --scrim:         rgba(0, 0, 0, 0.50);
+  --badge-a:       #2f6b45;
+  --badge-b:       #8a7a2e;
+}
+
+/* ---- Theme: Coast Capital, dark (brand navy) ---- */
+[data-theme="cc-dark"] {
+  --bg:            #071b47;  /* deepened Downriver                    */
+  --card:          #0f2a63;  /* Coast Capital "Downriver"             */
+  --card-2:        #17398a;
+  --border:        #2a4a94;
+  --text:          #fafafa;  /* Coast Capital "Alabaster"             */
+  --muted:         #9db3dc;
+  --gold:          #6fa5ff;  /* Blue Ribbon lifted to pass AA on navy */
+  --gold-ink:      #04102e;
+
+  --track:         #23407e;
+  --fill:          #4d8dff;
+  --track-gold:    #2a4a94;
+  --fill-gold:     #8fbbff;
+
+  --danger:        #ff8f7a;
+  --warn:          #ffc86b;
+  --ok:            #5fd0a0;
+
+  --overlay:       rgba(250, 250, 250, 0.12);
+  --hairline:      rgba(250, 250, 250, 0.16);
+  --sunken:        rgba(0, 0, 0, 0.24);
+  --scrim:         rgba(4, 16, 46, 0.55);
+  --badge-a:       #17398a;
+  --badge-b:       #2f5fc0;
+}
+
+/* ---- Theme: Coast Capital, light (true Blue Ribbon) ---- */
+[data-theme="cc-light"] {
+  --bg:            #eef2fa;
+  --card:          #ffffff;
+  --card-2:        #eef3ff;
+  --border:        #d6e0f5;
+  --text:          #0f2a63;  /* Downriver as ink                      */
+  --muted:         #4a5e86;
+  --gold:          #0056ff;  /* Coast Capital "Blue Ribbon", authentic */
+  --gold-ink:      #ffffff;
+
+  --track:         #dde5f4;
+  --fill:          #0056ff;
+  --track-gold:    #dde5f4;
+  --fill-gold:     #3d7dff;
+
+  --danger:        #c0392b;
+  --warn:          #a86a00;
+  --ok:            #1a7f52;
+
+  --overlay:       rgba(15, 42, 99, 0.07);
+  --hairline:      rgba(15, 42, 99, 0.12);
+  --sunken:        rgba(15, 42, 99, 0.05);
+  --scrim:         rgba(15, 42, 99, 0.40);
+  --badge-a:       #d8e4ff;
+  --badge-b:       #e6ecfb;
+}
+
+:root {
+  /* ---- Type ---- */
+  --font: 'Satoshi', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --fs-display: 43px;  /* hero numbers: $18,500                  */
+  --fs-h1:      32px;  /* page titles: July Budget, Risk Radar   */
+  --fs-h2:      24px;  /* Morning, Maya / $400                   */
+  --fs-h3:      18px;  /* card titles: Your Goals, Resources     */
+  --fs-body:    16px;  /* row titles: Emergency Fund             */
+  --fs-sm:      14px;  /* body copy, links                       */
+  --fs-xs:      12px;  /* meta: $850 of $3000, percentages       */
+  --fs-tab:     10px;  /* tab bar labels                         */
+
+  /* ---- Shape ---- */
+  --r-lg: 20px;        /* hero cards           */
+  --r-md: 12.7px;      /* standard cards       */
+  --r-sm: 8px;         /* pills, inputs        */
+  --r-pill: 999px;
+
+  --shadow: 0.635px 0.635px 6.351px rgba(0, 0, 0, 0.12);
+
+  /* ---- Layout ---- */
+  --screen-w: 402px;
+  --screen-h: 874px;
+  --gutter: 33px;      /* content inset from frame edge (Figma: 33–36) */
+  --content-w: 335px;
+  --tabbar-h: 79.86px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ============================================================
+   Device frame + screen
+   ============================================================ */
+
+.screen {
+  position: relative;
+  width: var(--screen-w);
+  height: var(--screen-h);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--fs-sm);
+  overflow: hidden;
+  border-radius: 28px;
+  flex: none;
+}
+
+/* scrollable content region above the tab bar */
+.screen__body {
+  position: absolute;
+  inset: 0 0 var(--tabbar-h) 0;
+  padding: 60px var(--gutter) 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--hairline) transparent;
+}
+.screen__body::-webkit-scrollbar { width: 3px; }
+.screen__body::-webkit-scrollbar-thumb {
+  background: var(--hairline); border-radius: 3px;
+}
+
+/* stack rhythm */
+.stack   { display: flex; flex-direction: column; gap: 22px; }
+.stack-s { display: flex; flex-direction: column; gap: 12px; }
+.stack-xs{ display: flex; flex-direction: column; gap: 6px; }
+.row     { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.row-between { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.grow    { flex: 1; min-width: 0; }
+
+/* ============================================================
+   Type
+   ============================================================ */
+
+.t-date    { font-size: var(--fs-sm); color: var(--muted); }
+.t-greet   { font-size: var(--fs-h2); font-weight: 700; letter-spacing: -0.01em; }
+.t-h1      { font-size: var(--fs-h1); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+.t-h2      { font-size: var(--fs-h2); font-weight: 700; letter-spacing: -0.01em; line-height: 1.15; }
+.t-h3      { font-size: var(--fs-h3); font-weight: 700; line-height: 1.046; }
+.t-body    { font-size: var(--fs-body); font-weight: 700; line-height: 1.046; }
+.t-sm      { font-size: var(--fs-sm); line-height: 1.35; }
+.t-xs      { font-size: var(--fs-xs); line-height: 1.27; }
+.t-display { font-size: var(--fs-display); font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+.t-eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.09em;
+  text-transform: uppercase; color: var(--muted);
+}
+.muted  { color: var(--muted); }
+.gold   { color: var(--gold); }
+.bold   { font-weight: 700; }
+.med    { font-weight: 500; }
+.center { text-align: center; }
+.right  { text-align: right; }
+
+/* inline link, e.g. "See breakdown →" */
+.link {
+  color: var(--gold); font-weight: 700; font-size: var(--fs-sm);
+  text-decoration: none; cursor: pointer; display: inline-block;
+}
+
+/* ============================================================
+   Cards
+   ============================================================ */
+
+.card {
+  background: var(--card);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow);
+  padding: 17px 19px;
+}
+.card--hero   { border-radius: var(--r-lg); padding: 27px 28px; }
+.card--outline{ background: transparent; border: 1px solid var(--border); }
+.card--flat   { box-shadow: none; }
+.card--tight  { padding: 14px 16px; }
+
+/* ============================================================
+   Progress
+   ============================================================ */
+
+.bar {
+  height: 6.35px; width: 100%;
+  background: var(--track);
+  border-radius: 7.6px; overflow: hidden;
+}
+.bar > i { display: block; height: 100%; background: var(--fill); border-radius: 7.6px; }
+.bar--gold { background: var(--track-gold); }
+.bar--gold > i { background: var(--fill-gold); }
+.bar--thick { height: 7.5px; }
+
+/* donut: --p is percent 0–100 */
+.donut {
+  width: 95px; height: 95px; flex: none;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: conic-gradient(var(--gold) calc(var(--p) * 1%), rgba(0,0,0,0.22) 0);
+  position: relative;
+}
+.donut::after {
+  content: ''; position: absolute; inset: 11px;
+  border-radius: 50%; background: var(--card);
+}
+.donut__label { position: relative; z-index: 1; text-align: center; line-height: 1.15; }
+
+/* ============================================================
+   Pills / chips / buttons
+   ============================================================ */
+
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: var(--r-pill);
+  font-size: var(--fs-xs); font-weight: 700;
+  background: var(--overlay); color: var(--muted);
+}
+.pill--ok    { background: rgba(111, 191, 138, 0.18); color: var(--ok); }
+.pill--warn  { background: rgba(223, 192, 91, 0.18);  color: var(--gold); }
+.pill--danger{ background: rgba(226, 114, 91, 0.18);  color: var(--danger); }
+
+.btn {
+  display: block; width: 100%; text-align: center;
+  padding: 15px 20px; border-radius: var(--r-pill);
+  font-family: var(--font); font-size: var(--fs-body); font-weight: 700;
+  background: var(--gold); color: var(--gold-ink);
+  border: 0; cursor: pointer; text-decoration: none;
+}
+.btn--ghost {
+  background: transparent; color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn--sm { padding: 9px 14px; font-size: var(--fs-sm); width: auto; white-space: nowrap; flex: 0 1 auto; min-width: 0; }
+
+/* segmented control (Plan / Prepare, Lost Job / Income / Rent) */
+.seg { display: flex; gap: 8px; background: var(--sunken); padding: 4px; border-radius: var(--r-pill); }
+.seg > button {
+  flex: 1; padding: 9px 12px; border: 0; border-radius: var(--r-pill);
+  font-family: var(--font); font-size: var(--fs-sm); font-weight: 700;
+  background: transparent; color: var(--muted); cursor: pointer;
+}
+.seg > button[aria-selected="true"] { background: var(--gold); color: var(--gold-ink); }
+
+/* ============================================================
+   List rows
+   ============================================================ */
+
+.list { display: flex; flex-direction: column; }
+.list-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid var(--hairline);
+  cursor: pointer;
+}
+.list-row:last-child { border-bottom: 0; }
+.list-row__chev { margin-left: auto; color: var(--muted); flex: none; }
+
+/* circular icon badge */
+.badge {
+  width: 32px; height: 32px; flex: none; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--overlay); color: var(--text);
+}
+.badge--green { background: var(--badge-a); }
+.badge--gold  { background: var(--badge-b); }
+.badge--danger{ background: rgba(226, 114, 91, 0.2); color: var(--danger); }
+
+/* ============================================================
+   Inputs / sliders / steppers
+   ============================================================ */
+
+.field {
+  width: 100%; padding: 14px 16px; border-radius: var(--r-sm);
+  background: var(--sunken); border: 1px solid var(--border);
+  color: var(--text); font-family: var(--font); font-size: var(--fs-body);
+}
+.field::placeholder { color: rgba(169, 201, 182, 0.7); }
+
+/* slider: track + knob, --p is percent 0-100 */
+.slider { position: relative; height: 18px; display: flex; align-items: center; }
+.slider__track {
+  height: 7.5px; width: 100%; background: var(--track);
+  border-radius: var(--r-pill); overflow: hidden;
+}
+.slider__track > i { display: block; height: 100%; background: var(--fill); }
+.slider__knob {
+  position: absolute; width: 18px; height: 18px; border-radius: 50%;
+  background: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.35);
+  left: calc(var(--p) * 1%); transform: translateX(-50%);
+}
+
+.stepper { display: flex; align-items: center; gap: 16px; }
+.stepper button {
+  width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
+  background: transparent; color: var(--text); font-size: 20px; cursor: pointer;
+  font-family: var(--font); line-height: 1;
+}
+
+/* selectable option card (goal type picker, contribution options) */
+.option {
+  display: block; width: 100%; text-align: left;
+  padding: 16px 18px; border-radius: var(--r-md);
+  background: var(--card); border: 1px solid transparent;
+  color: var(--text); font-family: var(--font); cursor: pointer;
+}
+.option[aria-selected="true"] { border-color: var(--gold); }
+.option--rec { border-color: var(--gold); }
+
+/* ============================================================
+   Bottom sheet (Add money / Withdraw)
+   ============================================================ */
+
+.sheet-scrim { position: absolute; inset: 0; background: var(--scrim); z-index: 5; }
+.sheet {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 6;
+  max-height: 78%; overflow-y: auto;
+  background: var(--card);
+  border-radius: 22px 22px 0 0;
+  padding: 12px 24px 34px;
+  box-shadow: 0 -8px 30px rgba(0,0,0,0.3);
+}
+/* a sheet covers the tab bar, as in Figma */
+.screen:has(.sheet) .tabbar { display: none; }
+.sheet__grabber {
+  width: 44px; height: 4px; border-radius: var(--r-pill);
+  background: var(--hairline); margin: 0 auto 18px;
+}
+
+/* ============================================================
+   Header (back arrow + title)
+   ============================================================ */
+
+.appbar { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.appbar__back {
+  width: 43px; height: 36px; border-radius: var(--r-sm);
+  background: var(--overlay); border: 0; color: var(--text);
+  display: grid; place-items: center; cursor: pointer;
+}
+
+.stepcount { font-size: var(--fs-xs); color: var(--muted); letter-spacing: 0.04em; }
+
+/* ============================================================
+   Tab bar — 5 items, duplicated into every Figma frame
+   ============================================================ */
+
+.tabbar {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: var(--tabbar-h); background: var(--card);
+  display: flex; align-items: flex-start; justify-content: center;
+  gap: 44.8px; padding-top: 15px;
+}
+.tab {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: none; border: 0; cursor: pointer;
+  color: var(--muted); font-family: var(--font); font-size: var(--fs-tab);
+}
+.tab svg { width: 27px; height: 27px; }
+.tab[aria-current="page"] { color: var(--gold); }
+.tabbar__home-indicator {
+  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+  width: 131px; height: 4.8px; border-radius: var(--r-pill); background: #b9c0c9;
+}
+
+
+/* ---------- portfolio page ---------- */
+:root {
+  --paper: #faf8f2;
+  --paper-dark: #f0ecdf;
+  --paper-worn: #e8e2d0;
+  --ink: #1a1612;
+  --ink-light: #3d3530;
+  --ink-faint: #8a7f72;
+  --pencil: #b8b0a0;
+  --pencil-light: #d4cfc4;
+
+  /* InScope accent — Coast Capital Downriver + Blue Ribbon */
+  --cc-blue: #0f2a63;
+  --cc-blue-l: #0056ff;
+  --cc-amber: #b87a0a;
+  --cc-red: #c0392b;
+  --cc-green: #2e7d44;
+  --yellow: #e8b84b;
+
+  --font-hand: 'Caveat', cursive;
+  --font-scrawl: 'Reenie Beanie', cursive;
+  --font-mono: 'Space Mono', monospace;
+  --font-serif: 'EB Garamond', serif;
+
+  --nav-h: 58px;
+  --side-w: 196px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-hand);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.11) 27px, rgba(180,170,155,0.11) 28px);
+  pointer-events: none; z-index: 0;
+}
+
+.spiral-binding {
+  position: fixed; left: 0; top: 0; bottom: 0; width: 32px;
+  background: var(--paper-worn); border-right: 2.5px solid var(--ink);
+  z-index: 200; display: flex; flex-direction: column; align-items: center;
+  justify-content: flex-start; padding-top: 24px; pointer-events: none;
+}
+.spiral-hole {
+  width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--ink);
+  background: var(--paper); margin-bottom: 28px; flex-shrink: 0;
+  box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
+}
+
+.topnav {
+  position: fixed; top: 0; left: 32px; right: 0; height: var(--nav-h); z-index: 150;
+  background: var(--paper); border-bottom: 2.5px solid var(--ink);
+  display: flex; align-items: center; padding: 0 2rem;
+}
+.topnav-in { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+.logo { font-family: var(--font-hand); font-size: 22px; font-weight: 700; color: var(--ink); text-decoration: none; position: relative; }
+.logo::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 3px; background: var(--cc-blue); border-radius: 2px; transform: rotate(-0.8deg); }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { font-family: var(--font-hand); font-size: 16px; color: var(--ink-faint); text-decoration: none; position: relative; padding-bottom: 2px; transition: color 0.2s; }
+.nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--ink); transition: width 0.25s; }
+.nav-links a:hover { color: var(--ink); }
+.nav-links a:hover::after { width: 100%; }
+
+.sidenav {
+  position: fixed; top: var(--nav-h); left: 32px; width: var(--side-w);
+  height: calc(100vh - var(--nav-h)); padding: 2rem 1rem 2rem 1.5rem;
+  border-right: 1.5px solid rgba(180,170,155,0.35); background: var(--paper);
+  display: flex; flex-direction: column; gap: 1.5rem; overflow-y: auto; z-index: 100;
+}
+.sidenav::before { content: ''; position: absolute; left: 44px; top: 0; bottom: 0; width: 1.5px; background: rgba(15,42,99,0.12); pointer-events: none; }
+.back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--cc-blue); text-decoration: none; font-family: var(--font-hand); font-size: 15px; font-weight: 600; transition: gap 0.2s; white-space: nowrap; }
+.back-link:hover { gap: 10px; }
+.side-lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--pencil); margin-bottom: 0.5rem; }
+.side-list { display: flex; flex-direction: column; }
+.side-a { display: flex; align-items: center; gap: 8px; padding: 6px 0 6px 10px; color: var(--pencil); text-decoration: none; font-family: var(--font-hand); font-size: 14px; border-left: 2px solid transparent; transition: color 0.2s, border-color 0.2s; white-space: nowrap; }
+.side-a:hover { color: var(--ink-light); border-left-color: var(--pencil); }
+.side-a.active { color: var(--cc-blue); border-left-color: var(--cc-blue); font-weight: 700; }
+.side-num { font-family: var(--font-mono); font-size: 8px; color: var(--pencil); min-width: 16px; }
+.side-a.active .side-num { color: var(--cc-blue); }
+.side-a.turn-mark { margin-top: 10px; padding-top: 12px; border-top: 1.5px dashed rgba(15,42,99,0.3); }
+
+.main { margin-left: calc(32px + var(--side-w)); padding: calc(var(--nav-h) + 3rem) 3.5rem 7rem 3rem; max-width: calc(860px + var(--side-w)); position: relative; z-index: 1; }
+
+.tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.tag { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--cc-blue); padding: 3px 10px; border: 1.5px solid rgba(15,42,99,0.3); background: rgba(15,42,99,0.05); transform: rotate(-0.3deg); display: inline-block; }
+.tag:nth-child(2) { transform: rotate(0.5deg); color: var(--cc-amber); border-color: rgba(184,122,10,0.3); background: rgba(184,122,10,0.05); }
+.tag:nth-child(3) { transform: rotate(-0.2deg); color: var(--ink-faint); border-color: rgba(138,127,114,0.3); background: rgba(138,127,114,0.05); }
+
+.hero-h { font-family: var(--font-hand); font-size: clamp(2.6rem, 5vw, 4.2rem); font-weight: 700; line-height: 1.05; margin-bottom: 0.5rem; letter-spacing: -1px; }
+.hero-h .squiggle-wrap { position: relative; display: inline-block; }
+.hero-h .squiggle-wrap svg { position: absolute; bottom: -6px; left: -4px; width: calc(100% + 8px); pointer-events: none; }
+.hero-sub { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-faint); margin: 0.75rem 0; }
+.hero-p { font-family: var(--font-hand); font-size: 19px; color: var(--ink-light); line-height: 1.65; max-width: 540px; margin-bottom: 1.75rem; }
+
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); border: 2px solid var(--ink); margin-bottom: 1.5rem; transform: rotate(0.2deg); box-shadow: 4px 4px 0 rgba(26,22,18,0.1); background: var(--paper-dark); }
+.stat { padding: 1.1rem 1rem; border-right: 1.5px solid rgba(26,22,18,0.2); }
+.stat:last-child { border-right: none; }
+.s-n { font-family: var(--font-hand); font-size: 2.4rem; font-weight: 700; color: var(--cc-blue); line-height: 1; margin-bottom: 4px; }
+.s-l { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.35; }
+.s-sub { font-family: var(--font-mono); font-size: 8px; letter-spacing: 1px; color: var(--pencil); margin-top: 2px; }
+
+.meta { display: flex; gap: 2rem; flex-wrap: wrap; padding-top: 1.25rem; border-top: 2px solid rgba(26,22,18,0.15); margin-bottom: 5rem; }
+.m-k { font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--cc-blue); margin-bottom: 4px; }
+.m-v { font-family: var(--font-hand); font-size: 15px; color: var(--ink-light); line-height: 1.5; }
+
+.sec { margin-bottom: 5rem; }
+.phase { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; width: fit-content; }
+.p-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--ink); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 9px; color: var(--ink); font-weight: 700; }
+.p-txt { font-family: var(--font-mono); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--ink-faint); }
+.sec-h { font-family: var(--font-hand); font-size: 2.2rem; font-weight: 700; line-height: 1.1; margin-bottom: 0.5rem; letter-spacing: -0.5px; display: inline-block; position: relative; }
+.sec-h::after { content: ''; display: block; height: 3px; background: var(--cc-blue); border-radius: 2px; transform: rotate(-0.5deg); margin-top: 3px; width: 80%; }
+.sec-lead { font-family: var(--font-hand); font-size: 18px; color: var(--ink-light); line-height: 1.75; max-width: 580px; margin: 0.5rem 0 1.5rem; }
+.rule { height: 1.5px; background: rgba(26,22,18,0.12); margin-bottom: 1.5rem; }
+.sub { font-family: var(--font-mono); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--cc-blue); margin-bottom: 0.875rem; }
+.p-body { font-family: var(--font-hand); font-size: 17px; color: var(--ink-light); line-height: 1.75; max-width: 580px; margin-bottom: 1.1rem; }
+.p-body strong { color: var(--ink); }
+
+.g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+.g2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+
+.nc { background: var(--paper-dark); border: 2px solid var(--ink); padding: 1.1rem; position: relative; transition: transform 0.2s; }
+.nc:hover { transform: translate(-2px,-2px); }
+.nc::after { content: ''; position: absolute; bottom: -4px; right: -4px; width: 100%; height: 100%; border: 1.5px solid rgba(26,22,18,0.18); z-index: -1; }
+.nc-n { font-family: var(--font-hand); font-size: 2.2rem; font-weight: 700; color: var(--cc-blue); line-height: 1; margin-bottom: 5px; }
+.nc-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+.nc-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.5; }
+
+.ic { background: var(--paper-dark); border: 2px solid var(--ink); padding: 1.1rem; position: relative; }
+.ic::after { content: ''; position: absolute; bottom: -4px; right: -4px; width: 100%; height: 100%; border: 1.5px solid rgba(26,22,18,0.18); z-index: -1; }
+.ic-ico { font-size: 1rem; margin-bottom: 0.5rem; }
+.ic-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+.ic-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.55; }
+
+.flist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+.fr { display: flex; gap: 0.875rem; align-items: flex-start; padding: 0.875rem 1rem; background: var(--paper-dark); border: 1.5px solid rgba(26,22,18,0.15); transition: border-color 0.2s, transform 0.2s; }
+.fr:hover { border-color: rgba(15,42,99,0.35); transform: translateX(2px); }
+.fr-i { width: 30px; height: 30px; min-width: 30px; border: 1.5px solid rgba(26,22,18,0.2); display: flex; align-items: center; justify-content: center; font-size: 0.82rem; background: var(--paper); }
+.fr-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+.fr-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.55; }
+.fr-w { font-family: var(--font-mono); font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--pencil); margin-left: auto; padding-left: 12px; white-space: nowrap; align-self: center; }
+
+.pcard { background: var(--paper-dark); border: 2px solid var(--ink); padding: 1.25rem; border-bottom: 4px solid var(--cc-blue); position: relative; transition: transform 0.2s; }
+.pcard:hover { transform: translate(-2px,-2px); }
+.pcard::after { content: ''; position: absolute; bottom: -6px; right: -5px; width: 100%; height: 100%; border: 1.5px solid rgba(26,22,18,0.15); z-index: -1; }
+.pcard::before { content: ''; position: absolute; top: -11px; left: 20px; width: 40px; height: 20px; background: rgba(232,184,75,0.38); border-top: 1px solid rgba(232,184,75,0.5); border-bottom: 1px solid rgba(232,184,75,0.5); transform: rotate(-1.5deg); }
+.pcard-av { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--cc-blue); display: flex; align-items: center; justify-content: center; font-family: var(--font-hand); font-size: 1.4rem; font-weight: 700; color: var(--cc-blue); margin-bottom: 0.75rem; }
+.pcard-name { font-family: var(--font-hand); font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+.pcard-role { font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--cc-blue); margin-bottom: 0.75rem; }
+.pcard-quote { font-family: var(--font-serif); font-size: 1rem; font-style: italic; color: var(--ink-light); line-height: 1.5; margin-bottom: 1rem; padding-left: 0.75rem; border-left: 2.5px solid rgba(15,42,99,0.3); }
+.pcard-sub { font-family: var(--font-mono); font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--cc-blue); font-weight: 600; margin: 0.875rem 0 0.5rem; }
+.pcard-list { display: flex; flex-direction: column; gap: 3px; }
+.pcard-item { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); padding-left: 0.75rem; position: relative; line-height: 1.5; }
+.pcard-item::before { content: "—"; position: absolute; left: 0; color: var(--pencil); }
+
+.slist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+.st { display: flex; gap: 0.875rem; padding: 0.875rem 1rem; background: var(--paper-dark); border: 1.5px solid rgba(26,22,18,0.15); }
+.st-n { font-family: var(--font-hand); font-size: 1.3rem; font-weight: 700; color: var(--cc-blue); min-width: 20px; line-height: 1.4; }
+.st-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+.st-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.5; }
+
+.ilist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+.it { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: center; gap: 8px; }
+.it-b { padding: 0.875rem 1rem; border: 1.5px solid rgba(26,22,18,0.15); }
+.it-b.bef { background: var(--paper-dark); }
+.it-b.aft { background: rgba(15,42,99,0.04); border-color: rgba(15,42,99,0.3); }
+.it-lbl { font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; margin-bottom: 3px; }
+.it-b.bef .it-lbl { color: var(--pencil); }
+.it-b.aft .it-lbl { color: var(--cc-blue); }
+.it-txt { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.45; }
+.it-b.aft .it-txt { color: var(--ink); }
+.it-arr { text-align: center; color: var(--cc-blue); font-size: 1rem; font-weight: 700; }
+
+.quote { border-left: 3px solid var(--cc-blue); padding: 0.875rem 1.25rem; margin: 1.25rem 0; background: rgba(15,42,99,0.04); position: relative; transform: rotate(-0.3deg); max-width: 640px; }
+.quote::before { content: ''; position: absolute; top: -11px; left: 20px; width: 36px; height: 20px; background: rgba(232,184,75,0.38); border-top: 1px solid rgba(232,184,75,0.5); border-bottom: 1px solid rgba(232,184,75,0.5); transform: rotate(1.5deg); }
+.quote p { font-family: var(--font-serif); font-size: 1.25rem; font-style: italic; line-height: 1.65; color: var(--ink); }
+.quote-attr { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; color: var(--ink-faint); margin-top: 0.5rem; text-transform: uppercase; }
+
+.rc { background: var(--paper-dark); border: 1.5px solid rgba(26,22,18,0.15); padding: 1.1rem; }
+.rc-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; color: var(--cc-blue); margin-bottom: 5px; }
+.rc-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.7; }
+
+.tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.tool { font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; padding: 3px 10px; background: var(--paper-dark); border: 1.5px solid rgba(26,22,18,0.2); color: var(--ink-light); text-transform: uppercase; }
+
+.hl-y { background: linear-gradient(120deg, rgba(232,184,75,0)0%, rgba(232,184,75,0.45)10%, rgba(232,184,75,0.45)90%, rgba(232,184,75,0)100%); padding: 0 2px; }
+.corner-fold { position: absolute; bottom: 0; right: 0; width: 24px; height: 24px; background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%); border-top: 1px solid var(--pencil); border-left: 1px solid var(--pencil); pointer-events: none; }
+
+.rev { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.rev.in { opacity: 1; transform: none; }
+
+/* ---------- the turn: taped divider between "as presented" and "after" ---------- */
+.turn-band {
+  border: 2px solid var(--ink); background: var(--paper-dark);
+  padding: 1.6rem 1.5rem; margin-bottom: 3rem; position: relative;
+  transform: rotate(-0.25deg); box-shadow: 5px 5px 0 rgba(26,22,18,0.1);
+}
+.turn-band::before {
+  content: ''; position: absolute; top: -12px; left: 50%; transform: translateX(-50%) rotate(-1deg);
+  width: 90px; height: 22px; background: rgba(232,184,75,0.42);
+  border-top: 1px solid rgba(232,184,75,0.55); border-bottom: 1px solid rgba(232,184,75,0.55);
+}
+.turn-band .tb-lbl { font-family: var(--font-mono); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--cc-amber); margin-bottom: 0.6rem; }
+.turn-band h3 { font-family: var(--font-hand); font-size: 1.9rem; font-weight: 700; line-height: 1.15; margin-bottom: 0.5rem; letter-spacing: -0.5px; }
+.turn-band p { font-family: var(--font-hand); font-size: 17px; color: var(--ink-light); line-height: 1.7; max-width: 620px; }
+
+/* ---------- live phones on paper ---------- */
+.iw { margin: 0; flex: none; position: relative; background: var(--paper-dark); border: 2px solid var(--ink); transition: transform 0.2s; }
+.iw:hover { transform: translate(-2px,-2px); }
+.iw::after { content: ''; position: absolute; bottom: -4px; right: -4px; width: 100%; height: 100%; border: 1.5px solid rgba(26,22,18,0.18); z-index: -1; }
+.iw img { width: 100%; display: block; }
+.icap { padding: 8px 10px; font-family: var(--font-hand); font-size: 13px; color: var(--ink-faint); border-top: 1.5px solid rgba(26,22,18,0.15); line-height: 1.4; }
+/* phone modifier — a live 402x874 screen scaled into the frame */
+.iw--phone { width: 237px; }
+.iw__clip { width: 233px; height: 507px; overflow: hidden; position: relative; }
+.iw--phone .screen { transform: scale(.58); transform-origin: 0 0; }
+.iw--phone-lg { width: 330px; }
+.iw--phone-lg .iw__clip { width: 326px; height: 709px; }
+.iw--phone-lg .screen { transform: scale(.81); transform-origin: 0 0; }
+
+/* hero media block — same treatment as .hero-video on the other case study */
+.hero-video {
+  border: 2px solid var(--ink); background: var(--paper-dark); position: relative;
+  margin-bottom: 1.75rem; transform: rotate(-0.3deg); box-shadow: 5px 5px 0 rgba(26,22,18,0.12);
+  padding: 20px; overflow: hidden;
+}
+.hero-video::before {
+  content: ''; position: absolute; top: -11px; left: 50%; transform: translateX(-50%) rotate(-0.5deg);
+  width: 60px; height: 20px; background: rgba(232,184,75,0.42);
+  border-top: 1px solid rgba(232,184,75,0.55); border-bottom: 1px solid rgba(232,184,75,0.55); z-index: 10;
+}
+.hero-row { display: flex; gap: 16px; justify-content: center; }
+.iw--bare { border: 0; background: transparent; }
+.iw--bare::after { display: none; }
+.pgrid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(237px, 237px));
+  gap: 24px 14px; align-items: start; margin-bottom: 1.5rem;
+}
+
+.hint { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--pencil); margin-bottom: -0.5rem; }
+
+/* before / after, live */
+.ba-grid { display: grid; grid-template-columns: auto auto; gap: 14px; justify-content: start; margin-bottom: 1.5rem; }
+.ba-wrap { border: 2px solid var(--ink); background: var(--paper-dark); position: relative; width: fit-content; }
+.ba-wrap::after { content: ''; position: absolute; bottom: -4px; right: -4px; width: 100%; height: 100%; border: 1.5px solid rgba(26,22,18,0.15); z-index: -1; }
+.ba-wrap .iw { border: 0; }
+.ba-wrap .iw::after { display: none; }
+.ba-label { padding: 8px 12px; font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px; font-weight: 700; border-bottom: 1.5px solid rgba(26,22,18,0.15); text-transform: uppercase; }
+.ba-wrap.before .ba-label { color: var(--pencil); }
+.ba-wrap.after  .ba-label { color: var(--cc-blue); }
+
+/* swatches + ratios */
+.swatches { display: flex; flex-wrap: wrap; gap: 14px; margin: 1rem 0 1.5rem; }
+.swatch { display: flex; align-items: center; gap: 9px; font-family: var(--font-mono); font-size: 9px; letter-spacing: 1px; color: var(--ink-light); text-transform: uppercase; }
+.swatch i { width: 30px; height: 30px; display: block; border: 2px solid var(--ink); }
+.nc-n.bad { color: var(--cc-red); }
+.nc-n.good { color: var(--cc-green); }
+
+/* theme switcher — notebook control */
+.tsw {
+  position: fixed; right: 22px; bottom: 22px; z-index: 180;
+  background: var(--paper); border: 2px solid var(--ink);
+  padding: 9px 10px; box-shadow: 4px 4px 0 rgba(26,22,18,0.18);
+  transform: rotate(-0.6deg);
+}
+.tsw::before {
+  content: ''; position: absolute; top: -11px; left: 18px; width: 44px; height: 20px;
+  background: rgba(232,184,75,0.42); border-top: 1px solid rgba(232,184,75,0.55);
+  border-bottom: 1px solid rgba(232,184,75,0.55); transform: rotate(-2deg);
+}
+.tsw__label { font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--pencil); margin-bottom: 7px; }
+.tsw button {
+  display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; cursor: pointer;
+  padding: 6px 9px; margin-bottom: 4px; font-family: var(--font-hand); font-size: 14px;
+  background: transparent; border: 1.5px solid rgba(26,22,18,0.18); color: var(--ink-light);
+}
+.tsw button:last-child { margin-bottom: 0; }
+.tsw button:hover { background: var(--paper-dark); }
+.tsw button.is-on { border-color: var(--cc-blue); color: var(--cc-blue); font-weight: 700; background: rgba(15,42,99,0.06); }
+.tsw .sw { width: 13px; height: 13px; flex: none; border: 1.5px solid var(--ink); }
+.tsw .short { display: none; }
+
+footer { border-top: 2.5px solid var(--ink); padding: 1.25rem 2rem; text-align: center; font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--pencil); margin-left: 32px; }
+
+@media (max-width: 860px) {
+  .sidenav { display: none; }
+  .main { margin-left: 32px; padding: 5rem 1.5rem 5rem; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .g3, .g2 { grid-template-columns: 1fr; }
+  .it { grid-template-columns: 1fr; }
+  .it-arr { display: none; }
+  .ba-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .spiral-binding { display: none; }
+  .topnav, footer { margin-left: 0; left: 0; }
+  .main { margin-left: 0; padding: 5rem 1.25rem 4rem; }
+  .nav-links { display: none; }
+  .hero-h { font-size: 2.2rem; }
+  .tsw { right: 10px; bottom: 10px; padding: 7px 8px; display: flex; gap: 5px; }
+  .tsw__label { display: none; }
+  .tsw button { margin-bottom: 0; font-size: 12px; padding: 6px 8px; }
+  .tsw .full { display: none; }
+  .tsw .short { display: inline; }
+}
+</style>
+</head>
+<body>
+
+<div class="spiral-binding" aria-hidden="true" id="spiralBinding"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- tab bar -->
+    <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 10.2 12 3.5l9 6.7V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>
+    </symbol>
+    <symbol id="i-budget" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/><path d="M12 3v9h9"/>
+    </symbol>
+    <symbol id="i-goals" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="13" r="8"/><circle cx="11" cy="13" r="4"/><circle cx="11" cy="13" r="1"/>
+      <path d="m15 9 3-3V3l3 3h-3"/>
+    </symbol>
+    <symbol id="i-risks" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 20h18"/><path d="m4 16 5-6 4 4 6.5-8"/>
+    </symbol>
+    <symbol id="i-profile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
+    </symbol>
+
+    <!-- ui -->
+    <symbol id="i-chev" viewBox="0 0 8 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m1 1 6 6-6 6"/>
+    </symbol>
+    <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5"/><path d="m11 6-6 6 6 6"/>
+    </symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10.3 3.9 1.8 18.4A2 2 0 0 0 3.5 21.4h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>
+      <path d="M12 9v4"/><path d="M12 17h.01"/>
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M12 5v14M5 12h14"/>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m4 12.5 5.5 5.5L20 7"/>
+    </symbol>
+    <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/>
+    </symbol>
+    <symbol id="i-arrow-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 12h15"/><path d="m13 6 6 6-6 6"/>
+    </symbol>
+
+    <!-- goal / category glyphs -->
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3 4 6v6c0 4.5 3.3 8.3 8 9.5 4.7-1.2 8-5 8-9.5V6z"/>
+    </symbol>
+    <symbol id="i-car" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M18.9 6.6A1.5 1.5 0 0 0 17.5 5.5h-11A1.5 1.5 0 0 0 5.1 6.6L3 12.7v8a.8.8 0 0 0 .8.8h1.4a.8.8 0 0 0 .8-.8v-.8h12v.8a.8.8 0 0 0 .8.8h1.4a.8.8 0 0 0 .8-.8v-8zM6.5 16.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m11 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3M5 11.5l1.5-4.5h11l1.5 4.5z"/>
+    </symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/>
+    </symbol>
+    <symbol id="i-home-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 10.2 12 3.5l9 6.7V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9.5 21v-6h5v6"/>
+    </symbol>
+    <symbol id="i-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/>
+      <path d="M2 3h2.5l2.6 12.4a1.5 1.5 0 0 0 1.5 1.2h8.9a1.5 1.5 0 0 0 1.5-1.2L21 7H5.5"/>
+    </symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 8h16l-1.2 12.2a1 1 0 0 1-1 .8H6.2a1 1 0 0 1-1-.8z"/><path d="M8.5 11V6.5a3.5 3.5 0 0 1 7 0V11"/>
+    </symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M13.5 2 4 14h7l-.5 8L20 10h-7z"/>
+    </symbol>
+    <symbol id="i-bus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="3" width="16" height="14" rx="2"/><path d="M4 10h16"/>
+      <path d="M7 20v1M17 20v1"/><circle cx="8" cy="14" r=".8"/><circle cx="16" cy="14" r=".8"/>
+    </symbol>
+    <symbol id="i-film" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 12h18"/>
+    </symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 7a2 2 0 0 1 2-2h12v4"/><rect x="3" y="7" width="18" height="13" rx="2"/>
+      <circle cx="16.5" cy="13.5" r="1.2"/>
+    </symbol>
+    <symbol id="i-piggy" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M18.5 9.5c-.4-1.6-1.6-2.9-3.2-3.5V4.6a.6.6 0 0 0-1-.4l-1.4 1.2a8 8 0 0 0-1.4-.1c-3.9 0-7 2.6-7 5.9 0 1.8.9 3.4 2.4 4.5V18a.8.8 0 0 0 .8.8h1.5a.8.8 0 0 0 .8-.8v-.9c.5.1 1 .1 1.5.1h.7v1.6a.8.8 0 0 0 .8.8h1.5a.8.8 0 0 0 .8-.8v-2.3c1.1-.7 1.9-1.7 2.3-2.9H21v-4zM8 10a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/>
+    </symbol>
+  </defs>
+</svg>
+
+
+<nav class="topnav">
+  <div class="topnav-in">
+    <a href="../index.html" class="logo">Inayat</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../About.html">About</a></li>
+      <li><a href="../Projects.html">Projects</a></li>
+      <li><a href="../Resume.html">Résumé</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<aside class="sidenav">
+  <a href="../Projects.html" class="back-link">← Projects</a>
+  <div>
+    <div class="side-lbl">Case Study</div>
+    <nav class="side-list">
+      <a href="#overview"  class="side-a active"><span class="side-num">00</span>Overview</a>
+      <a href="#role"      class="side-a"><span class="side-num">01</span>My Role</a>
+      <a href="#flow"      class="side-a"><span class="side-num">02</span>The Flow</a>
+      <a href="#interface" class="side-a"><span class="side-num">03</span>The Interface</a>
+      <a href="#audit"     class="side-a turn-mark"><span class="side-num">04</span>The Audit</a>
+      <a href="#brand"     class="side-a"><span class="side-num">05</span>The Rebrand</a>
+      <a href="#nine"      class="side-a"><span class="side-num">06</span>Nine Screens</a>
+      <a href="#ba"        class="side-a"><span class="side-num">07</span>Before &amp; After</a>
+      <a href="#reflection" class="side-a"><span class="side-num">08</span>Reflection</a>
+    </nav>
+  </div>
+  <div style="margin-top:auto; padding-top:1rem; opacity:0.3; pointer-events:none;">
+    <svg viewBox="0 0 80 64" style="width:70px">
+      <path d="M14,40 L14,32 C14,27 18,24 24,24 L44,24 C50,24 54,27 56,32 L60,38 C64,39 66,41 66,44 L66,48 L14,48 Z"
+            stroke="#0f2a63" stroke-width="1.5" fill="rgba(15,42,99,0.08)" stroke-linejoin="round"/>
+      <circle cx="26" cy="49" r="5" stroke="#0f2a63" stroke-width="1.5" fill="var(--paper)"/>
+      <circle cx="54" cy="49" r="5" stroke="#0f2a63" stroke-width="1.5" fill="var(--paper)"/>
+      <circle cx="58" cy="16" r="7" stroke="#b87a0a" stroke-width="1.3" fill="none"/>
+      <text x="55" y="19" font-family="Space Mono, monospace" font-size="8" fill="#b87a0a">$</text>
+      <text x="4" y="60" font-family="Reenie Beanie, cursive" font-size="9" fill="#8a7f72">true cost first</text>
+    </svg>
+  </div>
+</aside>
+
+<div class="tsw">
+  <div class="tsw__label">Brand theme</div>
+  <button data-theme-set="cc-dark" class="is-on"><span class="sw" style="background:linear-gradient(135deg,#0f2a63 50%,#6fa5ff 50%)"></span><b class="full">Coast Capital · dark</b><b class="short">Dark</b></button>
+  <button data-theme-set="cc-light"><span class="sw" style="background:linear-gradient(135deg,#fff 50%,#0056ff 50%)"></span><b class="full">Coast Capital · light</b><b class="short">Light</b></button>
+  <button data-theme-set="original"><span class="sw" style="background:linear-gradient(135deg,#135139 50%,#dfc05b 50%)"></span><b class="full">Original green</b><b class="short">Green</b></button>
+</div>
+
+<main class="main">
+
+<header style="margin-bottom:4rem">
+  <div class="tags">
+    <span class="tag">UI Design</span>
+    <span class="tag">User Flow</span>
+    <span class="tag">Design Systems</span>
+  </div>
+
+  <h1 class="hero-h">
+    InScope —<br/>
+    <span class="squiggle-wrap" style="color: var(--cc-blue);">what it really costs
+      <svg viewBox="0 0 210 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2,8 C35,3 70,13 105,7 C140,2 175,11 208,7" stroke="#b87a0a" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </svg>
+    </span>
+  </h1>
+
+  <p class="hero-sub">Case Study — Coast Capital Savings · IAT 438 · 1 semester</p>
+
+  <p class="hero-p">
+    A financial planning app for people under 25 buying their first big thing — built so the
+    <span class="hl-y">true cost arrives before the commitment</span>, not after it.
+  </p>
+
+  <div class="hero-video"><div class="hero-row"><figure class="iw iw--phone iw--bare"><div class="iw__clip"><section class="screen" data-id="1848:36" data-title="Home — dashboard" data-flow="Home">
+  <div class="screen__body">
+    <div class="stack">
+
+      <header class="stack-xs">
+        <p class="t-date">Saturday,&nbsp; 01 August</p>
+        <h1 class="t-greet">Morning, Maya</h1>
+      </header>
+
+      <!-- July budget -->
+      <div class="card card--hero">
+        <div class="row" style="gap:20px">
+          <div class="donut" style="--p:60">
+            <div class="donut__label">
+              <div style="font-size:14px;font-weight:700">60%</div>
+              <div class="t-xs muted">spent</div>
+            </div>
+          </div>
+          <div class="grow stack-xs">
+            <p class="t-h3">July Budget</p>
+            <p><span class="t-h2">$400</span> <span style="font-size:16px;font-weight:700">left</span></p>
+            <p class="t-sm muted med">of $2,800 ・9 days to go</p>
+            <a class="link" data-goto="1848:2258">See breakdown →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Goals -->
+      <div class="card">
+        <div class="row-between" style="margin-bottom:14px">
+          <p class="t-h3">Your Goals</p>
+          <p class="t-xs muted">2 of 3 on track</p>
+        </div>
+
+        <div class="row" style="margin-bottom:16px">
+          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
+          <div class="grow stack-xs">
+            <div class="row-between">
+              <p class="t-body">Emergency Fund</p>
+              <p class="t-xs muted">28%</p>
+            </div>
+            <p class="t-xs muted">$850 of $3000</p>
+            <div class="bar"><i style="width:28%"></i></div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-bottom:14px">
+          <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-car"/></svg></span>
+          <div class="grow stack-xs">
+            <div class="row-between">
+              <p class="t-body">First Car</p>
+              <p class="t-xs muted">8%</p>
+            </div>
+            <p class="t-xs muted">$300 of $3,750</p>
+            <div class="bar bar--gold"><i style="width:53%"></i></div>
+          </div>
+        </div>
+
+        <p class="center"><a class="link" data-goto="1858:3389">View all goals →</a></p>
+      </div>
+
+      <!-- Safety net -->
+      <div class="card card--outline card--tight" data-goto="1858:3611">
+        <div class="row">
+          <span style="color:var(--danger);flex:none"><svg width="23" height="21"><use href="#i-warn"/></svg></span>
+          <p class="t-h3 grow">Your safety net covers 1.4 months</p>
+          <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+        </div>
+      </div>
+
+      <!-- Resources -->
+      <div class="card">
+        <p class="t-h3" style="margin-bottom:10px">Resources</p>
+        <div class="list">
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">Why insurance costs more under 25</p>
+              <p class="t-xs muted">2 min ・could save you $250 a month</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">What to check on a used car</p>
+              <p class="t-xs muted">4 min ・before you hand over money</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">Auto insurance basics</p>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">Tips for negotiating the best car price</p>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">Post-purchase car maintenance guide</p>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="home"></nav>
+</section></div></figure><figure class="iw iw--phone iw--bare"><div class="iw__clip"><section class="screen" data-id="1848:2258" data-title="Budget — July overview" data-flow="Budget">
+  <div class="screen__body">
+    <div class="stack">
+
+      <h1 class="t-h1">July Budget</h1>
+
+      <!-- spend split by category -->
+      <svg viewBox="0 0 120 120" width="260" height="260" style="display:block;margin:0 auto" aria-hidden="true">
+        <circle cx="60" cy="60" r="46" fill="none" stroke="var(--card-2)" stroke-width="28"/>
+        <g fill="none" stroke-width="28" transform="rotate(-90 60 60)">
+          <circle cx="60" cy="60" r="46" stroke="var(--gold)"   stroke-dasharray="103.9 185.1" stroke-dashoffset="0"/>
+          <circle cx="60" cy="60" r="46" stroke="var(--danger)" stroke-dasharray="66.1 222.9"  stroke-dashoffset="-103.9"/>
+          <circle cx="60" cy="60" r="46" stroke="var(--ok)"     stroke-dasharray="42.2 246.8"  stroke-dashoffset="-170"/>
+          <circle cx="60" cy="60" r="46" stroke="var(--muted)"  stroke-dasharray="30.4 258.6"  stroke-dashoffset="-212.2"/>
+          <circle cx="60" cy="60" r="46" stroke="var(--fill)"   stroke-dasharray="46.4 242.6"  stroke-dashoffset="-242.6"/>
+        </g>
+      </svg>
+
+      <div class="card card--hero">
+        <div class="list">
+
+          <div class="list-row">
+            <span class="badge" style="color:var(--gold)"><svg width="16" height="16"><use href="#i-cart"/></svg></span>
+            <p class="t-h3 med grow">Groceries</p>
+            <p class="t-h3">$616</p>
+          </div>
+
+          <div class="list-row">
+            <span class="badge" style="color:var(--danger)"><svg width="16" height="16"><use href="#i-bag"/></svg></span>
+            <p class="t-h3 med grow">Shopping</p>
+            <p class="t-h3">$392</p>
+          </div>
+
+          <div class="list-row">
+            <span class="badge" style="color:var(--ok)"><svg width="16" height="16"><use href="#i-bolt"/></svg></span>
+            <p class="t-h3 med grow">Utilities</p>
+            <p class="t-h3">$250</p>
+          </div>
+
+          <div class="list-row">
+            <span class="badge" style="color:var(--muted)"><svg width="16" height="16"><use href="#i-bus"/></svg></span>
+            <p class="t-h3 med grow">Transportation</p>
+            <p class="t-h3">$180</p>
+          </div>
+
+          <div class="list-row">
+            <span class="badge badge--green"><svg width="16" height="16"><use href="#i-film"/></svg></span>
+            <p class="t-h3 med grow">Entertainment</p>
+            <p class="t-h3">$275</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="budget"></nav>
+</section></div></figure><figure class="iw iw--phone iw--bare"><div class="iw__clip"><section class="screen" data-id="1858:3611" data-title="Risk Radar" data-flow="Risks">
+  <div class="screen__body">
+    <div class="stack">
+
+      <div class="row-between">
+        <h1 class="t-h1">Risk Radar</h1>
+        <span class="pill pill--danger">2 needs attention</span>
+      </div>
+
+      <!-- Savings runway -->
+      <div class="card card--outline" style="border-color:var(--danger);border-radius:var(--r-lg);padding:22px 26px">
+        <div class="row-between">
+          <p class="t-body">Savings runway</p>
+          <p class="t-sm" style="color:var(--danger)">Below target</p>
+        </div>
+        <p class="t-h1" style="margin:8px 0 16px">1.4 months</p>
+        <div class="bar"><i style="width:14%"></i></div>
+        <div class="row-between t-xs" style="margin-top:8px;color:var(--danger)">
+          <span>0 month</span>
+          <span>3+ months</span>
+          <span>12 months</span>
+        </div>
+        <div class="list" style="margin-top:10px">
+          <div class="list-row">
+            <p class="t-sm bold grow">Add $95 a month and you’re covered by January</p>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Needs attention -->
+      <div class="row" style="gap:10px">
+        <p class="t-h3">Needs attention</p>
+        <span class="pill pill--danger">2</span>
+      </div>
+
+      <div class="card card--hero">
+        <div class="list">
+
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <div class="row-between">
+                <p class="t-body">Japan Trip is stalling</p>
+                <span class="pill pill--danger">High</span>
+              </div>
+              <p class="t-xs muted med">Nothing added since June. At this rate it’s 2033, want to pause it or lower the target?</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <div class="row-between">
+                <p class="t-body">Subscription increase</p>
+                <span class="pill pill--danger">High</span>
+              </div>
+              <p class="t-xs muted med">Two rose Aug 1, $14/month, about 4% of your car saving.</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- On Track -->
+      <div class="row" style="gap:10px">
+        <p class="t-h3">On Track</p>
+        <span class="pill">1</span>
+      </div>
+
+      <div class="card card--hero">
+        <div class="list">
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <div class="row-between">
+                <p class="t-body">Grocery spend</p>
+                <span class="pill">Low</span>
+              </div>
+              <p class="t-xs muted med">$60 over your average. Still inside budget.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="risks"></nav>
+</section></div></figure></div></div>
+  <p class="hint">Live screens throughout — the switcher, bottom right, re-themes every one of them.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="s-n">32</div><div class="s-l">Screens designed</div><div class="s-sub">Six flows, in Figma</div></div>
+    <div class="stat"><div class="s-n">9</div><div class="s-l">Defects found in my own work</div><div class="s-sub">After the crit</div></div>
+    <div class="stat"><div class="s-n">9</div><div class="s-l">Screens added</div><div class="s-sub">Post-presentation</div></div>
+    <div class="stat"><div class="s-n">2.46</div><div class="s-l">Client brand fails AA</div><div class="s-sub">Needs 4.5:1</div></div>
+  </div>
+
+  <div class="meta">
+    <div><div class="m-k">Timeline</div><div class="m-v">One semester<br/>+ solo work after</div></div>
+    <div><div class="m-k">My Role</div><div class="m-v">UI Design<br/>User Flow</div></div>
+    <div><div class="m-k">Team</div><div class="m-v">GDIMP</div></div>
+    <div><div class="m-k">Tools</div><div class="m-v">Figma, HTML/CSS<br/>WCAG contrast audit</div></div>
+  </div>
+</header>
+
+<!-- 00 OVERVIEW -->
+<section id="overview" class="sec rev">
+  <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
+  <h2 class="sec-h">The Problem</h2>
+  <p class="sec-lead">Coast Capital Savings is a BC credit union. Like most credit unions it does well with members over 40 and struggles to reach anyone under 25 — the age when someone makes their first significant purchase and picks the institution they'll stay with for a decade.</p>
+  <div class="rule"></div>
+
+  <p class="p-body">We found the wedge in a specific failure. Young buyers don't fall short because they lack discipline — they fall short because <strong>they're quoted the wrong number.</strong> Someone budgets for an $18,500 car and gets blindsided by insurance, registration, maintenance and fuel: costs that add 40–60% on top, and which are highest precisely for drivers under 25.</p>
+
+  <div class="g2" style="margin-bottom:2rem">
+    <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Sticker price</div><div class="nc-t">Is not the price</div><div class="nc-d">Every tool a young buyer uses quotes the purchase figure and stops there — the running costs arrive as a surprise, months later.</div></div>
+    <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Under 25</div><div class="nc-t">Penalised hardest</div><div class="nc-d">Insurance, financing rates and deposits are all worst for this age group — the exact group with the least information.</div></div>
+    <div class="nc"><div class="nc-n">3.9%</div><div class="nc-t">vs 6.9% typical</div><div class="nc-d">The credit union's member rate is its single strongest asset against a bank — and the thing a young buyer has no way to discover.</div></div>
+    <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Maya, 23</div><div class="nc-t">Our persona</div><div class="nc-d">$2,800 a month, roughly $950 spare, wants a first car. Every number in the product is built against her situation.</div></div>
+  </div>
+
+  <div class="sub">Who it's for</div>
+  <div class="g2" style="margin-bottom:2rem">
+    <div class="pcard">
+      <div class="pcard-av">M</div>
+      <div class="pcard-name">Maya</div>
+      <div class="pcard-role">23 · saving for a first car</div>
+      <div class="pcard-quote">"I know what the car costs. I have no idea what having the car costs."</div>
+      <div class="pcard-sub">Situation</div>
+      <div class="pcard-list">
+        <div class="pcard-item">$2,800 a month, roughly $950 spare</div>
+        <div class="pcard-item">Emergency fund at $850 of $3,000</div>
+        <div class="pcard-item">Target car $18,500</div>
+      </div>
+      <div class="pcard-sub">Frustrations</div>
+      <div class="pcard-list">
+        <div class="pcard-item">Quoted the sticker price and nothing else</div>
+        <div class="pcard-item">Charged the worst rates of any age group</div>
+      </div>
+    </div>
+    <div class="ic">
+      <div class="ic-ico">📐</div>
+      <div class="ic-t">What she changed about the design</div>
+      <div class="ic-d">Maya was defined by my teammates' research — my job was to design against her. Two decisions came straight from her situation: the app <strong>derives</strong> the number rather than asking for it, because she doesn't have it; and the true cost arrives at the midpoint of the sequence, because a person with $950 spare needs the bad news early enough to act on it, but not so early that the app has said nothing useful yet.</div>
+    </div>
+  </div>
+
+  <div class="sub">Tools &amp; Methods</div>
+  <div class="tools">
+    <span class="tool">Figma</span><span class="tool">User Flow Mapping</span><span class="tool">Design Tokens</span>
+    <span class="tool">HTML / CSS</span><span class="tool">WCAG Contrast Audit</span><span class="tool">Design QA</span>
+  </div>
+</section>
+
+<!-- 01 MY ROLE -->
+<section id="role" class="sec rev">
+  <div class="phase"><div class="p-dot">1</div><span class="p-txt">My Role</span></div>
+  <h2 class="sec-h">What I Did,<br/>and What I Didn't</h2>
+  <p class="sec-lead">I designed the user interface and the user flow. Research, client strategy and the final presentation were owned by my teammates.</p>
+  <div class="rule"></div>
+
+  <div class="g2">
+    <div class="ic"><div class="ic-ico">🎨</div><div class="ic-t">User Interface</div><div class="ic-d">The full visual system across 32 screens — card language, type scale, colour, iconography, and the component patterns repeated across six flows.</div></div>
+    <div class="ic"><div class="ic-ico">🧭</div><div class="ic-t">User Flow</div><div class="ic-d">The tab architecture and the eight-step planning sequence the app is built around — what gets asked, in what order, and what the app derives rather than requests.</div></div>
+  </div>
+
+  <div class="quote">
+    <p>This case study splits in two. The first half is the work as it was presented. The second half is what I changed afterwards, once I could see it clearly — and that half is the part I'd want to be judged on.</p>
+  </div>
+</section>
+
+<!-- 02 FLOW -->
+<section id="flow" class="sec rev">
+  <div class="phase"><div class="p-dot">2</div><span class="p-txt">User Flow</span></div>
+  <h2 class="sec-h">The Sequence<br/>Is the Product</h2>
+  <p class="sec-lead">The app's whole credibility rests on one sequence — the eight-step plan builder.</p>
+  <div class="rule"></div>
+
+  <p class="p-body">The obvious version of this app asks for a target number and draws a progress bar. I structured it the other way round: the app asks a series of small, answerable questions and <strong>derives</strong> the number. The user never has to know the answer in advance — which is the entire reason they'd need the app at all.</p>
+  <p class="p-body">The sequence runs <em>what you want</em> → <em>what it actually costs</em> → <em>what that means monthly</em> → <em>what that leaves you</em>. I put the true-cost reveal at the midpoint. Late felt like a punchline at the user's expense; first felt like a lecture before we'd earned the right to give one.</p>
+
+  <div class="sub">The eight steps</div>
+  <div class="slist">
+    <div class="st"><div class="st-n">01</div><div><div class="st-t">What are you saving for?</div><div class="st-d">Goal type — asked before any number is requested.</div></div></div>
+    <div class="st"><div class="st-n">02</div><div><div class="st-t">See where you stand</div><div class="st-d">The app reads money in, money out, and what's left — instead of asking her to know it.</div></div></div>
+    <div class="st"><div class="st-n">03</div><div><div class="st-t">A suggested plan</div><div class="st-d">A first draft to react to. Reacting is easier than authoring.</div></div></div>
+    <div class="st"><div class="st-n">04</div><div><div class="st-t">Change anything you like</div><div class="st-d">Sliders for target, timeline and contribution, recalculated live.</div></div></div>
+    <div class="st"><div class="st-n">05</div><div><div class="st-t">Costs you should consider</div><div class="st-d">The true-cost reveal — insurance, fuel, maintenance, parking, registration.</div></div></div>
+    <div class="st"><div class="st-n">06</div><div><div class="st-t">A personalised estimate</div><div class="st-d">The same costs recomputed against her age, mileage and area.</div></div></div>
+    <div class="st"><div class="st-n">07</div><div><div class="st-t">A contribution path</div><div class="st-d">Three monthly amounts, each showing what she keeps.</div></div></div>
+    <div class="st"><div class="st-n">08</div><div><div class="st-t">Save the goal</div><div class="st-d">The plan becomes a tracked goal on the Goals tab.</div></div></div>
+  </div>
+
+  <div class="pgrid"><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="1907:222" data-title="Onboarding — What are you saving for?" data-flow="Onboarding">
+  <div class="screen__body">
+    <div class="stack">
+
+      <div class="stack-s">
+        <div class="appbar" style="margin-bottom:0">
+          <button class="appbar__back"><svg width="20" height="20"><use href="#i-back"/></svg></button>
+          <p class="stepcount">Step 1 of 8</p>
+        </div>
+        <div class="row" style="gap:8px" aria-hidden="true">
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+        </div>
+      </div>
+
+      <h1 class="t-h2">What are you saving for?</h1>
+
+      <div class="stack-s">
+        <button class="option">
+          <span class="row">
+            <span class="gold" style="flex:none;display:grid"><svg width="21" height="21"><use href="#i-car"/></svg></span>
+            <span class="t-body">A car</span>
+          </span>
+        </button>
+        <button class="option">
+          <span class="row">
+            <span class="gold" style="flex:none;display:grid"><svg width="21" height="21"><use href="#i-shield"/></svg></span>
+            <span class="t-body">A safety net</span>
+          </span>
+        </button>
+        <button class="option">
+          <span class="row">
+            <span class="gold" style="flex:none;display:grid"><svg width="21" height="21"><use href="#i-home-glyph"/></svg></span>
+            <span class="t-body">A first home</span>
+          </span>
+        </button>
+        <button class="option">
+          <span class="row">
+            <span class="gold" style="flex:none;display:grid"><svg width="21" height="21"><use href="#i-wallet"/></svg></span>
+            <span class="t-body">Paying off debt</span>
+          </span>
+        </button>
+        <button class="option">
+          <span class="row">
+            <span class="gold" style="flex:none;display:grid"><svg width="21" height="21"><use href="#i-plus"/></svg></span>
+            <span class="t-body">Something else</span>
+          </span>
+        </button>
+      </div>
+
+      <a class="btn" data-goto="1909:2412">Continue →</a>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="goals"></nav>
+</section></div><div class="icap">The app asks what you want before it asks for a number.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="1909:2412" data-title="Onboarding — See where you stand" data-flow="Onboarding">
+  <div class="screen__body">
+    <div class="stack">
+
+      <div class="stack-s">
+        <div class="appbar" style="margin-bottom:0">
+          <button class="appbar__back"><svg width="20" height="20"><use href="#i-back"/></svg></button>
+          <p class="stepcount">Step 2 of 8</p>
+        </div>
+        <div class="row" style="gap:8px" aria-hidden="true">
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+        </div>
+      </div>
+
+      <h1 class="t-h2">Let’s start from reflecting on your monthly average budget!</h1>
+
+      <div class="card">
+        <div class="stack-s">
+
+          <div class="row">
+            <span class="badge badge--gold" style="border-radius:10px">
+              <svg width="16" height="16" style="transform:rotate(90deg)"><use href="#i-arrow-r"/></svg>
+            </span>
+            <div class="grow stack-xs">
+              <p class="t-body med">Money In</p>
+              <p class="t-sm muted">your paychecks</p>
+            </div>
+            <p class="t-h3">$3,400/mo</p>
+          </div>
+
+          <div class="row">
+            <span class="badge badge--gold" style="border-radius:10px">
+              <svg width="16" height="16" style="transform:rotate(-90deg)"><use href="#i-arrow-r"/></svg>
+            </span>
+            <div class="grow stack-xs">
+              <p class="t-body med">Money Out</p>
+              <p class="t-sm muted">your expenses</p>
+            </div>
+            <p class="t-h3">$2,780/mo</p>
+          </div>
+
+          <div class="row">
+            <span class="badge badge--gold" style="border-radius:10px">
+              <svg width="16" height="16"><use href="#i-wallet"/></svg>
+            </span>
+            <div class="grow stack-xs">
+              <p class="t-body med">What you have today</p>
+              <p class="t-xs muted">chequing ····1875 + savings ····4578</p>
+            </div>
+            <p class="t-h3">$1,150</p>
+          </div>
+
+          <div style="border-top:1px solid var(--border);margin-top:4px"></div>
+
+          <div class="stack-xs">
+            <div class="row-between">
+              <p class="t-body med">Spare money each month</p>
+              <p class="t-h1 gold">$950</p>
+            </div>
+            <p class="t-xs muted">the average have left after paying all your bills</p>
+          </div>
+
+        </div>
+      </div>
+
+      <a class="btn" data-goto="1916:28">Continue →</a>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="goals"></nav>
+</section></div><div class="icap">It reads what you already have, instead of asking you to know it.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="1922:28" data-title="Onboarding — Additional costs" data-flow="Onboarding">
+  <div class="screen__body">
+    <div class="stack">
+
+      <div class="stack-s">
+        <div class="appbar" style="margin-bottom:0">
+          <button class="appbar__back"><svg width="20" height="20"><use href="#i-back"/></svg></button>
+          <p class="stepcount">Step 5 of 8</p>
+        </div>
+        <div class="row" style="gap:8px" aria-hidden="true">
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+        </div>
+      </div>
+
+      <h1 class="t-h2">Here are some additional costs you should consider before getting a car</h1>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+
+        <div class="card">
+          <div class="stack-xs">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
+            <p class="t-body" style="margin-top:8px">Insurance</p>
+            <p class="t-body gold">$150–400/mo</p>
+            <p class="t-xs muted">Varies by age, record &amp; model</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="stack-xs">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-bolt"/></svg></span>
+            <p class="t-body" style="margin-top:8px">Fuel</p>
+            <p class="t-body gold">$120–250/mo</p>
+            <p class="t-xs muted">Based on ~1,200km per month</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="stack-xs">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-goals"/></svg></span>
+            <p class="t-body" style="margin-top:8px">Maintenance</p>
+            <p class="t-body gold">$60–400/mo</p>
+            <p class="t-xs muted">Oil, tires &amp; brakes over time</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="stack-xs">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-home-glyph"/></svg></span>
+            <p class="t-body" style="margin-top:8px">Parking</p>
+            <p class="t-body gold">$0–60/mo</p>
+            <p class="t-xs muted">Depends on your area</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="stack-xs">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-wallet"/></svg></span>
+            <p class="t-body" style="margin-top:8px">Registration</p>
+            <p class="t-body gold">$120/mo</p>
+            <p class="t-xs muted">ICBC renewal each year</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="stack-xs">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-arrow-r"/></svg></span>
+            <p class="t-body" style="margin-top:8px">Installment</p>
+            <p class="t-body gold">$200–350/mo</p>
+            <p class="t-xs muted">If you finance instead of paying in full</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="goals"></nav>
+</section></div><div class="icap">The true-cost reveal — placed at the midpoint of the sequence.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="1947:2240" data-title="Onboarding — Personalized cost estimate" data-flow="Onboarding">
+  <div class="screen__body">
+    <div class="stack">
+
+      <div class="stack-s">
+        <div class="appbar" style="margin-bottom:0">
+          <button class="appbar__back"><svg width="20" height="20"><use href="#i-back"/></svg></button>
+          <p class="stepcount">Step 5 of 8</p>
+        </div>
+        <div class="row" style="gap:8px" aria-hidden="true">
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+        </div>
+      </div>
+
+      <h1 class="t-h2">Here is monthly additional cost estimation just for you!</h1>
+
+      <div class="list">
+
+        <div class="list-row">
+          <div class="row-between grow">
+            <div class="grow stack-xs">
+              <p class="t-body med">Registration</p>
+              <p class="t-xs muted">$120/yr ICBC renewal, spread monthly</p>
+            </div>
+            <p class="t-body right">$10</p>
+          </div>
+        </div>
+
+        <div class="list-row">
+          <div class="row-between grow">
+            <div class="grow stack-xs">
+              <p class="t-h3 med">Insurance</p>
+              <p class="t-xs muted">higher because you’re under 25</p>
+            </div>
+            <p class="t-h3 right">$160-210</p>
+          </div>
+        </div>
+
+        <div class="list-row">
+          <div class="row-between grow">
+            <div class="grow stack-xs">
+              <p class="t-h3 med">Maintenance</p>
+              <p class="t-xs muted">repairs and tires</p>
+            </div>
+            <p class="t-h3 right">$60-100</p>
+          </div>
+        </div>
+
+        <div class="list-row">
+          <div class="row-between grow">
+            <div class="grow stack-xs">
+              <p class="t-h3 med">Gas</p>
+              <p class="t-xs muted">based on how far you travel now</p>
+            </div>
+            <p class="t-h3 right">$120-160</p>
+          </div>
+        </div>
+
+        <div class="list-row">
+          <div class="row-between grow">
+            <div class="grow stack-xs">
+              <p class="t-h3 med">Parking</p>
+              <p class="t-xs muted">based on how much you spend now</p>
+            </div>
+            <p class="t-h3 right">$40-60</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="card card--outline card--tight">
+        <div class="row-between">
+          <p class="t-body med grow">Total, every month</p>
+          <p class="t-h2 gold right">$390-540</p>
+        </div>
+      </div>
+
+      <div class="card card--tight">
+        <div class="row">
+          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-check"/></svg></span>
+          <p class="t-sm bold grow">This fits within your <span class="gold">$620</span> average spare each month</p>
+        </div>
+      </div>
+
+      <a class="btn">Continue →</a>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="goals"></nav>
+</section></div><div class="icap">The same costs, recomputed against the user&#x27;s own situation.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="1992:2605" data-title="Onboarding — Suggested contribution path" data-flow="Onboarding">
+  <div class="screen__body">
+    <div class="stack">
+
+      <div class="stack-s">
+        <div class="appbar" style="margin-bottom:0">
+          <button class="appbar__back"><svg width="20" height="20"><use href="#i-back"/></svg></button>
+          <p class="stepcount">Step 6 of 8</p>
+        </div>
+        <div class="row" style="gap:8px" aria-hidden="true">
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold);opacity:.24"></span>
+        </div>
+      </div>
+
+      <h1 class="t-h2">Let’s set up your monthly contribution!</h1>
+
+      <div class="stack-s">
+
+        <button class="option">
+          <span class="row-between" style="align-items:flex-start">
+            <span class="stack-xs grow">
+              <span class="t-xs bold muted">Take it easy</span>
+              <span class="row" style="gap:6px;align-items:baseline">
+                <span class="t-h2">$150</span>
+                <span class="t-sm muted">/month</span>
+              </span>
+              <span class="t-xs muted">You keep $470 spare</span>
+            </span>
+            <span class="t-xs bold right">Ready August 2028</span>
+          </span>
+        </button>
+
+        <button class="option option--rec" aria-selected="true">
+          <span class="row-between" style="align-items:flex-start">
+            <span class="stack-xs grow">
+              <span class="t-xs bold gold">We suggest this</span>
+              <span class="row" style="gap:6px;align-items:baseline">
+                <span class="t-h2">$179</span>
+                <span class="t-sm muted">/month</span>
+              </span>
+              <span class="t-xs muted">You keep $441 spare</span>
+            </span>
+            <span class="t-xs bold right">Ready May 2028</span>
+          </span>
+        </button>
+
+        <button class="option">
+          <span class="row-between" style="align-items:flex-start">
+            <span class="stack-xs grow">
+              <span class="t-xs bold muted">Push hard</span>
+              <span class="row" style="gap:6px;align-items:baseline">
+                <span class="t-h2">$260</span>
+                <span class="t-sm muted">/month</span>
+              </span>
+              <span class="t-xs muted">You keep $360 spare</span>
+            </span>
+            <span class="t-xs bold right">Ready October 2027</span>
+          </span>
+        </button>
+
+        <button class="option">
+          <span class="row-between">
+            <span class="t-sm bold gold grow">Choose your own amount</span>
+            <span class="list-row__chev" style="margin-left:0"><svg width="7" height="13" style="transform:rotate(90deg)"><use href="#i-chev"/></svg></span>
+          </span>
+        </button>
+
+      </div>
+
+      <a class="btn" data-goto="1995:3044">Continue →</a>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="goals"></nav>
+</section></div><div class="icap">The monthly figure — derived, never requested.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="1995:3438" data-title="Onboarding — Save the goal" data-flow="Onboarding">
+  <div class="screen__body">
+    <div class="stack">
+
+      <div class="stack-s">
+        <div class="appbar" style="margin-bottom:0">
+          <button class="appbar__back"><svg width="20" height="20"><use href="#i-back"/></svg></button>
+          <p class="stepcount">Step 8 of 8</p>
+        </div>
+        <div class="row" style="gap:8px" aria-hidden="true">
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+          <span style="height:4px;flex:1;border-radius:30px;background:var(--gold)"></span>
+        </div>
+      </div>
+
+      <h1 class="t-h2">Your goal is ready to set!</h1>
+
+      <div class="card card--hero">
+        <div class="row">
+          <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-car"/></svg></span>
+          <div class="grow stack-xs">
+            <p class="row" style="gap:8px;align-items:baseline">
+              <span class="t-display gold">$179</span>
+              <span class="t-h3 muted">/month</span>
+            </p>
+            <p class="t-sm bold">A car by May 2028</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="list">
+          <div class="list-row">
+            <p class="t-sm muted grow">Looking at</p>
+            <p class="t-sm bold right">$18,500</p>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">First transfer</p>
+            <p class="t-sm bold right">Aug 1</p>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">Out of</p>
+            <p class="t-sm bold right">Chequing ••4821</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack-s">
+        <a class="btn" data-goto="1848:36">Start the contribution now →</a>
+        <a class="btn btn--ghost" data-goto="1848:36">Exit</a>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="goals"></nav>
+</section></div><div class="icap">The plan becomes a goal.</div></figure></div>
+</section>
+
+<!-- 03 INTERFACE -->
+<section id="interface" class="sec rev">
+  <div class="phase"><div class="p-dot">3</div><span class="p-txt">Interface</span></div>
+  <h2 class="sec-h">Five Tabs,<br/>One Question Each</h2>
+  <p class="sec-lead">Home answers <em>am I okay?</em> · Budget answers <em>where did it go?</em> · Goals answers <em>am I getting there?</em> · Risks answers <em>what should I worry about?</em></p>
+  <div class="rule"></div>
+
+  <p class="p-body">I held each tab to a single question, because the alternative — one dashboard answering all four at once — is exactly how banking apps become unreadable.</p>
+  <p class="p-body">The visual system had to do two contradictory things: stay calm enough that money anxiety doesn't spike, and stay serious enough to be trusted with money. Dark surface, one warm accent, and a consistent card language so every screen reads as the same object repeated. Numbers large and tabular; supporting copy small and quiet. <strong>Nothing shouts except the one figure that matters.</strong></p>
+
+  <div class="sub">The piece I was most sure of</div>
+  <div class="flist">
+    <div class="fr"><div class="fr-i">📡</div><div><div class="fr-t">Risk Radar</div><div class="fr-d">Instead of only reporting the past, it names things that are becoming problems — a goal that has stalled, a subscription that quietly rose, a safety net too thin. It turns a ledger into something that watches your back.</div></div></div>
+  </div>
+</section>
+
+<!-- THE TURN -->
+<div class="turn-band rev">
+  <div class="tb-lbl">After the final presentation</div>
+  <h3>I rebuilt all 32 screens as working code — and it exposed my own work</h3>
+  <p>A static Figma frame lets you draw a progress bar at whatever width looks right. A coded one makes you state the number. That is the point where this stopped being a presentation and started being a product.</p>
+</div>
+
+<!-- 04 AUDIT -->
+<section id="audit" class="sec rev">
+  <div class="phase"><div class="p-dot">4</div><span class="p-txt">Design QA</span></div>
+  <h2 class="sec-h">Nine Defects,<br/>All Mine</h2>
+  <p class="sec-lead">None of these were visible in the presentation. All of them would be visible to a real user in about four seconds.</p>
+  <div class="rule"></div>
+
+  <div class="flist">
+    <div class="fr"><div class="fr-i">📊</div><div><div class="fr-t">A bar drawn at ~53% next to a label reading 8%</div><div class="fr-d">Home — First Car goal. The shape and the number disagreed by a factor of six.</div></div><div class="fr-w">Home</div></div>
+    <div class="fr"><div class="fr-i">📊</div><div><div class="fr-t">Three goal bars all drawn the same width</div><div class="fr-d">Regardless of their actual values — a visual placeholder that survived into the final file.</div></div><div class="fr-w">Goals</div></div>
+    <div class="fr"><div class="fr-i">💵</div><div><div class="fr-t">The same cost written $120/mo and $120/yr</div><div class="fr-d">Two different screens, a twelvefold contradiction, shown to the user as fact.</div></div><div class="fr-w">Onboarding</div></div>
+    <div class="fr"><div class="fr-i">🔢</div><div><div class="fr-t">“Step 3 of 8” showing four filled dots</div><div class="fr-d">And “Step 6 of 8” showing five. The counter and the indicator were drawn independently.</div></div><div class="fr-w">Onboarding</div></div>
+    <div class="fr"><div class="fr-i">🔁</div><div><div class="fr-t">Three consecutive screens all labelled “Step 5 of 8”</div><div class="fr-d">The counter never advances — a user moving through them gets no feedback that they're progressing. A flow defect, not a visual one.</div></div><div class="fr-w">Onboarding</div></div>
+    <div class="fr"><div class="fr-i">🍩</div><div><div class="fr-t">A donut reading 60% spent beside $400 left of $2,800</div><div class="fr-d">Which is 86%. Two numbers on one card, disagreeing with each other.</div></div><div class="fr-w">Home</div></div>
+    <div class="fr"><div class="fr-i">👤</div><div><div class="fr-t">A Profile tab in all 32 frames with no Profile screen</div><div class="fr-d">A fifth of the primary navigation led nowhere at all.</div></div><div class="fr-w">Global</div></div>
+    <div class="fr"><div class="fr-i">📋</div><div><div class="fr-t">The tab bar copy-pasted into every frame</div><div class="fr-d">With about twenty frames carrying a second, duplicate bar offscreen. No component, so no single source of truth.</div></div><div class="fr-w">Global</div></div>
+    <div class="fr"><div class="fr-i">🚧</div><div><div class="fr-t">Five goal types offered; only “a car” designed</div><div class="fr-d">Step one promises safety net, first home, paying off debt and “something else”. None of them exist.</div></div><div class="fr-w">Onboarding</div></div>
+  </div>
+
+  <div class="quote">
+    <p>A design isn't finished when it looks finished. I now treat any number rendered next to a shape as a claim that has to be checked — and I build the shape <em>from</em> the number rather than beside it.</p>
+  </div>
+</section>
+
+<!-- 05 BRAND -->
+<section id="brand" class="sec rev">
+  <div class="phase"><div class="p-dot">5</div><span class="p-txt">Rebrand</span></div>
+  <h2 class="sec-h">I'd Designed It in Colours<br/>the Client Doesn't Use</h2>
+  <p class="sec-lead">InScope was green and gold. Coast Capital's actual brand is Blue Ribbon, Downriver and Alabaster.</p>
+  <div class="rule"></div>
+
+  <div class="swatches">
+    <span class="swatch"><i style="background:#0056ff"></i> Blue Ribbon #0056FF</span>
+    <span class="swatch"><i style="background:#0f2a63"></i> Downriver #0F2A63</span>
+    <span class="swatch"><i style="background:#fafafa"></i> Alabaster #FAFAFA</span>
+  </div>
+
+  <p class="p-body">Fixing it properly meant restructuring, not recolouring. I pulled every colour into a token layer, so the palette lives in one block and all 32 screens reference it. <strong>Rebranding became one edit instead of thirty-two</strong> — which is what the switcher in the corner of this page is actually demonstrating.</p>
+
+  <div class="sub">The finding that only appears when you build it</div>
+  <p class="p-body">Coast Capital's brand blue <strong>fails WCAG AA</strong> against the dark card surface. Their primary colour cannot carry the accent role on a dark background. So I built two valid answers instead of guessing.</p>
+
+  <div class="g3">
+    <div class="nc"><div class="nc-n bad">2.46:1</div><div class="nc-t">Fails AA</div><div class="nc-d">The authentic #0056FF on the dark navy card. Text needs 4.5:1 — the client's own primary can't carry the accent role here.</div></div>
+    <div class="nc"><div class="nc-n good">5.55:1</div><div class="nc-t">Dark theme</div><div class="nc-d">#6FA5FF — Blue Ribbon lifted just far enough to pass, while still reading as Coast Capital blue.</div></div>
+    <div class="nc"><div class="nc-n good">5.56:1</div><div class="nc-t">Light theme</div><div class="nc-d">The authentic #0056FF, untouched. On a light surface the real brand colour passes on its own.</div></div>
+  </div>
+
+  <div class="pgrid">
+    <figure class="iw iw--phone iw--phone-lg"><div class="iw__clip"><section class="screen" data-id="1848:36" data-title="Home — dashboard" data-flow="Home">
+  <div class="screen__body">
+    <div class="stack">
+
+      <header class="stack-xs">
+        <p class="t-date">Saturday,&nbsp; 01 August</p>
+        <h1 class="t-greet">Morning, Maya</h1>
+      </header>
+
+      <!-- July budget -->
+      <div class="card card--hero">
+        <div class="row" style="gap:20px">
+          <div class="donut" style="--p:60">
+            <div class="donut__label">
+              <div style="font-size:14px;font-weight:700">60%</div>
+              <div class="t-xs muted">spent</div>
+            </div>
+          </div>
+          <div class="grow stack-xs">
+            <p class="t-h3">July Budget</p>
+            <p><span class="t-h2">$400</span> <span style="font-size:16px;font-weight:700">left</span></p>
+            <p class="t-sm muted med">of $2,800 ・9 days to go</p>
+            <a class="link" data-goto="1848:2258">See breakdown →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Goals -->
+      <div class="card">
+        <div class="row-between" style="margin-bottom:14px">
+          <p class="t-h3">Your Goals</p>
+          <p class="t-xs muted">2 of 3 on track</p>
+        </div>
+
+        <div class="row" style="margin-bottom:16px">
+          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
+          <div class="grow stack-xs">
+            <div class="row-between">
+              <p class="t-body">Emergency Fund</p>
+              <p class="t-xs muted">28%</p>
+            </div>
+            <p class="t-xs muted">$850 of $3000</p>
+            <div class="bar"><i style="width:28%"></i></div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-bottom:14px">
+          <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-car"/></svg></span>
+          <div class="grow stack-xs">
+            <div class="row-between">
+              <p class="t-body">First Car</p>
+              <p class="t-xs muted">8%</p>
+            </div>
+            <p class="t-xs muted">$300 of $3,750</p>
+            <div class="bar bar--gold"><i style="width:53%"></i></div>
+          </div>
+        </div>
+
+        <p class="center"><a class="link" data-goto="1858:3389">View all goals →</a></p>
+      </div>
+
+      <!-- Safety net -->
+      <div class="card card--outline card--tight" data-goto="1858:3611">
+        <div class="row">
+          <span style="color:var(--danger);flex:none"><svg width="23" height="21"><use href="#i-warn"/></svg></span>
+          <p class="t-h3 grow">Your safety net covers 1.4 months</p>
+          <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+        </div>
+      </div>
+
+      <!-- Resources -->
+      <div class="card">
+        <p class="t-h3" style="margin-bottom:10px">Resources</p>
+        <div class="list">
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">Why insurance costs more under 25</p>
+              <p class="t-xs muted">2 min ・could save you $250 a month</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">What to check on a used car</p>
+              <p class="t-xs muted">4 min ・before you hand over money</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">Auto insurance basics</p>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">Tips for negotiating the best car price</p>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">Post-purchase car maintenance guide</p>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="home"></nav>
+</section></div><div class="icap">Try the switcher, bottom right — this screen re-themes live.</div></figure>
+  </div>
+</section>
+
+<!-- 06 NINE SCREENS -->
+<section id="nine" class="sec rev">
+  <div class="phase"><div class="p-dot">6</div><span class="p-txt">New Work</span></div>
+  <h2 class="sec-h">Nine Screens the<br/>Presentation Was Missing</h2>
+  <p class="sec-lead">Reviewing the flow end to end, the holes were structural rather than cosmetic.</p>
+  <div class="rule"></div>
+
+  <p class="p-body">The largest: <strong>the app assumed you were already a member.</strong> Coast Capital's single strongest asset — a member loan rate of 3.9% against a typical 6.9% — appeared exactly once, as grey body text. I had designed the credit union's main competitive advantage as a footnote.</p>
+
+  <div class="sub">Each screen states the design reason it exists</div>
+  <div class="pgrid">
+    <figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-home" data-title="Home — dashboard" data-flow="Home" data-active="home"
+         data-why="v1 drew a 53%-wide bar next to an 8% label, so the screen quietly lied about the goal that matters most; v2 computes every fill from the numbers beside it, leads with what membership has actually returned this year, gives the safety-net warning an action instead of a chevron, and demotes Resources to a list so the urgent things sit above the fold.">
+  <div class="screen__body">
+    <div class="stack">
+
+      <header class="stack-xs">
+        <p class="t-date">Saturday,&nbsp; 22 July</p>
+        <h1 class="t-greet">Morning, Maya</h1>
+      </header>
+
+      <!-- Member value strip — the new lead -->
+      <div class="card card--tight" style="border:1px solid var(--gold)" data-goto="v2-member-value">
+        <div class="row">
+          <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
+          <div class="grow stack-xs">
+            <p class="t-eyebrow">YOUR MEMBERSHIP</p>
+            <p class="t-sm med">Membership has saved you <span class="bold">$312</span> this year</p>
+          </div>
+          <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+        </div>
+        <p style="margin-top:10px"><a class="link">See how →</a></p>
+      </div>
+
+      <!-- July budget -->
+      <div class="card card--hero">
+        <div class="row" style="gap:20px">
+          <div class="donut" style="--p:61">
+            <div class="donut__label">
+              <div style="font-size:14px;font-weight:700">61%</div>
+              <div class="t-xs muted">spent</div>
+            </div>
+          </div>
+          <div class="grow stack-xs">
+            <p class="t-h3">July Budget</p>
+            <p><span class="t-h2">$1,087</span> <span style="font-size:16px;font-weight:700">left</span></p>
+            <p class="t-sm muted med">of $2,800 ・9 days to go</p>
+            <a class="link" data-goto="1848:2258">See breakdown →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Goals -->
+      <div class="card">
+        <div class="row-between" style="margin-bottom:14px">
+          <p class="t-h3">Your Goals</p>
+          <p class="t-xs muted">2 of 3 on track</p>
+        </div>
+
+        <div class="row" style="margin-bottom:16px">
+          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
+          <div class="grow stack-xs">
+            <div class="row-between">
+              <p class="t-body">Emergency Fund</p>
+              <p class="t-xs muted">28%</p>
+            </div>
+            <p class="t-xs muted">$850 of $3,000</p>
+            <div class="bar"><i style="width:28%"></i></div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-bottom:14px">
+          <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-car"/></svg></span>
+          <div class="grow stack-xs">
+            <div class="row-between">
+              <p class="t-body">First Car</p>
+              <p class="t-xs muted">8%</p>
+            </div>
+            <p class="t-xs muted">$300 of $3,750</p>
+            <div class="bar bar--gold"><i style="width:8%"></i></div>
+          </div>
+        </div>
+
+        <p class="center"><a class="link" data-goto="1858:3389">View all goals →</a></p>
+      </div>
+
+      <!-- Safety net — now carries the fix, not a chevron -->
+      <div class="card card--outline" style="border-color:var(--danger)">
+        <div class="row" style="margin-bottom:12px">
+          <span class="badge badge--danger"><svg width="18" height="16"><use href="#i-warn"/></svg></span>
+          <p class="t-h3 grow">Your safety net covers 1.4 months</p>
+        </div>
+        <p class="t-sm muted med" style="margin-bottom:14px">Three months is the target. $95 a month gets you there by January, without touching the car plan.</p>
+        <div class="row">
+          <button class="btn btn--sm" style="padding:13px 18px">Add $95/mo →</button>
+          <a class="link" data-goto="1858:3611">Why this matters</a>
+        </div>
+      </div>
+
+      <!-- Resources — demoted from a card to a compact list -->
+      <div class="stack-s">
+        <p class="t-eyebrow">RESOURCES</p>
+        <div class="list">
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">Why insurance costs more under 25</p>
+              <p class="t-xs muted">2 min ・could save you $250 a month</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row" style="padding:14px 0">
+            <p class="t-sm grow">What to check on a used car</p>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row" style="padding:14px 0">
+            <p class="t-sm grow">Auto insurance basics</p>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+        </div>
+        <p><a class="link">See all resources →</a></p>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="home"></nav>
+</section></div><div class="icap">v1 drew a 53%-wide bar next to an 8% label, so the screen quietly lied about the goal that matters most; v2 computes every fill from the numbers beside it, leads with what membership has actually returned this year, gives the safety-net warning an action instead of a chevron, and demotes Resources to a list so the urgent things sit above the fold.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-profile" data-title="Profile — member value" data-flow="Profile" data-active="profile"
+         data-why="v1 shipped a Profile tab with no screen behind it. This fills the dead tab and turns it into the place membership pays off — the money it has returned, the advisor it gets you and a plain statement of what the app reads — rather than a settings dump.">
+  <div class="screen__body">
+    <div class="stack">
+
+      <header class="stack-s">
+        <h1 class="t-h1">Profile</h1>
+        <div class="row">
+          <span class="badge" style="width:48px;height:48px"><svg width="24" height="24"><use href="#i-profile"/></svg></span>
+          <div class="grow stack-xs">
+            <p class="t-h3">Maya</p>
+            <p class="t-sm muted med">Member since 2024 ・••4821</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Hero: what membership returned -->
+      <div class="card card--hero">
+        <p class="t-eyebrow">THIS YEAR, SO FAR</p>
+        <p class="t-display" style="margin:10px 0 6px">$312</p>
+        <p class="t-sm muted med">saved because you're a member — a lower loan rate, no monthly fee, and a share of the profit.</p>
+        <p style="margin-top:16px"><a class="link" data-goto="v2-member-value">See the breakdown →</a></p>
+      </div>
+
+      <!-- Account + support -->
+      <div class="card">
+        <div class="list">
+
+          <div class="list-row">
+            <span class="badge"><svg width="16" height="16"><use href="#i-wallet"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-body">Your accounts</p>
+              <p class="t-xs muted">Chequing ••4821 ・2 savings goals</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+
+          <div class="list-row" data-goto="v2-advisor">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-profile"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-body">Book an advisor</p>
+              <p class="t-xs muted">Free ・advisors here are salaried, not on commission</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+
+          <div class="list-row">
+            <span class="badge"><svg width="16" height="16"><use href="#i-bolt"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-body">Notifications</p>
+              <p class="t-xs muted">Goal nudges on ・marketing off</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+
+          <div class="list-row">
+            <span class="badge"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
+            <p class="t-body grow">Privacy &amp; data</p>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+
+          <div class="list-row">
+            <span class="badge"><svg width="16" height="16"><use href="#i-info"/></svg></span>
+            <p class="t-body grow">Help</p>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Your data — trust stated plainly -->
+      <div class="card card--outline">
+        <div class="row" style="margin-bottom:10px">
+          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-check"/></svg></span>
+          <p class="t-h3 grow">Your data</p>
+        </div>
+        <p class="t-sm muted med">InScope reads your Coast Capital balances and transactions to work out what you can afford to save. That is all it reads. It is never sold, and it is never shared with advertisers.</p>
+        <p style="margin-top:14px"><a class="link">See exactly what's read →</a></p>
+      </div>
+
+      <button class="btn btn--ghost">Sign out</button>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="profile"></nav>
+</section></div><div class="icap">v1 shipped a Profile tab with no screen behind it. This fills the dead tab and turns it into the place membership pays off — the money it has returned, the advisor it gets you and a plain statement of what the app reads — rather than a settings dump.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-member-value" data-title="Member value — the $312 breakdown" data-flow="Profile" data-active="profile"
+         data-why="In v1 the member rate appears once, as grey body text, so the credit union's one real advantage over a bank is something the user has to take on faith; this screen itemises it in dollars she can check line by line, then shows the same advantage compounding across the loan she is about to sign.">
+  <div class="screen__body">
+
+    <div class="appbar">
+      <button class="appbar__back"><svg width="20" height="20"><use href="#i-back"/></svg></button>
+    </div>
+
+    <div class="stack">
+
+      <h1 class="t-h1">What membership is worth</h1>
+
+      <!-- Hero -->
+      <div class="card card--hero">
+        <p class="t-eyebrow">THIS YEAR, SO FAR</p>
+        <div class="row" style="margin:10px 0 8px">
+          <p class="t-display">$312</p>
+          <span class="pill pill--ok">kept, not charged</span>
+        </div>
+        <p class="t-sm muted med">Money you kept because you bank with a credit union instead of a bank. It is added up from real charges on your account, not an estimate.</p>
+      </div>
+
+      <!-- Breakdown -->
+      <div class="stack-s">
+        <p class="t-eyebrow">WHERE IT CAME FROM</p>
+
+        <div class="card">
+
+          <div class="row" style="margin-bottom:18px">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-car"/></svg></span>
+            <div class="grow stack-xs">
+              <div class="row-between">
+                <p class="t-body">Lower loan rate</p>
+                <p class="t-body" style="color:var(--ok)">$240</p>
+              </div>
+              <p class="t-xs muted">3.9% member vs 6.9% typical ・77% of the total</p>
+              <div class="bar"><i style="width:77%"></i></div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom:18px">
+            <span class="badge badge--green"><svg width="16" height="16"><use href="#i-wallet"/></svg></span>
+            <div class="grow stack-xs">
+              <div class="row-between">
+                <p class="t-body">No monthly account fee</p>
+                <p class="t-body" style="color:var(--ok)">$60</p>
+              </div>
+              <p class="t-xs muted">$5 a month waived ・19% of the total</p>
+              <div class="bar"><i style="width:19%"></i></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <span class="badge badge--green"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
+            <div class="grow stack-xs">
+              <div class="row-between">
+                <p class="t-body">Profit share</p>
+                <p class="t-body" style="color:var(--ok)">$12</p>
+              </div>
+              <p class="t-xs muted">returned to members ・4% of the total</p>
+              <div class="bar"><i style="width:4%"></i></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Projection -->
+      <div class="card card--hero">
+        <p class="t-eyebrow">OVER YOUR CAR LOAN</p>
+        <p class="t-h2" style="margin:10px 0 4px">Member rate saves you <span style="color:var(--ok)">$6,400</span></p>
+        <p class="t-sm muted med" style="margin-bottom:16px">Same car, same term — the only thing that changes is who you borrow from.</p>
+
+        <div class="row" style="gap:12px;flex-wrap:nowrap;align-items:stretch">
+          <div class="card card--outline card--tight grow stack-xs">
+            <p class="t-eyebrow">TYPICAL BANK</p>
+            <p class="t-h2 muted">6.9%</p>
+            <p class="t-xs muted">roughly what a first-time buyer under 25 is quoted</p>
+          </div>
+          <div class="card card--tight grow stack-xs" style="background:var(--card-2);border:1px solid var(--gold)">
+            <p class="t-eyebrow gold">COAST CAPITAL</p>
+            <p class="t-h2">3.9%</p>
+            <p class="t-xs muted">the member rate used in your plan</p>
+          </div>
+        </div>
+
+        <p class="t-xs muted" style="margin-top:14px">An estimate, and the one number here that isn't settled — your real rate depends on your credit history and the car you pick.</p>
+        <p style="margin-top:12px"><a class="link" data-goto="v2-advisor">Get a real quote from an advisor →</a></p>
+      </div>
+
+      <!-- Why it works this way -->
+      <div class="card card--outline card--flat">
+        <div class="row" style="margin-bottom:10px">
+          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
+          <p class="t-h3 grow">Why the numbers look like this</p>
+        </div>
+        <p class="t-sm muted med">Members own the credit union. There are no shareholders waiting to be paid, so the money a bank would send them stays here — as a lower rate, no monthly fee, and the share that comes back to you.</p>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="profile"></nav>
+</section></div><div class="icap">In v1 the member rate appears once, as grey body text, so the credit union&#x27;s one real advantage over a bank is something the user has to take on faith; this screen itemises it in dollars she can check line by line, then shows the same advantage compounding across the loan she is about to sign.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-join" data-title="Join — what membership is worth"
+         data-flow="Onboarding" data-active="profile"
+         data-why="v1 mentions the member rate once, as grey body text, so the single strongest reason to bank here is invisible at the moment it matters. This screen puts the dollar gap first, shows both rates plainly with no scare colour on the competitor, and gives 'keep planning without joining' the same full-width tap target as the CTA — because a planner that holds your work hostage is the fastest way to lose a 23-year-old.">
+  <div class="screen__body">
+
+    <div class="appbar">
+      <button class="appbar__back"><svg width="20" height="20"><use href="#i-back"/></svg></button>
+      <p class="stepcount">Not a member yet</p>
+    </div>
+
+    <div class="stack">
+
+      <header class="stack-xs">
+        <h1 class="t-h1">You'd save $6,400 as a member</h1>
+        <p class="t-sm muted">On the $18,500 car in your plan, compared with a typical bank car loan.</p>
+      </header>
+
+      <!-- Hero: the comparison, both sides shown the same way -->
+      <div class="card card--hero">
+        <div class="row" style="gap:11px;flex-wrap:nowrap;align-items:stretch">
+
+          <div class="card card--outline card--tight grow stack-xs">
+            <p class="t-eyebrow">Typical bank</p>
+            <p class="t-h2">$871</p>
+            <p class="t-xs muted">a month ・6.9%</p>
+          </div>
+
+          <div class="card card--outline card--tight grow stack-xs">
+            <p class="t-eyebrow">Coast Capital</p>
+            <p class="t-h2 gold">$724</p>
+            <p class="t-xs muted">a month ・3.9%</p>
+          </div>
+
+        </div>
+
+        <div class="row-between" style="margin-top:18px">
+          <div class="stack-xs">
+            <p class="t-body">You keep</p>
+            <p class="t-xs muted">$6,400 over the life of the loan</p>
+          </div>
+          <p class="t-h2 gold">$147<span class="t-sm muted med"> a month</span></p>
+        </div>
+      </div>
+
+      <p class="t-xs muted">Both figures are estimates on the same $18,500 loan. 3.9% is Coast Capital's current member rate on a used car — your own rate depends on your credit history, so treat these as a comparison, not a quote.</p>
+
+      <!-- Why -->
+      <div class="card">
+        <p class="t-h3" style="margin-bottom:6px">Three reasons, plainly</p>
+        <div class="list">
+          <div class="list-row">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-car"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-sm bold">The member rate</p>
+              <p class="t-xs muted">3.9% instead of 6.9% on a used-car loan</p>
+            </div>
+          </div>
+          <div class="list-row">
+            <span class="badge badge--green"><svg width="16" height="16"><use href="#i-wallet"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-sm bold">No-fee chequing</p>
+              <p class="t-xs muted">$5 a month you were paying to hold your own money</p>
+            </div>
+          </div>
+          <div class="list-row">
+            <span class="badge badge--green"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-sm bold">Profit shared back</p>
+              <p class="t-xs muted">Members own the credit union, so the profit returns to them</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Both paths, equal weight -->
+      <div class="stack-s">
+        <button class="btn">Open an account — 5 min →</button>
+        <button class="btn btn--ghost">Keep planning without joining</button>
+        <p class="t-sm muted center">Your plan is saved either way. Nothing in the planner is locked behind joining, and we won't ask again on every screen.</p>
+      </div>
+
+      <div class="card card--outline card--tight">
+        <div class="row">
+          <span style="color:var(--muted);flex:none"><svg width="16" height="16"><use href="#i-info"/></svg></span>
+          <p class="t-xs muted grow">Opening an account runs a credit check only when you apply for the loan, not today.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="profile"></nav>
+</section></div><div class="icap">v1 mentions the member rate once, as grey body text, so the single strongest reason to bank here is invisible at the moment it matters. This screen puts the dollar gap first, shows both rates plainly with no scare colour on the competitor, and gives &#x27;keep planning without joining&#x27; the same full-width tap target as the CTA — because a planner that holds your work hostage is the fastest way to lose a 23-year-old.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-advisor" data-title="Talk to someone — book an advisor"
+         data-flow="Profile" data-active="profile"
+         data-why="v1 offers 'Talk it through with an advisor' as a button that goes nowhere, which quietly teaches people that the human help is decorative. This turns it into a real booking flow that leads with the soonest slot, lets you say what it's about before you commit, and states up front that advisors are salaried — the one fact that makes a 23-year-old willing to pick up the phone.">
+  <div class="screen__body">
+
+    <div class="appbar">
+      <button class="appbar__back"><svg width="20" height="20"><use href="#i-back"/></svg></button>
+    </div>
+
+    <div class="stack">
+
+      <header class="stack-xs">
+        <h1 class="t-h1">Talk to someone</h1>
+        <p class="t-sm muted">Free, about 30 minutes, and not a sales call. Bring a half-finished plan and awkward questions — that's what it's for.</p>
+      </header>
+
+      <!-- Primary: how you want to talk -->
+      <div class="stack-s">
+        <p class="t-eyebrow">How would you like to talk?</p>
+
+        <button class="option" aria-selected="true">
+          <div class="row">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-film"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-body">Video call</p>
+              <p class="t-xs muted">Today, 4:30 pm ・30 min</p>
+            </div>
+            <span class="pill pill--warn">Soonest today</span>
+          </div>
+        </button>
+
+        <button class="option">
+          <div class="row">
+            <span class="badge"><svg width="16" height="16"><use href="#i-bolt"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-body">Phone</p>
+              <p class="t-xs muted">Today, 6:00 pm ・30 min</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+        </button>
+
+        <button class="option">
+          <div class="row">
+            <span class="badge"><svg width="16" height="16"><use href="#i-home-glyph"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-body">In branch</p>
+              <p class="t-xs muted">Surrey Central ・Mon 3 Aug, 10:00 am ・45 min</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+        </button>
+      </div>
+
+      <!-- Topic chips -->
+      <div class="stack-s">
+        <p class="t-eyebrow">What do you want to talk about?</p>
+        <div class="row" style="gap:8px">
+          <button class="btn btn--sm" style="padding-top:13px;padding-bottom:13px">Car loan</button>
+          <button class="btn btn--sm btn--ghost" style="padding-top:13px;padding-bottom:13px">My plan</button>
+          <button class="btn btn--sm btn--ghost" style="padding-top:13px;padding-bottom:13px">Insurance</button>
+          <button class="btn btn--sm btn--ghost" style="padding-top:13px;padding-bottom:13px">Something else</button>
+        </div>
+        <p class="t-xs muted">Optional. It just means they've read your plan before you start talking.</p>
+      </div>
+
+      <!-- Slots -->
+      <div class="card">
+        <div class="row-between" style="margin-bottom:8px">
+          <p class="t-h3">Next available</p>
+          <p class="t-xs muted">Pacific time</p>
+        </div>
+        <div class="list">
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">Today, 4:30 pm</p>
+              <p class="t-xs muted">Video ・Priya M. ・30 min</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">Today, 6:00 pm</p>
+              <p class="t-xs muted">Phone ・Daniel O. ・30 min</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">Mon 3 Aug, 10:00 am</p>
+              <p class="t-xs muted">Surrey Central ・Priya M. ・45 min</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">Wed 5 Aug, 1:00 pm</p>
+              <p class="t-xs muted">Video ・Daniel O. ・30 min</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- The reason this is safe to book -->
+      <div class="card card--outline">
+        <div class="row">
+          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
+          <div class="grow stack-xs">
+            <p class="t-sm bold">Our advisors are salaried</p>
+            <p class="t-xs muted">They earn no commission on a loan, an account or an insurance policy, so there is nothing here for anyone to sell you. If the answer is "don't buy the car yet", they can say it.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack-s">
+        <button class="btn">Book Today, 4:30 pm →</button>
+        <p class="t-sm muted center">You can move or cancel it up to an hour before, no explanation needed.</p>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="profile"></nav>
+</section></div><div class="icap">v1 offers &#x27;Talk it through with an advisor&#x27; as a button that goes nowhere, which quietly teaches people that the human help is decorative. This turns it into a real booking flow that leads with the soonest slot, lets you say what it&#x27;s about before you commit, and states up front that advisors are salaried — the one fact that makes a 23-year-old willing to pick up the phone.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-share-plan" data-title="Share your plan"
+         data-flow="Goals" data-active="goals"
+         data-why="Most people under 25 buy their first car with a parent in the room, and often need a co-signer, but v1 gives them no way to bring that person in — so the conversation happens over screenshots of a banking app. This screen makes sharing deliberate and legible: you see exactly what the other person will see, account balances are off before you touch anything, and the privacy boundary is stated in the same size type as the offer.">
+  <div class="screen__body">
+
+    <div class="appbar">
+      <button class="appbar__back"><svg width="20" height="20"><use href="#i-back"/></svg></button>
+    </div>
+
+    <div class="stack">
+
+      <header class="stack-xs">
+        <h1 class="t-h1">Share your plan</h1>
+        <p class="t-sm muted">Show a parent, a partner or a possible co-signer what you're working towards — without handing over your bank account.</p>
+      </header>
+
+      <!-- Hero: exactly what the other person sees -->
+      <div class="card card--hero">
+        <p class="t-eyebrow" style="margin-bottom:12px">What they'll see</p>
+        <div class="row" style="gap:14px;margin-bottom:16px">
+          <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-car"/></svg></span>
+          <div class="grow stack-xs">
+            <p class="t-h3">A car by May 2028</p>
+            <p class="t-sm muted med">$18,500 ・$179/mo</p>
+          </div>
+        </div>
+        <div class="stack-xs">
+          <div class="row-between">
+            <p class="t-xs muted">$300 of $3,750 saved so far</p>
+            <p class="t-xs muted">8%</p>
+          </div>
+          <div class="bar bar--gold"><i style="width:8%"></i></div>
+        </div>
+        <p class="t-xs muted" style="margin-top:14px">Running costs included: insurance, fuel and maintenance, estimated $390–540 a month.</p>
+      </div>
+
+      <!-- What's included -->
+      <div class="card">
+        <div class="row-between" style="margin-bottom:4px">
+          <p class="t-h3">What's included</p>
+          <p class="t-xs muted">Tap to change</p>
+        </div>
+        <div class="list">
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">The plan</p>
+              <p class="t-xs muted">Target, date and monthly amount</p>
+            </div>
+            <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>On</span>
+          </div>
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">Running costs</p>
+              <p class="t-xs muted">The $390–540 a month estimate behind the plan</p>
+            </div>
+            <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>On</span>
+          </div>
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">What you've saved so far</p>
+              <p class="t-xs muted">$300 of $3,750 towards the car</p>
+            </div>
+            <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>On</span>
+          </div>
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">Account balances</p>
+              <p class="t-xs muted">Chequing ••4821 and your Emergency Fund</p>
+            </div>
+            <span class="pill">Off</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- The privacy line, said plainly and at readable size -->
+      <div class="card card--outline">
+        <div class="row">
+          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
+          <div class="grow stack-xs">
+            <p class="t-sm bold">Balances are off by default</p>
+            <p class="t-xs muted">Nobody you share with sees what's in your accounts, your transactions or your card unless you turn that row on yourself. We never turn it on for you, and this link is read-only.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- How to share -->
+      <div class="stack-s">
+        <p class="t-eyebrow">How do you want to share it?</p>
+
+        <button class="option" aria-selected="true">
+          <div class="row">
+            <div class="grow stack-xs">
+              <p class="t-body">Send a link</p>
+              <p class="t-xs muted">Read-only, expires in 30 days, no account needed to open it</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+        </button>
+
+        <button class="option">
+          <div class="row">
+            <div class="grow stack-xs">
+              <p class="t-body">Invite as a co-saver</p>
+              <p class="t-xs muted">They can add money to the goal. They still can't see your balances</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+        </button>
+
+        <button class="option">
+          <div class="row">
+            <div class="grow stack-xs">
+              <p class="t-body">Ask about co-signing</p>
+              <p class="t-xs muted">Sends the plan to a Coast Capital advisor first, so you both hear what co-signing actually commits them to</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+        </button>
+      </div>
+
+      <div class="stack-s">
+        <button class="btn">Share plan →</button>
+        <p class="t-sm muted center">You can switch the link off at any time in Profile, and see when it was last opened.</p>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="goals"></nav>
+</section></div><div class="icap">Most people under 25 buy their first car with a parent in the room, and often need a co-signer, but v1 gives them no way to bring that person in — so the conversation happens over screenshots of a banking app. This screen makes sharing deliberate and legible: you see exactly what the other person will see, account balances are off before you touch anything, and the privacy boundary is stated in the same size type as the offer.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-goals-empty" data-title="Goals — first run" data-flow="Goals" data-active="goals"
+         data-why="v1 had no first-run state, so a new member's first look at Goals was a blank list with no way in; this treats emptiness as the app's best teaching moment — it says in one line what a goal actually does here and offers the three starts people really pick, with no apology for having nothing saved yet.">
+  <div class="screen__body">
+    <div class="stack">
+
+      <header class="stack-s">
+        <h1 class="t-h1">Nothing saved for yet</h1>
+        <p class="t-sm muted">A goal is a number and a date. You pick what you want, InScope works out what it truly costs to own, and turns that into an amount you set aside each month.</p>
+      </header>
+
+      <div class="stack-s">
+        <p class="t-eyebrow">A good place to start</p>
+
+        <button class="option option--rec" aria-selected="true">
+          <span class="row" style="gap:14px;align-items:flex-start">
+            <span class="badge badge--green" style="margin-top:2px"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
+            <span class="stack-xs grow">
+              <span class="t-xs bold gold">MOST PEOPLE START HERE</span>
+              <span class="t-body">A safety net</span>
+              <span class="t-xs muted">Three months of your spending — around $3,000. It is the goal that keeps every other goal from falling over.</span>
+            </span>
+          </span>
+        </button>
+
+        <button class="option">
+          <span class="row" style="gap:14px;align-items:flex-start">
+            <span class="badge badge--gold" style="margin-top:2px"><svg width="16" height="16"><use href="#i-car"/></svg></span>
+            <span class="stack-xs grow">
+              <span class="t-body">A first car</span>
+              <span class="t-xs muted">Eight questions. We add insurance, fuel and upkeep to the sticker price, so the monthly number is the real one.</span>
+            </span>
+          </span>
+        </button>
+
+        <button class="option">
+          <span class="row" style="gap:14px;align-items:flex-start">
+            <span class="badge" style="margin-top:2px"><svg width="16" height="16"><use href="#i-plus"/></svg></span>
+            <span class="stack-xs grow">
+              <span class="t-body">Something else</span>
+              <span class="t-xs muted">A trip, a deposit, a course, a laptop. Name it and set the date — we will build the plan around it.</span>
+            </span>
+          </span>
+        </button>
+      </div>
+
+      <div class="stack-s">
+        <a class="btn" data-goto="1907:222">Start a goal →</a>
+        <p class="t-xs muted center">Setting a goal moves no money. You choose the amount, the day and the account at the end, and you can change all three later.</p>
+      </div>
+
+      <div class="card card--outline card--tight" data-goto="v2-advisor">
+        <div class="row">
+          <span class="grow stack-xs">
+            <span class="t-sm bold">Not sure what to save for?</span>
+            <span class="t-xs muted">Talk it through with an advisor — free, 20 minutes, and they are salaried, not on commission.</span>
+          </span>
+          <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="goals"></nav>
+</section></div><div class="icap">v1 had no first-run state, so a new member&#x27;s first look at Goals was a blank list with no way in; this treats emptiness as the app&#x27;s best teaching moment — it says in one line what a goal actually does here and offers the three starts people really pick, with no apology for having nothing saved yet.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-after-purchase" data-title="After the purchase — the car you own" data-flow="Goals" data-active="goals"
+         data-why="v1 stops at 'your goal is ready to set', which is exactly the point where a credit union's relationship with a young member actually starts; this screen keeps the app useful after the money is spent, and by putting the real running cost next to the range the onboarding promised, it lets the app be judged on whether it told the truth.">
+  <div class="screen__body">
+    <div class="stack">
+
+      <header class="stack-s">
+        <h1 class="t-h1">You bought the car</h1>
+        <div class="card card--tight">
+          <div class="row">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-car"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-body">2022 Civic</p>
+              <p class="t-xs muted">bought April 2027 ・First Car goal, closed</p>
+            </div>
+            <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>Done</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Money owed. Deliberately not styled like a savings goal. -->
+      <div class="card card--hero">
+        <p class="t-eyebrow">Your loan ・ money owed</p>
+        <p class="row" style="gap:8px;align-items:baseline;margin:10px 0 2px">
+          <span class="t-display">$14,750</span>
+          <span class="t-sm muted">left</span>
+        </p>
+        <p class="t-sm muted" style="margin-bottom:14px">of $18,500 borrowed</p>
+
+        <div class="bar bar--thick bar--gold"><i style="width:20%"></i></div>
+        <div class="row-between" style="margin-top:8px">
+          <p class="t-xs muted">$3,750 paid off</p>
+          <p class="t-xs bold right">20% of the loan</p>
+        </div>
+
+        <div class="list" style="margin-top:6px">
+          <div class="list-row">
+            <p class="t-sm muted grow">Monthly payment</p>
+            <p class="t-sm bold right">$271</p>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">Your rate</p>
+            <p class="t-sm bold right">3.9% member</p>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">Last payment</p>
+            <p class="t-sm bold right">May 2031</p>
+          </div>
+        </div>
+
+        <div class="row-between" style="margin-top:14px">
+          <p class="t-xs muted grow">Extra payments come straight off the balance. No fee, no penalty, any month you can manage it.</p>
+          <a class="link">Pay extra →</a>
+        </div>
+      </div>
+
+      <!-- Closing the loop on the onboarding estimate -->
+      <div class="card">
+        <div class="row-between" style="margin-bottom:12px">
+          <p class="t-h3 grow">Running costs</p>
+          <span class="pill pill--ok">As estimated</span>
+        </div>
+
+        <div class="row-between" style="margin-bottom:14px">
+          <div class="stack-xs">
+            <p class="t-xs muted">We estimated</p>
+            <p class="t-h3 muted">$390–540</p>
+          </div>
+          <div class="stack-xs right">
+            <p class="t-xs muted">You actually spend</p>
+            <p class="t-h3">$412</p>
+          </div>
+        </div>
+
+        <div class="slider" style="--p:15">
+          <div class="slider__track"><i style="width:15%"></i></div>
+          <div class="slider__knob"></div>
+        </div>
+        <div class="row-between t-xs muted" style="margin-top:8px">
+          <span>$390</span>
+          <span>$540</span>
+        </div>
+
+        <p class="t-xs muted" style="margin-top:12px">Insurance, fuel, maintenance and parking, averaged over your last three months. You are near the low end of the range we showed you before you bought.</p>
+        <p style="margin-top:10px"><a class="link">See the month by month →</a></p>
+      </div>
+
+      <div class="card">
+        <p class="t-h3" style="margin-bottom:4px">Coming up</p>
+        <div class="list">
+          <div class="list-row">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-sm bold">Insurance renewal ・12 September</p>
+              <p class="t-xs muted">Worth re-quoting — your rate drops the year you turn 25.</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row">
+            <span class="badge"><svg width="16" height="16"><use href="#i-bolt"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-sm bold">First service ・next month</p>
+              <p class="t-xs muted">Usually $90–140 for this car. We will remind you a week ahead.</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card--outline card--tight">
+        <div class="row">
+          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
+          <div class="grow stack-xs">
+            <p class="t-sm bold">The car is handled. What is next?</p>
+            <p class="t-xs muted">Your safety net is still at 1.4 months of cover.</p>
+          </div>
+        </div>
+        <p style="margin-top:12px"><a class="link" data-goto="1907:222">Start your next goal →</a></p>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="goals"></nav>
+</section></div><div class="icap">v1 stops at &#x27;your goal is ready to set&#x27;, which is exactly the point where a credit union&#x27;s relationship with a young member actually starts; this screen keeps the app useful after the money is spent, and by putting the real running cost next to the range the onboarding promised, it lets the app be judged on whether it told the truth.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-risk-detail" data-title="Risk detail — Japan Trip is stalling" data-flow="Risks" data-active="risks"
+         data-why="v1's Risk Radar names a risk and then ends in a chevron that leads nowhere, so the app worries at the user without helping; this turns the alert into a decision by pricing every option in the one currency the user actually cares about — the month the car arrives — so the choice takes seconds, with no arithmetic and nothing that reads as a telling-off.">
+  <div class="screen__body">
+    <div class="stack">
+
+      <div class="appbar" style="margin-bottom:0">
+        <button class="appbar__back" data-goto="1858:3611"><svg width="20" height="20"><use href="#i-back"/></svg></button>
+        <p class="stepcount">Risk Radar</p>
+      </div>
+
+      <header class="stack-s">
+        <div class="row" style="gap:10px">
+          <span class="pill pill--danger">High</span>
+          <span class="t-xs muted">Flagged 1 August</span>
+        </div>
+        <h1 class="t-h1">Japan Trip is stalling</h1>
+      </header>
+
+      <div class="card card--hero">
+        <p class="t-sm">Your plan puts $50 a month into this goal. Nothing has gone in since June — three months. Carry on at the pace of the last year and $4,000 arrives in 2033.</p>
+        <div class="stack-xs" style="margin-top:18px">
+          <div class="row-between">
+            <p class="t-xs muted">$100 of $4,000</p>
+            <p class="t-xs bold right">2.5%</p>
+          </div>
+          <div class="bar bar--gold"><i style="width:2.5%"></i></div>
+        </div>
+      </div>
+
+      <div class="stack-s">
+        <p class="t-h3">What you can do</p>
+        <p class="t-xs muted">Every option here is the same trade underneath: money going to Japan is money not going to the car. So each one shows what it does to the car’s date.</p>
+
+        <button class="option option--rec" aria-selected="true">
+          <span class="row-between" style="align-items:flex-start;gap:14px">
+            <span class="stack-xs grow">
+              <span class="t-xs bold gold">WE’D SUGGEST THIS</span>
+              <span class="t-body">Lower the target to $2,500</span>
+              <span class="t-xs muted">Keep putting in the same $50 a month, for a shorter trip. Japan is ready in 2029 instead of 2033, and the car is untouched.</span>
+            </span>
+            <span class="stack-xs right" style="flex:none;align-items:flex-end">
+              <span class="pill">Car: May 2028</span>
+              <span class="t-xs muted">as planned</span>
+            </span>
+          </span>
+        </button>
+
+        <button class="option">
+          <span class="row-between" style="align-items:flex-start;gap:14px">
+            <span class="stack-xs grow">
+              <span class="t-body">Pause it</span>
+              <span class="t-xs muted">The $50 a month goes to the car instead. Japan holds at $100 and you can restart it any month.</span>
+            </span>
+            <span class="stack-xs right" style="flex:none;align-items:flex-end">
+              <span class="pill pill--ok">Car: March 2028</span>
+              <span class="t-xs muted">2 months sooner</span>
+            </span>
+          </span>
+        </button>
+
+        <button class="option">
+          <span class="row-between" style="align-items:flex-start;gap:14px">
+            <span class="stack-xs grow">
+              <span class="t-body">Keep going</span>
+              <span class="t-xs muted">Hold the $4,000 target and the date you set. Catching up takes $95 a month instead of $50, and the extra $45 comes out of the car.</span>
+            </span>
+            <span class="stack-xs right" style="flex:none;align-items:flex-end">
+              <span class="pill pill--danger">Car: August 2028</span>
+              <span class="t-xs muted">3 months later</span>
+            </span>
+          </span>
+        </button>
+      </div>
+
+      <div class="stack-s">
+        <a class="btn">Lower the target to $2,500 →</a>
+        <p class="t-xs muted center">Nothing moves until you confirm, and the $100 already saved stays yours whichever you pick.</p>
+      </div>
+
+      <div class="card card--outline">
+        <div class="row" style="gap:10px;margin-bottom:8px">
+          <span style="color:var(--gold);flex:none"><svg width="16" height="16"><use href="#i-info"/></svg></span>
+          <p class="t-sm bold gold grow">Why are you telling me this?</p>
+        </div>
+        <p class="t-xs muted">A goal usually stalls because it was set for a different month, not because you did anything wrong. We flag it so the choice stays yours while it is still cheap to make — all three options above are fine ones. This is not shared with anyone, it does not affect your credit, and it changes nothing about what you can borrow.</p>
+      </div>
+
+      <div class="card card--tight" data-goto="v2-advisor">
+        <div class="row">
+          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-profile"/></svg></span>
+          <div class="grow stack-xs">
+            <p class="t-sm bold">Rather talk it through?</p>
+            <p class="t-xs muted">20 minutes, free, and our advisors are salaried — nobody earns anything from what you decide.</p>
+          </div>
+          <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="risks"></nav>
+</section></div><div class="icap">v1&#x27;s Risk Radar names a risk and then ends in a chevron that leads nowhere, so the app worries at the user without helping; this turns the alert into a decision by pricing every option in the one currency the user actually cares about — the month the car arrives — so the choice takes seconds, with no arithmetic and nothing that reads as a telling-off.</div></figure>
+  </div>
+</section>
+
+<!-- 07 BEFORE / AFTER -->
+<section id="ba" class="sec rev">
+  <div class="phase"><div class="p-dot">7</div><span class="p-txt">Before &amp; After</span></div>
+  <h2 class="sec-h">The Same Screen,<br/>Corrected</h2>
+  <p class="sec-lead">Both are live and both re-theme — this is the actual code, not a screenshot.</p>
+  <div class="rule"></div>
+
+  <div class="ba-grid">
+    <div class="ba-wrap before">
+      <div class="ba-label">Before — as presented</div>
+      <figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="1848:36" data-title="Home — dashboard" data-flow="Home">
+  <div class="screen__body">
+    <div class="stack">
+
+      <header class="stack-xs">
+        <p class="t-date">Saturday,&nbsp; 01 August</p>
+        <h1 class="t-greet">Morning, Maya</h1>
+      </header>
+
+      <!-- July budget -->
+      <div class="card card--hero">
+        <div class="row" style="gap:20px">
+          <div class="donut" style="--p:60">
+            <div class="donut__label">
+              <div style="font-size:14px;font-weight:700">60%</div>
+              <div class="t-xs muted">spent</div>
+            </div>
+          </div>
+          <div class="grow stack-xs">
+            <p class="t-h3">July Budget</p>
+            <p><span class="t-h2">$400</span> <span style="font-size:16px;font-weight:700">left</span></p>
+            <p class="t-sm muted med">of $2,800 ・9 days to go</p>
+            <a class="link" data-goto="1848:2258">See breakdown →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Goals -->
+      <div class="card">
+        <div class="row-between" style="margin-bottom:14px">
+          <p class="t-h3">Your Goals</p>
+          <p class="t-xs muted">2 of 3 on track</p>
+        </div>
+
+        <div class="row" style="margin-bottom:16px">
+          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
+          <div class="grow stack-xs">
+            <div class="row-between">
+              <p class="t-body">Emergency Fund</p>
+              <p class="t-xs muted">28%</p>
+            </div>
+            <p class="t-xs muted">$850 of $3000</p>
+            <div class="bar"><i style="width:28%"></i></div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-bottom:14px">
+          <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-car"/></svg></span>
+          <div class="grow stack-xs">
+            <div class="row-between">
+              <p class="t-body">First Car</p>
+              <p class="t-xs muted">8%</p>
+            </div>
+            <p class="t-xs muted">$300 of $3,750</p>
+            <div class="bar bar--gold"><i style="width:53%"></i></div>
+          </div>
+        </div>
+
+        <p class="center"><a class="link" data-goto="1858:3389">View all goals →</a></p>
+      </div>
+
+      <!-- Safety net -->
+      <div class="card card--outline card--tight" data-goto="1858:3611">
+        <div class="row">
+          <span style="color:var(--danger);flex:none"><svg width="23" height="21"><use href="#i-warn"/></svg></span>
+          <p class="t-h3 grow">Your safety net covers 1.4 months</p>
+          <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+        </div>
+      </div>
+
+      <!-- Resources -->
+      <div class="card">
+        <p class="t-h3" style="margin-bottom:10px">Resources</p>
+        <div class="list">
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">Why insurance costs more under 25</p>
+              <p class="t-xs muted">2 min ・could save you $250 a month</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">What to check on a used car</p>
+              <p class="t-xs muted">4 min ・before you hand over money</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">Auto insurance basics</p>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">Tips for negotiating the best car price</p>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">Post-purchase car maintenance guide</p>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="home"></nav>
+</section></div><div class="icap">First Car bar drawn at 53% beside an 8% label. Resources takes the most space on the screen. The safety-net warning ends in a chevron.</div></figure>
+    </div>
+    <div class="ba-wrap after">
+      <div class="ba-label">After — post-crit</div>
+      <figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-home" data-title="Home — dashboard" data-flow="Home" data-active="home"
+         data-why="v1 drew a 53%-wide bar next to an 8% label, so the screen quietly lied about the goal that matters most; v2 computes every fill from the numbers beside it, leads with what membership has actually returned this year, gives the safety-net warning an action instead of a chevron, and demotes Resources to a list so the urgent things sit above the fold.">
+  <div class="screen__body">
+    <div class="stack">
+
+      <header class="stack-xs">
+        <p class="t-date">Saturday,&nbsp; 22 July</p>
+        <h1 class="t-greet">Morning, Maya</h1>
+      </header>
+
+      <!-- Member value strip — the new lead -->
+      <div class="card card--tight" style="border:1px solid var(--gold)" data-goto="v2-member-value">
+        <div class="row">
+          <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
+          <div class="grow stack-xs">
+            <p class="t-eyebrow">YOUR MEMBERSHIP</p>
+            <p class="t-sm med">Membership has saved you <span class="bold">$312</span> this year</p>
+          </div>
+          <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+        </div>
+        <p style="margin-top:10px"><a class="link">See how →</a></p>
+      </div>
+
+      <!-- July budget -->
+      <div class="card card--hero">
+        <div class="row" style="gap:20px">
+          <div class="donut" style="--p:61">
+            <div class="donut__label">
+              <div style="font-size:14px;font-weight:700">61%</div>
+              <div class="t-xs muted">spent</div>
+            </div>
+          </div>
+          <div class="grow stack-xs">
+            <p class="t-h3">July Budget</p>
+            <p><span class="t-h2">$1,087</span> <span style="font-size:16px;font-weight:700">left</span></p>
+            <p class="t-sm muted med">of $2,800 ・9 days to go</p>
+            <a class="link" data-goto="1848:2258">See breakdown →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Goals -->
+      <div class="card">
+        <div class="row-between" style="margin-bottom:14px">
+          <p class="t-h3">Your Goals</p>
+          <p class="t-xs muted">2 of 3 on track</p>
+        </div>
+
+        <div class="row" style="margin-bottom:16px">
+          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
+          <div class="grow stack-xs">
+            <div class="row-between">
+              <p class="t-body">Emergency Fund</p>
+              <p class="t-xs muted">28%</p>
+            </div>
+            <p class="t-xs muted">$850 of $3,000</p>
+            <div class="bar"><i style="width:28%"></i></div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-bottom:14px">
+          <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-car"/></svg></span>
+          <div class="grow stack-xs">
+            <div class="row-between">
+              <p class="t-body">First Car</p>
+              <p class="t-xs muted">8%</p>
+            </div>
+            <p class="t-xs muted">$300 of $3,750</p>
+            <div class="bar bar--gold"><i style="width:8%"></i></div>
+          </div>
+        </div>
+
+        <p class="center"><a class="link" data-goto="1858:3389">View all goals →</a></p>
+      </div>
+
+      <!-- Safety net — now carries the fix, not a chevron -->
+      <div class="card card--outline" style="border-color:var(--danger)">
+        <div class="row" style="margin-bottom:12px">
+          <span class="badge badge--danger"><svg width="18" height="16"><use href="#i-warn"/></svg></span>
+          <p class="t-h3 grow">Your safety net covers 1.4 months</p>
+        </div>
+        <p class="t-sm muted med" style="margin-bottom:14px">Three months is the target. $95 a month gets you there by January, without touching the car plan.</p>
+        <div class="row">
+          <button class="btn btn--sm" style="padding:13px 18px">Add $95/mo →</button>
+          <a class="link" data-goto="1858:3611">Why this matters</a>
+        </div>
+      </div>
+
+      <!-- Resources — demoted from a card to a compact list -->
+      <div class="stack-s">
+        <p class="t-eyebrow">RESOURCES</p>
+        <div class="list">
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">Why insurance costs more under 25</p>
+              <p class="t-xs muted">2 min ・could save you $250 a month</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row" style="padding:14px 0">
+            <p class="t-sm grow">What to check on a used car</p>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row" style="padding:14px 0">
+            <p class="t-sm grow">Auto insurance basics</p>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+        </div>
+        <p><a class="link">See all resources →</a></p>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="home"></nav>
+</section></div><div class="icap">Bar corrected to 8%. Membership value promoted to the lead. Resources demoted to a list. The warning now carries “Add $95/mo →”.</div></figure>
+    </div>
+  </div>
+
+  <div class="ilist">
+    <div class="it"><div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Progress bars contradicted their own labels</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">Fix</div><div class="it-txt">Every bar width is computed from the number beside it</div></div></div>
+    <div class="it"><div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Risks named a problem, then dead-ended in a chevron</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">Fix</div><div class="it-txt">Three options, each priced in the same currency — what it does to your car date</div></div></div>
+    <div class="it"><div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">The member rate appeared once, as grey body text</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">Fix</div><div class="it-txt">Membership becomes a running total — $312 saved this year, $6,400 over the loan</div></div></div>
+    <div class="it"><div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">The app ended at “your goal is ready to set”</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">Fix</div><div class="it-txt">An after-purchase screen closes the loop: estimated $390–540 vs actual $412</div></div></div>
+  </div>
+</section>
+
+<!-- 08 REFLECTION -->
+<section id="reflection" class="sec rev">
+  <div class="phase"><div class="p-dot">8</div><span class="p-txt">Reflection</span></div>
+  <h2 class="sec-h">What I'd Do Differently</h2>
+  <p class="sec-lead">Building the thing I had drawn taught me more than drawing it did.</p>
+  <div class="rule"></div>
+
+  <div class="g2">
+    <div class="rc"><div class="rc-t">Validate the path before drawing 32 screens of it</div><div class="rc-d">The five goal types in step one were a promise I hadn't costed. Designing even one of the other four would have told me much earlier which parts of my flow were genuinely reusable and which were car-specific.</div></div>
+    <div class="rc"><div class="rc-t">Start the token layer on day one</div><div class="rc-d">I built the visual system by repetition, which looked consistent and wasn't. The drift only became measurable once the colours had names — and by then it was 32 screens of cleanup.</div></div>
+    <div class="rc"><div class="rc-t">Check the client's brand before choosing a palette</div><div class="rc-d">An obvious step I skipped. I spent a semester designing for a credit union in colours it has never used, and only caught it when I sat down to implement.</div></div>
+    <div class="rc"><div class="rc-t">Numbers are claims, not decoration</div><div class="rc-d">Six of my nine defects were a figure disagreeing with another figure. In a financial product that isn't a polish issue — it's the whole basis of whether anyone trusts the thing.</div></div>
+  </div>
+
+  <div style="margin-top:3rem; padding:1.5rem; border:1.5px solid rgba(26,22,18,0.12); background:var(--paper-dark); position:relative; transform:rotate(-0.3deg)">
+    <div style="position:absolute; top:-11px; left:20px; width:40px; height:20px; background:rgba(15,42,99,0.22); border-top:1px solid rgba(15,42,99,0.35); border-bottom:1px solid rgba(15,42,99,0.35); transform:rotate(1.5deg)"></div>
+    <p style="font-family:var(--font-serif); font-size:1.1rem; font-style:italic; color:var(--ink-light); line-height:1.7">
+      The lesson wasn't that I made mistakes — it's that <span class="hl-y">a design file can look finished and still be wrong</span>. Building it was the only thing that told me the difference, and I'd rather find nine defects in my own work than have a user find the first one.
+    </p>
+    <p style="font-family:var(--font-scrawl); font-size:18px; color:var(--cc-blue); margin-top:0.75rem; transform:rotate(-1deg); display:inline-block">— Inayat ✏️</p>
+    <div class="corner-fold"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>© 2025 Inayat &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; UI Design · User Flow · Design Systems</footer>
+
+<script>
+const spiral = document.getElementById('spiralBinding');
+const count = Math.floor(window.innerHeight / 44) + 2;
+for (let i = 0; i < count; i++) {
+  const h = document.createElement('div');
+  h.className = 'spiral-hole';
+  spiral.appendChild(h);
+}
+
+const TABS = [['home','Home','#i-home'],['budget','Budget','#i-budget'],['goals','Goals','#i-goals'],
+              ['risks','Risks','#i-risks'],['profile','Profile','#i-profile']];
+document.querySelectorAll('.tabbar').forEach(bar => {
+  const active = bar.dataset.active || 'home';
+  bar.innerHTML = TABS.map(([k,l,i]) =>
+    `<button class="tab" ${k===active?'aria-current="page"':''}><svg viewBox="0 0 24 24"><use href="${i}"/></svg><span>${l}</span></button>`
+  ).join('') + '<div class="tabbar__home-indicator"></div>';
+});
+
+document.querySelectorAll('[data-theme-set]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.screen').forEach(s => s.dataset.theme = btn.dataset.themeSet);
+    document.querySelectorAll('[data-theme-set]').forEach(b => b.classList.toggle('is-on', b === btn));
+  });
+});
+document.querySelectorAll('.screen').forEach(s => s.dataset.theme = 'cc-dark');
+
+const ro = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) e.target.classList.add('in');
+}), { threshold: 0.06 });
+document.querySelectorAll('.rev').forEach(el => ro.observe(el));
+
+const links = document.querySelectorAll('.side-a');
+const secs  = document.querySelectorAll('.sec');
+const so = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
+      if (a) a.classList.add('active');
+    }
+  });
+}, { rootMargin: '-15% 0px -65% 0px' });
+secs.forEach(s => so.observe(s));
+</script>
+</body>
+</html>
