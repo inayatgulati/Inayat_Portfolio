@@ -393,7 +393,7 @@
 
 .appbar { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
 .appbar__back {
-  width: 43px; height: 36px; border-radius: var(--r-sm);
+  width: 44px; height: 44px; border-radius: var(--r-sm);
   background: var(--overlay); border: 0; color: var(--text);
   display: grid; place-items: center; cursor: pointer;
 }
@@ -849,9 +849,10 @@ footer { border-top: 2.5px solid var(--ink); padding: 1.25rem 2rem; text-align: 
       <a href="#interface" class="side-a"><span class="side-num">03</span>The Interface</a>
       <a href="#audit"     class="side-a turn-mark"><span class="side-num">04</span>The Audit</a>
       <a href="#brand"     class="side-a"><span class="side-num">05</span>The Rebrand</a>
-      <a href="#nine"      class="side-a"><span class="side-num">06</span>Nine Screens</a>
-      <a href="#ba"        class="side-a"><span class="side-num">07</span>Before &amp; After</a>
-      <a href="#reflection" class="side-a"><span class="side-num">08</span>Reflection</a>
+      <a href="#nine"      class="side-a"><span class="side-num">06</span>The Gap</a>
+      <a href="#speaks"    class="side-a"><span class="side-num">07</span>When It Speaks</a>
+      <a href="#ba"        class="side-a"><span class="side-num">08</span>Before &amp; After</a>
+      <a href="#reflection" class="side-a"><span class="side-num">09</span>Reflection</a>
     </nav>
   </div>
   <div style="margin-top:auto; padding-top:1rem; opacity:0.3; pointer-events:none;">
@@ -1155,7 +1156,7 @@ footer { border-top: 2.5px solid var(--ink); padding: 1.25rem 2rem; text-align: 
   <div class="stats">
     <div class="stat"><div class="s-n">32</div><div class="s-l">Screens designed</div><div class="s-sub">Six flows, in Figma</div></div>
     <div class="stat"><div class="s-n">9</div><div class="s-l">Defects found in my own work</div><div class="s-sub">After the crit</div></div>
-    <div class="stat"><div class="s-n">9</div><div class="s-l">Screens added</div><div class="s-sub">Post-presentation</div></div>
+    <div class="stat"><div class="s-n">17</div><div class="s-l">Screens added after</div><div class="s-sub">Loops, states, failures</div></div>
     <div class="stat"><div class="s-n">2.46</div><div class="s-l">Client brand fails AA</div><div class="s-sub">Needs 4.5:1</div></div>
   </div>
 
@@ -1171,16 +1172,27 @@ footer { border-top: 2.5px solid var(--ink); padding: 1.25rem 2rem; text-align: 
 <section id="overview" class="sec rev">
   <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
   <h2 class="sec-h">The Problem</h2>
-  <p class="sec-lead">Coast Capital Savings is a BC credit union. Like most credit unions it does well with members over 40 and struggles to reach anyone under 25 — the age when someone makes their first significant purchase and picks the institution they'll stay with for a decade.</p>
+  <p class="sec-lead">Coast Capital Savings is one of Canada's largest credit unions. Its own stated pain: <em>it gets involved only after the member has already made a financial decision.</em></p>
   <div class="rule"></div>
 
-  <p class="p-body">We found the wedge in a specific failure. Young buyers don't fall short because they lack discipline — they fall short because <strong>they're quoted the wrong number.</strong> Someone budgets for an $18,500 car and gets blindsided by insurance, registration, maintenance and fuel: costs that add 40–60% on top, and which are highest precisely for drivers under 25.</p>
+  <p class="p-body">Our audience was young Canadians, 18–32, saving for a first car, an emergency fund, or their own place. We surveyed 25 of them, and the finding reframed the project: <strong>tracking wasn't the problem, confidence was.</strong> Budgeting apps are good at showing what already happened. None of them answer the question people actually care about — <em>can I actually afford this?</em></p>
+
+  <div class="sub">Percentage who felt confident, in each area</div>
+  <div class="ilist" style="margin-bottom:1.5rem">
+    <div class="it"><div class="it-b aft"><div class="it-lbl">78%</div><div class="it-txt">Tracks a monthly budget</div></div><div class="it-arr">·</div><div class="it-b aft"><div class="it-lbl">62%</div><div class="it-txt">Tracks daily spending</div></div></div>
+    <div class="it"><div class="it-b bef"><div class="it-lbl">34%</div><div class="it-txt">Understands how goals actually work</div></div><div class="it-arr">·</div><div class="it-b bef"><div class="it-lbl">29%</div><div class="it-txt">Confident planning around fluctuating job hours</div></div></div>
+  </div>
+  <div class="quote">
+    <p>Only <strong>22%</strong> felt prepared for an unexpected expense — the lowest score in the survey, and the one the app would end up answering least.</p>
+  </div>
+
+  <p class="p-body">So the reframe wasn't <em>show people more data</em>. It was a shift in mental model: from <em>"my banking app shows me what already happened"</em> to <em>"my banking app helps me understand what I can afford before I commit."</em> Starts from my context · tests risk early · gives me a next step.</p>
 
   <div class="g2" style="margin-bottom:2rem">
-    <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Sticker price</div><div class="nc-t">Is not the price</div><div class="nc-d">Every tool a young buyer uses quotes the purchase figure and stops there — the running costs arrive as a surprise, months later.</div></div>
-    <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Under 25</div><div class="nc-t">Penalised hardest</div><div class="nc-d">Insurance, financing rates and deposits are all worst for this age group — the exact group with the least information.</div></div>
-    <div class="nc"><div class="nc-n">3.9%</div><div class="nc-t">vs 6.9% typical</div><div class="nc-d">The credit union's member rate is its single strongest asset against a bank — and the thing a young buyer has no way to discover.</div></div>
-    <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Maya, 23</div><div class="nc-t">Our persona</div><div class="nc-d">$2,800 a month, roughly $950 spare, wants a first car. Every number in the product is built against her situation.</div></div>
+    <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Confidence</div><div class="nc-t">Not literacy</div><div class="nc-d">Secondary research showed financial literacy reaches wellbeing largely <em>through</em> self-efficacy — the confidence to act. A plan you can test beats a report you can read.</div></div>
+    <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Full cost</div><div class="nc-t">Before the commitment</div><div class="nc-d">An $18,500 car carries $630–930 a month in loan, insurance, maintenance, fuel and parking. The app derives that from her accounts rather than asking her to guess.</div></div>
+    <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Stress-test</div><div class="nc-t">Before, not after</div><div class="nc-d">Lost job, income drop, rent up — the plan is tested against each one before she commits to it. This is the idea the whole product rests on.</div></div>
+    <div class="nc"><div class="nc-n" style="font-size:1.3rem;margin-bottom:7px">Maya, 23</div><div class="nc-t">Irregular hours</div><div class="nc-d">$3,400 in, $2,450 out, $950 spare. Her stated need: to know whether her plan <em>can survive the unexpected.</em> Her stated pain: fluctuating work hours.</div></div>
   </div>
 
   <div class="sub">Who it's for</div>
@@ -1900,18 +1912,839 @@ footer { border-top: 2.5px solid var(--ink); padding: 1.25rem 2rem; text-align: 
   </div>
 </section>
 
-<!-- 06 NINE SCREENS -->
+<!-- 06 THE GAP + NEW SCREENS -->
 <section id="nine" class="sec rev">
   <div class="phase"><div class="p-dot">6</div><span class="p-txt">New Work</span></div>
-  <h2 class="sec-h">Nine Screens the<br/>Presentation Was Missing</h2>
-  <p class="sec-lead">Reviewing the flow end to end, the holes were structural rather than cosmetic.</p>
+  <h2 class="sec-h">We Drew Four Stages<br/>and Built Three</h2>
+  <p class="sec-lead">The sharpest finding didn't come from the screens. It came from holding them against our own value-path diagram.</p>
   <div class="rule"></div>
 
-  <p class="p-body">The largest: <strong>the app assumed you were already a member.</strong> Coast Capital's single strongest asset — a member loan rate of 3.9% against a typical 6.9% — appeared exactly once, as grey body text. I had designed the credit union's main competitive advantage as a footnote.</p>
+  <p class="p-body">We designed to a four-stage path — <strong>See where I stand → Decide → Commit → Live with it</strong> — with three loops drawn back into it: <em>"$780 is too much"</em>, <em>"my hours got cut this month"</em>, and <em>"goal reached, what's next?"</em></p>
 
-  <div class="sub">Each screen states the design reason it exists</div>
+  <p class="p-body">Roughly twenty of the thirty-two screens are the eight-step planner. That path ends the moment she commits. <strong>"Live with it" is served by one screen, and none of the three loops we drew were ever built.</strong></p>
+
+  <div class="quote">
+    <p>Our two lowest survey scores — 22% prepared for unexpected expenses, 29% confident around fluctuating hours — are both "Live with it" problems. And the app's only answer to either is step 7 of onboarding: a hypothetical, seen once, before she commits.</p>
+  </div>
+
+  <p class="p-body">The app rehearses the bad month. It has nothing for the morning the bad month actually arrives — even though Maya's own stated pain is irregular hours, and our own diagram has an arrow labelled <em>"my hours got cut this month"</em> pointing straight back at a screen that doesn't exist.</p>
+
+  <div class="sub">Closing the loops · each caption names the score or loop it targets</div>
   <div class="pgrid">
-    <figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-home" data-title="Home — dashboard" data-flow="Home" data-active="home"
+    <figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v3-hours-cut" data-title="Your hours were cut" data-flow="Risks" data-active="risks"
+         data-why="Closes the “my hours got cut this month” loop on the team’s own value path, and targets the 29% who feel confident planning around fluctuating hours: the app rehearses a bad month once, in step 7 of onboarding, and then has nothing for the morning the bad month actually arrives — so this screen runs the same arithmetic with real numbers, prices each option in the two currencies she cares about (money left this month, the month the car arrives), and treats a cut shift as a fact about the month rather than a fact about her.">
+  <div class="screen__body">
+    <div class="stack">
+
+      <div class="appbar" style="margin-bottom:0">
+        <button class="appbar__back" data-goto="1858:3611" style="min-height:44px"><svg width="20" height="20"><use href="#i-back"/></svg></button>
+        <p class="stepcount">Risk Radar</p>
+      </div>
+
+      <header class="stack-s">
+        <div class="row" style="gap:10px">
+          <span class="pill">Income ・ August</span>
+          <span class="t-xs muted">Noticed 15 August, when your pay landed in chequing ••4821</span>
+        </div>
+        <h1 class="t-h1">Your hours were cut</h1>
+        <p class="t-sm muted">Your pay came in at $2,600 this month against a $3,400 average, so August is $800 short. Nothing is late, nothing has been missed, and none of this is reported to anyone.</p>
+      </header>
+
+      <div class="card card--hero">
+        <p class="t-eyebrow">AUGUST, AS IT STANDS</p>
+
+        <div class="stack-xs" style="margin:16px 0 14px">
+          <div class="row-between">
+            <p class="t-sm grow">Money in</p>
+            <p class="t-body">$2,600</p>
+          </div>
+          <p class="t-xs muted med">$800 under your $3,400 average</p>
+        </div>
+
+        <div class="stack-xs" style="margin-bottom:16px">
+          <div class="row-between">
+            <p class="t-sm grow">Money out, including the $360 car transfer</p>
+            <p class="t-body">$2,410</p>
+          </div>
+          <p class="t-xs muted med">$40 under your $2,450 average — fewer shifts also means less spent getting to them</p>
+        </div>
+
+        <div class="row-between" style="border-top:1px solid var(--hairline);padding-top:14px">
+          <p class="t-body grow">Left over</p>
+          <p class="t-h2">$190</p>
+        </div>
+        <p class="t-xs muted" style="margin-top:8px">$2,600 − $2,410 = $190. An average month is $3,400 − $2,450 = $950, so this month leaves $760 less to move around.</p>
+
+        <div class="stack-xs" style="margin-top:18px">
+          <div class="row-between">
+            <p class="t-xs muted grow">Your pay this month, against your average</p>
+            <p class="t-xs bold right">76%</p>
+          </div>
+          <div class="bar"><i style="width:76%"></i></div>
+        </div>
+      </div>
+
+      <div class="stack-s">
+        <p class="t-h3">What you can do</p>
+        <p class="t-xs muted">Three options, and none of them break anything. The car target is 21 transfers of $360 — $7,560 in total — so a transfer you move is a transfer added to the end of the plan, and the date moves in whole months because the transfer is monthly.</p>
+
+        <button class="option option--rec" aria-selected="true">
+          <span class="row-between" style="align-items:flex-start;gap:14px">
+            <span class="stack-xs grow">
+              <span class="t-xs bold gold">WE’D SUGGEST THIS</span>
+              <span class="t-body">Skip this month’s transfer</span>
+              <span class="t-xs muted">The $360 stays with you, so August leaves $550 instead of $190. Nothing comes out of the emergency fund, your runway holds at 1.4 months, and nothing else in the plan changes.</span>
+            </span>
+            <span class="stack-xs right" style="flex:none;align-items:flex-end">
+              <span class="pill">Car: June 2028</span>
+              <span class="t-xs muted">1 month later</span>
+            </span>
+          </span>
+        </button>
+
+        <button class="option">
+          <span class="row-between" style="align-items:flex-start;gap:14px">
+            <span class="stack-xs grow">
+              <span class="t-body">Pay half — $180</span>
+              <span class="t-xs muted">August leaves $370 and the transfer keeps running, so there is nothing to restart. Half doesn’t buy the month back, but the plan is $180 behind rather than $360 — put that $180 in any month before May 2028 and the date returns to where it was.</span>
+            </span>
+            <span class="stack-xs right" style="flex:none;align-items:flex-end">
+              <span class="pill">Car: June 2028</span>
+              <span class="t-xs muted">1 month later</span>
+            </span>
+          </span>
+        </button>
+
+        <button class="option">
+          <span class="row-between" style="align-items:flex-start;gap:14px">
+            <span class="stack-xs grow">
+              <span class="t-body">Pay in full anyway</span>
+              <span class="t-xs muted">The full $360 goes across and the car date holds. August then leaves $190, and anything unexpected before your next pay would come out of the emergency fund — which is what takes the runway from 1.4 months down to 1.1.</span>
+            </span>
+            <span class="stack-xs right" style="flex:none;align-items:flex-end">
+              <span class="pill pill--ok">Car: May 2028</span>
+              <span class="t-xs muted">as planned</span>
+              <span class="pill pill--warn">Runway 1.1 months</span>
+            </span>
+          </span>
+        </button>
+      </div>
+
+      <div class="stack-s">
+        <a class="btn">Skip this month’s transfer →</a>
+        <a class="btn btn--ghost">Pick a different option</a>
+        <p class="t-xs muted center">Nothing moves until you confirm. Whichever you pick, the $360 goes out as usual on 1 September — there is nothing to switch back on.</p>
+      </div>
+
+      <div class="card card--outline">
+        <div class="row" style="gap:10px;margin-bottom:8px">
+          <span style="color:var(--gold);flex:none"><svg width="16" height="16"><use href="#i-info"/></svg></span>
+          <p class="t-sm bold gold grow">This changes one month, not the plan</p>
+        </div>
+        <p class="t-xs muted">Hours move — that is what shift work is, and it is why the plan was built on a range rather than one fixed number. You saw this month in step 7, as a what-if; this is the same arithmetic with the real figures in it. Your goals, targets and transfers all stay exactly as they are, and September runs on its own.</p>
+      </div>
+
+      <div class="card card--tight" data-goto="v3-find-the-money">
+        <div class="row">
+          <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
+          <div class="grow stack-xs">
+            <p class="t-sm bold">If short months are becoming the pattern</p>
+            <p class="t-xs muted">Risk Radar can show where $230 a month could come from, so a month like this one costs the plan less than it does today.</p>
+          </div>
+          <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="risks"></nav>
+</section></div><div class="icap">Closes the “my hours got cut this month” loop on the team’s own value path, and targets the 29% who feel confident planning around fluctuating hours: the app rehearses a bad month once, in step 7 of onboarding, and then has nothing for the morning the bad month actually arrives — so this screen runs the same arithmetic with real numbers, prices each option in the two currencies she cares about (money left this month, the month the car arrives), and treats a cut shift as a fact about the month rather than a fact about her.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v3-find-the-money" data-title="Where $230 could come from" data-flow="Risks" data-active="risks"
+         data-why="Closes the gap behind Risk Radar’s own call to action — it asks for “Add $230 a month, covered by Feb 2028” and never says where $230 comes from — and targets the 22% who feel prepared for unexpected expenses: an amount you cannot locate in your own budget is not a plan, so this screen sources every dollar from her actual spending, states the cost of each one in the currency it is paid in, and leaves the choosing to her.">
+  <div class="screen__body">
+    <div class="stack">
+
+      <div class="appbar" style="margin-bottom:0">
+        <button class="appbar__back" data-goto="1858:3611" style="min-height:44px"><svg width="20" height="20"><use href="#i-back"/></svg></button>
+        <p class="stepcount">Risk Radar</p>
+      </div>
+
+      <header class="stack-s">
+        <h1 class="t-h1">Where $230 could come from</h1>
+        <p class="t-sm muted">Nothing on this screen is a rule. These are options from your own spending, with what each one costs you written next to it, and you decide which ones you can live with.</p>
+      </header>
+
+      <div class="card card--outline">
+        <p class="t-eyebrow">RISK RADAR SAID</p>
+        <p class="t-h3" style="margin:8px 0 10px">“Add $230 a month, covered by Feb 2028”</p>
+        <p class="t-xs muted" style="margin-bottom:12px">That is what it takes to move your savings runway from 1.4 months to the 3 months you set as the target. The number came from the plan; where it comes from is this screen.</p>
+        <div class="stack-xs">
+          <div class="row-between">
+            <p class="t-xs muted grow">Savings runway ・ 1.4 of 3 months</p>
+            <p class="t-xs bold right">47%</p>
+          </div>
+          <div class="bar bar--gold"><i style="width:47%"></i></div>
+        </div>
+      </div>
+
+      <div class="stack-s">
+        <div class="row-between">
+          <p class="t-h3 grow">Four of these are picked</p>
+          <span class="t-eyebrow">EACH AMOUNT IS A MONTH</span>
+        </div>
+
+        <div class="card card--hero">
+          <div class="list">
+
+            <div class="list-row">
+              <span class="badge badge--green"><svg width="16" height="16"><use href="#i-film"/></svg></span>
+              <div class="grow stack-xs">
+                <p class="t-body">Two subscriptions that rose Aug 1</p>
+                <p class="t-xs muted med">Risk Radar already flagged these — they rose together, about 4% of your car saving. Ending both changes nothing else you use.</p>
+              </div>
+              <div class="stack-xs right" style="flex:none;align-items:flex-end">
+                <p class="t-body">$14</p>
+                <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>Selected</span>
+              </div>
+            </div>
+
+            <div class="list-row">
+              <span class="badge badge--green"><svg width="16" height="16"><use href="#i-bag"/></svg></span>
+              <div class="grow stack-xs">
+                <p class="t-body">Dining out, above your own average</p>
+                <p class="t-xs muted med">Your last three months ran $85 a month above your own average for the nine before them. This is measured against you, not against anyone else.</p>
+              </div>
+              <div class="stack-xs right" style="flex:none;align-items:flex-end">
+                <p class="t-body">$85</p>
+                <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>Selected</span>
+              </div>
+            </div>
+
+            <div class="list-row">
+              <span class="badge badge--green"><svg width="16" height="16"><use href="#i-cart"/></svg></span>
+              <div class="grow stack-xs">
+                <p class="t-body">Clothes and online orders, above your own average</p>
+                <p class="t-xs muted med">Same three months, same comparison: $81 a month more than the nine before. Going back to your own average is the whole ask here.</p>
+              </div>
+              <div class="stack-xs right" style="flex:none;align-items:flex-end">
+                <p class="t-body">$81</p>
+                <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>Selected</span>
+              </div>
+            </div>
+
+            <div class="list-row">
+              <span class="badge badge--green"><svg width="16" height="16"><use href="#i-plane"/></svg></span>
+              <div class="grow stack-xs">
+                <p class="t-body">Pause the Japan Trip transfer</p>
+                <p class="t-xs muted med">$100 of $4,000, with nothing added since June — at that pace it lands in 2033, and pausing moves it later still. The $100 stays yours and you can restart it any month.</p>
+              </div>
+              <div class="stack-xs right" style="flex:none;align-items:flex-end">
+                <p class="t-body">$50</p>
+                <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>Selected</span>
+              </div>
+            </div>
+
+            <div class="list-row">
+              <span class="badge"><svg width="16" height="16"><use href="#i-car"/></svg></span>
+              <div class="grow stack-xs">
+                <p class="t-body">Round down the car contribution</p>
+                <p class="t-xs muted med">$360 → $280. The car needs $7,560, which is 21 transfers of $360 or 27 of $280, so the car moves from May 2028 to November 2028. Left out for that reason — it pays for the runway with the goal you came here for.</p>
+              </div>
+              <div class="stack-xs right" style="flex:none;align-items:flex-end">
+                <p class="t-body">$80</p>
+                <span class="pill"><svg width="12" height="12"><use href="#i-plus"/></svg>Add</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="card card--hero">
+        <p class="t-eyebrow">SELECTED ・ $230 OF $230</p>
+        <p class="t-display" style="margin:10px 0 12px">$230</p>
+        <div class="stack-xs">
+          <div class="row-between">
+            <p class="t-xs muted grow">Selected ・ $230 of $230</p>
+            <p class="t-xs bold right">100%</p>
+          </div>
+          <div class="bar"><i style="width:100%"></i></div>
+        </div>
+        <p class="t-sm muted" style="margin-top:12px">$14 + $85 + $81 + $50 = $230 a month, and the car keeps its full $360.</p>
+        <p class="t-sm" style="margin-top:12px">At $230 a month your savings runway reaches 3 months by February 2028 — the date Risk Radar gave — and the emergency fund covers a month like this one without the plan moving.</p>
+      </div>
+
+      <div class="stack-s">
+        <a class="btn">Set this up →</a>
+        <a class="btn btn--ghost">Not right now</a>
+        <p class="t-xs muted center">Nothing moves until you confirm, and any one of these can be changed or stopped in a month, on its own, without touching the rest.</p>
+      </div>
+
+      <div class="card card--outline">
+        <div class="row" style="gap:10px;margin-bottom:8px">
+          <span style="color:var(--gold);flex:none"><svg width="16" height="16"><use href="#i-info"/></svg></span>
+          <p class="t-sm bold gold grow">Why we can’t just pick for you</p>
+        </div>
+        <p class="t-xs muted">The app can see what you spend. It cannot see which of these you would actually miss — the subscriptions might be how you see your friends, and the trip might be the reason you save at all. So it finds the money, shows the price of each piece, and leaves the choosing to you. Swap any row for another and the total changes with it; $230 is the target, not a rule, and $150 a month gets you there later rather than not at all.</p>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="risks"></nav>
+</section></div><div class="icap">Closes the gap behind Risk Radar’s own call to action — it asks for “Add $230 a month, covered by Feb 2028” and never says where $230 comes from — and targets the 22% who feel prepared for unexpected expenses: an amount you cannot locate in your own budget is not a plan, so this screen sources every dollar from her actual spending, states the cost of each one in the currency it is paid in, and leaves the choosing to her.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-risk-detail" data-title="Risk detail — Japan Trip is stalling" data-flow="Risks" data-active="risks"
+         data-why="v1's Risk Radar names a risk and then ends in a chevron that leads nowhere, so the app worries at the user without helping; this turns the alert into a decision by pricing every option in the one currency the user actually cares about — the month the car arrives — so the choice takes seconds, with no arithmetic and nothing that reads as a telling-off.">
+  <div class="screen__body">
+    <div class="stack">
+
+      <div class="appbar" style="margin-bottom:0">
+        <button class="appbar__back" data-goto="1858:3611"><svg width="20" height="20"><use href="#i-back"/></svg></button>
+        <p class="stepcount">Risk Radar</p>
+      </div>
+
+      <header class="stack-s">
+        <div class="row" style="gap:10px">
+          <span class="pill pill--danger">High</span>
+          <span class="t-xs muted">Flagged 1 August</span>
+        </div>
+        <h1 class="t-h1">Japan Trip is stalling</h1>
+      </header>
+
+      <div class="card card--hero">
+        <p class="t-sm">Your plan puts $50 a month into this goal. Nothing has gone in since June — three months. Carry on at the pace of the last year and $4,000 arrives in 2033.</p>
+        <div class="stack-xs" style="margin-top:18px">
+          <div class="row-between">
+            <p class="t-xs muted">$100 of $4,000</p>
+            <p class="t-xs bold right">2.5%</p>
+          </div>
+          <div class="bar bar--gold"><i style="width:2.5%"></i></div>
+        </div>
+      </div>
+
+      <div class="stack-s">
+        <p class="t-h3">What you can do</p>
+        <p class="t-xs muted">Every option here is the same trade underneath: money going to Japan is money not going to the car. So each one shows what it does to the car’s date.</p>
+
+        <button class="option option--rec" aria-selected="true">
+          <span class="row-between" style="align-items:flex-start;gap:14px">
+            <span class="stack-xs grow">
+              <span class="t-xs bold gold">WE’D SUGGEST THIS</span>
+              <span class="t-body">Lower the target to $2,500</span>
+              <span class="t-xs muted">Keep putting in the same $50 a month, for a shorter trip. Japan is ready in 2029 instead of 2033, and the car is untouched.</span>
+            </span>
+            <span class="stack-xs right" style="flex:none;align-items:flex-end">
+              <span class="pill">Car: May 2028</span>
+              <span class="t-xs muted">as planned</span>
+            </span>
+          </span>
+        </button>
+
+        <button class="option">
+          <span class="row-between" style="align-items:flex-start;gap:14px">
+            <span class="stack-xs grow">
+              <span class="t-body">Pause it</span>
+              <span class="t-xs muted">The $50 a month goes to the car instead. Japan holds at $100 and you can restart it any month.</span>
+            </span>
+            <span class="stack-xs right" style="flex:none;align-items:flex-end">
+              <span class="pill pill--ok">Car: March 2028</span>
+              <span class="t-xs muted">2 months sooner</span>
+            </span>
+          </span>
+        </button>
+
+        <button class="option">
+          <span class="row-between" style="align-items:flex-start;gap:14px">
+            <span class="stack-xs grow">
+              <span class="t-body">Keep going</span>
+              <span class="t-xs muted">Hold the $4,000 target and the date you set. Catching up takes $95 a month instead of $50, and the extra $45 comes out of the car.</span>
+            </span>
+            <span class="stack-xs right" style="flex:none;align-items:flex-end">
+              <span class="pill pill--danger">Car: August 2028</span>
+              <span class="t-xs muted">3 months later</span>
+            </span>
+          </span>
+        </button>
+      </div>
+
+      <div class="stack-s">
+        <a class="btn">Lower the target to $2,500 →</a>
+        <p class="t-xs muted center">Nothing moves until you confirm, and the $100 already saved stays yours whichever you pick.</p>
+      </div>
+
+      <div class="card card--outline">
+        <div class="row" style="gap:10px;margin-bottom:8px">
+          <span style="color:var(--gold);flex:none"><svg width="16" height="16"><use href="#i-info"/></svg></span>
+          <p class="t-sm bold gold grow">Why are you telling me this?</p>
+        </div>
+        <p class="t-xs muted">A goal usually stalls because it was set for a different month, not because you did anything wrong. We flag it so the choice stays yours while it is still cheap to make — all three options above are fine ones. This is not shared with anyone, it does not affect your credit, and it changes nothing about what you can borrow.</p>
+      </div>
+
+      <div class="card card--tight" data-goto="v2-advisor">
+        <div class="row">
+          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-profile"/></svg></span>
+          <div class="grow stack-xs">
+            <p class="t-sm bold">Rather talk it through?</p>
+            <p class="t-xs muted">20 minutes, free, and our advisors are salaried — nobody earns anything from what you decide.</p>
+          </div>
+          <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="risks"></nav>
+</section></div><div class="icap">v1&#x27;s Risk Radar names a risk and then ends in a chevron that leads nowhere, so the app worries at the user without helping; this turns the alert into a decision by pricing every option in the one currency the user actually cares about — the month the car arrives — so the choice takes seconds, with no arithmetic and nothing that reads as a telling-off.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v3-goal-reached" data-title="You did it — Emergency Fund reached" data-flow="Goals" data-active="goals"
+         data-why="Closes the third loop on the team's own value-path diagram — 'goal reached, what's next?' back to 'See where I stand' — which none of the 32 delivered screens built; the app currently ends at the moment the money arrives. It also carries the aspirational outcome from the client slide, that members 'begin to see themselves as financially capable', by making the record the reward: 19 months, two of them skipped and named, and a runway that finally clears the 3-month target the Risk Radar has been failing since onboarding. The two skipped months are shown rather than smoothed over, because the evidence she can trust is not that the plan was easy — it is that the plan survived them.">
+  <div class="screen__body">
+    <div class="stack">
+
+      <header class="stack-s">
+        <h1 class="t-h1">You did it</h1>
+        <div class="card card--hero">
+          <div class="row" style="gap:16px">
+            <span class="badge badge--green" style="width:48px;height:48px"><svg width="24" height="24"><use href="#i-piggy"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-body med">Emergency Fund</p>
+              <p class="t-h2">$3,000</p>
+              <p class="t-xs muted">reached March 2027</p>
+            </div>
+            <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>Reached</span>
+          </div>
+          <div class="bar bar--thick" style="margin-top:18px"><i style="width:100%"></i></div>
+          <div class="row-between" style="margin-top:8px">
+            <p class="t-xs muted">$3,000 of $3,000</p>
+            <p class="t-xs bold right">100%</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- The record. Two skipped months are drawn, not hidden:
+           the point is not that it was easy, it is that the plan survived them. -->
+      <div class="card">
+        <p class="t-h3" style="margin-bottom:14px">What it took</p>
+
+        <div style="display:flex;gap:3px;align-items:center">
+          <i style="flex:1;height:26px;border-radius:3px;background:var(--fill)"></i>
+          <i style="flex:1;height:26px;border-radius:3px;background:var(--fill)"></i>
+          <i style="flex:1;height:26px;border-radius:3px;background:var(--fill)"></i>
+          <i style="flex:1;height:26px;border-radius:3px;background:var(--fill)"></i>
+          <i style="flex:1;height:26px;border-radius:3px;background:var(--fill)"></i>
+          <i style="flex:1;height:26px;border-radius:3px;background:transparent;border:1px solid var(--muted)" title="February 2026 — skipped"></i>
+          <i style="flex:1;height:26px;border-radius:3px;background:var(--fill)"></i>
+          <i style="flex:1;height:26px;border-radius:3px;background:var(--fill)"></i>
+          <i style="flex:1;height:26px;border-radius:3px;background:var(--fill)"></i>
+          <i style="flex:1;height:26px;border-radius:3px;background:var(--fill)"></i>
+          <i style="flex:1;height:26px;border-radius:3px;background:var(--fill)"></i>
+          <i style="flex:1;height:26px;border-radius:3px;background:var(--fill)"></i>
+          <i style="flex:1;height:26px;border-radius:3px;background:var(--fill)"></i>
+          <i style="flex:1;height:26px;border-radius:3px;background:var(--fill)"></i>
+          <i style="flex:1;height:26px;border-radius:3px;background:transparent;border:1px solid var(--muted)" title="November 2026 — skipped"></i>
+          <i style="flex:1;height:26px;border-radius:3px;background:var(--fill)"></i>
+          <i style="flex:1;height:26px;border-radius:3px;background:var(--fill)"></i>
+          <i style="flex:1;height:26px;border-radius:3px;background:var(--fill)"></i>
+          <i style="flex:1;height:26px;border-radius:3px;background:var(--fill)"></i>
+        </div>
+        <div class="row-between" style="margin-top:8px">
+          <p class="t-xs muted">Sept 2025</p>
+          <p class="t-xs muted right">March 2027</p>
+        </div>
+
+        <div class="list" style="margin-top:8px">
+          <div class="list-row">
+            <p class="t-sm muted grow">Months it took</p>
+            <p class="t-sm bold right">19</p>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">Transfers you made</p>
+            <p class="t-sm bold right">17</p>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">Months you skipped</p>
+            <p class="t-sm bold right">2</p>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">Average per month</p>
+            <p class="t-sm bold right">about $158</p>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">What the plan asked for</p>
+            <p class="t-sm bold right">$150</p>
+          </div>
+        </div>
+
+        <p class="t-xs muted" style="margin-top:14px">The average counts all 19 months, including the two you skipped ($3,000 ÷ 19). Across the 17 months you did transfer it was about $176 — some months you put in more than $150, and that is what covered the gaps.</p>
+      </div>
+
+      <!-- The two skipped months, named. -->
+      <div class="card card--outline">
+        <p class="t-eyebrow">The two you skipped</p>
+        <div class="list" style="margin-top:6px">
+          <div class="list-row">
+            <span class="badge"><svg width="16" height="16"><use href="#i-bolt"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-sm bold">February 2026 ・hours cut</p>
+              <p class="t-xs muted">Income came in at $2,600 against your $3,400 average. You skipped the transfer and kept the fund intact.</p>
+            </div>
+          </div>
+          <div class="list-row">
+            <span class="badge"><svg width="16" height="16"><use href="#i-warn"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-sm bold">November 2026 ・a $340 dental bill</p>
+              <p class="t-xs muted">You paid it out of the month rather than out of the fund, so the fund never went backwards.</p>
+            </div>
+          </div>
+        </div>
+        <p class="t-xs muted" style="margin-top:12px">The plan was $150 a month for 20 months. You skipped two of them and still finished a month early. That is the plan working, not the plan being lucky.</p>
+      </div>
+
+      <!-- The number the Risk Radar has been failing since onboarding -->
+      <div class="card card--hero">
+        <p class="t-eyebrow">Your runway now</p>
+        <p class="row" style="gap:8px;align-items:baseline;margin:10px 0 2px">
+          <span class="t-display">3.2</span>
+          <span class="t-sm muted">months of cover</span>
+        </p>
+        <p class="t-sm muted" style="margin-bottom:18px">Up from 1.4 months when you started. Above the 3-month target for the first time.</p>
+
+        <!-- 3.2 of a 12-month scale = 26.7%. Tick marks the 3-month target at 25%. -->
+        <div style="position:relative;padding-bottom:22px">
+          <div class="bar bar--thick"><i style="width:26.7%"></i></div>
+          <i style="position:absolute;left:25%;top:-5px;width:2px;height:18px;border-radius:2px;background:var(--text)"></i>
+          <p class="t-xs muted" style="position:absolute;left:25%;top:16px;transform:translateX(-50%);white-space:nowrap">3-month target</p>
+        </div>
+        <div class="row-between">
+          <p class="t-xs muted">0</p>
+          <p class="t-xs muted right">12 months</p>
+        </div>
+
+        <p class="t-xs muted" style="margin-top:14px">Measured against your essential costs today, about $940 a month. Those have risen since September 2025, which is why $3,000 buys 3.2 months and not the 3.7 it would have bought then. <a class="link" data-goto="1858:3611">See the Risk Radar →</a></p>
+      </div>
+
+      <!-- The loop back to "See where I stand" -->
+      <div class="stack-s">
+        <p class="t-eyebrow">What's next</p>
+        <p class="t-sm muted">Your $150 a month is free from next month. It stays where it is until you say otherwise.</p>
+
+        <button class="option option--rec" aria-selected="true">
+          <div class="row-between">
+            <p class="t-body grow">Keep it topped up</p>
+            <span class="pill pill--ok">Recommended</span>
+          </div>
+          <p class="t-sm muted" style="margin-top:8px">$25 a month holds the runway at 3 months as your costs drift up. The other $125 stays spare — you do not have to decide about it today.</p>
+        </button>
+
+        <button class="option">
+          <div class="row-between">
+            <p class="t-body grow">Put it toward the car</p>
+            <span class="pill">3 months earlier</span>
+          </div>
+          <p class="t-sm muted" style="margin-top:8px">$150 on top of your $360 makes it $510 a month. The $3,750 down payment lands November 2027 instead of February 2028. Your runway stops growing while it does.</p>
+        </button>
+
+        <button class="option">
+          <div class="row-between">
+            <p class="t-body grow">Start something new</p>
+            <span class="pill">Japan Trip is stalled</span>
+          </div>
+          <p class="t-sm muted" style="margin-top:8px">$100 of $4,000 after a year. $150 a month would give it a real date instead of a wish. Nothing on the car moves.</p>
+        </button>
+      </div>
+
+      <div class="stack-s">
+        <a class="btn">Set up $25 a month →</a>
+        <a class="btn btn--ghost">Leave it as it is for now</a>
+      </div>
+
+      <p class="t-sm muted">You have now done this once. The next one is the same shape — a number, a date, and a plan built with enough room that two bad months do not end it. You already know that part works, because it already did.</p>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="goals"></nav>
+</section></div><div class="icap">Closes the third loop on the team&#x27;s own value-path diagram — &#x27;goal reached, what&#x27;s next?&#x27; back to &#x27;See where I stand&#x27; — which none of the 32 delivered screens built; the app currently ends at the moment the money arrives. It also carries the aspirational outcome from the client slide, that members &#x27;begin to see themselves as financially capable&#x27;, by making the record the reward: 19 months, two of them skipped and named, and a runway that finally clears the 3-month target the Risk Radar has been failing since onboarding. The two skipped months are shown rather than smoothed over, because the evidence she can trust is not that the plan was easy — it is that the plan survived them.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-after-purchase" data-title="After the purchase — the car you own" data-flow="Goals" data-active="goals"
+         data-why="v1 stops at 'your goal is ready to set', which is exactly the point where a credit union's relationship with a young member actually starts; this screen keeps the app useful after the money is spent, and by putting the real running cost next to the range the onboarding promised, it lets the app be judged on whether it told the truth.">
+  <div class="screen__body">
+    <div class="stack">
+
+      <header class="stack-s">
+        <h1 class="t-h1">You bought the car</h1>
+        <div class="card card--tight">
+          <div class="row">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-car"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-body">2022 Civic</p>
+              <p class="t-xs muted">bought April 2027 ・First Car goal, closed</p>
+            </div>
+            <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>Done</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Money owed. Deliberately not styled like a savings goal. -->
+      <div class="card card--hero">
+        <p class="t-eyebrow">Your loan ・ money owed</p>
+        <p class="row" style="gap:8px;align-items:baseline;margin:10px 0 2px">
+          <span class="t-display">$14,750</span>
+          <span class="t-sm muted">left</span>
+        </p>
+        <p class="t-sm muted" style="margin-bottom:14px">of $18,500 borrowed</p>
+
+        <div class="bar bar--thick bar--gold"><i style="width:20%"></i></div>
+        <div class="row-between" style="margin-top:8px">
+          <p class="t-xs muted">$3,750 paid off</p>
+          <p class="t-xs bold right">20% of the loan</p>
+        </div>
+
+        <div class="list" style="margin-top:6px">
+          <div class="list-row">
+            <p class="t-sm muted grow">Monthly payment</p>
+            <p class="t-sm bold right">$271</p>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">Your rate</p>
+            <p class="t-sm bold right">3.9% member</p>
+          </div>
+          <div class="list-row">
+            <p class="t-sm muted grow">Last payment</p>
+            <p class="t-sm bold right">May 2031</p>
+          </div>
+        </div>
+
+        <div class="row-between" style="margin-top:14px">
+          <p class="t-xs muted grow">Extra payments come straight off the balance. No fee, no penalty, any month you can manage it.</p>
+          <a class="link">Pay extra →</a>
+        </div>
+      </div>
+
+      <!-- Closing the loop on the onboarding estimate -->
+      <div class="card">
+        <div class="row-between" style="margin-bottom:12px">
+          <p class="t-h3 grow">Running costs</p>
+          <span class="pill pill--ok">As estimated</span>
+        </div>
+
+        <div class="row-between" style="margin-bottom:14px">
+          <div class="stack-xs">
+            <p class="t-xs muted">We estimated</p>
+            <p class="t-h3 muted">$390–540</p>
+          </div>
+          <div class="stack-xs right">
+            <p class="t-xs muted">You actually spend</p>
+            <p class="t-h3">$412</p>
+          </div>
+        </div>
+
+        <div class="slider" style="--p:15">
+          <div class="slider__track"><i style="width:15%"></i></div>
+          <div class="slider__knob"></div>
+        </div>
+        <div class="row-between t-xs muted" style="margin-top:8px">
+          <span>$390</span>
+          <span>$540</span>
+        </div>
+
+        <p class="t-xs muted" style="margin-top:12px">Insurance, fuel, maintenance and parking, averaged over your last three months. You are near the low end of the range we showed you before you bought.</p>
+        <p style="margin-top:10px"><a class="link">See the month by month →</a></p>
+      </div>
+
+      <div class="card">
+        <p class="t-h3" style="margin-bottom:4px">Coming up</p>
+        <div class="list">
+          <div class="list-row">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-sm bold">Insurance renewal ・12 September</p>
+              <p class="t-xs muted">Worth re-quoting — your rate drops the year you turn 25.</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+          <div class="list-row">
+            <span class="badge"><svg width="16" height="16"><use href="#i-bolt"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-sm bold">First service ・next month</p>
+              <p class="t-xs muted">Usually $90–140 for this car. We will remind you a week ahead.</p>
+            </div>
+            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card--outline card--tight">
+        <div class="row">
+          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
+          <div class="grow stack-xs">
+            <p class="t-sm bold">The car is handled. What is next?</p>
+            <p class="t-xs muted">Your safety net is still at 1.4 months of cover.</p>
+          </div>
+        </div>
+        <p style="margin-top:12px"><a class="link" data-goto="1907:222">Start your next goal →</a></p>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="goals"></nav>
+</section></div><div class="icap">v1 stops at &#x27;your goal is ready to set&#x27;, which is exactly the point where a credit union&#x27;s relationship with a young member actually starts; this screen keeps the app useful after the money is spent, and by putting the real running cost next to the range the onboarding promised, it lets the app be judged on whether it told the truth.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v3-how-goals-work" data-title="How this goal actually works" data-flow="Goals" data-active="goals"
+         data-why="Targets the 34% — the lowest-scoring 'Decide' number in the team's own survey, where only a third of 18–32s said they understand how goals actually work. The app asks for a 21-month commitment on step 8 without ever explaining what a missed month costs, whether the money can come back out, or what 3.9% is worth in dollars, so this puts the mechanics in plain words on the goal itself rather than in a Resources tab. It is the financial-education mandate Coast Capital already funds: it teaches, states plainly that nothing here changes the plan, and ends in a person rather than a product.">
+  <div class="screen__body">
+    <div class="stack">
+
+      <header class="stack-s">
+        <h1 class="t-h1">How this goal actually works</h1>
+        <p class="t-sm muted">Two minutes, no jargon. Reading this changes nothing about your plan — it is here so you know what you agreed to.</p>
+
+        <div class="card card--tight">
+          <div class="row">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-car"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-sm bold">First Car</p>
+              <p class="t-xs muted">$3,750 down payment ・$360 a month ・started July</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- The mechanics. Answers are shown, not hidden behind a chevron:
+           a question you have to tap to answer is a question you have to already trust. -->
+      <div class="stack-s">
+        <p class="t-eyebrow">The mechanics</p>
+
+        <div class="card">
+          <div class="list">
+
+            <div class="list-row">
+              <span class="badge"><svg width="16" height="16"><use href="#i-wallet"/></svg></span>
+              <div class="grow stack-xs">
+                <p class="t-sm bold">Where does the money actually go?</p>
+                <p class="t-xs muted">Into a separate Car Fund account in your name — not your chequing. It sits apart so it is not spent by accident, and you can see the balance any day.</p>
+              </div>
+            </div>
+
+            <div class="list-row">
+              <span class="badge"><svg width="16" height="16"><use href="#i-info"/></svg></span>
+              <div class="grow stack-xs">
+                <p class="t-sm bold">What if I miss a month?</p>
+                <p class="t-xs muted">Nothing breaks. No fee, no penalty, nothing on your credit file. The finish date moves and we tell you by how much — skip one $360 transfer and resume, and the car moves exactly one month.</p>
+              </div>
+            </div>
+
+            <div class="list-row">
+              <span class="badge"><svg width="16" height="16"><use href="#i-arrow-r"/></svg></span>
+              <div class="grow stack-xs">
+                <p class="t-sm bold">Can I take money back out?</p>
+                <p class="t-xs muted">Yes, any month, no notice and no charge. It is your money in your account. Before you confirm, the app shows you the new finish date, so you are deciding with the number in front of you.</p>
+              </div>
+            </div>
+
+            <div class="list-row">
+              <span class="badge"><svg width="16" height="16"><use href="#i-check"/></svg></span>
+              <div class="grow stack-xs">
+                <p class="t-sm bold">What happens when I reach it?</p>
+                <p class="t-xs muted">The fund stays open. You choose what it becomes next — topped up, pointed at another goal, or left alone for a while. Reaching it does not start anything on its own.</p>
+              </div>
+            </div>
+
+            <div class="list-row">
+              <span class="badge"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
+              <div class="grow stack-xs">
+                <p class="t-sm bold">Does the app move money without asking?</p>
+                <p class="t-xs muted">No. The only money that moves is the transfer you set up, on the day you chose. Changing it or pausing it takes two taps and takes effect that same month.</p>
+              </div>
+            </div>
+
+            <div class="list-row">
+              <span class="badge"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
+              <div class="grow stack-xs">
+                <p class="t-sm bold">What does the 3.9% actually mean?</p>
+                <p class="t-xs muted">It is the interest on the car loan, not on your savings. As a member you would pay 3.9% where a typical bank charges 6.9%. On the $14,750 you would borrow after the down payment, that is about $20 a month — roughly $1,200 over five years.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <p class="t-xs muted">Estimates stay estimates. Rates and running costs are shown as ranges everywhere else in the app for the same reason: a number that pretends to be exact is harder to plan around than one that admits it is not.</p>
+      </div>
+
+      <!-- Ends in a person, not a product -->
+      <div class="card card--outline">
+        <div class="row">
+          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
+          <div class="grow stack-xs">
+            <p class="t-sm bold">Still unsure? Talk to someone</p>
+            <p class="t-xs muted">Coast Capital advisors are salaried, not paid on commission — nobody earns more if you borrow more. Free, about 30 minutes, and there is nothing to sign.</p>
+          </div>
+        </div>
+        <div style="margin-top:14px">
+          <a class="btn" data-goto="v2-advisor">Book a time →</a>
+        </div>
+      </div>
+
+      <p class="t-xs muted center">This page lives on the goal. Open it any time, before or after you commit.</p>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="goals"></nav>
+</section></div><div class="icap">Targets the 34% — the lowest-scoring &#x27;Decide&#x27; number in the team&#x27;s own survey, where only a third of 18–32s said they understand how goals actually work. The app asks for a 21-month commitment on step 8 without ever explaining what a missed month costs, whether the money can come back out, or what 3.9% is worth in dollars, so this puts the mechanics in plain words on the goal itself rather than in a Resources tab. It is the financial-education mandate Coast Capital already funds: it teaches, states plainly that nothing here changes the plan, and ends in a person rather than a product.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-goals-empty" data-title="Goals — first run" data-flow="Goals" data-active="goals"
+         data-why="v1 had no first-run state, so a new member's first look at Goals was a blank list with no way in; this treats emptiness as the app's best teaching moment — it says in one line what a goal actually does here and offers the three starts people really pick, with no apology for having nothing saved yet.">
+  <div class="screen__body">
+    <div class="stack">
+
+      <header class="stack-s">
+        <h1 class="t-h1">Nothing saved for yet</h1>
+        <p class="t-sm muted">A goal is a number and a date. You pick what you want, InScope works out what it truly costs to own, and turns that into an amount you set aside each month.</p>
+      </header>
+
+      <div class="stack-s">
+        <p class="t-eyebrow">A good place to start</p>
+
+        <button class="option option--rec" aria-selected="true">
+          <span class="row" style="gap:14px;align-items:flex-start">
+            <span class="badge badge--green" style="margin-top:2px"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
+            <span class="stack-xs grow">
+              <span class="t-xs bold gold">MOST PEOPLE START HERE</span>
+              <span class="t-body">A safety net</span>
+              <span class="t-xs muted">Three months of your spending — around $3,000. It is the goal that keeps every other goal from falling over.</span>
+            </span>
+          </span>
+        </button>
+
+        <button class="option">
+          <span class="row" style="gap:14px;align-items:flex-start">
+            <span class="badge badge--gold" style="margin-top:2px"><svg width="16" height="16"><use href="#i-car"/></svg></span>
+            <span class="stack-xs grow">
+              <span class="t-body">A first car</span>
+              <span class="t-xs muted">Eight questions. We add insurance, fuel and upkeep to the sticker price, so the monthly number is the real one.</span>
+            </span>
+          </span>
+        </button>
+
+        <button class="option">
+          <span class="row" style="gap:14px;align-items:flex-start">
+            <span class="badge" style="margin-top:2px"><svg width="16" height="16"><use href="#i-plus"/></svg></span>
+            <span class="stack-xs grow">
+              <span class="t-body">Something else</span>
+              <span class="t-xs muted">A trip, a deposit, a course, a laptop. Name it and set the date — we will build the plan around it.</span>
+            </span>
+          </span>
+        </button>
+      </div>
+
+      <div class="stack-s">
+        <a class="btn" data-goto="1907:222">Start a goal →</a>
+        <p class="t-xs muted center">Setting a goal moves no money. You choose the amount, the day and the account at the end, and you can change all three later.</p>
+      </div>
+
+      <div class="card card--outline card--tight" data-goto="v2-advisor">
+        <div class="row">
+          <span class="grow stack-xs">
+            <span class="t-sm bold">Not sure what to save for?</span>
+            <span class="t-xs muted">Talk it through with an advisor — free, 20 minutes, and they are salaried, not on commission.</span>
+          </span>
+          <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="goals"></nav>
+</section></div><div class="icap">v1 had no first-run state, so a new member&#x27;s first look at Goals was a blank list with no way in; this treats emptiness as the app&#x27;s best teaching moment — it says in one line what a goal actually does here and offers the three starts people really pick, with no apology for having nothing saved yet.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-home" data-title="Home — dashboard" data-flow="Home" data-active="home"
          data-why="v1 drew a 53%-wide bar next to an 8% label, so the screen quietly lied about the goal that matters most; v2 computes every fill from the numbers beside it, leads with what membership has actually returned this year, gives the safety-net warning an action instead of a chevron, and demotes Resources to a list so the urgent things sit above the fold.">
   <div class="screen__body">
     <div class="stack">
@@ -2110,200 +2943,7 @@ footer { border-top: 2.5px solid var(--ink); padding: 1.25rem 2rem; text-align: 
     </div>
   </div>
   <nav class="tabbar" data-active="profile"></nav>
-</section></div><div class="icap">v1 shipped a Profile tab with no screen behind it. This fills the dead tab and turns it into the place membership pays off — the money it has returned, the advisor it gets you and a plain statement of what the app reads — rather than a settings dump.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-member-value" data-title="Member value — the $312 breakdown" data-flow="Profile" data-active="profile"
-         data-why="In v1 the member rate appears once, as grey body text, so the credit union's one real advantage over a bank is something the user has to take on faith; this screen itemises it in dollars she can check line by line, then shows the same advantage compounding across the loan she is about to sign.">
-  <div class="screen__body">
-
-    <div class="appbar">
-      <button class="appbar__back"><svg width="20" height="20"><use href="#i-back"/></svg></button>
-    </div>
-
-    <div class="stack">
-
-      <h1 class="t-h1">What membership is worth</h1>
-
-      <!-- Hero -->
-      <div class="card card--hero">
-        <p class="t-eyebrow">THIS YEAR, SO FAR</p>
-        <div class="row" style="margin:10px 0 8px">
-          <p class="t-display">$312</p>
-          <span class="pill pill--ok">kept, not charged</span>
-        </div>
-        <p class="t-sm muted med">Money you kept because you bank with a credit union instead of a bank. It is added up from real charges on your account, not an estimate.</p>
-      </div>
-
-      <!-- Breakdown -->
-      <div class="stack-s">
-        <p class="t-eyebrow">WHERE IT CAME FROM</p>
-
-        <div class="card">
-
-          <div class="row" style="margin-bottom:18px">
-            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-car"/></svg></span>
-            <div class="grow stack-xs">
-              <div class="row-between">
-                <p class="t-body">Lower loan rate</p>
-                <p class="t-body" style="color:var(--ok)">$240</p>
-              </div>
-              <p class="t-xs muted">3.9% member vs 6.9% typical ・77% of the total</p>
-              <div class="bar"><i style="width:77%"></i></div>
-            </div>
-          </div>
-
-          <div class="row" style="margin-bottom:18px">
-            <span class="badge badge--green"><svg width="16" height="16"><use href="#i-wallet"/></svg></span>
-            <div class="grow stack-xs">
-              <div class="row-between">
-                <p class="t-body">No monthly account fee</p>
-                <p class="t-body" style="color:var(--ok)">$60</p>
-              </div>
-              <p class="t-xs muted">$5 a month waived ・19% of the total</p>
-              <div class="bar"><i style="width:19%"></i></div>
-            </div>
-          </div>
-
-          <div class="row">
-            <span class="badge badge--green"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
-            <div class="grow stack-xs">
-              <div class="row-between">
-                <p class="t-body">Profit share</p>
-                <p class="t-body" style="color:var(--ok)">$12</p>
-              </div>
-              <p class="t-xs muted">returned to members ・4% of the total</p>
-              <div class="bar"><i style="width:4%"></i></div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- Projection -->
-      <div class="card card--hero">
-        <p class="t-eyebrow">OVER YOUR CAR LOAN</p>
-        <p class="t-h2" style="margin:10px 0 4px">Member rate saves you <span style="color:var(--ok)">$6,400</span></p>
-        <p class="t-sm muted med" style="margin-bottom:16px">Same car, same term — the only thing that changes is who you borrow from.</p>
-
-        <div class="row" style="gap:12px;flex-wrap:nowrap;align-items:stretch">
-          <div class="card card--outline card--tight grow stack-xs">
-            <p class="t-eyebrow">TYPICAL BANK</p>
-            <p class="t-h2 muted">6.9%</p>
-            <p class="t-xs muted">roughly what a first-time buyer under 25 is quoted</p>
-          </div>
-          <div class="card card--tight grow stack-xs" style="background:var(--card-2);border:1px solid var(--gold)">
-            <p class="t-eyebrow gold">COAST CAPITAL</p>
-            <p class="t-h2">3.9%</p>
-            <p class="t-xs muted">the member rate used in your plan</p>
-          </div>
-        </div>
-
-        <p class="t-xs muted" style="margin-top:14px">An estimate, and the one number here that isn't settled — your real rate depends on your credit history and the car you pick.</p>
-        <p style="margin-top:12px"><a class="link" data-goto="v2-advisor">Get a real quote from an advisor →</a></p>
-      </div>
-
-      <!-- Why it works this way -->
-      <div class="card card--outline card--flat">
-        <div class="row" style="margin-bottom:10px">
-          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
-          <p class="t-h3 grow">Why the numbers look like this</p>
-        </div>
-        <p class="t-sm muted med">Members own the credit union. There are no shareholders waiting to be paid, so the money a bank would send them stays here — as a lower rate, no monthly fee, and the share that comes back to you.</p>
-      </div>
-
-    </div>
-  </div>
-  <nav class="tabbar" data-active="profile"></nav>
-</section></div><div class="icap">In v1 the member rate appears once, as grey body text, so the credit union&#x27;s one real advantage over a bank is something the user has to take on faith; this screen itemises it in dollars she can check line by line, then shows the same advantage compounding across the loan she is about to sign.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-join" data-title="Join — what membership is worth"
-         data-flow="Onboarding" data-active="profile"
-         data-why="v1 mentions the member rate once, as grey body text, so the single strongest reason to bank here is invisible at the moment it matters. This screen puts the dollar gap first, shows both rates plainly with no scare colour on the competitor, and gives 'keep planning without joining' the same full-width tap target as the CTA — because a planner that holds your work hostage is the fastest way to lose a 23-year-old.">
-  <div class="screen__body">
-
-    <div class="appbar">
-      <button class="appbar__back"><svg width="20" height="20"><use href="#i-back"/></svg></button>
-      <p class="stepcount">Not a member yet</p>
-    </div>
-
-    <div class="stack">
-
-      <header class="stack-xs">
-        <h1 class="t-h1">You'd save $6,400 as a member</h1>
-        <p class="t-sm muted">On the $18,500 car in your plan, compared with a typical bank car loan.</p>
-      </header>
-
-      <!-- Hero: the comparison, both sides shown the same way -->
-      <div class="card card--hero">
-        <div class="row" style="gap:11px;flex-wrap:nowrap;align-items:stretch">
-
-          <div class="card card--outline card--tight grow stack-xs">
-            <p class="t-eyebrow">Typical bank</p>
-            <p class="t-h2">$871</p>
-            <p class="t-xs muted">a month ・6.9%</p>
-          </div>
-
-          <div class="card card--outline card--tight grow stack-xs">
-            <p class="t-eyebrow">Coast Capital</p>
-            <p class="t-h2 gold">$724</p>
-            <p class="t-xs muted">a month ・3.9%</p>
-          </div>
-
-        </div>
-
-        <div class="row-between" style="margin-top:18px">
-          <div class="stack-xs">
-            <p class="t-body">You keep</p>
-            <p class="t-xs muted">$6,400 over the life of the loan</p>
-          </div>
-          <p class="t-h2 gold">$147<span class="t-sm muted med"> a month</span></p>
-        </div>
-      </div>
-
-      <p class="t-xs muted">Both figures are estimates on the same $18,500 loan. 3.9% is Coast Capital's current member rate on a used car — your own rate depends on your credit history, so treat these as a comparison, not a quote.</p>
-
-      <!-- Why -->
-      <div class="card">
-        <p class="t-h3" style="margin-bottom:6px">Three reasons, plainly</p>
-        <div class="list">
-          <div class="list-row">
-            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-car"/></svg></span>
-            <div class="grow stack-xs">
-              <p class="t-sm bold">The member rate</p>
-              <p class="t-xs muted">3.9% instead of 6.9% on a used-car loan</p>
-            </div>
-          </div>
-          <div class="list-row">
-            <span class="badge badge--green"><svg width="16" height="16"><use href="#i-wallet"/></svg></span>
-            <div class="grow stack-xs">
-              <p class="t-sm bold">No-fee chequing</p>
-              <p class="t-xs muted">$5 a month you were paying to hold your own money</p>
-            </div>
-          </div>
-          <div class="list-row">
-            <span class="badge badge--green"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
-            <div class="grow stack-xs">
-              <p class="t-sm bold">Profit shared back</p>
-              <p class="t-xs muted">Members own the credit union, so the profit returns to them</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Both paths, equal weight -->
-      <div class="stack-s">
-        <button class="btn">Open an account — 5 min →</button>
-        <button class="btn btn--ghost">Keep planning without joining</button>
-        <p class="t-sm muted center">Your plan is saved either way. Nothing in the planner is locked behind joining, and we won't ask again on every screen.</p>
-      </div>
-
-      <div class="card card--outline card--tight">
-        <div class="row">
-          <span style="color:var(--muted);flex:none"><svg width="16" height="16"><use href="#i-info"/></svg></span>
-          <p class="t-xs muted grow">Opening an account runs a credit check only when you apply for the loan, not today.</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-  <nav class="tabbar" data-active="profile"></nav>
-</section></div><div class="icap">v1 mentions the member rate once, as grey body text, so the single strongest reason to bank here is invisible at the moment it matters. This screen puts the dollar gap first, shows both rates plainly with no scare colour on the competitor, and gives &#x27;keep planning without joining&#x27; the same full-width tap target as the CTA — because a planner that holds your work hostage is the fastest way to lose a 23-year-old.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-advisor" data-title="Talk to someone — book an advisor"
+</section></div><div class="icap">v1 shipped a Profile tab with no screen behind it. This fills the dead tab and turns it into the place membership pays off — the money it has returned, the advisor it gets you and a plain statement of what the app reads — rather than a settings dump.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-advisor" data-title="Talk to someone — book an advisor"
          data-flow="Profile" data-active="profile"
          data-why="v1 offers 'Talk it through with an advisor' as a button that goes nowhere, which quietly teaches people that the human help is decorative. This turns it into a real booking flow that leads with the soonest slot, lets you say what it's about before you commit, and states up front that advisors are salaried — the one fact that makes a 23-year-old willing to pick up the phone.">
   <div class="screen__body">
@@ -2426,9 +3066,33 @@ footer { border-top: 2.5px solid var(--ink); padding: 1.25rem 2rem; text-align: 
     </div>
   </div>
   <nav class="tabbar" data-active="profile"></nav>
-</section></div><div class="icap">v1 offers &#x27;Talk it through with an advisor&#x27; as a button that goes nowhere, which quietly teaches people that the human help is decorative. This turns it into a real booking flow that leads with the soonest slot, lets you say what it&#x27;s about before you commit, and states up front that advisors are salaried — the one fact that makes a 23-year-old willing to pick up the phone.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-share-plan" data-title="Share your plan"
-         data-flow="Goals" data-active="goals"
-         data-why="Most people under 25 buy their first car with a parent in the room, and often need a co-signer, but v1 gives them no way to bring that person in — so the conversation happens over screenshots of a banking app. This screen makes sharing deliberate and legible: you see exactly what the other person will see, account balances are off before you touch anything, and the privacy boundary is stated in the same size type as the offer.">
+</section></div><div class="icap">v1 offers &#x27;Talk it through with an advisor&#x27; as a button that goes nowhere, which quietly teaches people that the human help is decorative. This turns it into a real booking flow that leads with the soonest slot, lets you say what it&#x27;s about before you commit, and states up front that advisors are salaried — the one fact that makes a 23-year-old willing to pick up the phone.</div></figure>
+  </div>
+</section>
+
+<!-- 07 NOTIFICATIONS + FAILURE -->
+<section id="speaks" class="sec rev">
+  <div class="phase"><div class="p-dot">7</div><span class="p-txt">Unglamorous States</span></div>
+  <h2 class="sec-h">When the App Speaks,<br/>and When It Breaks</h2>
+  <p class="sec-lead">Thirty-two screens contained no notification design and no failure states. For this product specifically, both are load-bearing.</p>
+  <div class="rule"></div>
+
+  <p class="p-body">Risk Radar is a tab you have to remember to open. The product's promise is catching things <em>early</em> — a stalled goal, a subscription that rose, a runway falling below target — and none of that helps if she only sees it when she happens to open the app. Coast Capital's own stated pain is that it <em>"involves only after the member has already made a financial decision."</em> <strong>A notification is the mechanism by which the app is present during the decision.</strong> Without one, the core claim has no delivery vehicle.</p>
+
+  <p class="p-body">And it is an auto-transfer product. $360 leaves chequing on a set day each month. For a user whose stated pain is fluctuating hours, a month where that transfer can't clear isn't an edge case — it's the expected case, eventually.</p>
+
+  <div class="sub">The rule these four screens are written to</div>
+  <div class="flist">
+    <div class="fr"><div class="fr-i">✂️</div><div><div class="fr-t">It tells her something she doesn't already know</div><div class="fr-d">No daily spend summaries, no streaks, no encouragement with no information in it.</div></div></div>
+    <div class="fr"><div class="fr-i">➡️</div><div><div class="fr-t">It arrives with a next step, or it doesn't arrive</div><div class="fr-d">A notice she can't act on is just anxiety delivered on a schedule.</div></div></div>
+    <div class="fr"><div class="fr-i">🤝</div><div><div class="fr-t">A short month is never a personal failing</div><div class="fr-d">Her hours got cut. That is a fact about her employer, not about her character.</div></div></div>
+    <div class="fr"><div class="fr-i">🤫</div><div><div class="fr-t">In a quiet month it sends nothing at all</div><div class="fr-d">The app earns the right to interrupt by being useful, and stays quiet otherwise.</div></div></div>
+  </div>
+
+  <div class="pgrid">
+    <figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v4-notify-moments" data-title="Notifications — the five moments"
+         data-flow="Profile" data-active="profile"
+         data-why="Risk Radar only works if you remember to open it, and the client's stated pain is that the bank arrives after the decision is already made — so the notification is the product's only delivery vehicle for arriving during it. This screen is deliberately a lock-screen study rather than a settings page: the five messages are shown as the words the user will actually read at 8am, each under twenty words and each carrying a fact plus its consequence, so the copy can be judged as copy and the four things InScope refuses to send are stated with the same weight as the five it does.">
   <div class="screen__body">
 
     <div class="appbar">
@@ -2438,350 +3102,342 @@ footer { border-top: 2.5px solid var(--ink); padding: 1.25rem 2rem; text-align: 
     <div class="stack">
 
       <header class="stack-xs">
-        <h1 class="t-h1">Share your plan</h1>
-        <p class="t-sm muted">Show a parent, a partner or a possible co-signer what you're working towards — without handing over your bank account.</p>
+        <h1 class="t-h1">Worth interrupting for</h1>
+        <p class="t-sm muted">Five moments, and nothing else. Every message below tells you something you didn't already know, and opens the one screen where you can act on it.</p>
       </header>
 
-      <!-- Hero: exactly what the other person sees -->
-      <div class="card card--hero">
-        <p class="t-eyebrow" style="margin-bottom:12px">What they'll see</p>
-        <div class="row" style="gap:14px;margin-bottom:16px">
-          <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-car"/></svg></span>
-          <div class="grow stack-xs">
-            <p class="t-h3">A car by May 2028</p>
-            <p class="t-sm muted med">$18,500 ・$179/mo</p>
-          </div>
+      <!-- Lock screen study -->
+      <div class="stack-s">
+        <p class="t-eyebrow">Lock screen · the only five times InScope speaks</p>
+
+        <div class="stack-xs center" style="padding:6px 0 4px">
+          <p class="t-display">9:41</p>
+          <p class="t-date">Friday 29 August</p>
         </div>
-        <div class="stack-xs">
-          <div class="row-between">
-            <p class="t-xs muted">$300 of $3,750 saved so far</p>
-            <p class="t-xs muted">8%</p>
+
+        <!-- 1 · Pay landed short -->
+        <p class="t-eyebrow">Pay landed short</p>
+        <div class="card card--tight">
+          <div class="row" style="gap:10px;margin-bottom:10px">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
+            <p class="t-xs muted grow">InScope ・now</p>
           </div>
-          <div class="bar bar--gold"><i style="width:8%"></i></div>
+          <p class="t-sm">Your pay came in $800 under average. Your $360 transfer is due Friday — want to change it?</p>
         </div>
-        <p class="t-xs muted" style="margin-top:14px">Running costs included: insurance, fuel and maintenance, estimated $390–540 a month.</p>
+        <p class="t-xs muted">Opens this month's transfer, already filled in at a smaller amount.</p>
+
+        <!-- 2 · Transfer due -->
+        <p class="t-eyebrow">Transfer due</p>
+        <div class="card card--tight">
+          <div class="row" style="gap:10px;margin-bottom:10px">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
+            <p class="t-xs muted grow">InScope ・2 days ago</p>
+          </div>
+          <p class="t-sm">$360 moves to your Car Fund on Friday. Chequing has $940 right now.</p>
+        </div>
+        <p class="t-xs muted">Opens the Car Fund, where the transfer can be moved, paused or lowered.</p>
+
+        <!-- 3 · Something rose -->
+        <p class="t-eyebrow">Something rose</p>
+        <div class="card card--tight">
+          <div class="row" style="gap:10px;margin-bottom:10px">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
+            <p class="t-xs muted grow">InScope ・1 August</p>
+          </div>
+          <p class="t-sm">Two subscriptions went up $14 a month on 1 August. That's about 4% of your car saving.</p>
+        </div>
+        <p class="t-xs muted">Opens both subscriptions side by side, with what each one now costs the car.</p>
+
+        <!-- 4 · A goal stalled -->
+        <p class="t-eyebrow">A goal stalled</p>
+        <div class="card card--tight">
+          <div class="row" style="gap:10px;margin-bottom:10px">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
+            <p class="t-xs muted grow">InScope ・yesterday</p>
+          </div>
+          <p class="t-sm">Japan Trip hasn't moved since June. At this pace it lands in 2033.</p>
+        </div>
+        <p class="t-xs muted">Opens Japan Trip, with the option to pause it honestly instead of letting it drift.</p>
+
+        <!-- 5 · Runway dropped -->
+        <p class="t-eyebrow">Runway dropped</p>
+        <div class="card card--tight">
+          <div class="row" style="gap:10px;margin-bottom:10px">
+            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
+            <p class="t-xs muted grow">InScope ・last week</p>
+          </div>
+          <p class="t-sm">Your safety net now covers 1.4 months. Three is the target you set.</p>
+        </div>
+        <p class="t-xs muted">Opens Risk Radar at the runway, not at a list of everything.</p>
       </div>
 
-      <!-- What's included -->
+      <!-- The refusals -->
       <div class="card">
-        <div class="row-between" style="margin-bottom:4px">
-          <p class="t-h3">What's included</p>
-          <p class="t-xs muted">Tap to change</p>
-        </div>
+        <p class="t-h3" style="margin-bottom:4px">What InScope never sends</p>
         <div class="list">
           <div class="list-row">
             <div class="grow stack-xs">
-              <p class="t-sm bold">The plan</p>
-              <p class="t-xs muted">Target, date and monthly amount</p>
+              <p class="t-sm bold">A daily spend summary</p>
+              <p class="t-xs muted">You were there when you spent it. Repeating it back is not information.</p>
             </div>
-            <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>On</span>
           </div>
           <div class="list-row">
             <div class="grow stack-xs">
-              <p class="t-sm bold">Running costs</p>
-              <p class="t-xs muted">The $390–540 a month estimate behind the plan</p>
+              <p class="t-sm bold">Streaks, badges or congratulation</p>
+              <p class="t-xs muted">Saving is not a game you can lose on a Tuesday. A month with fewer hours in it is not a broken streak.</p>
             </div>
-            <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>On</span>
           </div>
           <div class="list-row">
             <div class="grow stack-xs">
-              <p class="t-sm bold">What you've saved so far</p>
-              <p class="t-xs muted">$300 of $3,750 towards the car</p>
+              <p class="t-sm bold">Encouragement with no facts in it</p>
+              <p class="t-xs muted">"You've got this" costs you the same attention as a number and gives you nothing to do with it.</p>
             </div>
-            <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>On</span>
           </div>
           <div class="list-row">
             <div class="grow stack-xs">
-              <p class="t-sm bold">Account balances</p>
-              <p class="t-xs muted">Chequing ••4821 and your Emergency Fund</p>
+              <p class="t-sm bold">Anything at all in a month where nothing changed</p>
+              <p class="t-xs muted">Pay landed as usual, no cost rose, every goal moved — then your phone stays quiet.</p>
             </div>
-            <span class="pill">Off</span>
           </div>
         </div>
       </div>
 
-      <!-- The privacy line, said plainly and at readable size -->
+      <!-- Governing line -->
       <div class="card card--outline">
         <div class="row">
           <span class="badge badge--green"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
           <div class="grow stack-xs">
-            <p class="t-sm bold">Balances are off by default</p>
-            <p class="t-xs muted">Nobody you share with sees what's in your accounts, your transactions or your card unless you turn that row on yourself. We never turn it on for you, and this link is read-only.</p>
+            <p class="t-sm bold">The app earns the right to interrupt you</p>
+            <p class="t-xs muted">Each of these five arrives because something changed that you couldn't have known, and each one lands with the next step attached. When there is nothing you don't already know, InScope stays quiet — that silence is what makes the five worth reading.</p>
           </div>
         </div>
       </div>
 
-      <!-- How to share -->
-      <div class="stack-s">
-        <p class="t-eyebrow">How do you want to share it?</p>
-
-        <button class="option" aria-selected="true">
-          <div class="row">
-            <div class="grow stack-xs">
-              <p class="t-body">Send a link</p>
-              <p class="t-xs muted">Read-only, expires in 30 days, no account needed to open it</p>
-            </div>
-            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
-          </div>
-        </button>
-
-        <button class="option">
-          <div class="row">
-            <div class="grow stack-xs">
-              <p class="t-body">Invite as a co-saver</p>
-              <p class="t-xs muted">They can add money to the goal. They still can't see your balances</p>
-            </div>
-            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
-          </div>
-        </button>
-
-        <button class="option">
-          <div class="row">
-            <div class="grow stack-xs">
-              <p class="t-body">Ask about co-signing</p>
-              <p class="t-xs muted">Sends the plan to a Coast Capital advisor first, so you both hear what co-signing actually commits them to</p>
-            </div>
-            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
-          </div>
-        </button>
-      </div>
-
-      <div class="stack-s">
-        <button class="btn">Share plan →</button>
-        <p class="t-sm muted center">You can switch the link off at any time in Profile, and see when it was last opened.</p>
-      </div>
+      <p class="t-sm muted center">You decide which of the five are on. <span class="link">When should I tell you? →</span></p>
 
     </div>
   </div>
-  <nav class="tabbar" data-active="goals"></nav>
-</section></div><div class="icap">Most people under 25 buy their first car with a parent in the room, and often need a co-signer, but v1 gives them no way to bring that person in — so the conversation happens over screenshots of a banking app. This screen makes sharing deliberate and legible: you see exactly what the other person will see, account balances are off before you touch anything, and the privacy boundary is stated in the same size type as the offer.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-goals-empty" data-title="Goals — first run" data-flow="Goals" data-active="goals"
-         data-why="v1 had no first-run state, so a new member's first look at Goals was a blank list with no way in; this treats emptiness as the app's best teaching moment — it says in one line what a goal actually does here and offers the three starts people really pick, with no apology for having nothing saved yet.">
+  <nav class="tabbar" data-active="profile"></nav>
+</section></div><div class="icap">Risk Radar only works if you remember to open it, and the client&#x27;s stated pain is that the bank arrives after the decision is already made — so the notification is the product&#x27;s only delivery vehicle for arriving during it. This screen is deliberately a lock-screen study rather than a settings page: the five messages are shown as the words the user will actually read at 8am, each under twenty words and each carrying a fact plus its consequence, so the copy can be judged as copy and the four things InScope refuses to send are stated with the same weight as the five it does.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v4-notify-settings" data-title="Notification settings — when should I tell you?"
+         data-flow="Profile" data-active="profile"
+         data-why="An app that speaks during a financial decision is only welcome if the person being spoken to set the terms, so every row here is off until she turns it on, each one names the exact fact that triggers it rather than a category like 'alerts', and the two rows a bank would normally switch on for you — the monthly recap and product offers — are the two that are off, with offers stated as something InScope cannot turn on at all. The quiet-months promise and the weekly ceiling are settings in the same list because restraint is a feature of the product, not an absence of one.">
   <div class="screen__body">
-    <div class="stack">
 
-      <header class="stack-s">
-        <h1 class="t-h1">Nothing saved for yet</h1>
-        <p class="t-sm muted">A goal is a number and a date. You pick what you want, InScope works out what it truly costs to own, and turns that into an amount you set aside each month.</p>
-      </header>
-
-      <div class="stack-s">
-        <p class="t-eyebrow">A good place to start</p>
-
-        <button class="option option--rec" aria-selected="true">
-          <span class="row" style="gap:14px;align-items:flex-start">
-            <span class="badge badge--green" style="margin-top:2px"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
-            <span class="stack-xs grow">
-              <span class="t-xs bold gold">MOST PEOPLE START HERE</span>
-              <span class="t-body">A safety net</span>
-              <span class="t-xs muted">Three months of your spending — around $3,000. It is the goal that keeps every other goal from falling over.</span>
-            </span>
-          </span>
-        </button>
-
-        <button class="option">
-          <span class="row" style="gap:14px;align-items:flex-start">
-            <span class="badge badge--gold" style="margin-top:2px"><svg width="16" height="16"><use href="#i-car"/></svg></span>
-            <span class="stack-xs grow">
-              <span class="t-body">A first car</span>
-              <span class="t-xs muted">Eight questions. We add insurance, fuel and upkeep to the sticker price, so the monthly number is the real one.</span>
-            </span>
-          </span>
-        </button>
-
-        <button class="option">
-          <span class="row" style="gap:14px;align-items:flex-start">
-            <span class="badge" style="margin-top:2px"><svg width="16" height="16"><use href="#i-plus"/></svg></span>
-            <span class="stack-xs grow">
-              <span class="t-body">Something else</span>
-              <span class="t-xs muted">A trip, a deposit, a course, a laptop. Name it and set the date — we will build the plan around it.</span>
-            </span>
-          </span>
-        </button>
-      </div>
-
-      <div class="stack-s">
-        <a class="btn" data-goto="1907:222">Start a goal →</a>
-        <p class="t-xs muted center">Setting a goal moves no money. You choose the amount, the day and the account at the end, and you can change all three later.</p>
-      </div>
-
-      <div class="card card--outline card--tight" data-goto="v2-advisor">
-        <div class="row">
-          <span class="grow stack-xs">
-            <span class="t-sm bold">Not sure what to save for?</span>
-            <span class="t-xs muted">Talk it through with an advisor — free, 20 minutes, and they are salaried, not on commission.</span>
-          </span>
-          <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
-        </div>
-      </div>
-
+    <div class="appbar">
+      <button class="appbar__back"><svg width="20" height="20"><use href="#i-back"/></svg></button>
     </div>
-  </div>
-  <nav class="tabbar" data-active="goals"></nav>
-</section></div><div class="icap">v1 had no first-run state, so a new member&#x27;s first look at Goals was a blank list with no way in; this treats emptiness as the app&#x27;s best teaching moment — it says in one line what a goal actually does here and offers the three starts people really pick, with no apology for having nothing saved yet.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-after-purchase" data-title="After the purchase — the car you own" data-flow="Goals" data-active="goals"
-         data-why="v1 stops at 'your goal is ready to set', which is exactly the point where a credit union's relationship with a young member actually starts; this screen keeps the app useful after the money is spent, and by putting the real running cost next to the range the onboarding promised, it lets the app be judged on whether it told the truth.">
-  <div class="screen__body">
+
     <div class="stack">
 
-      <header class="stack-s">
-        <h1 class="t-h1">You bought the car</h1>
-        <div class="card card--tight">
-          <div class="row">
-            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-car"/></svg></span>
-            <div class="grow stack-xs">
-              <p class="t-body">2022 Civic</p>
-              <p class="t-xs muted">bought April 2027 ・First Car goal, closed</p>
-            </div>
-            <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>Done</span>
-          </div>
-        </div>
+      <header class="stack-xs">
+        <h1 class="t-h1">When should I tell you?</h1>
+        <p class="t-sm muted">Everything here is off until you turn it on — nothing was switched on for you. None of it is marketing, and none of it is the bank trying to sell you something.</p>
       </header>
 
-      <!-- Money owed. Deliberately not styled like a savings goal. -->
-      <div class="card card--hero">
-        <p class="t-eyebrow">Your loan ・ money owed</p>
-        <p class="row" style="gap:8px;align-items:baseline;margin:10px 0 2px">
-          <span class="t-display">$14,750</span>
-          <span class="t-sm muted">left</span>
-        </p>
-        <p class="t-sm muted" style="margin-bottom:14px">of $18,500 borrowed</p>
-
-        <div class="bar bar--thick bar--gold"><i style="width:20%"></i></div>
-        <div class="row-between" style="margin-top:8px">
-          <p class="t-xs muted">$3,750 paid off</p>
-          <p class="t-xs bold right">20% of the loan</p>
-        </div>
-
-        <div class="list" style="margin-top:6px">
-          <div class="list-row">
-            <p class="t-sm muted grow">Monthly payment</p>
-            <p class="t-sm bold right">$271</p>
-          </div>
-          <div class="list-row">
-            <p class="t-sm muted grow">Your rate</p>
-            <p class="t-sm bold right">3.9% member</p>
-          </div>
-          <div class="list-row">
-            <p class="t-sm muted grow">Last payment</p>
-            <p class="t-sm bold right">May 2031</p>
-          </div>
-        </div>
-
-        <div class="row-between" style="margin-top:14px">
-          <p class="t-xs muted grow">Extra payments come straight off the balance. No fee, no penalty, any month you can manage it.</p>
-          <a class="link">Pay extra →</a>
-        </div>
-      </div>
-
-      <!-- Closing the loop on the onboarding estimate -->
+      <!-- The five moments -->
       <div class="card">
-        <div class="row-between" style="margin-bottom:12px">
-          <p class="t-h3 grow">Running costs</p>
-          <span class="pill pill--ok">As estimated</span>
-        </div>
-
-        <div class="row-between" style="margin-bottom:14px">
-          <div class="stack-xs">
-            <p class="t-xs muted">We estimated</p>
-            <p class="t-h3 muted">$390–540</p>
-          </div>
-          <div class="stack-xs right">
-            <p class="t-xs muted">You actually spend</p>
-            <p class="t-h3">$412</p>
-          </div>
-        </div>
-
-        <div class="slider" style="--p:15">
-          <div class="slider__track"><i style="width:15%"></i></div>
-          <div class="slider__knob"></div>
-        </div>
-        <div class="row-between t-xs muted" style="margin-top:8px">
-          <span>$390</span>
-          <span>$540</span>
-        </div>
-
-        <p class="t-xs muted" style="margin-top:12px">Insurance, fuel, maintenance and parking, averaged over your last three months. You are near the low end of the range we showed you before you bought.</p>
-        <p style="margin-top:10px"><a class="link">See the month by month →</a></p>
-      </div>
-
-      <div class="card">
-        <p class="t-h3" style="margin-bottom:4px">Coming up</p>
+        <p class="t-eyebrow" style="margin-bottom:4px">Tell me when</p>
         <div class="list">
+
           <div class="list-row">
-            <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
             <div class="grow stack-xs">
-              <p class="t-sm bold">Insurance renewal ・12 September</p>
-              <p class="t-xs muted">Worth re-quoting — your rate drops the year you turn 25.</p>
+              <p class="t-sm bold">Before a transfer</p>
+              <p class="t-xs muted">Two days before $360 moves to your Car Fund, with what chequing holds at that moment</p>
             </div>
-            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+            <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>On</span>
           </div>
+
           <div class="list-row">
-            <span class="badge"><svg width="16" height="16"><use href="#i-bolt"/></svg></span>
             <div class="grow stack-xs">
-              <p class="t-sm bold">First service ・next month</p>
-              <p class="t-xs muted">Usually $90–140 for this car. We will remind you a week ahead.</p>
+              <p class="t-sm bold">When pay lands short</p>
+              <p class="t-xs muted">A deposit arrives more than $300 below your $3,400 average, and a transfer is due within the week</p>
             </div>
-            <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
+            <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>On</span>
+          </div>
+
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">When a cost rises</p>
+              <p class="t-xs muted">A subscription or bill goes up and stays up, with what the rise costs your goals each month</p>
+            </div>
+            <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>On</span>
+          </div>
+
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">When a goal stalls</p>
+              <p class="t-xs muted">Nothing has gone into a goal for 60 days, with the date it now arrives on at that pace</p>
+            </div>
+            <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>On</span>
+          </div>
+
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">When the runway drops</p>
+              <p class="t-xs muted">Your safety net falls under the 3 months you set for yourself. It covers 1.4 months today</p>
+            </div>
+            <span class="pill pill--ok"><svg width="12" height="12"><use href="#i-check"/></svg>On</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- The two that are off -->
+      <div class="card">
+        <p class="t-eyebrow" style="margin-bottom:4px">Off, and staying off unless you say otherwise</p>
+        <div class="list">
+
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">Monthly summary</p>
+              <p class="t-xs muted">A recap on the 1st of what you already lived through last month. It tells you nothing you don't know, so it starts off</p>
+            </div>
+            <span class="pill">Off</span>
+          </div>
+
+          <div class="list-row">
+            <div class="grow stack-xs">
+              <p class="t-sm bold">Product offers</p>
+              <p class="t-xs muted">Loans, cards and accounts from Coast Capital. This one stays off — InScope cannot switch it on for you, and no advisor can switch it on from their side</p>
+            </div>
+            <span class="pill">Off</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Quiet months -->
+      <div class="card card--outline">
+        <div class="row">
+          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
+          <div class="grow stack-xs">
+            <p class="t-sm bold">Quiet months</p>
+            <p class="t-xs muted">In a month where nothing changed — pay landed as usual, no cost rose, every goal moved — InScope sends you nothing at all. Not a check-in, not a summary, not a well done. A message you can predict is a message you stop reading, and then you miss the one that mattered.</p>
           </div>
         </div>
       </div>
 
-      <div class="card card--outline card--tight">
-        <div class="row">
-          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-piggy"/></svg></span>
-          <div class="grow stack-xs">
-            <p class="t-sm bold">The car is handled. What is next?</p>
-            <p class="t-xs muted">Your safety net is still at 1.4 months of cover.</p>
+      <!-- Ceiling -->
+      <div class="card">
+        <div class="stack-s">
+          <div class="stack-xs">
+            <p class="t-h3">How often, at most</p>
+            <p class="t-xs muted">A ceiling, not a schedule. If nothing happens, nothing is sent — this only caps the busy months.</p>
+          </div>
+          <div class="seg">
+            <button style="padding:13px 12px">One a month</button>
+            <button aria-selected="true" style="padding:13px 12px">One a week</button>
+            <button style="padding:13px 12px">Two a week</button>
+          </div>
+          <div class="row" style="gap:10px;flex-wrap:nowrap">
+            <span class="badge"><svg width="16" height="16"><use href="#i-info"/></svg></span>
+            <p class="t-xs muted grow">One thing ignores this ceiling: a transfer that couldn't clear. That one needs an answer the same week, so it always comes through.</p>
           </div>
         </div>
-        <p style="margin-top:12px"><a class="link" data-goto="1907:222">Start your next goal →</a></p>
+      </div>
+
+      <div class="stack-s">
+        <button class="btn">Save</button>
+        <p class="t-sm muted center">You can change any of this later, and turning a row off never changes your plan or your transfers.</p>
       </div>
 
     </div>
   </div>
-  <nav class="tabbar" data-active="goals"></nav>
-</section></div><div class="icap">v1 stops at &#x27;your goal is ready to set&#x27;, which is exactly the point where a credit union&#x27;s relationship with a young member actually starts; this screen keeps the app useful after the money is spent, and by putting the real running cost next to the range the onboarding promised, it lets the app be judged on whether it told the truth.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v2-risk-detail" data-title="Risk detail — Japan Trip is stalling" data-flow="Risks" data-active="risks"
-         data-why="v1's Risk Radar names a risk and then ends in a chevron that leads nowhere, so the app worries at the user without helping; this turns the alert into a decision by pricing every option in the one currency the user actually cares about — the month the car arrives — so the choice takes seconds, with no arithmetic and nothing that reads as a telling-off.">
+  <nav class="tabbar" data-active="profile"></nav>
+</section></div><div class="icap">An app that speaks during a financial decision is only welcome if the person being spoken to set the terms, so every row here is off until she turns it on, each one names the exact fact that triggers it rather than a category like &#x27;alerts&#x27;, and the two rows a bank would normally switch on for you — the monthly recap and product offers — are the two that are off, with offers stated as something InScope cannot turn on at all. The quiet-months promise and the weekly ceiling are settings in the same list because restraint is a feature of the product, not an absence of one.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v4-transfer-failed" data-title="Your transfer didn’t go through" data-flow="Goals" data-active="goals"
+         data-why="A failed auto-transfer is the highest-anxiety moment an auto-transfer product can create, so the screen spends its first card on reassurance that can be checked rather than reassurance that must be believed — nothing overdrawn, no fee, nothing late — then shows the $360 − $210 = $150 arithmetic that caused InScope to stop, prices three ways out in the two currencies Maya actually holds (money left this month, the month the car arrives), and finally offers the structural fix the three options cannot: her pay lands on the 3rd while the transfer is set for the 1st, so moving the transfer to the 5th ends the problem instead of patching September.">
   <div class="screen__body">
     <div class="stack">
 
       <div class="appbar" style="margin-bottom:0">
-        <button class="appbar__back" data-goto="1858:3611"><svg width="20" height="20"><use href="#i-back"/></svg></button>
-        <p class="stepcount">Risk Radar</p>
+        <button class="appbar__back" data-goto="v4-notify-moments" style="min-height:44px"><svg width="20" height="20"><use href="#i-back"/></svg></button>
+        <p class="stepcount">Car Fund</p>
       </div>
 
       <header class="stack-s">
         <div class="row" style="gap:10px">
-          <span class="pill pill--danger">High</span>
-          <span class="t-xs muted">Flagged 1 August</span>
+          <span class="pill">Transfer ・ 1 September</span>
+          <span class="t-xs muted">Tuesday, 6:02 am</span>
         </div>
-        <h1 class="t-h1">Japan Trip is stalling</h1>
+        <h1 class="t-h1">Your transfer didn’t go through</h1>
+        <p class="t-sm muted">Nothing was overdrawn, no fee was charged, and nothing is late. Your $360 to the Car Fund stopped because chequing didn’t hold it — that is all that happened, and September is still fixable.</p>
       </header>
 
+      <div class="card">
+        <p class="t-eyebrow">WHAT DIDN’T HAPPEN</p>
+        <div class="stack-s" style="margin-top:14px">
+          <div class="row" style="flex-wrap:nowrap;align-items:flex-start">
+            <span class="badge badge--green"><svg width="16" height="16"><use href="#i-check"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-sm bold">Nothing was overdrawn</p>
+              <p class="t-xs muted">Chequing ••4821 is still sitting at $210. It never went below zero, because InScope stopped rather than pushing the account under.</p>
+            </div>
+          </div>
+          <div class="row" style="flex-wrap:nowrap;align-items:flex-start">
+            <span class="badge badge--green"><svg width="16" height="16"><use href="#i-check"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-sm bold">No fee was charged</p>
+              <p class="t-xs muted">Not by Coast Capital and not by InScope. A transfer that stops costs nothing; an overdraft is the thing that costs money, and that is exactly what was avoided.</p>
+            </div>
+          </div>
+          <div class="row" style="flex-wrap:nowrap;align-items:flex-start">
+            <span class="badge badge--green"><svg width="16" height="16"><use href="#i-check"/></svg></span>
+            <div class="grow stack-xs">
+              <p class="t-sm bold">Nothing is late</p>
+              <p class="t-xs muted">This is your own money moving between your own accounts. There is no lender, no due date, no missed payment, and nothing reported to anyone.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="card card--hero">
-        <p class="t-sm">Your plan puts $50 a month into this goal. Nothing has gone in since June — three months. Carry on at the pace of the last year and $4,000 arrives in 2033.</p>
+        <p class="t-eyebrow">1 SEPTEMBER, AS IT RAN</p>
+
+        <div class="stack-xs" style="margin:16px 0 14px">
+          <div class="row-between">
+            <p class="t-sm grow">Due to the Car Fund</p>
+            <p class="t-body">$360</p>
+          </div>
+          <p class="t-xs muted med">Your usual monthly transfer, on the 1st</p>
+        </div>
+
+        <div class="stack-xs" style="margin-bottom:16px">
+          <div class="row-between">
+            <p class="t-sm grow">Sitting in chequing ••4821</p>
+            <p class="t-body">$210</p>
+          </div>
+          <p class="t-xs muted med">Read at 6:02 am, when the transfer tried to run</p>
+        </div>
+
+        <div class="row-between" style="border-top:1px solid var(--hairline);padding-top:14px">
+          <p class="t-body grow">Short by</p>
+          <p class="t-h2">$150</p>
+        </div>
+        <p class="t-xs muted" style="margin-top:8px">$360 − $210 = $150. InScope stopped there. Sending it anyway would have taken chequing to −$150, and a $150 overdraft costs more than a transfer moved by a few days ever could.</p>
+
         <div class="stack-xs" style="margin-top:18px">
           <div class="row-between">
-            <p class="t-xs muted">$100 of $4,000</p>
-            <p class="t-xs bold right">2.5%</p>
+            <p class="t-xs muted grow">How much of the transfer was covered</p>
+            <p class="t-xs bold right">58%</p>
           </div>
-          <div class="bar bar--gold"><i style="width:2.5%"></i></div>
+          <div class="bar bar--gold"><i style="width:58%"></i></div>
         </div>
       </div>
 
       <div class="stack-s">
         <p class="t-h3">What you can do</p>
-        <p class="t-xs muted">Every option here is the same trade underneath: money going to Japan is money not going to the car. So each one shows what it does to the car’s date.</p>
+        <p class="t-xs muted">The Car Fund target is 21 transfers of $360 — $7,560 in all — and one of them has been made: $360 on 1 August. Transfers are monthly, so a transfer you move is a transfer added to the end, and the date moves with it.</p>
 
         <button class="option option--rec" aria-selected="true">
           <span class="row-between" style="align-items:flex-start;gap:14px">
             <span class="stack-xs grow">
               <span class="t-xs bold gold">WE’D SUGGEST THIS</span>
-              <span class="t-body">Lower the target to $2,500</span>
-              <span class="t-xs muted">Keep putting in the same $50 a month, for a shorter trip. Japan is ready in 2029 instead of 2033, and the car is untouched.</span>
+              <span class="t-body">Move $210 now</span>
+              <span class="t-xs muted">The $210 that is there goes across today, so September isn’t a blank month — the plan ends up $150 behind rather than $360. At $360 a month, $150 is about twelve days of saving. It does take chequing to $0 until your pay lands on Thursday the 3rd, and nothing else is scheduled to leave the account before then. Put that $150 in any month up to April 2028 and the date doesn’t move at all.</span>
             </span>
             <span class="stack-xs right" style="flex:none;align-items:flex-end">
               <span class="pill">Car: May 2028</span>
-              <span class="t-xs muted">as planned</span>
+              <span class="t-xs muted">about 2 weeks later</span>
             </span>
           </span>
         </button>
@@ -2789,12 +3445,12 @@ footer { border-top: 2.5px solid var(--ink); padding: 1.25rem 2rem; text-align: 
         <button class="option">
           <span class="row-between" style="align-items:flex-start;gap:14px">
             <span class="stack-xs grow">
-              <span class="t-body">Pause it</span>
-              <span class="t-xs muted">The $50 a month goes to the car instead. Japan holds at $100 and you can restart it any month.</span>
+              <span class="t-body">Skip September</span>
+              <span class="t-xs muted">Nothing moves. The $360 stays in chequing, the emergency fund isn’t touched, your runway holds, and every other transfer runs as normal. The plan is one transfer short — and because the transfer is monthly, one transfer short is one month later.</span>
             </span>
             <span class="stack-xs right" style="flex:none;align-items:flex-end">
-              <span class="pill pill--ok">Car: March 2028</span>
-              <span class="t-xs muted">2 months sooner</span>
+              <span class="pill">Car: June 2028</span>
+              <span class="t-xs muted">1 month later</span>
             </span>
           </span>
         </button>
@@ -2802,53 +3458,159 @@ footer { border-top: 2.5px solid var(--ink); padding: 1.25rem 2rem; text-align: 
         <button class="option">
           <span class="row-between" style="align-items:flex-start;gap:14px">
             <span class="stack-xs grow">
-              <span class="t-body">Keep going</span>
-              <span class="t-xs muted">Hold the $4,000 target and the date you set. Catching up takes $95 a month instead of $50, and the extra $45 comes out of the car.</span>
+              <span class="t-body">Lower the monthly amount</span>
+              <span class="t-xs muted">Opens your plan. With $360 in and September skipped, $7,200 of the $7,560 is still to come. At $280 a month from October that is 26 more transfers instead of 20, the last one only $200 — so the fund fills in November 2028 and the car follows in December. Worth it if $360 has been tight for a while; expensive if this was one short month.</span>
             </span>
             <span class="stack-xs right" style="flex:none;align-items:flex-end">
-              <span class="pill pill--danger">Car: August 2028</span>
-              <span class="t-xs muted">3 months later</span>
+              <span class="pill pill--warn">Car: Dec 2028</span>
+              <span class="t-xs muted">7 months later</span>
             </span>
           </span>
         </button>
       </div>
 
       <div class="stack-s">
-        <a class="btn">Lower the target to $2,500 →</a>
-        <p class="t-xs muted center">Nothing moves until you confirm, and the $100 already saved stays yours whichever you pick.</p>
+        <a class="btn">Move $210 now →</a>
+        <a class="btn btn--ghost">Pick a different option</a>
+        <p class="t-xs muted center">Nothing moves until you confirm. Whichever you pick, October’s $360 runs as usual — there is nothing to switch back on.</p>
       </div>
 
       <div class="card card--outline">
         <div class="row" style="gap:10px;margin-bottom:8px">
           <span style="color:var(--gold);flex:none"><svg width="16" height="16"><use href="#i-info"/></svg></span>
-          <p class="t-sm bold gold grow">Why are you telling me this?</p>
+          <p class="t-sm bold gold grow">Why this happened</p>
         </div>
-        <p class="t-xs muted">A goal usually stalls because it was set for a different month, not because you did anything wrong. We flag it so the choice stays yours while it is still cheap to make — all three options above are fine ones. This is not shared with anyone, it does not affect your credit, and it changes nothing about what you can borrow.</p>
+        <p class="t-xs muted" style="margin-bottom:12px">Your pay lands on the 3rd. The transfer is set for the 1st. Every month so far, the 1st has been covered by what was left over from the month before — but August’s pay came in $800 under your average, so this time there was nothing left to carry it. The transfer isn’t too big. It is two days too early.</p>
+
+        <div class="card card--tight card--flat" style="background:var(--sunken);margin-bottom:12px">
+          <div class="row-between">
+            <p class="t-xs muted grow">Transfer runs</p>
+            <p class="t-xs bold">1st → 5th</p>
+          </div>
+          <div class="row-between" style="margin-top:6px">
+            <p class="t-xs muted grow">Pay lands</p>
+            <p class="t-xs bold">3rd</p>
+          </div>
+          <p class="t-xs muted" style="margin-top:8px">Same $360, same May 2028 date, two days of clearance after payday instead of two days before it.</p>
+        </div>
+
+        <a class="btn">Move the transfer to the 5th →</a>
+        <p class="t-xs muted center" style="margin-top:8px">This is the actual fix. The three options above only settle September.</p>
       </div>
 
-      <div class="card card--tight" data-goto="v2-advisor">
+      <div class="card card--tight">
         <div class="row">
-          <span class="badge badge--green"><svg width="16" height="16"><use href="#i-profile"/></svg></span>
+          <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
           <div class="grow stack-xs">
-            <p class="t-sm bold">Rather talk it through?</p>
-            <p class="t-xs muted">20 minutes, free, and our advisors are salaried — nobody earns anything from what you decide.</p>
+            <p class="t-sm bold">If 1 October looks the same</p>
+            <p class="t-xs muted">Two days before every transfer, InScope checks chequing against the $360. If it won’t cover it you hear from us on 29 September — before the transfer runs, not after it didn’t. And InScope will never overdraw the account to make a transfer land: it stops, says so, and waits for you.</p>
           </div>
-          <span class="list-row__chev"><svg width="7" height="13"><use href="#i-chev"/></svg></span>
         </div>
       </div>
 
     </div>
   </div>
-  <nav class="tabbar" data-active="risks"></nav>
-</section></div><div class="icap">v1&#x27;s Risk Radar names a risk and then ends in a chevron that leads nowhere, so the app worries at the user without helping; this turns the alert into a decision by pricing every option in the one currency the user actually cares about — the month the car arrives — so the choice takes seconds, with no arithmetic and nothing that reads as a telling-off.</div></figure>
+  <nav class="tabbar" data-active="goals"></nav>
+</section></div><div class="icap">A failed auto-transfer is the highest-anxiety moment an auto-transfer product can create, so the screen spends its first card on reassurance that can be checked rather than reassurance that must be believed — nothing overdrawn, no fee, nothing late — then shows the $360 − $210 = $150 arithmetic that caused InScope to stop, prices three ways out in the two currencies Maya actually holds (money left this month, the month the car arrives), and finally offers the structural fix the three options cannot: her pay lands on the 3rd while the transfer is set for the 1st, so moving the transfer to the 5th ends the problem instead of patching September.</div></figure><figure class="iw iw--phone "><div class="iw__clip"><section class="screen" data-id="v4-connection-lost" data-title="Some numbers may be out of date" data-flow="Home" data-active="home"
+         data-why="Every figure InScope shows is derived from a live read of Maya’s accounts, so a dropped connection means the app is displaying numbers with full confidence that may already be wrong — for a product whose whole promise is confidence, that is worse than showing nothing; this screen therefore draws the line precisely between what has gone stale (balances, spending, and the runway worked out from them) and what has not (the plan, the target date, the transfer schedule, because she set those and InScope stores them), demonstrates the ‘as of 12 Aug’ marker that labels a stale figure everywhere else in the app, and stays deliberately in neutral colour because four-day-old balances are an inconvenience, not a danger.">
+  <div class="screen__body">
+    <div class="stack">
+
+      <header class="stack-s">
+        <div class="row" style="gap:10px">
+          <span class="pill"><svg width="12" height="12"><use href="#i-bolt"/></svg> Connection ・ Coast Capital</span>
+          <span class="t-xs muted">Checked just now, 16 August</span>
+        </div>
+        <h1 class="t-h1">Some numbers may be out of date</h1>
+        <p class="t-sm muted">InScope last read your accounts on Wednesday 12 August — four days ago. Coast Capital connections expire every 90 days for security, and yours reached 90 days that morning. Nothing is wrong with your account, and nothing you did caused it.</p>
+      </header>
+
+      <div class="card card--hero">
+        <p class="t-eyebrow">OUT OF DATE — READ FROM YOUR ACCOUNTS</p>
+        <div class="stack-s" style="margin:14px 0 18px">
+          <div class="row-between">
+            <p class="t-sm grow">Chequing and savings balances</p>
+            <span class="pill">as of 12 Aug</span>
+          </div>
+          <div class="row-between">
+            <p class="t-sm grow">Spending so far in August</p>
+            <span class="pill">as of 12 Aug</span>
+          </div>
+          <div class="row-between">
+            <p class="t-sm grow">Your savings runway, and anything worked out from a balance</p>
+            <span class="pill">as of 12 Aug</span>
+          </div>
+        </div>
+        <p class="t-xs muted" style="border-top:1px solid var(--hairline);padding-top:12px">Four days of pay and spending sit outside these figures. They aren’t wrong on purpose — they are simply the last thing InScope was able to see.</p>
+
+        <p class="t-eyebrow" style="margin-top:22px">NOT AFFECTED — SET BY YOU, STORED HERE</p>
+        <div class="stack-s" style="margin:14px 0 12px">
+          <div class="row-between">
+            <p class="t-sm grow">Your $360 transfer to the Car Fund, on the 1st</p>
+            <span class="pill pill--ok">unchanged</span>
+          </div>
+          <div class="row-between">
+            <p class="t-sm grow">Your car target date, May 2028</p>
+            <span class="pill pill--ok">unchanged</span>
+          </div>
+          <div class="row-between">
+            <p class="t-sm grow">Your goal targets — $3,000, $4,000, $18,500</p>
+            <span class="pill pill--ok">unchanged</span>
+          </div>
+        </div>
+        <p class="t-xs muted" style="border-top:1px solid var(--hairline);padding-top:12px">None of these are read from a bank. You chose them, InScope holds them, and they don’t depend on the connection being up. The line runs cleanly through a single row: in <span class="bold">Emergency Fund $950 of $3,000</span>, the $950 is a reading and the $3,000 is your target — only the left-hand number can be out of date.</p>
+      </div>
+
+      <div class="card">
+        <p class="t-eyebrow">HOW A STALE FIGURE LOOKS</p>
+        <div class="row" style="flex-wrap:nowrap;align-items:flex-start;margin-top:14px">
+          <span class="badge"><svg width="16" height="16"><use href="#i-wallet"/></svg></span>
+          <div class="grow stack-xs">
+            <p class="t-sm muted">Chequing ••4821</p>
+            <div class="row" style="gap:10px">
+              <p class="t-h2">$940</p>
+              <span class="pill">as of 12 Aug</span>
+            </div>
+          </div>
+        </div>
+        <p class="t-xs muted" style="margin-top:12px">Wherever a number depends on a live read, it carries that marker until the connection is back — on the home screen, in the budget, on every goal. No figure is quietly presented as current when it isn’t.</p>
+      </div>
+
+      <div class="stack-s">
+        <a class="btn">Reconnect Coast Capital →</a>
+        <p class="t-xs muted center">You sign in to Coast Capital again — about a minute. InScope re-reads the last 90 days, every marked figure updates at once, and nothing in your plan is touched or re-asked.</p>
+      </div>
+
+      <div class="card card--outline">
+        <div class="row" style="gap:10px;margin-bottom:8px">
+          <span style="color:var(--gold);flex:none"><svg width="16" height="16"><use href="#i-info"/></svg></span>
+          <p class="t-sm bold gold grow">Your transfer still runs</p>
+        </div>
+        <p class="t-xs muted">The $360 that moves to your Car Fund on 1 September is set up at Coast Capital, not here. A connection InScope can’t read is still a transfer Coast Capital makes — a broken connection never quietly cancels your plan. The one thing InScope can’t do while it is down is check chequing two days ahead and tell you if the $360 looks short.</p>
+      </div>
+
+      <div class="card card--tight">
+        <div class="row">
+          <span class="badge badge--gold"><svg width="16" height="16"><use href="#i-shield"/></svg></span>
+          <div class="grow stack-xs">
+            <p class="t-sm bold">Nothing here is locked</p>
+            <p class="t-xs muted">You can still change a goal, edit the plan, or move the transfer date — none of that needs live data. Reconnecting is worth doing before you make a decision that turns on a balance, which is the only place a four-day-old number could mislead you.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <nav class="tabbar" data-active="home"></nav>
+</section></div><div class="icap">Every figure InScope shows is derived from a live read of Maya’s accounts, so a dropped connection means the app is displaying numbers with full confidence that may already be wrong — for a product whose whole promise is confidence, that is worse than showing nothing; this screen therefore draws the line precisely between what has gone stale (balances, spending, and the runway worked out from them) and what has not (the plan, the target date, the transfer schedule, because she set those and InScope stores them), demonstrates the ‘as of 12 Aug’ marker that labels a stale figure everywhere else in the app, and stays deliberately in neutral colour because four-day-old balances are an inconvenience, not a danger.</div></figure>
   </div>
 </section>
 
-<!-- 07 BEFORE / AFTER -->
+<!-- 08 BEFORE / AFTER -->
 <section id="ba" class="sec rev">
-  <div class="phase"><div class="p-dot">7</div><span class="p-txt">Before &amp; After</span></div>
-  <h2 class="sec-h">The Same Screen,<br/>Corrected</h2>
-  <p class="sec-lead">Both are live and both re-theme — this is the actual code, not a screenshot.</p>
+  <div class="phase"><div class="p-dot">8</div><span class="p-txt">Before &amp; After</span></div>
+  <h2 class="sec-h">Everything That<br/>Changed</h2>
+  <p class="sec-lead">The full ledger. Both screens below are live and both re-theme — this is the actual code, not a screenshot.</p>
   <div class="rule"></div>
 
   <div class="ba-grid">
@@ -3082,25 +3844,47 @@ footer { border-top: 2.5px solid var(--ink); padding: 1.25rem 2rem; text-align: 
     </div>
   </div>
 
+  <div class="sub">1 · Data integrity — ten defects, all mine</div>
   <div class="ilist">
-    <div class="it"><div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Progress bars contradicted their own labels</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">Fix</div><div class="it-txt">Every bar width is computed from the number beside it</div></div></div>
-    <div class="it"><div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Risks named a problem, then dead-ended in a chevron</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">Fix</div><div class="it-txt">Three options, each priced in the same currency — what it does to your car date</div></div></div>
-    <div class="it"><div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">The member rate appeared once, as grey body text</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">Fix</div><div class="it-txt">Membership becomes a running total — $312 saved this year, $6,400 over the loan</div></div></div>
-    <div class="it"><div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">The app ended at “your goal is ready to set”</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">Fix</div><div class="it-txt">An after-purchase screen closes the loop: estimated $390–540 vs actual $412</div></div></div>
+    <div class="it"><div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">A bar drawn at ~53% beside a label reading 8%; three goal bars all the same width</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Every bar width computed from the number beside it, on every screen</div></div></div>
+    <div class="it"><div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">$120/mo on one screen, $120/yr on another; a donut reading 60% beside figures that mean 86%</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Contradictions reconciled, and the arithmetic shown on screen so the user can follow it</div></div></div>
+    <div class="it"><div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Step counters disagreeing with their dots; three consecutive screens all “Step 5 of 8”</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">One eight-step sequence, counter and indicator derived from the same value</div></div></div>
+    <div class="it"><div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">A Profile tab in all 32 frames with nothing behind it; back button 43×36px</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Profile built; every tap target ≥44px; nothing under 11px type</div></div></div>
+  </div>
+
+  <div class="sub">2 · The system underneath</div>
+  <div class="ilist">
+    <div class="it"><div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Green and gold — colours Coast Capital has never used. One Figma variable in the whole file.</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Real brand palette on a token layer. Rebranding 32 screens is now one edit, provable with the switcher on this page.</div></div></div>
+    <div class="it"><div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">No contrast had ever been measured</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Measured. Found the client's own #0056FF fails AA at 2.46:1 on dark, and built two themes that pass.</div></div></div>
+    <div class="it"><div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">The tab bar copy-pasted into every frame, ~20 carrying a duplicate offscreen</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">One component, rendered once, used everywhere</div></div></div>
+  </div>
+
+  <div class="sub">3 · The stage we designed and never built</div>
+  <div class="ilist">
+    <div class="it"><div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">The what-if was hypothetical — step 7, seen once, before committing</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">It fires for real when income actually drops, three moves priced against her car date</div></div></div>
+    <div class="it"><div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Risk Radar said “add $230 a month” and never said where $230 comes from</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">A screen that finds it in her own spending — four choices summing to exactly $230</div></div></div>
+    <div class="it"><div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Risks named a problem and dead-ended in a chevron</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Every risk resolves, each option priced in the one currency she cares about</div></div></div>
+    <div class="it"><div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">The app ended at “your goal is ready to set”</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Goal-reached and after-purchase close the third loop and prove the estimate was true</div></div></div>
+    <div class="it"><div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">No first-run state, no notifications, no failure states anywhere in 32 screens</div></div><div class="it-arr">→</div><div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Empty state, five notification moments, a failed transfer and a lost connection</div></div></div>
+  </div>
+
+  <div class="quote">
+    <p>Ten defects fixed, one design system built, seventeen screens added — and the only reason any of it was findable is that I stopped drawing the app and started building it.</p>
   </div>
 </section>
 
 <!-- 08 REFLECTION -->
 <section id="reflection" class="sec rev">
-  <div class="phase"><div class="p-dot">8</div><span class="p-txt">Reflection</span></div>
+  <div class="phase"><div class="p-dot">9</div><span class="p-txt">Reflection</span></div>
   <h2 class="sec-h">What I'd Do Differently</h2>
   <p class="sec-lead">Building the thing I had drawn taught me more than drawing it did.</p>
   <div class="rule"></div>
 
   <div class="g2">
-    <div class="rc"><div class="rc-t">Validate the path before drawing 32 screens of it</div><div class="rc-d">The five goal types in step one were a promise I hadn't costed. Designing even one of the other four would have told me much earlier which parts of my flow were genuinely reusable and which were car-specific.</div></div>
+    <div class="rc"><div class="rc-t">Check the screens against the diagram</div><div class="rc-d">We drew a four-stage value path with three loops and then built a linear funnel. Nobody noticed, because every individual screen was defensible. Holding the screen list against our own framework — one afternoon's work — was what finally surfaced it.</div></div>
     <div class="rc"><div class="rc-t">Start the token layer on day one</div><div class="rc-d">I built the visual system by repetition, which looked consistent and wasn't. The drift only became measurable once the colours had names — and by then it was 32 screens of cleanup.</div></div>
     <div class="rc"><div class="rc-t">Check the client's brand before choosing a palette</div><div class="rc-d">An obvious step I skipped. I spent a semester designing for a credit union in colours it has never used, and only caught it when I sat down to implement.</div></div>
+    <div class="rc"><div class="rc-t">I drifted off my own brief before I caught it</div><div class="rc-d">My first pass at improvements was an acquisition story — join, share your plan, what membership is worth. Defensible screens, wrong problem. Re-reading our client deck showed the brief was confidence, not conversion. Three of those screens didn't survive the re-read, and cutting them was the right call.</div></div>
     <div class="rc"><div class="rc-t">Numbers are claims, not decoration</div><div class="rc-d">Six of my nine defects were a figure disagreeing with another figure. In a financial product that isn't a polish issue — it's the whole basis of whether anyone trusts the thing.</div></div>
   </div>
 
