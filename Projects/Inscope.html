@@ -563,6 +563,18 @@ body::before {
 .iw:hover { transform: translate(-2px,-2px); }
 .iw::after { content: ''; position: absolute; bottom: -4px; right: -4px; width: 100%; height: 100%; border: 1.5px solid rgba(26,22,18,0.18); z-index: -1; }
 .iw img { width: 100%; display: block; }
+/* ---- iteration strip (§2) ---- */
+.itg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 1.5rem; }
+.itc { margin: 0; border: 2px solid var(--ink); background: var(--paper-dark); position: relative; transition: transform 0.2s; }
+.itc:hover { transform: translate(-2px,-2px); }
+.itc::after { content: ''; position: absolute; bottom: -4px; right: -4px; width: 100%; height: 100%; border: 1.5px solid rgba(26,22,18,0.18); z-index: -1; }
+.itc img { width: 100%; display: block; aspect-ratio: 3 / 4; object-fit: contain; background: #fff; border-bottom: 1.5px solid rgba(26,22,18,0.15); }
+.itc figcaption { padding: 12px 14px 14px; display: grid; gap: 5px; }
+.itc-r { font-family: var(--font-mono); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--pencil); }
+.itc-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; line-height: 1.3; }
+.itc-a { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.5; }
+.itc-a b { color: var(--cc-blue); }
+@media (max-width: 860px) { .itg { grid-template-columns: 1fr; } .itc img { aspect-ratio: 4 / 3; } }
 .tldr { border: 2px solid var(--ink); background: var(--paper-dark); padding: 1.15rem 1.3rem 1rem;
   margin-top: 1.5rem; transform: rotate(-0.15deg); box-shadow: 4px 4px 0 rgba(26,22,18,0.1); }
 .tldr-h { font-family: var(--font-mono, monospace); font-size: 10.5px; letter-spacing: 0.14em;
@@ -1170,6 +1182,34 @@ footer { border-top: 2.5px solid var(--ink); padding: 1.25rem 2rem; text-align: 
   <div class="rule"></div>
   <p class="p-body">The obvious version of this app asks for a target number and draws a progress bar. I structured it the other way round: the app asks a series of small, answerable questions and <strong>derives</strong> the number. The user never has to know the answer in advance — which is the entire reason they'd need the app at all.</p>
   <p class="p-body">The sequence runs <em>what you want</em> → <em>what it actually costs</em> → <em>what that means monthly</em> → <em>what that leaves you</em>. I put the true-cost reveal at the midpoint. Late felt like a punchline at the user's expense; first felt like a lecture before we'd earned the right to give one.</p>
+  <div class="sub">How the sequence got here</div>
+  <p class="p-body">The flow went through four rounds before it reached these eight steps — <strong>8 → 10 → 10 → 7</strong>, expanding while I worked out what the app was, then contracting once I knew. Three of those cuts decided what the product is; the rest was tidying.</p>
+  <div class="itg">
+    <figure class="itc">
+      <img src="../Images/inscope-iter-streak.jpg" alt="Round 1 sketch: a seven-day streak counter and three achievement badges" />
+      <figcaption>
+        <span class="itc-r">Round 1 · cut</span>
+        <span class="itc-t">A seven-day streak and three badges</span>
+        <span class="itc-a">I drew the engagement mechanics before I understood they were wrong for this product. <b>The rule that replaced them is in section 7:</b> saving is not a game you can lose on a Tuesday.</span>
+      </figcaption>
+    </figure>
+    <figure class="itc">
+      <img src="../Images/inscope-iter-ask.jpg" alt="Round 2 sketch: sliders asking the user for monthly income and current savings" />
+      <figcaption>
+        <span class="itc-r">Round 2 · replaced</span>
+        <span class="itc-t">Sliders asking for income and savings</span>
+        <span class="itc-a">Twice I built the obvious version — ask her what she earns. <b>Step 2 below is what replaced it:</b> the app reads chequing ••4821 instead. This is the change the whole product rests on.</span>
+      </figcaption>
+    </figure>
+    <figure class="itc">
+      <img src="../Images/inscope-iter-confidence.jpg" alt="Round 4 sketch: a 68 percent confidence meter at the end of the flow" />
+      <figcaption>
+        <span class="itc-r">Round 4 · cut</span>
+        <span class="itc-t">A 68% confidence meter</span>
+        <span class="itc-a">The research said confidence, so I drew a confidence score — a feeling the app asserts about itself. <b>Replaced by a number that can be checked:</b> your safety net covers 1.4 months.</span>
+      </figcaption>
+    </figure>
+  </div>
   <div class="sub">The eight steps</div>
   <div class="slist">
     <div class="st"><div class="st-n">01</div><div><div class="st-t">What are you saving for?</div><div class="st-d">Goal type — asked before any number is requested.</div></div></div>
