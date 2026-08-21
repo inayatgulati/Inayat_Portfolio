@@ -383,6 +383,13 @@
     border-bottom: 2px solid var(--ink);
     min-height: 200px;
   }
+  .card-image--contain {
+  background: var(--paper-dark);
+  display: flex; align-items: center; justify-content: center;
+}
+.card-image--contain video {
+  width: 100%; height: 100%; object-fit: contain; padding: 14px;
+}
 }
     </style>
   </head>
@@ -551,7 +558,9 @@
 
 <!-- 4. InScope -->
 <a href="./Projects/Inscope.html" class="project-card bento-lg reveal">
-  <div class="card-image"><img src="./Images/Inscope.png" alt="InScope — financial planning app for Coast Capital Savings" /></div>
+  <div class="card-image card-image--contain">
+  <video src="./Images/Inscope_1.mp4" autoplay muted loop playsinline></video>
+</div>
   <div class="card-body">
     <div class="card-tags"><span class="card-tag">Coast Capital</span><span class="card-tag">UX/UI + Design System</span><span class="card-tag">2026</span></div>
     <h3 class="card-title">InScope — what it really costs</h3>
