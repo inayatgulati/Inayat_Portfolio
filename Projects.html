@@ -649,6 +649,14 @@
       visibility: hidden;
     }
 
+      .card-image--contain {
+  background: var(--paper-dark);
+  display: flex; align-items: center; justify-content: center;
+}
+.card-image--contain video {
+  width: 100%; height: 100%; object-fit: contain; padding: 14px;
+}
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 900px) {
       .project-card.featured {
@@ -815,9 +823,9 @@
 <a href="./Projects/Inscope.html"
    class="project-card reveal"
    data-category="case-study mobile">
-  <div class="card-image">
-    <img src="./Images/inscope-cover.png" alt="InScope financial planning app" />
-  </div>
+  <div class="card-image card-image--contain">
+  <video src="./Images/Inscope_1.mp4" autoplay muted loop playsinline></video>
+</div>
   <div class="card-body">
     <div class="card-tags">
       <span class="card-tag">Coast Capital</span>
