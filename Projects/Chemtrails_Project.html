@@ -5,33 +5,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chemtrails — Inayat</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Kalam:wght@300;400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
   <style>
+    /* ============================================================
+       TOKENS
+       ============================================================ */
     :root {
-      --paper: #faf8f2;
-      --paper-dark: #f0ecdf;
-      --paper-worn: #e8e2d0;
-      --ink: #1a1612;
-      --ink-light: #3d3530;
-      --ink-faint: #8a7f72;
-      --pencil: #b8b0a0;
+      --paper:        #faf8f2;
+      --paper-dark:   #f4f1e7;
+      --paper-worn:   #e8e2d0;
+      --ink:          #1a1612;
+      --ink-light:    #3d3530;
+      --ink-faint:    #7d7266;
+      --pencil:       #a89f91;
       --pencil-light: #d4cfc4;
-      --red: #c0392b;
-      --blue: #2c5f8a;
-      --teal: #2e7d6e;
-      --teal-l: #3a9e8c;
-      --yellow: #e8b84b;
-      --green: #3a7d44;
-      --font-hand: 'Caveat', cursive;
-      --font-scrawl: 'Reenie Beanie', cursive;
-      --font-mono: 'Space Mono', monospace;
-      --font-serif: 'EB Garamond', serif;
-      --nav-h: 58px;
-      --side-w: 196px;
+      --line:         rgba(26, 22, 18, 0.14);
+      --line-soft:    rgba(26, 22, 18, 0.08);
+      --red:          #c0392b;
+      --teal:         #2e7d6e;
+      --teal-soft:    rgba(46, 125, 110, 0.30);
+      --teal-wash:    rgba(46, 125, 110, 0.05);
+      --tape:         rgba(232, 184, 75, 0.34);
+      --tape-edge:    rgba(232, 184, 75, 0.5);
+
+      --font-hand:   'Caveat', 'Segoe Print', cursive;
+      --font-scrawl: 'Reenie Beanie', 'Caveat', cursive;
+      --font-mono:   'Space Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+      --font-serif:  'EB Garamond', Georgia, serif;
+
+      /* spacing scale */
+      --s-1: 4px;
+      --s-2: 8px;
+      --s-3: 12px;
+      --s-4: 16px;
+      --s-5: 24px;
+      --s-6: 32px;
+      --s-7: 48px;
+      --s-8: 72px;
+
+      --nav-h:      60px;
+      --bind-w:     32px;
+      --side-w:     212px;
+      --content-max: 880px;
+      --gutter:     clamp(20px, 4vw, 56px);
+
+      --card-shadow:       3px 3px 0 rgba(26, 22, 18, 0.10);
+      --card-shadow-hover: 6px 6px 0 rgba(26, 22, 18, 0.13);
+      --radius: 2px;
     }
 
+    /* ============================================================
+       RESET + BASE
+       ============================================================ */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
 
     body {
       font-family: var(--font-hand);
@@ -40,73 +72,75 @@
       line-height: 1.6;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
-    /* Paper texture */
+    img { max-width: 100%; display: block; }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    /* ruled paper texture */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background-image:
-        repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.11) 27px, rgba(180,170,155,0.11) 28px);
+      background-image: repeating-linear-gradient(
+        0deg,
+        transparent, transparent 27px,
+        rgba(180, 170, 155, 0.10) 27px, rgba(180, 170, 155, 0.10) 28px
+      );
       pointer-events: none;
       z-index: 0;
     }
 
-    /* Spiral binding */
+    /* ============================================================
+       SPIRAL BINDING  (pure CSS — resize-proof)
+       ============================================================ */
     .spiral-binding {
       position: fixed;
       left: 0; top: 0; bottom: 0;
-      width: 32px;
+      width: var(--bind-w);
       background: var(--paper-worn);
-      border-right: 2.5px solid var(--ink);
+      border-right: 2px solid var(--ink);
       z-index: 200;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding-top: 24px;
-      gap: 0;
       pointer-events: none;
     }
-    .spiral-hole {
-      width: 16px; height: 16px;
-      border-radius: 50%;
-      border: 2px solid var(--ink);
-      background: var(--paper);
-      margin-bottom: 28px;
-      flex-shrink: 0;
-      box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
+    .spiral-binding::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle 6px at 16px 22px, var(--paper) 98%, transparent 100%),
+        radial-gradient(circle 8px at 16px 22px, var(--ink) 98%, transparent 100%);
+      background-size: 32px 44px;
+      background-repeat: repeat-y;
     }
 
-    /* NAV */
+    /* ============================================================
+       TOP NAV
+       ============================================================ */
     .topnav {
       position: fixed;
-      top: 0; left: 32px; right: 0;
+      top: 0; left: var(--bind-w); right: 0;
       height: var(--nav-h);
       z-index: 150;
       background: var(--paper);
-      border-bottom: 2.5px solid var(--ink);
+      border-bottom: 2px solid var(--ink);
       display: flex;
       align-items: center;
-      padding: 0 2rem;
-    }
-    .topnav::after {
-      content: '';
-      position: absolute;
-      right: 160px; bottom: -18px;
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      border: 1.5px solid rgba(160,130,90,0.15);
-      pointer-events: none;
     }
     .topnav-in {
       width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: var(--s-5);
+      padding: 0 var(--gutter);
     }
     .logo {
       font-family: var(--font-hand);
@@ -115,11 +149,14 @@
       color: var(--ink);
       text-decoration: none;
       position: relative;
+      flex-shrink: 0;
+      line-height: 1;
+      padding-bottom: 3px;
     }
     .logo::after {
       content: '';
       position: absolute;
-      bottom: -2px; left: 0; right: 0;
+      bottom: 0; left: 0; right: 0;
       height: 3px;
       background: var(--red);
       border-radius: 2px;
@@ -127,16 +164,23 @@
     }
     .nav-links {
       display: flex;
-      gap: 2rem;
+      align-items: center;
+      gap: clamp(14px, 2.2vw, 30px);
       list-style: none;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding: 4px 0;
     }
+    .nav-links::-webkit-scrollbar { display: none; }
     .nav-links a {
       font-family: var(--font-hand);
-      font-size: 16px;
+      font-size: 17px;
       color: var(--ink-faint);
       text-decoration: none;
       position: relative;
       padding-bottom: 2px;
+      white-space: nowrap;
       transition: color 0.2s;
     }
     .nav-links a::after {
@@ -150,30 +194,25 @@
     .nav-links a:hover { color: var(--ink); }
     .nav-links a:hover::after { width: 100%; }
 
-    /* SIDENAV */
+    /* ============================================================
+       SIDE NAV
+       ============================================================ */
     .sidenav {
       position: fixed;
       top: var(--nav-h);
-      left: 32px;
+      left: var(--bind-w);
       width: var(--side-w);
       height: calc(100vh - var(--nav-h));
-      padding: 2rem 1rem 2rem 1.5rem;
-      border-right: 1.5px solid rgba(180,170,155,0.35);
+      padding: var(--s-6) var(--s-4) var(--s-5) var(--s-5);
+      border-right: 1px solid var(--line-soft);
       background: var(--paper);
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: var(--s-5);
       overflow-y: auto;
+      overscroll-behavior: contain;
       z-index: 100;
-    }
-    /* Red margin line on sidenav */
-    .sidenav::before {
-      content: '';
-      position: absolute;
-      left: 44px; top: 0; bottom: 0;
-      width: 1.5px;
-      background: rgba(192,57,43,0.15);
-      pointer-events: none;
+      scrollbar-width: thin;
     }
 
     .back-link {
@@ -183,142 +222,157 @@
       color: var(--teal);
       text-decoration: none;
       font-family: var(--font-hand);
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 600;
-      transition: gap 0.2s;
       white-space: nowrap;
+      transition: gap 0.2s;
+      flex-shrink: 0;
     }
-    .back-link:hover { gap: 10px; }
+    .back-link:hover { gap: 11px; }
 
     .side-lbl {
       font-family: var(--font-mono);
       font-size: 9px;
-      letter-spacing: 3px;
+      letter-spacing: 2.5px;
       text-transform: uppercase;
       color: var(--pencil);
-      font-weight: 400;
-      margin-bottom: 0.5rem;
+      margin-bottom: var(--s-2);
     }
     .side-list { display: flex; flex-direction: column; }
     .side-a {
-      display: flex;
+      display: grid;
+      grid-template-columns: 20px 1fr;
       align-items: center;
       gap: 8px;
-      padding: 6px 0 6px 10px;
+      padding: 7px 0 7px 10px;
       color: var(--pencil);
       text-decoration: none;
       font-family: var(--font-hand);
-      font-size: 15px;
+      font-size: 16px;
+      line-height: 1.25;
       border-left: 2px solid transparent;
       transition: color 0.2s, border-color 0.2s;
-      white-space: nowrap;
     }
-    .side-a:hover { color: var(--ink-light); border-left-color: var(--pencil); }
+    .side-a:hover { color: var(--ink-light); border-left-color: var(--pencil-light); }
     .side-a.active { color: var(--teal); border-left-color: var(--teal); font-weight: 700; }
     .side-num {
       font-family: var(--font-mono);
-      font-size: 8px;
+      font-size: 9px;
       color: var(--pencil);
-      min-width: 16px;
+      letter-spacing: 0.5px;
     }
     .side-a.active .side-num { color: var(--teal); }
 
-    /* MAIN */
+    .side-doodle {
+      margin-top: auto;
+      padding-top: var(--s-5);
+      opacity: 0.32;
+      pointer-events: none;
+    }
+
+    /* ============================================================
+       MAIN LAYOUT
+       ============================================================ */
     .main {
-      margin-left: calc(32px + var(--side-w));
-      padding: calc(var(--nav-h) + 3rem) 3.5rem 7rem 3rem;
-      max-width: calc(860px + var(--side-w));
+      margin-left: calc(var(--bind-w) + var(--side-w));
+      padding: calc(var(--nav-h) + var(--s-8)) var(--gutter) var(--s-8);
+    }
+    .wrap {
+      width: 100%;
+      max-width: var(--content-max);
+      margin: 0 auto;
       position: relative;
       z-index: 1;
     }
 
-    /* HERO */
+    /* ============================================================
+       HERO
+       ============================================================ */
+    .hero { margin-bottom: clamp(56px, 8vw, 88px); }
+
     .tags {
       display: flex;
-      gap: 0.5rem;
+      gap: var(--s-2);
       flex-wrap: wrap;
-      margin-bottom: 1.25rem;
+      margin-bottom: var(--s-5);
     }
     .tag {
       font-family: var(--font-mono);
       font-size: 9px;
-      letter-spacing: 2px;
+      letter-spacing: 1.6px;
       text-transform: uppercase;
       color: var(--teal);
-      padding: 3px 10px;
-      border: 1.5px solid rgba(46,125,110,0.3);
-      border-radius: 0;
-      background: rgba(46,125,110,0.05);
-      transform: rotate(-0.3deg);
-      display: inline-block;
+      padding: 5px 11px;
+      border: 1.5px solid var(--teal-soft);
+      background: var(--teal-wash);
+      line-height: 1.4;
     }
-    .tag:nth-child(2) { transform: rotate(0.5deg); }
-    .tag:nth-child(3) { transform: rotate(-0.2deg); }
 
     .hero-h {
       font-family: var(--font-hand);
-      font-size: clamp(2.6rem, 5vw, 4.2rem);
+      font-size: clamp(2.4rem, 6vw, 4rem);
       font-weight: 700;
-      line-height: 1.05;
-      margin-bottom: 0.5rem;
-      letter-spacing: -1px;
-      position: relative;
+      line-height: 1.02;
+      letter-spacing: -0.5px;
+      margin-bottom: var(--s-4);
     }
-    .hero-h .squiggle-wrap {
+    .squiggle-wrap {
       position: relative;
       display: inline-block;
+      color: var(--teal);
     }
-    .hero-h .squiggle-wrap svg {
+    .squiggle-wrap svg {
       position: absolute;
-      bottom: -6px; left: -4px;
-      width: calc(100% + 8px);
+      left: 0; bottom: -0.08em;
+      width: 100%;
+      height: 0.18em;
+      overflow: visible;
       pointer-events: none;
     }
+
     .hero-sub {
       font-family: var(--font-mono);
       font-size: 10px;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--ink-faint);
-      margin-bottom: 0.75rem;
+      margin-bottom: var(--s-3);
     }
     .hero-p {
       font-family: var(--font-hand);
-      font-size: 19px;
+      font-size: clamp(18px, 2vw, 21px);
       color: var(--ink-light);
-      line-height: 1.65;
-      max-width: 520px;
-      margin-bottom: 1.75rem;
+      line-height: 1.6;
+      max-width: 56ch;
+      margin-bottom: var(--s-6);
     }
 
     /* HERO VIDEO */
     .hero-video {
-      width: 100%;
-      border-radius: 0;
-      overflow: hidden;
-      border: 2px solid var(--ink);
-      margin-bottom: 1.5rem;
-      background: #111;
       position: relative;
-      transform: rotate(-0.3deg);
-      box-shadow: 5px 5px 0 rgba(26,22,18,0.12);
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto var(--s-6);
+      border: 2px solid var(--ink);
+      background: #111;
+      box-shadow: var(--card-shadow);
     }
     .hero-video::before {
       content: '';
       position: absolute;
-      top: -11px; left: 30px;
-      width: 50px; height: 22px;
-      background: rgba(232,184,75,0.38);
-      border-top: 1px solid rgba(232,184,75,0.5);
-      border-bottom: 1px solid rgba(232,184,75,0.5);
-      transform: rotate(-1deg);
-      z-index: 10;
+      top: -11px; left: 32px;
+      width: 52px; height: 22px;
+      background: var(--tape);
+      border-top: 1px solid var(--tape-edge);
+      border-bottom: 1px solid var(--tape-edge);
+      transform: rotate(-1.2deg);
+      z-index: 2;
     }
     .hero-video iframe {
       width: 100%;
       display: block;
-      aspect-ratio: 16/9;
-      border: none;
+      aspect-ratio: 16 / 9;
+      border: 0;
     }
 
     /* STATS */
@@ -326,20 +380,23 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       border: 2px solid var(--ink);
-      margin-bottom: 1.5rem;
-      transform: rotate(0.2deg);
-      box-shadow: 4px 4px 0 rgba(26,22,18,0.1);
       background: var(--paper-dark);
+      box-shadow: var(--card-shadow);
+      margin-bottom: var(--s-6);
+      overflow: hidden;
     }
     .stat {
-      padding: 1.1rem 1rem;
-      border-right: 1.5px solid rgba(26,22,18,0.2);
-      position: relative;
+      padding: var(--s-4) var(--s-4) var(--s-5);
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
     }
-    .stat:last-child { border-right: none; }
+    .stat:last-child { border-right: 0; }
     .s-n {
       font-family: var(--font-hand);
-      font-size: 2.4rem;
+      font-size: clamp(2rem, 3.4vw, 2.5rem);
       font-weight: 700;
       color: var(--teal);
       line-height: 1;
@@ -347,598 +404,768 @@
     }
     .s-l {
       font-family: var(--font-hand);
-      font-size: 14px;
+      font-size: 16px;
       color: var(--ink-light);
-      line-height: 1.35;
+      line-height: 1.3;
     }
     .s-sub {
       font-family: var(--font-mono);
       font-size: 8px;
       letter-spacing: 1px;
       color: var(--pencil);
-      margin-top: 2px;
+      text-transform: uppercase;
+      margin-top: auto;
+      padding-top: 6px;
     }
 
     /* META */
     .meta {
-      display: flex;
-      gap: 2rem;
-      flex-wrap: wrap;
-      padding-top: 1.25rem;
-      border-top: 2px solid rgba(26,22,18,0.15);
-      margin-bottom: 5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: var(--s-5);
+      padding-top: var(--s-5);
+      border-top: 2px solid var(--line);
     }
     .m-k {
       font-family: var(--font-mono);
       font-size: 8px;
-      letter-spacing: 2px;
+      letter-spacing: 1.8px;
       text-transform: uppercase;
       color: var(--teal);
-      font-weight: 400;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
     }
     .m-v {
       font-family: var(--font-hand);
-      font-size: 15px;
+      font-size: 16px;
       color: var(--ink-light);
-      line-height: 1.5;
+      line-height: 1.45;
     }
 
-    /* SECTION */
-    .sec { margin-bottom: 5rem; }
+    /* ============================================================
+       SECTIONS
+       ============================================================ */
+    .sec {
+      margin-bottom: clamp(56px, 8vw, 88px);
+      scroll-margin-top: calc(var(--nav-h) + 24px);
+    }
+    .sec:last-child { margin-bottom: 0; }
 
     .phase {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 0.75rem;
+      gap: 9px;
+      margin-bottom: var(--s-3);
     }
     .p-dot {
-      width: 22px; height: 22px;
+      width: 24px; height: 24px;
       border-radius: 50%;
       border: 2px solid var(--ink);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: grid;
+      place-items: center;
       font-family: var(--font-mono);
       font-size: 9px;
-      color: var(--ink);
       font-weight: 700;
+      line-height: 1;
     }
     .p-txt {
       font-family: var(--font-mono);
       font-size: 9px;
-      letter-spacing: 3px;
+      letter-spacing: 2.5px;
       text-transform: uppercase;
       color: var(--ink-faint);
     }
+
     .sec-h {
       font-family: var(--font-hand);
-      font-size: 2.2rem;
+      font-size: clamp(1.85rem, 3.4vw, 2.4rem);
       font-weight: 700;
-      line-height: 1.1;
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.5px;
+      line-height: 1.12;
+      letter-spacing: -0.4px;
+      margin-bottom: var(--s-3);
       position: relative;
       display: inline-block;
+      max-width: 100%;
     }
-    /* Hand-drawn underline on section headers */
     .sec-h::after {
       content: '';
       display: block;
+      width: 72%;
       height: 3px;
       background: var(--red);
       border-radius: 2px;
-      transform: rotate(-0.5deg);
-      margin-top: 3px;
-      width: 80%;
+      transform: rotate(-0.4deg);
+      margin-top: 4px;
     }
     .sec-lead {
       font-family: var(--font-hand);
-      font-size: 18px;
+      font-size: clamp(17px, 1.8vw, 19px);
       color: var(--ink-light);
-      line-height: 1.75;
-      max-width: 560px;
-      margin-bottom: 1.5rem;
-      margin-top: 0.5rem;
+      line-height: 1.65;
+      max-width: 62ch;
+      margin-bottom: var(--s-5);
     }
     .rule {
-      height: 1.5px;
-      background: rgba(26,22,18,0.12);
-      margin-bottom: 1.5rem;
+      height: 1px;
+      background: var(--line);
+      margin-bottom: var(--s-5);
     }
     .sub {
       font-family: var(--font-mono);
       font-size: 9px;
-      letter-spacing: 3px;
+      letter-spacing: 2.5px;
       text-transform: uppercase;
       color: var(--teal);
-      margin-bottom: 0.875rem;
+      margin-bottom: var(--s-3);
     }
+    .sub + .sub-p { margin-top: -4px; }
+    .sub-p {
+      font-family: var(--font-hand);
+      font-size: 17px;
+      color: var(--ink-light);
+      line-height: 1.65;
+      max-width: 62ch;
+      margin-bottom: var(--s-4);
+    }
+    .block { margin-bottom: var(--s-7); }
+    .block:last-child { margin-bottom: 0; }
 
-    /* GRIDS */
-    .g3 {
+    /* ============================================================
+       GRIDS
+       ============================================================ */
+    .g2, .g3 {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 1.5rem;
+      gap: var(--s-3);
+      align-items: stretch;
     }
-    .g2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-bottom: 1.5rem;
-    }
+    .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-    /* NOTEBOOK CARD — replaces nc */
-    .nc {
+    /* ============================================================
+       CARDS
+       ============================================================ */
+    .nc, .ic {
       background: var(--paper-dark);
       border: 2px solid var(--ink);
-      padding: 1.1rem;
-      position: relative;
-      transition: transform 0.2s;
+      box-shadow: var(--card-shadow);
+      padding: var(--s-4);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .nc:hover { transform: translate(-2px,-2px); }
-    .nc::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; right: -4px;
-      width: 100%; height: 100%;
-      border: 1.5px solid rgba(26,22,18,0.18);
-      z-index: -1;
+    .nc:hover, .ic:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: var(--card-shadow-hover);
     }
     .nc-n {
       font-family: var(--font-hand);
-      font-size: 2.2rem;
+      font-size: 2.3rem;
       font-weight: 700;
       color: var(--teal);
       line-height: 1;
-      margin-bottom: 5px;
+      margin-bottom: var(--s-2);
     }
+    .nc-n.sm { font-size: 1.5rem; }
     .nc-t {
       font-family: var(--font-hand);
-      font-size: 15px;
+      font-size: 17px;
       font-weight: 700;
-      margin-bottom: 3px;
+      line-height: 1.25;
+      margin-bottom: 4px;
     }
-    .nc-d {
+    .nc-d, .ic-d {
       font-family: var(--font-hand);
-      font-size: 14px;
+      font-size: 15.5px;
       color: var(--ink-light);
       line-height: 1.5;
     }
-
-    /* ICON CARD */
-    .ic {
-      background: var(--paper-dark);
-      border: 2px solid var(--ink);
-      padding: 1.1rem;
-      position: relative;
+    .ic-ico {
+      font-size: 1.05rem;
+      line-height: 1;
+      margin-bottom: var(--s-3);
     }
-    .ic::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; right: -4px;
-      width: 100%; height: 100%;
-      border: 1.5px solid rgba(26,22,18,0.18);
-      z-index: -1;
-    }
-    .ic-ico { font-size: 1rem; margin-bottom: 0.5rem; }
     .ic-t {
       font-family: var(--font-hand);
-      font-size: 15px;
+      font-size: 17px;
       font-weight: 700;
-      margin-bottom: 3px;
-    }
-    .ic-d {
-      font-family: var(--font-hand);
-      font-size: 13px;
-      color: var(--ink-light);
-      line-height: 1.55;
+      line-height: 1.25;
+      margin-bottom: 4px;
     }
 
-    /* FINDING ROW */
-    .flist {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 1.5rem;
+
+    /* ---- hand-drawn line icons ---- */
+    .ico {
+      width: 18px; height: 18px;
+      fill: none;
+      stroke: var(--ink-light);
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      display: block;
+      transition: stroke 0.2s ease;
+    }
+    .fr:hover .ico { stroke: var(--teal); }
+    .ic .ico { width: 22px; height: 22px; stroke: var(--teal); }
+    .ic-aa {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--teal);
+      line-height: 1;
+      display: block;
+    }
+
+    /* FINDING / FEATURE ROWS */
+    .flist, .slist, .ilist {
+      display: grid;
+      gap: var(--s-2);
     }
     .fr {
-      display: flex;
-      gap: 0.875rem;
-      align-items: flex-start;
-      padding: 0.875rem 1rem;
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: var(--s-3);
+      align-items: start;
+      padding: var(--s-3) var(--s-4);
       background: var(--paper-dark);
-      border: 1.5px solid rgba(26,22,18,0.15);
-      transition: border-color 0.2s, transform 0.2s;
+      border: 1px solid var(--line);
+      transition: border-color 0.2s ease, transform 0.2s ease;
     }
-    .fr:hover {
-      border-color: rgba(46,125,110,0.4);
-      transform: translateX(2px);
-    }
+    .fr:hover { border-color: var(--teal-soft); transform: translateX(3px); }
     .fr-i {
-      width: 30px; height: 30px; min-width: 30px;
-      border-radius: 0;
-      border: 1.5px solid rgba(26,22,18,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 32px; height: 32px;
+      display: grid;
+      place-items: center;
       font-size: 0.82rem;
+      font-family: var(--font-mono);
+      color: var(--ink-light);
+      border: 1px solid var(--line);
       background: var(--paper);
     }
     .fr-t {
       font-family: var(--font-hand);
-      font-size: 15px;
+      font-size: 17px;
       font-weight: 700;
+      line-height: 1.25;
       margin-bottom: 2px;
     }
     .fr-d {
       font-family: var(--font-hand);
-      font-size: 14px;
-      color: var(--ink-light);
-      line-height: 1.55;
-    }
-
-    /* STEP LIST */
-    .slist {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 1.5rem;
-    }
-    .st {
-      display: flex;
-      gap: 0.875rem;
-      padding: 0.875rem 1rem;
-      background: var(--paper-dark);
-      border: 1.5px solid rgba(26,22,18,0.15);
-    }
-    .st-n {
-      font-family: var(--font-hand);
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--teal);
-      min-width: 20px;
-      line-height: 1.4;
-    }
-    .st-t {
-      font-family: var(--font-hand);
-      font-size: 15px;
-      font-weight: 700;
-      margin-bottom: 2px;
-    }
-    .st-d {
-      font-family: var(--font-hand);
-      font-size: 13px;
+      font-size: 15.5px;
       color: var(--ink-light);
       line-height: 1.5;
     }
 
-    /* PERSONA CARD */
-    .pcard {
+    /* STEPS */
+    .st {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: var(--s-3);
+      padding: var(--s-3) var(--s-4);
       background: var(--paper-dark);
-      border: 2px solid var(--ink);
-      padding: 1.4rem;
-      border-bottom: 4px solid var(--teal);
-      position: relative;
-      transition: transform 0.2s;
+      border: 1px solid var(--line);
     }
-    .pcard:hover { transform: translate(-2px,-2px); }
-    .pcard::after {
-      content: '';
-      position: absolute;
-      bottom: -6px; right: -5px;
-      width: 100%; height: 100%;
-      border: 1.5px solid rgba(26,22,18,0.15);
-      z-index: -1;
-    }
-    /* Tape on persona cards */
-    .pcard::before {
-      content: '';
-      position: absolute;
-      top: -11px; left: 20px;
-      width: 40px; height: 20px;
-      background: rgba(232,184,75,0.38);
-      border-top: 1px solid rgba(232,184,75,0.5);
-      border-bottom: 1px solid rgba(232,184,75,0.5);
-      transform: rotate(-1.5deg);
-    }
-    .pcard-av {
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      border: 2px solid var(--teal);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .st-n {
       font-family: var(--font-hand);
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 700;
       color: var(--teal);
-      margin-bottom: 0.875rem;
+      line-height: 1.2;
     }
-    .pcard-name {
+    .st-t {
       font-family: var(--font-hand);
       font-size: 17px;
       font-weight: 700;
+      line-height: 1.25;
       margin-bottom: 2px;
+    }
+    .st-d {
+      font-family: var(--font-hand);
+      font-size: 15.5px;
+      color: var(--ink-light);
+      line-height: 1.5;
+    }
+
+    /* PERSONA */
+    .pcard {
+      position: relative;
+      background: var(--paper-dark);
+      border: 2px solid var(--ink);
+      border-bottom: 4px solid var(--teal);
+      box-shadow: var(--card-shadow);
+      padding: var(--s-5) var(--s-4) var(--s-5);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .pcard:hover { transform: translate(-2px, -2px); box-shadow: var(--card-shadow-hover); }
+    .pcard::before {
+      content: '';
+      position: absolute;
+      top: -11px; left: 22px;
+      width: 42px; height: 20px;
+      background: var(--tape);
+      border-top: 1px solid var(--tape-edge);
+      border-bottom: 1px solid var(--tape-edge);
+      transform: rotate(-1.5deg);
+    }
+    .pcard-av {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      border: 2px solid var(--teal);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-hand);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--teal);
+      margin-bottom: var(--s-3);
+      line-height: 1;
+    }
+    .pcard-name {
+      font-family: var(--font-hand);
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 3px;
     }
     .pcard-role {
       font-family: var(--font-mono);
       font-size: 8px;
-      letter-spacing: 2px;
+      letter-spacing: 1.8px;
       text-transform: uppercase;
       color: var(--teal);
-      margin-bottom: 0.75rem;
+      margin-bottom: var(--s-3);
     }
     .pcard-quote {
       font-family: var(--font-serif);
       font-size: 1.05rem;
       font-style: italic;
       color: var(--ink-light);
-      line-height: 1.55;
-      margin-bottom: 1rem;
-      padding-left: 0.75rem;
-      border-left: 3px solid rgba(46,125,110,0.35);
+      line-height: 1.5;
+      padding-left: var(--s-3);
+      border-left: 3px solid var(--teal-soft);
+      margin-bottom: var(--s-2);
+      min-height: 4.7em; /* keeps GOALS/FRUSTRATIONS aligned across cards */
     }
     .pcard-sub {
       font-family: var(--font-mono);
       font-size: 8px;
-      letter-spacing: 2px;
+      letter-spacing: 1.8px;
       text-transform: uppercase;
       color: var(--teal);
-      margin-bottom: 0.5rem;
-      margin-top: 0.875rem;
+      margin: var(--s-4) 0 var(--s-2);
     }
-    .pcard-list { display: flex; flex-direction: column; gap: 3px; }
+    .pcard-list { display: grid; gap: 4px; }
     .pcard-item {
       font-family: var(--font-hand);
-      font-size: 14px;
+      font-size: 15.5px;
       color: var(--ink-light);
-      padding-left: 0.875rem;
+      line-height: 1.4;
+      padding-left: 15px;
       position: relative;
-      line-height: 1.5;
     }
     .pcard-item::before {
       content: '—';
       position: absolute;
-      left: 0;
+      left: 0; top: 0;
       color: var(--pencil);
-      font-size: 12px;
     }
 
-    /* DIRECTION CARD */
+    /* DIRECTION CARDS */
     .dcard {
       background: var(--paper-dark);
       border: 2px solid var(--ink);
-      padding: 1.4rem;
+      box-shadow: var(--card-shadow);
+      padding: var(--s-5) var(--s-4);
       position: relative;
+      display: flex;
+      flex-direction: column;
     }
     .dcard.chosen {
       border-color: var(--teal);
-      background: rgba(46,125,110,0.04);
+      background: var(--teal-wash);
     }
     .dcard.chosen::before {
       content: '';
       position: absolute;
-      top: -11px; left: 16px;
-      width: 40px; height: 20px;
-      background: rgba(232,184,75,0.38);
-      border-top: 1px solid rgba(232,184,75,0.5);
-      border-bottom: 1px solid rgba(232,184,75,0.5);
+      top: -11px; left: 20px;
+      width: 42px; height: 20px;
+      background: var(--tape);
+      border-top: 1px solid var(--tape-edge);
+      border-bottom: 1px solid var(--tape-edge);
       transform: rotate(1deg);
     }
     .dcard-label {
       font-family: var(--font-mono);
       font-size: 8px;
-      letter-spacing: 2px;
+      letter-spacing: 1.8px;
       text-transform: uppercase;
-      margin-bottom: 0.5rem;
+      color: var(--pencil);
+      margin-bottom: var(--s-2);
     }
     .dcard.chosen .dcard-label { color: var(--teal); }
-    .dcard:not(.chosen) .dcard-label { color: var(--pencil); }
-    .dcard-t { font-family: var(--font-hand); font-size: 17px; font-weight: 700; margin-bottom: 0.5rem; }
-    .dcard-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.6; }
-
-    /* IMAGES */
-    .imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
-    .imgs.c2 { grid-template-columns: 1fr 1fr; }
-    .imgs.c3 { grid-template-columns: repeat(3, 1fr); }
-    .iw {
-      border: 2px solid var(--ink);
-      background: var(--paper-dark);
-      position: relative;
-      transition: transform 0.2s;
-    }
-    .iw:hover { transform: translate(-2px,-2px); }
-    .iw::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; right: -4px;
-      width: 100%; height: 100%;
-      border: 1.5px solid rgba(26,22,18,0.15);
-      z-index: -1;
-    }
-    .iw img { width: 100%; display: block; }
-    .icap {
-      padding: 7px 10px;
+    .dcard-t {
       font-family: var(--font-hand);
-      font-size: 13px;
-      color: var(--ink-faint);
-      border-top: 1px solid rgba(26,22,18,0.12);
-      line-height: 1.4;
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: var(--s-2);
+    }
+    .dcard-d {
+      font-family: var(--font-hand);
+      font-size: 15.5px;
+      color: var(--ink-light);
+      line-height: 1.55;
     }
 
-    /* ITERATION */
-    .ilist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+    /* ============================================================
+       IMAGE PLATES  (capped so screens never render oversized)
+       ============================================================ */
+    .imgs {
+      display: grid;
+      gap: var(--s-3);
+      align-items: stretch;
+    }
+    .imgs.c2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .imgs.c3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .iw {
+      display: flex;
+      flex-direction: column;
+      border: 2px solid var(--ink);
+      background: var(--paper);
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .iw:hover { transform: translate(-2px, -2px); box-shadow: var(--card-shadow-hover); }
+    .iw img {
+      width: 100%;
+      height: 100%;
+      max-height: var(--plate-h, 340px);
+      object-fit: contain;
+      background: var(--paper-dark);
+      padding: var(--s-3);
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+    .imgs.c3 .iw img { --plate-h: 280px; }
+
+    /* phone screenshots: narrow, centred plates instead of wide letterboxes */
+    .imgs.tall {
+      grid-template-columns: repeat(2, minmax(0, 310px));
+      justify-content: center;
+      gap: var(--s-4);
+    }
+    .imgs.tall .iw img { --plate-h: 440px; }
+    .icap {
+      padding: 8px 11px;
+      font-family: var(--font-hand);
+      font-size: 14.5px;
+      color: var(--ink-faint);
+      line-height: 1.35;
+      border-top: 1px solid var(--line);
+      background: var(--paper);
+    }
+
+    /* ============================================================
+       BEFORE / AFTER ROWS
+       ============================================================ */
     .it {
       display: grid;
-      grid-template-columns: 1fr 28px 1fr;
-      align-items: center;
-      gap: 8px;
+      grid-template-columns: minmax(0, 1fr) 34px minmax(0, 1fr);
+      align-items: stretch;
+      gap: var(--s-2);
     }
     .it-b {
-      padding: 0.875rem 1rem;
-      border: 1.5px solid rgba(26,22,18,0.15);
+      padding: var(--s-3) var(--s-4);
+      border: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .it-b.bef { background: var(--paper-dark); }
-    .it-b.aft { background: rgba(46,125,110,0.04); border-color: rgba(46,125,110,0.3); }
+    .it-b.aft { background: var(--teal-wash); border-color: var(--teal-soft); }
     .it-lbl {
       font-family: var(--font-mono);
       font-size: 8px;
-      letter-spacing: 2px;
+      letter-spacing: 1.8px;
       text-transform: uppercase;
-      margin-bottom: 3px;
+      color: var(--pencil);
+      margin-bottom: 5px;
     }
-    .it-b.bef .it-lbl { color: var(--pencil); }
     .it-b.aft .it-lbl { color: var(--teal); }
-    .it-txt { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.45; }
+    .it-txt {
+      font-family: var(--font-hand);
+      font-size: 15.5px;
+      color: var(--ink-light);
+      line-height: 1.45;
+    }
     .it-b.aft .it-txt { color: var(--ink); }
-    .it-arr { text-align: center; color: var(--teal); font-size: 1rem; font-weight: 700; }
+    .it-arr {
+      display: grid;
+      place-items: center;
+      color: var(--teal);
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1;
+    }
 
-    /* QUOTE */
+    /* ============================================================
+       QUOTE / REFLECTION / TOOLS
+       ============================================================ */
     .quote {
-      border-left: 3px solid var(--teal);
-      padding: 0.875rem 1.25rem;
-      margin: 1.25rem 0;
-      background: rgba(46,125,110,0.04);
       position: relative;
-      transform: rotate(-0.3deg);
+      border-left: 3px solid var(--teal);
+      background: var(--teal-wash);
+      padding: var(--s-5) var(--s-5) var(--s-4);
+      margin: var(--s-5) 0 0;
+      max-width: 68ch;
     }
     .quote::before {
       content: '';
       position: absolute;
-      top: -11px; left: 20px;
-      width: 36px; height: 20px;
-      background: rgba(232,184,75,0.38);
-      border-top: 1px solid rgba(232,184,75,0.5);
-      border-bottom: 1px solid rgba(232,184,75,0.5);
-      transform: rotate(1.5deg);
+      top: -11px; left: 24px;
+      width: 38px; height: 20px;
+      background: var(--tape);
+      border-top: 1px solid var(--tape-edge);
+      border-bottom: 1px solid var(--tape-edge);
+      transform: rotate(1.4deg);
     }
     .quote p {
       font-family: var(--font-serif);
-      font-size: 1.25rem;
+      font-size: clamp(1.1rem, 1.8vw, 1.3rem);
       font-style: italic;
-      line-height: 1.65;
+      line-height: 1.6;
       color: var(--ink);
     }
     .quote-attr {
       font-family: var(--font-mono);
       font-size: 9px;
       letter-spacing: 1px;
-      color: var(--ink-faint);
-      margin-top: 0.5rem;
       text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-top: var(--s-3);
     }
 
-    /* REFLECTION */
     .rc {
       background: var(--paper-dark);
-      border: 1.5px solid rgba(26,22,18,0.15);
-      padding: 1.1rem;
+      border: 1px solid var(--line);
+      padding: var(--s-4);
+      display: flex;
+      flex-direction: column;
     }
-    .rc-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; color: var(--teal); margin-bottom: 5px; }
-    .rc-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.7; }
+    .rc-t {
+      font-family: var(--font-hand);
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--teal);
+      line-height: 1.25;
+      margin-bottom: 5px;
+    }
+    .rc-d {
+      font-family: var(--font-hand);
+      font-size: 15.5px;
+      color: var(--ink-light);
+      line-height: 1.6;
+    }
 
-    /* TOOLS */
     .tools {
       display: flex;
-      gap: 8px;
+      gap: var(--s-2);
       flex-wrap: wrap;
-      margin-bottom: 1.5rem;
     }
     .tool {
       font-family: var(--font-mono);
       font-size: 9px;
       letter-spacing: 1px;
       text-transform: uppercase;
-      padding: 4px 10px;
+      padding: 6px 11px;
       border: 1.5px solid var(--ink);
       background: var(--paper);
       color: var(--ink-light);
-      transform: rotate(-0.5deg);
-      display: inline-block;
+      line-height: 1.2;
     }
-    .tool:nth-child(2n) { transform: rotate(0.4deg); }
-    .tool:nth-child(3n) { transform: rotate(-0.2deg); }
 
-    /* MARGIN ANNOTATION */
-    .margin-note {
+    /* CLOSING NOTE */
+    .closing {
+      position: relative;
+      margin-top: var(--s-7);
+      padding: var(--s-5);
+      border: 1px solid var(--line);
+      background: var(--paper-dark);
+    }
+    .closing::before {
+      content: '';
+      position: absolute;
+      top: -11px; left: 24px;
+      width: 42px; height: 20px;
+      background: var(--tape);
+      border-top: 1px solid var(--tape-edge);
+      border-bottom: 1px solid var(--tape-edge);
+      transform: rotate(1.4deg);
+    }
+    .closing p.q {
+      font-family: var(--font-serif);
+      font-size: clamp(1.02rem, 1.6vw, 1.14rem);
+      font-style: italic;
+      color: var(--ink-light);
+      line-height: 1.68;
+      max-width: 64ch;
+    }
+    .closing p.sig {
       font-family: var(--font-scrawl);
-      font-size: 15px;
+      font-size: 20px;
       color: var(--red);
-      line-height: 1.3;
-      transform: rotate(-3deg);
-      display: inline-block;
+      margin-top: var(--s-3);
+    }
+    .corner-fold {
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 24px; height: 24px;
+      background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
+      border-top: 1px solid var(--pencil-light);
+      border-left: 1px solid var(--pencil-light);
+      pointer-events: none;
     }
 
-    /* HIGHLIGHT */
+    /* HIGHLIGHTS */
     .hl-y {
-      background: linear-gradient(120deg, rgba(232,184,75,0)0%, rgba(232,184,75,0.45)10%, rgba(232,184,75,0.45)90%, rgba(232,184,75,0)100%);
-      padding: 0 2px;
-    }
-    .hl-b {
-      background: linear-gradient(120deg, rgba(44,95,138,0)0%, rgba(44,95,138,0.15)10%, rgba(44,95,138,0.15)90%, rgba(44,95,138,0)100%);
+      background: linear-gradient(120deg,
+        rgba(232,184,75,0) 0%, rgba(232,184,75,0.42) 8%,
+        rgba(232,184,75,0.42) 92%, rgba(232,184,75,0) 100%);
       padding: 0 2px;
     }
 
     /* SCROLL REVEAL */
     .rev {
       opacity: 0;
-      transform: translateY(16px);
+      transform: translateY(14px);
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
     .rev.in { opacity: 1; transform: none; }
 
-    /* CORNER FOLD */
-    .corner-fold {
-      position: absolute;
-      bottom: 0; right: 0;
-      width: 24px; height: 24px;
-      background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
-      border-top: 1px solid var(--pencil);
-      border-left: 1px solid var(--pencil);
-      pointer-events: none;
-    }
-
     /* FOOTER */
     footer {
-      border-top: 2.5px solid var(--ink);
-      padding: 1.25rem 2rem;
+      margin-left: var(--bind-w);
+      border-top: 2px solid var(--ink);
+      padding: var(--s-5) var(--gutter);
       text-align: center;
       font-family: var(--font-mono);
       font-size: 9px;
-      letter-spacing: 2px;
+      letter-spacing: 1.6px;
       text-transform: uppercase;
       color: var(--pencil);
-      margin-left: 32px;
+      line-height: 1.8;
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 860px) {
-      .sidenav { display: none; }
-      .main { margin-left: 32px; padding: 5rem 1.5rem 5rem; }
-      .stats { grid-template-columns: repeat(2, 1fr); }
-      .g3, .g2 { grid-template-columns: 1fr; }
-      .it { grid-template-columns: 1fr; }
-      .it-arr { display: none; }
-      .imgs.c2, .imgs.c3 { grid-template-columns: 1fr; }
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+
+    /* laptop — narrow the rail */
+    @media (max-width: 1180px) {
+      :root { --side-w: 190px; }
     }
-    @media (max-width: 600px) {
+
+    /* tablet landscape — drop the rail */
+    @media (max-width: 1024px) {
+      .sidenav { display: none; }
+      .main { margin-left: var(--bind-w); }
+      .g3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .g3 > *:last-child:nth-child(odd) { grid-column: 1 / -1; }
+      .imgs.c3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .imgs.c3 .iw img { --plate-h: 320px; }
+    }
+
+    /* tablet portrait */
+    @media (max-width: 820px) {
+      :root { --nav-h: 56px; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .stat:nth-child(2n) { border-right: 0; }
+      .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+      .hero-video::before { left: 22px; }
+      .imgs.tall { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    /* mobile */
+    @media (max-width: 680px) {
       .spiral-binding { display: none; }
-      .topnav, footer { margin-left: 0; left: 0; }
-      .main { margin-left: 0; padding: 5rem 1.25rem 4rem; }
-      .nav-links { display: none; }
-      .hero-h { font-size: 2.2rem; }
+      .topnav { left: 0; }
+      .main { margin-left: 0; padding-top: calc(var(--nav-h) + var(--s-6)); }
+      footer { margin-left: 0; }
+
+      .logo { font-size: 20px; }
+      .nav-links { gap: 16px; }
+      .nav-links a { font-size: 16px; }
+
+      .g2, .g3, .imgs.c2, .imgs.c3 { grid-template-columns: minmax(0, 1fr); }
+      .g3 > *:last-child:nth-child(odd) { grid-column: auto; }
+
+      .imgs.tall { grid-template-columns: minmax(0, 300px); }
+      .iw img { --plate-h: 400px; }
+      .imgs.c3 .iw img { --plate-h: 400px; }
+      .imgs.tall .iw img { --plate-h: 440px; }
+
+      .it { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+      .it-arr { transform: rotate(90deg); padding: 2px 0; }
+
+      .sec-h::after { width: 100%; }
+      .quote { padding: var(--s-5) var(--s-4) var(--s-4); }
+    }
+
+    /* small mobile */
+    @media (max-width: 420px) {
+      .stats { grid-template-columns: minmax(0, 1fr); }
+      .stat { border-right: 0; border-bottom: 1px solid var(--line); }
+      .stat:last-child { border-bottom: 0; }
+      .fr { grid-template-columns: 1fr; }
+      .fr-i { display: none; }
+      .iw img { --plate-h: 320px; }
+      .imgs.c3 .iw img { --plate-h: 320px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      .rev { opacity: 1; transform: none; }
     }
   </style>
 </head>
 <body>
 
-  <!-- SPIRAL BINDING -->
-  <div class="spiral-binding" aria-hidden="true" id="spiralBinding"></div>
+  <!-- hand-drawn icon sprite (ink line icons, no emoji) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-map" viewBox="0 0 24 24"><path d="M2.6 6.4 9 3.6l6.2 2.8 6.2-2.7v14l-6.2 2.7L9 17.6l-6.4 2.8z"/><path d="M9 3.6v14M15.2 6.4v14.4"/></symbol>
+      <symbol id="i-mind" viewBox="0 0 24 24"><path d="M17 8.2a5.4 5.4 0 0 0-10.3 1.3A3.9 3.9 0 0 0 7.4 17h9.2a4.4 4.4 0 0 0 .4-8.8z"/><path d="M6 20.4h.02M9.2 22h.02"/></symbol>
+      <symbol id="i-book" viewBox="0 0 24 24"><path d="M4.4 3.4h11.8a3 3 0 0 1 3 3v14.2H7.4a3 3 0 0 0-3 3z"/><path d="M8 7.6h7.6M8 11.2h7.6M8 14.8h4.6"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.2" y="10.4" width="15.6" height="10.2" rx="1.6"/><path d="M7.8 10.2V7.4a4.2 4.2 0 0 1 8.4-.2v3"/><path d="M12 14.4v2.6"/></symbol>
+      <symbol id="i-wave" viewBox="0 0 24 24"><path d="M2.4 8.6c2-2.2 4-2.2 6 0s4 2.2 6 0 4-2.2 6 0"/><path d="M2.4 13.4c2-2.2 4-2.2 6 0s4 2.2 6 0 4-2.2 6 0"/><path d="M2.4 18.2c2-2.2 4-2.2 6 0s4 2.2 6 0 4-2.2 6 0"/></symbol>
+      <symbol id="i-frame" viewBox="0 0 24 24"><rect x="3" y="4.2" width="18" height="15.6" rx="1.6"/><circle cx="8.6" cy="9.4" r="1.7"/><path d="M3.4 17.2 9 11.8l4.4 4.2 3-2.6 4.2 3.8"/></symbol>
+      <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.6 2.4 4.8 13.8h6.1l-1.3 7.8 9-11.6h-6z"/></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.6" cy="10.6" r="6.8"/><path d="M15.6 15.8 21 21.2"/></symbol>
+      <symbol id="i-folder" viewBox="0 0 24 24"><path d="M2.8 5.6h6.4l2.2 3h9.8v11.8H2.8z"/><path d="M2.8 11.4h18.4"/></symbol>
+      <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.2" y="5.4" width="17.6" height="15.2" rx="1.6"/><path d="M3.4 10h17.2M8 3.4v4M16 3.4v4"/><path d="M7.6 13.8h2.2M13.4 13.8h3M7.6 17.2h5.4"/></symbol>
+      <symbol id="i-home" viewBox="0 0 24 24"><path d="M2.8 11.2 12 3l9.2 8.2v9.6H2.8z"/><path d="M9.4 20.8v-6.2h5.2v6.2"/></symbol>
+      <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3.2 20.6h17.6"/><path d="M6.6 20.4v-6.6M11.4 20.4V7.6M16.2 20.4v-9.4"/></symbol>
+      <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.4"/><path d="M3.2 20.4c.4-3.6 2.8-5.6 5.8-5.6s5.4 2 5.8 5.6"/><path d="M15.8 5.2a3.4 3.4 0 0 1 .3 6.6"/><path d="M17.2 15.2c2.2.5 3.4 2.4 3.6 5.2"/></symbol>
+      <symbol id="i-spark" viewBox="0 0 24 24"><path d="M10.4 2.8 12.4 8.4l5.6 2-5.6 2-2 5.6-2-5.6-5.6-2 5.6-2z"/><path d="M18.4 14.6l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9z"/></symbol>
+      <symbol id="i-signal" viewBox="0 0 24 24"><circle cx="12" cy="12.4" r="1.9"/><path d="M8.2 8.6a5.4 5.4 0 0 0 0 7.6M15.8 8.6a5.4 5.4 0 0 1 0 7.6"/><path d="M5.2 5.4a9.6 9.6 0 0 0 0 14M18.8 5.4a9.6 9.6 0 0 1 0 14"/></symbol>
+      <symbol id="i-export" viewBox="0 0 24 24"><path d="M3.4 14.4v6.2h17.2v-6.2"/><path d="M12 15.6V3.4"/><path d="M7.6 7.8 12 3.2l4.4 4.6"/></symbol>
+      <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3.2c5 0 9 3.6 9 8 0 2.6-2 4.2-4.4 4.2h-1.7c-1.2 0-2.1.9-2.1 2 0 .5.2.9.5 1.3.3.4.5.8.5 1.2 0 1.1-.9 1.9-2 1.9-5 0-8.8-4-8.8-9.1S7 3.2 12 3.2z"/><path d="M7.6 11.4h.02M10.4 7.8h.02M14.6 8.2h.02M17.4 11.8h.02"/></symbol>
+      <symbol id="i-tap" viewBox="0 0 24 24"><path d="M10.2 11.6V5.8a1.9 1.9 0 0 1 3.8 0v7.4"/><path d="M14 12.4v-1a1.8 1.8 0 0 1 3.6 0v1"/><path d="M17.6 13v-.4a1.8 1.8 0 0 1 3.4.8v3.4c0 2.4-2 4.4-4.6 4.4h-2.6c-2 0-3-.9-4.2-2.4l-3-4a1.7 1.7 0 0 1 2.6-2.2l1.6 1.8"/></symbol>
+      <symbol id="i-atom" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.3"/><ellipse cx="12" cy="12" rx="9.6" ry="4.2"/><ellipse cx="12" cy="12" rx="9.6" ry="4.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9.6" ry="4.2" transform="rotate(120 12 12)"/></symbol>
+      <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12.4 2.6c.4 3.2-2 4.4-3.6 6.6-1.6 2.2-2.6 3.8-2.6 6.2a5.9 5.9 0 0 0 11.8.3c0-2.6-1.4-4.2-2.6-5.6-.4 1.2-1.2 1.8-2 1.8 1.2-3-.2-6.6-1-9.3z"/></symbol>
+      <symbol id="i-pen" viewBox="0 0 24 24"><path d="M3.4 20.6l1.2-4.2L16.2 4.8a2.2 2.2 0 0 1 3.1 3.1L7.6 19.4z"/><path d="M14.8 6.6l2.9 2.9"/></symbol>
+    </defs>
+  </svg>
 
-  <!-- NAV -->
+  <div class="spiral-binding" aria-hidden="true"></div>
+
+  <!-- ================= TOP NAV ================= -->
   <nav class="topnav">
     <div class="topnav-in">
       <a href="../index.html" class="logo">Inayat</a>
@@ -952,7 +1179,7 @@
     </div>
   </nav>
 
-  <!-- SIDENAV -->
+  <!-- ================= SIDE NAV ================= -->
   <aside class="sidenav">
     <a href="../Projects.html" class="back-link">← Projects</a>
     <div>
@@ -962,550 +1189,595 @@
         <a href="#research" class="side-a"><span class="side-num">01</span>Research</a>
         <a href="#personas" class="side-a"><span class="side-num">02</span>Personas</a>
         <a href="#iterations" class="side-a"><span class="side-num">03</span>Iterations</a>
-        <a href="#concept" class="side-a"><span class="side-num">04</span>Design Concept</a>
+        <a href="#concept" class="side-a"><span class="side-num">04</span>Concept</a>
         <a href="#solution" class="side-a"><span class="side-num">05</span>Solution</a>
-        <a href="#problems" class="side-a"><span class="side-num">06</span>Problems Solved</a>
+        <a href="#problems" class="side-a"><span class="side-num">06</span>Problems</a>
         <a href="#designsystem" class="side-a"><span class="side-num">07</span>Design System</a>
         <a href="#tech" class="side-a"><span class="side-num">08</span>Technical</a>
         <a href="#impact" class="side-a"><span class="side-num">09</span>Impact</a>
         <a href="#reflection" class="side-a"><span class="side-num">10</span>Reflection</a>
       </nav>
     </div>
-    <!-- Small doodle at bottom of sidenav -->
-    <div style="margin-top: auto; padding-top: 1rem; opacity: 0.35; pointer-events:none;">
-      <svg viewBox="0 0 80 60" style="width:70px">
+    <div class="side-doodle" aria-hidden="true">
+      <svg viewBox="0 0 80 60" style="width:74px">
         <rect x="10" y="10" width="20" height="30" stroke="#1a1612" stroke-width="1" fill="none"/>
         <rect x="34" y="18" width="16" height="22" stroke="#1a1612" stroke-width="1" fill="none"/>
         <rect x="54" y="22" width="18" height="18" stroke="#1a1612" stroke-width="1" fill="none"/>
         <line x1="8" y1="40" x2="76" y2="40" stroke="#1a1612" stroke-width="1.5"/>
-        <text x="14" y="52" font-family="Reenie Beanie, cursive" font-size="9" fill="#c0392b">✈ chemtrails</text>
+        <path d="M10 50.5 22 46l-4.5 5.5L22 53z" fill="#c0392b" stroke="none"/>
+        <text x="25" y="53" font-family="Reenie Beanie, cursive" font-size="10" fill="#c0392b">chemtrails</text>
       </svg>
     </div>
   </aside>
 
-  <!-- MAIN -->
+  <!-- ================= MAIN ================= -->
   <main class="main">
+    <div class="wrap">
 
-    <!-- HERO -->
-    <header style="margin-bottom:4rem">
-      <div class="tags">
-        <span class="tag">UX/UI Design</span>
-        <span class="tag">Mobile Development</span>
-        <span class="tag">Full-Stack</span>
-      </div>
-
-      <h1 class="hero-h">
-        Chemtrails<br/>
-        <span class="squiggle-wrap" style="color: var(--teal);">Travel Planning App
-          <svg viewBox="0 0 380 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2,8 C30,3 65,14 100,7 C135,2 170,13 205,6 C240,1 275,12 310,6 C338,2 362,10 378,7" stroke="#c0392b" stroke-width="3" fill="none" stroke-linecap="round"/>
-          </svg>
-        </span>
-      </h1>
-
-      <p class="hero-sub" style="margin-top:0.75rem">Case Study — Mobile App · Fall 2025</p>
-
-      <p class="hero-p">
-        Bringing <span class="hl-y">discovery, planning, and memory-keeping</span> into one cohesive mobile experience — so travellers never have to juggle six apps again.
-      </p>
-
-      <div class="hero-video">
-        <iframe
-          src="https://www.youtube.com/embed/TTxRGhsGydw?autoplay=1&mute=1&loop=1&playlist=TTxRGhsGydw&controls=0&modestbranding=1&rel=0"
-          allow="autoplay; encrypted-media"
-          allowfullscreen
-        ></iframe>
-      </div>
-
-      <div class="stats">
-        <div class="stat">
-          <div class="s-n">5</div>
-          <div class="s-l">User interviews</div>
-          <div class="s-sub">Semi-structured</div>
+      <!-- HERO -->
+      <header class="hero">
+        <div class="tags">
+          <span class="tag">UX/UI Design</span>
+          <span class="tag">Mobile Development</span>
+          <span class="tag">Full-Stack</span>
         </div>
-        <div class="stat">
-          <div class="s-n">3</div>
-          <div class="s-l">Apps replaced</div>
-          <div class="s-sub">Per average user</div>
-        </div>
-        <div class="stat">
-          <div class="s-n">90%</div>
-          <div class="s-l">Photo attachment</div>
-          <div class="s-sub">After journal redesign</div>
-        </div>
-        <div class="stat">
-          <div class="s-n">3</div>
-          <div class="s-l">Key personas</div>
-          <div class="s-sub">Via research</div>
-        </div>
-      </div>
 
-      <div class="meta">
-        <div>
-          <div class="m-k">Timeline</div>
-          <div class="m-v">Fall 2025</div>
-        </div>
-        <div>
-          <div class="m-k">My Role</div>
-          <div class="m-v">UX/UI Designer<br/>Front &amp; Back-End Dev</div>
-        </div>
-        <div>
-          <div class="m-k">Team</div>
-          <div class="m-v">Inayat Gulati<br/>Shin Thant Thant</div>
-        </div>
-        <div>
-          <div class="m-k">Tools</div>
-          <div class="m-v">React Native, Firebase<br/>Google Places API, Figma</div>
-        </div>
-      </div>
-    </header>
+        <h1 class="hero-h">
+          Chemtrails<br/>
+          <span class="squiggle-wrap">Travel Planning App
+            <svg viewBox="0 0 380 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M2,8 C30,3 65,14 100,7 C135,2 170,13 205,6 C240,1 275,12 310,6 C338,2 362,10 378,7" stroke="#c0392b" stroke-width="3" fill="none" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </h1>
 
-    <!-- 00 OVERVIEW -->
-    <section id="overview" class="sec rev">
-      <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
-      <h2 class="sec-h">The Problem</h2>
-      <p class="sec-lead">
-        Travel planning is fragmented. Users rely on separate apps to search places, save ideas, plan schedules, and document experiences — making the process overwhelming and disconnected.
-      </p>
-      <div class="rule"></div>
+        <p class="hero-sub">Case Study — Mobile App · Fall 2025</p>
 
-      <div class="g2" style="margin-bottom:2rem">
-        <div class="nc">
-          <div class="nc-n" style="font-size:1.4rem; margin-bottom:6px">Fragmented</div>
-          <div class="nc-t">Planning across 6 apps</div>
-          <div class="nc-d">Users switch between Google Maps, Instagram, and Notes simultaneously — context-switching was the #1 frustration across all 5 interviews.</div>
-        </div>
-        <div class="nc">
-          <div class="nc-n" style="font-size:1.4rem; margin-bottom:6px">Lost saves</div>
-          <div class="nc-t">No consolidated view</div>
-          <div class="nc-d">4 of 5 participants forgot where they saved destinations because saves were scattered across different platforms with no single source of truth.</div>
-        </div>
-        <div class="nc">
-          <div class="nc-n" style="font-size:1.4rem; margin-bottom:6px">Impersonal</div>
-          <div class="nc-t">Camera roll ≠ memory</div>
-          <div class="nc-d">3 of 5 participants wanted to document memories that felt more personal than a camera roll — no context, no narrative, no story.</div>
-        </div>
-        <div class="nc">
-          <div class="nc-n">3+</div>
-          <div class="nc-t">Apps per trip</div>
-          <div class="nc-d">Every participant used at least 3 separate apps to plan a single trip — a baseline we used as our screening criteria for interviews.</div>
-        </div>
-      </div>
-
-      <div class="sub">Design Goals</div>
-      <div class="flist">
-        <div class="fr"><div class="fr-i">🗺</div><div><div class="fr-t">Unify the planning experience</div><div class="fr-d">One app for search, save, schedule, and journal — eliminate context-switching entirely.</div></div></div>
-        <div class="fr"><div class="fr-i">🧠</div><div><div class="fr-t">Reduce cognitive load</div><div class="fr-d">Soft tones, clear hierarchy, and generous spacing so the app feels like a travel companion, not a task manager.</div></div></div>
-        <div class="fr"><div class="fr-i">📓</div><div><div class="fr-t">Make memory-keeping personal</div><div class="fr-d">Journal entries with inline photo uploads so trips become personal narratives, not unordered camera rolls.</div></div></div>
-        <div class="fr"><div class="fr-i">🔒</div><div><div class="fr-t">Private, not social</div><div class="fr-d">A personal travel companion — not a platform for sharing. Every feature decision was filtered through this principle.</div></div></div>
-      </div>
-
-      <div class="sub">Tools &amp; Methods</div>
-      <div class="tools">
-        <span class="tool">React Native (Expo)</span>
-        <span class="tool">Firebase Auth</span>
-        <span class="tool">Firestore</span>
-        <span class="tool">Firebase Storage</span>
-        <span class="tool">Google Places API</span>
-        <span class="tool">Figma</span>
-        <span class="tool">User Interviews</span>
-        <span class="tool">Usability Testing</span>
-      </div>
-    </section>
-
-    <!-- 01 RESEARCH -->
-    <section id="research" class="sec rev">
-      <div class="phase"><div class="p-dot">1</div><span class="p-txt">User Research</span></div>
-      <h2 class="sec-h">Who We Designed For</h2>
-      <p class="sec-lead">
-        5 semi-structured interviews with frequent travellers aged 22–35, each using at least 3 separate apps to plan a single trip.
-      </p>
-      <div class="rule"></div>
-
-      <div class="sub">Key Findings</div>
-      <div class="flist" style="margin-bottom:2rem">
-        <div class="fr"><div class="fr-i">01</div><div><div class="fr-t">Context-switching was the #1 pain</div><div class="fr-d">All 5 participants used Google Maps, Instagram, and Notes simultaneously — the mental overhead of switching between them was cited as more exhausting than the planning itself.</div></div></div>
-        <div class="fr"><div class="fr-i">02</div><div><div class="fr-t">Saved places get lost</div><div class="fr-d">4 of 5 participants said they regularly forgot where they'd saved a destination — the save felt useful in the moment but was never actionable later.</div></div></div>
-        <div class="fr"><div class="fr-i">03</div><div><div class="fr-t">Camera rolls feel impersonal</div><div class="fr-d">3 of 5 wanted a way to document memories with context and feeling — not just photos without narrative.</div></div></div>
-      </div>
-
-      <div class="quote">
-        <p>"The problem isn't planning — it's that my planning is scattered across 6 apps, so I can never see the full picture."</p>
-        <div class="quote-attr">— Research Participant</div>
-      </div>
-    </section>
-
-    <!-- 02 PERSONAS -->
-    <section id="personas" class="sec rev">
-      <div class="phase"><div class="p-dot">2</div><span class="p-txt">User Personas</span></div>
-      <h2 class="sec-h">Three Users, Three Needs</h2>
-      <p class="sec-lead">
-        Through research, we identified three personas that shaped every design decision — from information hierarchy to which features to cut.
-      </p>
-      <div class="rule"></div>
-
-      <div class="g3">
-        <div class="pcard">
-          <div class="pcard-av">E</div>
-          <div class="pcard-name">The Spontaneous Explorer</div>
-          <div class="pcard-role">Casual Traveller</div>
-          <div class="pcard-quote">"I find amazing places on Instagram but always forget where I saved them."</div>
-          <div class="pcard-sub">Goals</div>
-          <div class="pcard-list">
-            <div class="pcard-item">Discover new places easily</div>
-            <div class="pcard-item">Save and revisit ideas quickly</div>
-            <div class="pcard-item">Plan loosely, not rigidly</div>
-          </div>
-          <div class="pcard-sub">Frustrations</div>
-          <div class="pcard-list">
-            <div class="pcard-item">Saved places scattered across apps</div>
-            <div class="pcard-item">No single view of the big picture</div>
-          </div>
-        </div>
-        <div class="pcard">
-          <div class="pcard-av">P</div>
-          <div class="pcard-name">The Meticulous Planner</div>
-          <div class="pcard-role">Frequent Traveller</div>
-          <div class="pcard-quote">"I spend more time organising my trip than actually enjoying it."</div>
-          <div class="pcard-sub">Goals</div>
-          <div class="pcard-list">
-            <div class="pcard-item">Build detailed day-by-day itineraries</div>
-            <div class="pcard-item">Keep everything in one place</div>
-            <div class="pcard-item">Share plans with travel companions</div>
-          </div>
-          <div class="pcard-sub">Frustrations</div>
-          <div class="pcard-list">
-            <div class="pcard-item">Too much context-switching between apps</div>
-            <div class="pcard-item">Calendar and notes stay disconnected</div>
-          </div>
-        </div>
-        <div class="pcard">
-          <div class="pcard-av">M</div>
-          <div class="pcard-name">The Memory Keeper</div>
-          <div class="pcard-role">Experience Documenter</div>
-          <div class="pcard-quote">"My camera roll has 2,000 photos but I can't tell the story of a single trip."</div>
-          <div class="pcard-sub">Goals</div>
-          <div class="pcard-list">
-            <div class="pcard-item">Document trips as personal narratives</div>
-            <div class="pcard-item">Attach context and feelings to photos</div>
-            <div class="pcard-item">Revisit memories meaningfully</div>
-          </div>
-          <div class="pcard-sub">Frustrations</div>
-          <div class="pcard-list">
-            <div class="pcard-item">Camera roll feels impersonal and unordered</div>
-            <div class="pcard-item">Journaling apps not linked to plans</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 03 ITERATIONS -->
-    <section id="iterations" class="sec rev">
-      <div class="phase"><div class="p-dot">3</div><span class="p-txt">Design Iterations</span></div>
-      <h2 class="sec-h">Three Rounds, Three Fixes</h2>
-      <p class="sec-lead">
-        We went through three major design iterations, each driven by a specific insight from user testing.
-      </p>
-      <div class="rule"></div>
-
-      <div class="ilist" style="margin-bottom:2rem">
-        <div class="it">
-          <div class="it-b bef"><div class="it-lbl">v1 — Before</div><div class="it-txt">Home dashboard showed ALL upcoming trips simultaneously</div></div>
-          <div class="it-arr">→</div>
-          <div class="it-b aft"><div class="it-lbl">v2 — After</div><div class="it-txt">One upcoming plan + one featured destination — clear starting point, reduced visual noise</div></div>
-        </div>
-        <div class="it">
-          <div class="it-b bef"><div class="it-lbl">v2 — Before</div><div class="it-txt">Adding photos required navigating to a separate screen</div></div>
-          <div class="it-arr">→</div>
-          <div class="it-b aft"><div class="it-lbl">v3 — After</div><div class="it-txt">Photo upload moved inline — attachment rate jumped from 40% to 90%</div></div>
-        </div>
-      </div>
-
-      <div class="sub">What We Decided Not to Build</div>
-      <div class="g2">
-        <div class="dcard">
-          <div class="dcard-label">Cut Feature</div>
-          <div class="dcard-t">Social Sharing</div>
-          <div class="dcard-d">We prototyped a social sharing feature but cut it after research clearly showed users wanted a private travel companion — not a social platform. Removing it sharpened our core value proposition.</div>
-        </div>
-        <div class="dcard chosen">
-          <div class="dcard-label">✓ Core Focus</div>
-          <div class="dcard-t">Private Travel Companion</div>
-          <div class="dcard-d">All five features — Explore, Wishlist, Calendar, Journal, Profile — serve one user, privately. Every interaction is personal and intentional, not performative.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 04 DESIGN CONCEPT -->
-    <section id="concept" class="sec rev">
-      <div class="phase"><div class="p-dot">4</div><span class="p-txt">Design Concept</span></div>
-      <h2 class="sec-h">Calm · Exploratory · <span class="hl-y">Personal</span></h2>
-      <p class="sec-lead">
-        Chemtrails is designed to feel like a travel companion, not a task manager. Content — places, images, memories — is always the primary focus.
-      </p>
-      <div class="rule"></div>
-
-      <div class="sub">Design Principles</div>
-      <div class="flist" style="margin-bottom:2rem">
-        <div class="fr"><div class="fr-i">🌊</div><div><div class="fr-t">Calm and unhurried</div><div class="fr-d">The app should feel like browsing a travel magazine, not filling a spreadsheet. Soft tones and generous spacing reinforce this at every screen.</div></div></div>
-        <div class="fr"><div class="fr-i">🖼</div><div><div class="fr-t">Content-first</div><div class="fr-d">UI chrome stays minimal so destination photos and journal memories take centre stage. The interface serves the content, never competes with it.</div></div></div>
-        <div class="fr"><div class="fr-i">⚡</div><div><div class="fr-t">Low friction at every action</div><div class="fr-d">Saving a place, scheduling a visit, writing a journal entry — each should take under 30 seconds. Friction is removed, not hidden.</div></div></div>
-      </div>
-
-      <div class="imgs c3">
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/pJ2YwFEGutHEWSxIjrMCGsefa8E.png" alt="Design concept 1"/>
-          <div class="icap">Explore screen</div>
-        </div>
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/q4R2OOhv0ZjtXvTos0ltK74pv4.png" alt="Design concept 2"/>
-          <div class="icap">Journal screen</div>
-        </div>
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/7f5FyKXoMmVvKQWMmbBRN9PKatA.png" alt="Design concept 3"/>
-          <div class="icap">Home dashboard</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 05 SOLUTION -->
-    <section id="solution" class="sec rev">
-      <div class="phase"><div class="p-dot">5</div><span class="p-txt">Design Solution</span></div>
-      <h2 class="sec-h">Five Features, One Unified App</h2>
-      <p class="sec-lead">
-        Each feature addresses a specific research-identified pain point — together they replace the multi-app workflow entirely.
-      </p>
-      <div class="rule"></div>
-
-      <div class="sub">Explore Destinations</div>
-      <p style="font-family:var(--font-hand); font-size:17px; color:var(--ink-light); line-height:1.75; max-width:560px; margin-bottom:1rem">Real-time Google Places search with ratings, reviews, photos, and directions. Save any result to the wishlist in one tap — no navigation required.</p>
-      <div class="imgs c2" style="margin-bottom:2rem">
-        <div class="iw"><img src="https://framerusercontent.com/images/pJ2YwFEGutHEWSxIjrMCGsefa8E.png" alt="Explore"/><div class="icap">Explore — search and discovery</div></div>
-        <div class="iw"><img src="https://framerusercontent.com/images/UNvj77qOq4Gm527iPxRjcrroo.png" alt="Search"/><div class="icap">Search results with place details</div></div>
-      </div>
-
-      <div class="sub">Wishlist &amp; Calendar Planning</div>
-      <p style="font-family:var(--font-hand); font-size:17px; color:var(--ink-light); line-height:1.75; max-width:560px; margin-bottom:1rem">Saved places organised into custom folders and assigned visit dates via a built-in calendar — transforming inspiration into actionable plans.</p>
-      <div class="imgs c2" style="margin-bottom:2rem">
-        <div class="iw"><img src="https://framerusercontent.com/images/j9D2ecOa5aW0QLDns1EAdr5m3OI.png" alt="Wishlist"/><div class="icap">Wishlist — organised by folder</div></div>
-        <div class="iw"><img src="https://framerusercontent.com/images/39qf446JNBKmnDctgNVNmyiI8I.png" alt="Calendar"/><div class="icap">Calendar — tap to assign visit dates</div></div>
-      </div>
-
-      <div class="sub">Home Dashboard</div>
-      <p style="font-family:var(--font-hand); font-size:17px; color:var(--ink-light); line-height:1.75; max-width:560px; margin-bottom:1rem">Personalised greetings, rotating travel quotes, one upcoming plan, and one featured destination — a clear starting point every time you open the app.</p>
-      <div class="imgs c2" style="margin-bottom:2rem">
-        <div class="iw"><img src="https://framerusercontent.com/images/7f5FyKXoMmVvKQWMmbBRN9PKatA.png" alt="Dashboard"/><div class="icap">Home dashboard — focused entry point</div></div>
-        <div class="iw"><img src="https://framerusercontent.com/images/NJPr8oJlGXzqxhK577KEaPxFrls.png" alt="Home"/><div class="icap">Home screen — upcoming plan view</div></div>
-      </div>
-
-      <div class="sub">Travel Journal</div>
-      <p style="font-family:var(--font-hand); font-size:17px; color:var(--ink-light); line-height:1.75; max-width:560px; margin-bottom:1rem">Create, edit, and delete journal entries with inline multi-photo uploads. Trips documented as personal narratives, not checklists.</p>
-      <div class="imgs c2" style="margin-bottom:2rem">
-        <div class="iw"><img src="https://framerusercontent.com/images/q4R2OOhv0ZjtXvTos0ltK74pv4.png" alt="Journal list"/><div class="icap">Journal — entry list view</div></div>
-        <div class="iw"><img src="https://framerusercontent.com/images/O6W5PwyyXIaw5xCf9dSK8C9Qbk.png" alt="Journal entry"/><div class="icap">Journal entry — inline photo upload</div></div>
-      </div>
-
-      <div class="sub">Key Features</div>
-      <div class="flist">
-        <div class="fr"><div class="fr-i">🔍</div><div><div class="fr-t">Explore</div><div class="fr-d">Real-time Google Places search with ratings, photos, and directions.</div></div></div>
-        <div class="fr"><div class="fr-i">📁</div><div><div class="fr-t">Wishlist Folders</div><div class="fr-d">Organise saved places into named collections — no more losing saves across apps.</div></div></div>
-        <div class="fr"><div class="fr-i">📅</div><div><div class="fr-t">Calendar Integration</div><div class="fr-d">Assign visit dates to saved destinations directly from the wishlist.</div></div></div>
-        <div class="fr"><div class="fr-i">🏠</div><div><div class="fr-t">Home Dashboard</div><div class="fr-d">One upcoming plan, one featured destination — a focused daily entry point.</div></div></div>
-        <div class="fr"><div class="fr-i">📓</div><div><div class="fr-t">Travel Journal</div><div class="fr-d">Rich multi-photo entries with full CRUD support and inline upload.</div></div></div>
-        <div class="fr"><div class="fr-i">📊</div><div><div class="fr-t">Profile &amp; Stats</div><div class="fr-d">Automatically tracked travel statistics — cities visited, trips journaled.</div></div></div>
-      </div>
-    </section>
-
-    <!-- 06 PROBLEMS SOLVED -->
-    <section id="problems" class="sec rev">
-      <div class="phase"><div class="p-dot">6</div><span class="p-txt">Problems Solved</span></div>
-      <h2 class="sec-h">Five Problems, Five Solutions</h2>
-      <p class="sec-lead">Every design decision mapped directly back to a specific, research-validated pain point.</p>
-      <div class="rule"></div>
-
-      <div class="ilist">
-        <div class="it">
-          <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Planning scattered across Google Maps, Instagram, and Notes simultaneously</div></div>
-          <div class="it-arr">→</div>
-          <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">One app for search, save, schedule, and journal — eliminates context-switching entirely</div></div>
-        </div>
-        <div class="it">
-          <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Saved places forgotten because they were spread across different apps</div></div>
-          <div class="it-arr">→</div>
-          <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Single wishlist with custom folders and calendar scheduling keeps every save visible and actionable</div></div>
-        </div>
-        <div class="it">
-          <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Camera rolls feel impersonal — photos without context, narrative, or connection to the trip</div></div>
-          <div class="it-arr">→</div>
-          <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Inline journal with multi-photo entries and free-text narrative transforms trips into personal stories</div></div>
-        </div>
-        <div class="it">
-          <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Home dashboard showing all upcoming trips at once — users unsure where to start</div></div>
-          <div class="it-arr">→</div>
-          <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">One upcoming plan + one featured destination — clear focus, reduced visual noise</div></div>
-        </div>
-        <div class="it">
-          <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Photo upload required separate screen — 2 of 5 participants missed the feature entirely</div></div>
-          <div class="it-arr">→</div>
-          <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Inline photo upload in journal flow — attachment rate increased from 40% to 90%</div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 07 DESIGN SYSTEM -->
-    <section id="designsystem" class="sec rev">
-      <div class="phase"><div class="p-dot">7</div><span class="p-txt">Visual Design System</span></div>
-      <h2 class="sec-h">Consistency at Every Screen</h2>
-      <p class="sec-lead">A restrained design system that keeps content front and centre — colour, type, and interaction all serve the travel experience, not the interface.</p>
-      <div class="rule"></div>
-
-      <div class="imgs c3" style="margin-bottom:1.25rem">
-        <div class="iw"><img src="https://framerusercontent.com/images/4y7k8a34B8fQenNG3N4Cl2qoLyM.png" alt="UI Components"/><div class="icap">UI components</div></div>
-        <div class="iw"><img src="https://framerusercontent.com/images/oC5Di78dviuVfqaHa8zAFbUDiEU.png" alt="Interface Design"/><div class="icap">Interface design</div></div>
-        <div class="iw"><img src="https://framerusercontent.com/images/i8VLJGTqqu2XrBfkGv4kNTE7qg.png" alt="Design System"/><div class="icap">Design system overview</div></div>
-      </div>
-      <div class="imgs c3" style="margin-bottom:1.25rem">
-        <div class="iw"><img src="https://framerusercontent.com/images/A6vsauvu8zOwzLJBdiTiYxnqXY.png" alt="Visual Design"/><div class="icap">Visual design</div></div>
-        <div class="iw"><img src="https://framerusercontent.com/images/etGdSgENrQsVrsTa8YI50ZBm7A.png" alt="App Screens"/><div class="icap">App screens</div></div>
-        <div class="iw"><img src="https://framerusercontent.com/images/AMXPtX5gm3EruEXy0KWLwQI4Xg.png" alt="User Interface"/><div class="icap">User interface</div></div>
-      </div>
-      <div class="imgs c2" style="margin-bottom:2rem">
-        <div class="iw"><img src="https://framerusercontent.com/images/uKQo1vQ7gGpPv3aRfpXPWj5eZc.png" alt="Design Concept"/><div class="icap">Design concept</div></div>
-        <div class="iw"><img src="https://framerusercontent.com/images/CnkOHDCEVhGEzQzyDikNzIGYSw.png" alt="Design Elements"/><div class="icap">Design elements</div></div>
-      </div>
-
-      <div class="g3">
-        <div class="ic"><div class="ic-ico">🎨</div><div class="ic-t">Colour System</div><div class="ic-d">Soft teal and sky blue for primary actions. Off-white neutrals for backgrounds. Accent used sparingly on save, add, and create CTAs — never decorative.</div></div>
-        <div class="ic"><div class="ic-ico">Aa</div><div class="ic-t">Typography Hierarchy</div><div class="ic-d">Display for destination names and journal titles. Body for descriptions and reviews. Captions for dates, distances, and metadata — three levels only.</div></div>
-        <div class="ic"><div class="ic-ico">👆</div><div class="ic-t">Interaction Patterns</div><div class="ic-d">Tap-to-save from explore results. Inline photo upload in journal. Calendar tap-to-assign. Swipe-to-delete for entries and saved places.</div></div>
-      </div>
-    </section>
-
-    <!-- 08 TECHNICAL -->
-    <section id="tech" class="sec rev">
-      <div class="phase"><div class="p-dot">8</div><span class="p-txt">Technical Overview</span></div>
-      <h2 class="sec-h">Built End-to-End in React Native</h2>
-      <p class="sec-lead">My first full mobile app built from scratch — navigation state, image uploads, API error handling, and calendar logic all required documentation-driven learning and iterative debugging.</p>
-      <div class="rule"></div>
-
-      <div class="g3">
-        <div class="ic"><div class="ic-ico">⚛️</div><div class="ic-t">Frontend — React Native</div><div class="ic-d">Multi-screen navigation via bottom tab navigator. Custom components for place cards, journal entries, and calendar views. Real-time state management across all screens.</div></div>
-        <div class="ic"><div class="ic-ico">🔥</div><div class="ic-t">Backend — Firebase</div><div class="ic-d">Firebase Auth for secure accounts. Firestore real-time database for wishlist, journals, and user data. Firebase Storage for multi-photo journal uploads.</div></div>
-        <div class="ic"><div class="ic-ico">🗺</div><div class="ic-t">APIs — Google Places</div><div class="ic-d">Real-time destination search and autocomplete. Place details: ratings, reviews, photos, directions. API error handling and graceful fallback states throughout.</div></div>
-      </div>
-
-      <div class="sub">Challenges Overcome</div>
-      <div class="slist">
-        <div class="st"><div class="st-n">01</div><div><div class="st-t">Navigation state management</div><div class="st-d">Managing shared state across the bottom tab navigator required a consistent data layer — solved with Firestore real-time listeners across all screens.</div></div></div>
-        <div class="st"><div class="st-n">02</div><div><div class="st-t">Inline image upload</div><div class="st-d">Moving photo selection inline required custom file picker integration and progress state within the journal entry form.</div></div></div>
-        <div class="st"><div class="st-n">03</div><div><div class="st-t">Google Places API error handling</div><div class="st-d">Network failures and empty results needed graceful fallback states so the app remained usable offline or with poor connectivity.</div></div></div>
-        <div class="st"><div class="st-n">04</div><div><div class="st-t">Calendar logic</div><div class="st-d">Mapping wishlist items to calendar dates required custom date comparison and persistence logic — stored per-item in Firestore with real-time sync.</div></div></div>
-      </div>
-    </section>
-
-    <!-- 09 IMPACT -->
-    <section id="impact" class="sec rev">
-      <div class="phase"><div class="p-dot">9</div><span class="p-txt">Impact &amp; Results</span></div>
-      <h2 class="sec-h">Measured Outcomes</h2>
-      <p class="sec-lead">Validated through follow-up testing with participants from the original research cohort.</p>
-      <div class="rule"></div>
-
-      <div class="g2" style="margin-bottom:2rem">
-        <div class="nc">
-          <div class="nc-n">90%</div>
-          <div class="nc-t">Journal photo attachment rate</div>
-          <div class="nc-d">Up from 40% after moving photo upload inline — the single highest-impact design change across all iterations.</div>
-        </div>
-        <div class="nc">
-          <div class="nc-n" style="font-size:1.4rem; margin-bottom:6px">↓ Overwhelm</div>
-          <div class="nc-t">Dashboard clarity improved</div>
-          <div class="nc-d">Limiting the home view to one upcoming plan eliminated the paralysis users felt when seeing all trips at once.</div>
-        </div>
-        <div class="nc">
-          <div class="nc-n">5/5</div>
-          <div class="nc-t">Research participants</div>
-          <div class="nc-d">All five confirmed the unified app would replace their existing multi-app workflow — the core product hypothesis validated.</div>
-        </div>
-        <div class="nc">
-          <div class="nc-n" style="font-size:1.4rem; margin-bottom:6px">Sharper</div>
-          <div class="nc-t">Value proposition</div>
-          <div class="nc-d">Cutting the social sharing feature focused the product on what users actually needed — a private companion, not a platform.</div>
-        </div>
-      </div>
-
-      <div class="quote">
-        <p>"I've always wanted something like this — where I can find a place, save it, plan when to go, and write about it after. I never thought one app could do all of that."</p>
-        <div class="quote-attr">— Research Participant</div>
-      </div>
-    </section>
-
-    <!-- 10 REFLECTION -->
-    <section id="reflection" class="sec rev">
-      <div class="phase"><div class="p-dot">10</div><span class="p-txt">Reflection</span></div>
-      <h2 class="sec-h">What I Learned</h2>
-      <p class="sec-lead">Building a full mobile product end-to-end — research through deployment — taught me things that neither design nor development alone could have.</p>
-      <div class="rule"></div>
-
-      <div class="g2" style="margin-bottom:2rem">
-        <div class="rc"><div class="rc-t">Cut ruthlessly</div><div class="rc-d">The social sharing feature prototyped well but contradicted what users actually wanted. Removing it was the right call. Every feature that doesn't serve the core use case weakens the product.</div></div>
-        <div class="rc"><div class="rc-t">Test early, even with 3 people</div><div class="rc-d">Small tests surfaced the dashboard overwhelm issue and the hidden photo upload — both were critical fixes that would have shipped as problems otherwise.</div></div>
-        <div class="rc"><div class="rc-t">Design and code in parallel</div><div class="rc-d">Building in React Native after designing in Figma created a productive feedback loop — implementation constraints pushed back on design in ways that improved both simultaneously.</div></div>
-        <div class="rc"><div class="rc-t">Inline beats separate screen</div><div class="rc-d">Moving photo upload inline was a tiny structural change with an outsized effect on adoption. Reducing friction at the exact moment of action is the highest-leverage design move there is.</div></div>
-      </div>
-
-      <div class="sub">Future Iterations</div>
-      <div class="flist">
-        <div class="fr"><div class="fr-i">👥</div><div><div class="fr-t">Collaborative Trip Planning</div><div class="fr-d">Allow multiple users to contribute to a shared wishlist and itinerary — the most-requested feature from participants who travel with others.</div></div></div>
-        <div class="fr"><div class="fr-i">🤖</div><div><div class="fr-t">AI-Powered Suggestions</div><div class="fr-d">Recommend destinations based on past journals and saved places — personalised discovery without social comparison.</div></div></div>
-        <div class="fr"><div class="fr-i">📡</div><div><div class="fr-t">Offline Mode</div><div class="fr-d">Cache saved places and journal entries for travel without connectivity — essential for international travel with limited data.</div></div></div>
-        <div class="fr"><div class="fr-i">🗺</div><div><div class="fr-t">Map View</div><div class="fr-d">Visualise all wishlist items and scheduled visits on an interactive map — the spatial view many planners said they wanted most.</div></div></div>
-        <div class="fr"><div class="fr-i">📤</div><div><div class="fr-t">Export &amp; Share</div><div class="fr-d">Generate a shareable trip summary from journal entries and photos — private by default, shareable on demand.</div></div></div>
-      </div>
-
-      <!-- Closing scrawl -->
-      <div style="margin-top:3rem; padding:1.5rem; border:1.5px solid rgba(26,22,18,0.12); background:var(--paper-dark); position:relative; transform:rotate(-0.3deg)">
-        <div style="position:absolute; top:-11px; left:20px; width:40px; height:20px; background:rgba(232,184,75,0.38); border-top:1px solid rgba(232,184,75,0.5); border-bottom:1px solid rgba(232,184,75,0.5); transform:rotate(1.5deg)"></div>
-        <p style="font-family:var(--font-serif); font-size:1.1rem; font-style:italic; color:var(--ink-light); line-height:1.7">
-          This project reminded me that the best design decisions often come from what you choose to <span class="hl-y">leave out</span>. A focused, private tool built around real human behaviour beats a feature-rich platform every time.
+        <p class="hero-p">
+          Bringing <span class="hl-y">discovery, planning, and memory-keeping</span> into one cohesive mobile experience — so travellers never have to juggle six apps again.
         </p>
-        <p style="font-family:var(--font-scrawl); font-size:18px; color:var(--red); margin-top:0.75rem; transform:rotate(-1deg); display:inline-block">— Inayat ✏️</p>
-        <div class="corner-fold"></div>
-      </div>
-    </section>
 
+        <div class="hero-video">
+          <iframe
+            src="https://www.youtube.com/embed/TTxRGhsGydw?autoplay=1&mute=1&loop=1&playlist=TTxRGhsGydw&controls=0&modestbranding=1&rel=0"
+            title="Chemtrails app walkthrough"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="s-n">5</div>
+            <div class="s-l">User interviews</div>
+            <div class="s-sub">Semi-structured</div>
+          </div>
+          <div class="stat">
+            <div class="s-n">3</div>
+            <div class="s-l">Apps replaced</div>
+            <div class="s-sub">Per average user</div>
+          </div>
+          <div class="stat">
+            <div class="s-n">90%</div>
+            <div class="s-l">Photo attachment</div>
+            <div class="s-sub">After journal redesign</div>
+          </div>
+          <div class="stat">
+            <div class="s-n">3</div>
+            <div class="s-l">Key personas</div>
+            <div class="s-sub">Via research</div>
+          </div>
+        </div>
+
+        <div class="meta">
+          <div>
+            <div class="m-k">Timeline</div>
+            <div class="m-v">Fall 2025</div>
+          </div>
+          <div>
+            <div class="m-k">My Role</div>
+            <div class="m-v">UX/UI Designer<br/>Front &amp; Back-End Dev</div>
+          </div>
+          <div>
+            <div class="m-k">Team</div>
+            <div class="m-v">Inayat Gulati<br/>Shin Thant Thant</div>
+          </div>
+          <div>
+            <div class="m-k">Tools</div>
+            <div class="m-v">React Native, Firebase<br/>Google Places API, Figma</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- 00 OVERVIEW -->
+      <section id="overview" class="sec rev">
+        <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
+        <h2 class="sec-h">The Problem</h2>
+        <p class="sec-lead">
+          Travel planning is fragmented. Users rely on separate apps to search places, save ideas, plan schedules, and document experiences — making the process overwhelming and disconnected.
+        </p>
+        <div class="rule"></div>
+
+        <div class="block">
+          <div class="g2">
+            <div class="nc">
+              <div class="nc-n sm">Fragmented</div>
+              <div class="nc-t">Planning across 6 apps</div>
+              <div class="nc-d">Users switch between Google Maps, Instagram, and Notes simultaneously — context-switching was the #1 frustration across all 5 interviews.</div>
+            </div>
+            <div class="nc">
+              <div class="nc-n sm">Lost saves</div>
+              <div class="nc-t">No consolidated view</div>
+              <div class="nc-d">4 of 5 participants forgot where they saved destinations because saves were scattered across different platforms with no single source of truth.</div>
+            </div>
+            <div class="nc">
+              <div class="nc-n sm">Impersonal</div>
+              <div class="nc-t">Camera roll ≠ memory</div>
+              <div class="nc-d">3 of 5 participants wanted to document memories that felt more personal than a camera roll — no context, no narrative, no story.</div>
+            </div>
+            <div class="nc">
+              <div class="nc-n">3+</div>
+              <div class="nc-t">Apps per trip</div>
+              <div class="nc-d">Every participant used at least 3 separate apps to plan a single trip — a baseline we used as our screening criteria for interviews.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="sub">Design Goals</div>
+          <div class="flist">
+            <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-map"/></svg></div><div><div class="fr-t">Unify the planning experience</div><div class="fr-d">One app for search, save, schedule, and journal — eliminate context-switching entirely.</div></div></div>
+            <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-mind"/></svg></div><div><div class="fr-t">Reduce cognitive load</div><div class="fr-d">Soft tones, clear hierarchy, and generous spacing so the app feels like a travel companion, not a task manager.</div></div></div>
+            <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-book"/></svg></div><div><div class="fr-t">Make memory-keeping personal</div><div class="fr-d">Journal entries with inline photo uploads so trips become personal narratives, not unordered camera rolls.</div></div></div>
+            <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-lock"/></svg></div><div><div class="fr-t">Private, not social</div><div class="fr-d">A personal travel companion — not a platform for sharing. Every feature decision was filtered through this principle.</div></div></div>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="sub">Tools &amp; Methods</div>
+          <div class="tools">
+            <span class="tool">React Native (Expo)</span>
+            <span class="tool">Firebase Auth</span>
+            <span class="tool">Firestore</span>
+            <span class="tool">Firebase Storage</span>
+            <span class="tool">Google Places API</span>
+            <span class="tool">Figma</span>
+            <span class="tool">User Interviews</span>
+            <span class="tool">Usability Testing</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 01 RESEARCH -->
+      <section id="research" class="sec rev">
+        <div class="phase"><div class="p-dot">1</div><span class="p-txt">User Research</span></div>
+        <h2 class="sec-h">Who We Designed For</h2>
+        <p class="sec-lead">
+          5 semi-structured interviews with frequent travellers aged 22–35, each using at least 3 separate apps to plan a single trip.
+        </p>
+        <div class="rule"></div>
+
+        <div class="block">
+          <div class="sub">Key Findings</div>
+          <div class="flist">
+            <div class="fr"><div class="fr-i">01</div><div><div class="fr-t">Context-switching was the #1 pain</div><div class="fr-d">All 5 participants used Google Maps, Instagram, and Notes simultaneously — the mental overhead of switching between them was cited as more exhausting than the planning itself.</div></div></div>
+            <div class="fr"><div class="fr-i">02</div><div><div class="fr-t">Saved places get lost</div><div class="fr-d">4 of 5 participants said they regularly forgot where they'd saved a destination — the save felt useful in the moment but was never actionable later.</div></div></div>
+            <div class="fr"><div class="fr-i">03</div><div><div class="fr-t">Camera rolls feel impersonal</div><div class="fr-d">3 of 5 wanted a way to document memories with context and feeling — not just photos without narrative.</div></div></div>
+          </div>
+        </div>
+
+        <div class="quote">
+          <p>"The problem isn't planning — it's that my planning is scattered across 6 apps, so I can never see the full picture."</p>
+          <div class="quote-attr">— Research Participant</div>
+        </div>
+      </section>
+
+      <!-- 02 PERSONAS -->
+      <section id="personas" class="sec rev">
+        <div class="phase"><div class="p-dot">2</div><span class="p-txt">User Personas</span></div>
+        <h2 class="sec-h">Three Users, Three Needs</h2>
+        <p class="sec-lead">
+          Through research, we identified three personas that shaped every design decision — from information hierarchy to which features to cut.
+        </p>
+        <div class="rule"></div>
+
+        <div class="g3">
+          <div class="pcard">
+            <div class="pcard-av">E</div>
+            <div class="pcard-name">The Spontaneous Explorer</div>
+            <div class="pcard-role">Casual Traveller</div>
+            <div class="pcard-quote">"I find amazing places on Instagram but always forget where I saved them."</div>
+            <div class="pcard-sub">Goals</div>
+            <div class="pcard-list">
+              <div class="pcard-item">Discover new places easily</div>
+              <div class="pcard-item">Save and revisit ideas quickly</div>
+              <div class="pcard-item">Plan loosely, not rigidly</div>
+            </div>
+            <div class="pcard-sub">Frustrations</div>
+            <div class="pcard-list">
+              <div class="pcard-item">Saved places scattered across apps</div>
+              <div class="pcard-item">No single view of the big picture</div>
+            </div>
+          </div>
+          <div class="pcard">
+            <div class="pcard-av">P</div>
+            <div class="pcard-name">The Meticulous Planner</div>
+            <div class="pcard-role">Frequent Traveller</div>
+            <div class="pcard-quote">"I spend more time organising my trip than actually enjoying it."</div>
+            <div class="pcard-sub">Goals</div>
+            <div class="pcard-list">
+              <div class="pcard-item">Build detailed day-by-day itineraries</div>
+              <div class="pcard-item">Keep everything in one place</div>
+              <div class="pcard-item">Share plans with travel companions</div>
+            </div>
+            <div class="pcard-sub">Frustrations</div>
+            <div class="pcard-list">
+              <div class="pcard-item">Too much context-switching between apps</div>
+              <div class="pcard-item">Calendar and notes stay disconnected</div>
+            </div>
+          </div>
+          <div class="pcard">
+            <div class="pcard-av">M</div>
+            <div class="pcard-name">The Memory Keeper</div>
+            <div class="pcard-role">Experience Documenter</div>
+            <div class="pcard-quote">"My camera roll has 2,000 photos but I can't tell the story of a single trip."</div>
+            <div class="pcard-sub">Goals</div>
+            <div class="pcard-list">
+              <div class="pcard-item">Document trips as personal narratives</div>
+              <div class="pcard-item">Attach context and feelings to photos</div>
+              <div class="pcard-item">Revisit memories meaningfully</div>
+            </div>
+            <div class="pcard-sub">Frustrations</div>
+            <div class="pcard-list">
+              <div class="pcard-item">Camera roll feels impersonal and unordered</div>
+              <div class="pcard-item">Journaling apps not linked to plans</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 ITERATIONS -->
+      <section id="iterations" class="sec rev">
+        <div class="phase"><div class="p-dot">3</div><span class="p-txt">Design Iterations</span></div>
+        <h2 class="sec-h">Three Rounds, Three Fixes</h2>
+        <p class="sec-lead">
+          We went through three major design iterations, each driven by a specific insight from user testing.
+        </p>
+        <div class="rule"></div>
+
+        <div class="block">
+          <div class="ilist">
+            <div class="it">
+              <div class="it-b bef"><div class="it-lbl">v1 — Before</div><div class="it-txt">Home dashboard showed ALL upcoming trips simultaneously</div></div>
+              <div class="it-arr" aria-hidden="true">→</div>
+              <div class="it-b aft"><div class="it-lbl">v2 — After</div><div class="it-txt">One upcoming plan + one featured destination — clear starting point, reduced visual noise</div></div>
+            </div>
+            <div class="it">
+              <div class="it-b bef"><div class="it-lbl">v2 — Before</div><div class="it-txt">Adding photos required navigating to a separate screen</div></div>
+              <div class="it-arr" aria-hidden="true">→</div>
+              <div class="it-b aft"><div class="it-lbl">v3 — After</div><div class="it-txt">Photo upload moved inline — attachment rate jumped from 40% to 90%</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="sub">What We Decided Not to Build</div>
+          <div class="g2">
+            <div class="dcard">
+              <div class="dcard-label">Cut Feature</div>
+              <div class="dcard-t">Social Sharing</div>
+              <div class="dcard-d">We prototyped a social sharing feature but cut it after research clearly showed users wanted a private travel companion — not a social platform. Removing it sharpened our core value proposition.</div>
+            </div>
+            <div class="dcard chosen">
+              <div class="dcard-label">✓ Core Focus</div>
+              <div class="dcard-t">Private Travel Companion</div>
+              <div class="dcard-d">All five features — Explore, Wishlist, Calendar, Journal, Profile — serve one user, privately. Every interaction is personal and intentional, not performative.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 CONCEPT -->
+      <section id="concept" class="sec rev">
+        <div class="phase"><div class="p-dot">4</div><span class="p-txt">Design Concept</span></div>
+        <h2 class="sec-h">Calm · Exploratory · <span class="hl-y">Personal</span></h2>
+        <p class="sec-lead">
+          Chemtrails is designed to feel like a travel companion, not a task manager. Content — places, images, memories — is always the primary focus.
+        </p>
+        <div class="rule"></div>
+
+        <div class="block">
+          <div class="sub">Design Principles</div>
+          <div class="flist">
+            <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-wave"/></svg></div><div><div class="fr-t">Calm and unhurried</div><div class="fr-d">The app should feel like browsing a travel magazine, not filling a spreadsheet. Soft tones and generous spacing reinforce this at every screen.</div></div></div>
+            <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-frame"/></svg></div><div><div class="fr-t">Content-first</div><div class="fr-d">UI chrome stays minimal so destination photos and journal memories take centre stage. The interface serves the content, never competes with it.</div></div></div>
+            <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-bolt"/></svg></div><div><div class="fr-t">Low friction at every action</div><div class="fr-d">Saving a place, scheduling a visit, writing a journal entry — each should take under 30 seconds. Friction is removed, not hidden.</div></div></div>
+          </div>
+        </div>
+
+        <div class="imgs c3">
+          <div class="iw">
+            <img src="https://framerusercontent.com/images/pJ2YwFEGutHEWSxIjrMCGsefa8E.png" alt="Chemtrails explore screen" loading="lazy"/>
+            <div class="icap">Explore screen</div>
+          </div>
+          <div class="iw">
+            <img src="https://framerusercontent.com/images/q4R2OOhv0ZjtXvTos0ltK74pv4.png" alt="Chemtrails journal screen" loading="lazy"/>
+            <div class="icap">Journal screen</div>
+          </div>
+          <div class="iw">
+            <img src="https://framerusercontent.com/images/7f5FyKXoMmVvKQWMmbBRN9PKatA.png" alt="Chemtrails home dashboard" loading="lazy"/>
+            <div class="icap">Home dashboard</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 SOLUTION -->
+      <section id="solution" class="sec rev">
+        <div class="phase"><div class="p-dot">5</div><span class="p-txt">Design Solution</span></div>
+        <h2 class="sec-h">Five Features, One Unified App</h2>
+        <p class="sec-lead">
+          Each feature addresses a specific research-identified pain point — together they replace the multi-app workflow entirely.
+        </p>
+        <div class="rule"></div>
+
+        <div class="block">
+          <div class="sub">Explore Destinations</div>
+          <p class="sub-p">Real-time Google Places search with ratings, reviews, photos, and directions. Save any result to the wishlist in one tap — no navigation required.</p>
+          <div class="imgs c2 tall">
+            <div class="iw"><img src="https://framerusercontent.com/images/pJ2YwFEGutHEWSxIjrMCGsefa8E.png" alt="Explore and discovery screen" loading="lazy"/><div class="icap">Explore — search and discovery</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/UNvj77qOq4Gm527iPxRjcrroo.png" alt="Search results with place details" loading="lazy"/><div class="icap">Search results with place details</div></div>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="sub">Wishlist &amp; Calendar Planning</div>
+          <p class="sub-p">Saved places organised into custom folders and assigned visit dates via a built-in calendar — transforming inspiration into actionable plans.</p>
+          <div class="imgs c2 tall">
+            <div class="iw"><img src="https://framerusercontent.com/images/j9D2ecOa5aW0QLDns1EAdr5m3OI.png" alt="Wishlist organised by folder" loading="lazy"/><div class="icap">Wishlist — organised by folder</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/39qf446JNBKmnDctgNVNmyiI8I.png" alt="Calendar with assigned visit dates" loading="lazy"/><div class="icap">Calendar — tap to assign visit dates</div></div>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="sub">Home Dashboard</div>
+          <p class="sub-p">Personalised greetings, rotating travel quotes, one upcoming plan, and one featured destination — a clear starting point every time you open the app.</p>
+          <div class="imgs c2 tall">
+            <div class="iw"><img src="https://framerusercontent.com/images/7f5FyKXoMmVvKQWMmbBRN9PKatA.png" alt="Home dashboard" loading="lazy"/><div class="icap">Home dashboard — focused entry point</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/NJPr8oJlGXzqxhK577KEaPxFrls.png" alt="Home screen upcoming plan view" loading="lazy"/><div class="icap">Home screen — upcoming plan view</div></div>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="sub">Travel Journal</div>
+          <p class="sub-p">Create, edit, and delete journal entries with inline multi-photo uploads. Trips documented as personal narratives, not checklists.</p>
+          <div class="imgs c2 tall">
+            <div class="iw"><img src="https://framerusercontent.com/images/q4R2OOhv0ZjtXvTos0ltK74pv4.png" alt="Journal entry list" loading="lazy"/><div class="icap">Journal — entry list view</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/O6W5PwyyXIaw5xCf9dSK8C9Qbk.png" alt="Journal entry with inline photo upload" loading="lazy"/><div class="icap">Journal entry — inline photo upload</div></div>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="sub">Key Features</div>
+          <div class="flist">
+            <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-search"/></svg></div><div><div class="fr-t">Explore</div><div class="fr-d">Real-time Google Places search with ratings, photos, and directions.</div></div></div>
+            <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-folder"/></svg></div><div><div class="fr-t">Wishlist Folders</div><div class="fr-d">Organise saved places into named collections — no more losing saves across apps.</div></div></div>
+            <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-calendar"/></svg></div><div><div class="fr-t">Calendar Integration</div><div class="fr-d">Assign visit dates to saved destinations directly from the wishlist.</div></div></div>
+            <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-home"/></svg></div><div><div class="fr-t">Home Dashboard</div><div class="fr-d">One upcoming plan, one featured destination — a focused daily entry point.</div></div></div>
+            <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-book"/></svg></div><div><div class="fr-t">Travel Journal</div><div class="fr-d">Rich multi-photo entries with full CRUD support and inline upload.</div></div></div>
+            <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-chart"/></svg></div><div><div class="fr-t">Profile &amp; Stats</div><div class="fr-d">Automatically tracked travel statistics — cities visited, trips journaled.</div></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 PROBLEMS -->
+      <section id="problems" class="sec rev">
+        <div class="phase"><div class="p-dot">6</div><span class="p-txt">Problems Solved</span></div>
+        <h2 class="sec-h">Five Problems, Five Solutions</h2>
+        <p class="sec-lead">Every design decision mapped directly back to a specific, research-validated pain point.</p>
+        <div class="rule"></div>
+
+        <div class="ilist">
+          <div class="it">
+            <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Planning scattered across Google Maps, Instagram, and Notes simultaneously</div></div>
+            <div class="it-arr" aria-hidden="true">→</div>
+            <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">One app for search, save, schedule, and journal — eliminates context-switching entirely</div></div>
+          </div>
+          <div class="it">
+            <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Saved places forgotten because they were spread across different apps</div></div>
+            <div class="it-arr" aria-hidden="true">→</div>
+            <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Single wishlist with custom folders and calendar scheduling keeps every save visible and actionable</div></div>
+          </div>
+          <div class="it">
+            <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Camera rolls feel impersonal — photos without context, narrative, or connection to the trip</div></div>
+            <div class="it-arr" aria-hidden="true">→</div>
+            <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Inline journal with multi-photo entries and free-text narrative transforms trips into personal stories</div></div>
+          </div>
+          <div class="it">
+            <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Home dashboard showing all upcoming trips at once — users unsure where to start</div></div>
+            <div class="it-arr" aria-hidden="true">→</div>
+            <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">One upcoming plan + one featured destination — clear focus, reduced visual noise</div></div>
+          </div>
+          <div class="it">
+            <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Photo upload required separate screen — 2 of 5 participants missed the feature entirely</div></div>
+            <div class="it-arr" aria-hidden="true">→</div>
+            <div class="it-b aft"><div class="it-lbl">Solution</div><div class="it-txt">Inline photo upload in journal flow — attachment rate increased from 40% to 90%</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07 DESIGN SYSTEM -->
+      <section id="designsystem" class="sec rev">
+        <div class="phase"><div class="p-dot">7</div><span class="p-txt">Visual Design System</span></div>
+        <h2 class="sec-h">Consistency at Every Screen</h2>
+        <p class="sec-lead">A restrained design system that keeps content front and centre — colour, type, and interaction all serve the travel experience, not the interface.</p>
+        <div class="rule"></div>
+
+        <div class="block">
+          <div class="imgs c3" style="margin-bottom:var(--s-3)">
+            <div class="iw"><img src="https://framerusercontent.com/images/4y7k8a34B8fQenNG3N4Cl2qoLyM.png" alt="UI components" loading="lazy"/><div class="icap">UI components</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/oC5Di78dviuVfqaHa8zAFbUDiEU.png" alt="Interface design" loading="lazy"/><div class="icap">Interface design</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/i8VLJGTqqu2XrBfkGv4kNTE7qg.png" alt="Design system overview" loading="lazy"/><div class="icap">Design system overview</div></div>
+          </div>
+          <div class="imgs c3" style="margin-bottom:var(--s-3)">
+            <div class="iw"><img src="https://framerusercontent.com/images/A6vsauvu8zOwzLJBdiTiYxnqXY.png" alt="Visual design" loading="lazy"/><div class="icap">Visual design</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/etGdSgENrQsVrsTa8YI50ZBm7A.png" alt="App screens" loading="lazy"/><div class="icap">App screens</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/AMXPtX5gm3EruEXy0KWLwQI4Xg.png" alt="User interface" loading="lazy"/><div class="icap">User interface</div></div>
+          </div>
+          <div class="imgs c2">
+            <div class="iw"><img src="https://framerusercontent.com/images/uKQo1vQ7gGpPv3aRfpXPWj5eZc.png" alt="Design concept" loading="lazy"/><div class="icap">Design concept</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/CnkOHDCEVhGEzQzyDikNzIGYSw.png" alt="Design elements" loading="lazy"/><div class="icap">Design elements</div></div>
+          </div>
+        </div>
+
+        <div class="g3">
+          <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-palette"/></svg></div><div class="ic-t">Colour System</div><div class="ic-d">Soft teal and sky blue for primary actions. Off-white neutrals for backgrounds. Accent used sparingly on save, add, and create CTAs — never decorative.</div></div>
+          <div class="ic"><div class="ic-ico"><span class="ic-aa">Aa</span></div><div class="ic-t">Typography Hierarchy</div><div class="ic-d">Display for destination names and journal titles. Body for descriptions and reviews. Captions for dates, distances, and metadata — three levels only.</div></div>
+          <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-tap"/></svg></div><div class="ic-t">Interaction Patterns</div><div class="ic-d">Tap-to-save from explore results. Inline photo upload in journal. Calendar tap-to-assign. Swipe-to-delete for entries and saved places.</div></div>
+        </div>
+      </section>
+
+      <!-- 08 TECHNICAL -->
+      <section id="tech" class="sec rev">
+        <div class="phase"><div class="p-dot">8</div><span class="p-txt">Technical Overview</span></div>
+        <h2 class="sec-h">Built End-to-End in React Native</h2>
+        <p class="sec-lead">My first full mobile app built from scratch — navigation state, image uploads, API error handling, and calendar logic all required documentation-driven learning and iterative debugging.</p>
+        <div class="rule"></div>
+
+        <div class="block">
+          <div class="g3">
+            <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-atom"/></svg></div><div class="ic-t">Frontend — React Native</div><div class="ic-d">Multi-screen navigation via bottom tab navigator. Custom components for place cards, journal entries, and calendar views. Real-time state management across all screens.</div></div>
+            <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-flame"/></svg></div><div class="ic-t">Backend — Firebase</div><div class="ic-d">Firebase Auth for secure accounts. Firestore real-time database for wishlist, journals, and user data. Firebase Storage for multi-photo journal uploads.</div></div>
+            <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-map"/></svg></div><div class="ic-t">APIs — Google Places</div><div class="ic-d">Real-time destination search and autocomplete. Place details: ratings, reviews, photos, directions. API error handling and graceful fallback states throughout.</div></div>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="sub">Challenges Overcome</div>
+          <div class="slist">
+            <div class="st"><div class="st-n">01</div><div><div class="st-t">Navigation state management</div><div class="st-d">Managing shared state across the bottom tab navigator required a consistent data layer — solved with Firestore real-time listeners across all screens.</div></div></div>
+            <div class="st"><div class="st-n">02</div><div><div class="st-t">Inline image upload</div><div class="st-d">Moving photo selection inline required custom file picker integration and progress state within the journal entry form.</div></div></div>
+            <div class="st"><div class="st-n">03</div><div><div class="st-t">Google Places API error handling</div><div class="st-d">Network failures and empty results needed graceful fallback states so the app remained usable offline or with poor connectivity.</div></div></div>
+            <div class="st"><div class="st-n">04</div><div><div class="st-t">Calendar logic</div><div class="st-d">Mapping wishlist items to calendar dates required custom date comparison and persistence logic — stored per-item in Firestore with real-time sync.</div></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 09 IMPACT -->
+      <section id="impact" class="sec rev">
+        <div class="phase"><div class="p-dot">9</div><span class="p-txt">Impact &amp; Results</span></div>
+        <h2 class="sec-h">Measured Outcomes</h2>
+        <p class="sec-lead">Validated through follow-up testing with participants from the original research cohort.</p>
+        <div class="rule"></div>
+
+        <div class="block">
+          <div class="g2">
+            <div class="nc">
+              <div class="nc-n">90%</div>
+              <div class="nc-t">Journal photo attachment rate</div>
+              <div class="nc-d">Up from 40% after moving photo upload inline — the single highest-impact design change across all iterations.</div>
+            </div>
+            <div class="nc">
+              <div class="nc-n sm">↓ Overwhelm</div>
+              <div class="nc-t">Dashboard clarity improved</div>
+              <div class="nc-d">Limiting the home view to one upcoming plan eliminated the paralysis users felt when seeing all trips at once.</div>
+            </div>
+            <div class="nc">
+              <div class="nc-n">5/5</div>
+              <div class="nc-t">Research participants</div>
+              <div class="nc-d">All five confirmed the unified app would replace their existing multi-app workflow — the core product hypothesis validated.</div>
+            </div>
+            <div class="nc">
+              <div class="nc-n sm">Sharper</div>
+              <div class="nc-t">Value proposition</div>
+              <div class="nc-d">Cutting the social sharing feature focused the product on what users actually needed — a private companion, not a platform.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="quote">
+          <p>"I've always wanted something like this — where I can find a place, save it, plan when to go, and write about it after. I never thought one app could do all of that."</p>
+          <div class="quote-attr">— Research Participant</div>
+        </div>
+      </section>
+
+      <!-- 10 REFLECTION -->
+      <section id="reflection" class="sec rev">
+        <div class="phase"><div class="p-dot">10</div><span class="p-txt">Reflection</span></div>
+        <h2 class="sec-h">What I Learned</h2>
+        <p class="sec-lead">Building a full mobile product end-to-end — research through deployment — taught me things that neither design nor development alone could have.</p>
+        <div class="rule"></div>
+
+        <div class="block">
+          <div class="g2">
+            <div class="rc"><div class="rc-t">Cut ruthlessly</div><div class="rc-d">The social sharing feature prototyped well but contradicted what users actually wanted. Removing it was the right call. Every feature that doesn't serve the core use case weakens the product.</div></div>
+            <div class="rc"><div class="rc-t">Test early, even with 3 people</div><div class="rc-d">Small tests surfaced the dashboard overwhelm issue and the hidden photo upload — both were critical fixes that would have shipped as problems otherwise.</div></div>
+            <div class="rc"><div class="rc-t">Design and code in parallel</div><div class="rc-d">Building in React Native after designing in Figma created a productive feedback loop — implementation constraints pushed back on design in ways that improved both simultaneously.</div></div>
+            <div class="rc"><div class="rc-t">Inline beats separate screen</div><div class="rc-d">Moving photo upload inline was a tiny structural change with an outsized effect on adoption. Reducing friction at the exact moment of action is the highest-leverage design move there is.</div></div>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="sub">Future Iterations</div>
+          <div class="flist">
+            <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-people"/></svg></div><div><div class="fr-t">Collaborative Trip Planning</div><div class="fr-d">Allow multiple users to contribute to a shared wishlist and itinerary — the most-requested feature from participants who travel with others.</div></div></div>
+            <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-spark"/></svg></div><div><div class="fr-t">AI-Powered Suggestions</div><div class="fr-d">Recommend destinations based on past journals and saved places — personalised discovery without social comparison.</div></div></div>
+            <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-signal"/></svg></div><div><div class="fr-t">Offline Mode</div><div class="fr-d">Cache saved places and journal entries for travel without connectivity — essential for international travel with limited data.</div></div></div>
+            <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-map"/></svg></div><div><div class="fr-t">Map View</div><div class="fr-d">Visualise all wishlist items and scheduled visits on an interactive map — the spatial view many planners said they wanted most.</div></div></div>
+            <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-export"/></svg></div><div><div class="fr-t">Export &amp; Share</div><div class="fr-d">Generate a shareable trip summary from journal entries and photos — private by default, shareable on demand.</div></div></div>
+          </div>
+        </div>
+
+        <div class="closing">
+          <p class="q">
+            This project reminded me that the best design decisions often come from what you choose to <span class="hl-y">leave out</span>. A focused, private tool built around real human behaviour beats a feature-rich platform every time.
+          </p>
+          <p class="sig">— Inayat</p>
+          <div class="corner-fold" aria-hidden="true"></div>
+        </div>
+      </section>
+
+    </div>
   </main>
 
   <footer>© 2025 Inayat Gulati &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; UX/UI · Frontend · Architecture</footer>
 
   <script>
-    // Spiral holes
-    const spiral = document.getElementById('spiralBinding');
-    const count = Math.floor(window.innerHeight / 44) + 2;
-    for (let i = 0; i < count; i++) {
-      const h = document.createElement('div');
-      h.className = 'spiral-hole';
-      spiral.appendChild(h);
-    }
+    // scroll reveal
+    (function () {
+      var revs = document.querySelectorAll('.rev');
+      if (!('IntersectionObserver' in window)) {
+        revs.forEach(function (el) { el.classList.add('in'); });
+        return;
+      }
+      var ro = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); }
+        });
+      }, { threshold: 0.05, rootMargin: '0px 0px -5% 0px' });
+      revs.forEach(function (el) { ro.observe(el); });
+    })();
 
-    // Scroll reveal
-    const ro = new IntersectionObserver(es => es.forEach(e => {
-      if (e.isIntersecting) e.target.classList.add('in');
-    }), { threshold: 0.06 });
-    document.querySelectorAll('.rev').forEach(el => ro.observe(el));
-
-    // Active sidenav
-    const links = document.querySelectorAll('.side-a');
-    const secs = document.querySelectorAll('.sec');
-    const so = new IntersectionObserver(es => {
-      es.forEach(e => {
-        if (e.isIntersecting) {
-          links.forEach(l => l.classList.remove('active'));
-          const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
-          if (a) a.classList.add('active');
-        }
-      });
-    }, { rootMargin: '-15% 0px -65% 0px' });
-    secs.forEach(s => so.observe(s));
+    // active section in side nav
+    (function () {
+      var links = document.querySelectorAll('.side-a');
+      var secs = document.querySelectorAll('.sec');
+      if (!links.length || !('IntersectionObserver' in window)) return;
+      var visible = new Set();
+      var so = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) visible.add(e.target.id);
+          else visible.delete(e.target.id);
+        });
+        var order = Array.prototype.map.call(secs, function (s) { return s.id; });
+        var current = order.find(function (id) { return visible.has(id); });
+        if (!current) return;
+        links.forEach(function (l) {
+          l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+        });
+      }, { rootMargin: '-15% 0px -60% 0px', threshold: 0 });
+      secs.forEach(function (s) { so.observe(s); });
+    })();
   </script>
 </body>
 </html>
