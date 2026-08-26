@@ -1,0 +1,1498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>StockFlow Pro — Devgon Industries — Inayat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap"
+rel="stylesheet"
+/>
+<style>
+:root {
+--paper: #faf8f2;
+--paper-dark: #f0ecdf;
+--paper-worn: #e8e2d0;
+--ink: #1a1612;
+--ink-light: #3d3530;
+--ink-faint: #8a7f72;
+--pencil: #b8b0a0;
+--pencil-light: #d4cfc4;
+--red: #c0392b;
+
+/* StockFlow accent — amber/gold + near-black, matching the app's own UI */
+--sf-amber: #c9860a;
+--sf-amber-l: #e0a020;
+--sf-dark: #1f1b16;
+--sf-red: #b5261e;
+--yellow: #e8b84b;
+
+--font-hand: 'Caveat', cursive;
+--font-scrawl: 'Reenie Beanie', cursive;
+--font-mono: 'Space Mono', monospace;
+--font-serif: 'EB Garamond', serif;
+
+--nav-h: 58px;
+--side-w: 196px;
+      }
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+font-family: var(--font-hand);
+background: var(--paper);
+color: var(--ink);
+line-height: 1.6;
+overflow-x: hidden;
+-webkit-font-smoothing: antialiased;
+      }
+
+body::before {
+content: '';
+position: fixed;
+inset: 0;
+background-image:
+repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.11) 27px, rgba(180,170,155,0.11) 28px);
+pointer-events: none;
+z-index: 0;
+      }
+
+.spiral-binding {
+position: fixed;
+left: 0; top: 0; bottom: 0;
+width: 32px;
+background: var(--paper-worn);
+border-right: 2.5px solid var(--ink);
+z-index: 200;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: flex-start;
+padding-top: 24px;
+pointer-events: none;
+      }
+.spiral-hole {
+width: 16px; height: 16px;
+border-radius: 50%;
+border: 2px solid var(--ink);
+background: var(--paper);
+margin-bottom: 28px;
+flex-shrink: 0;
+box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
+      }
+
+.topnav {
+position: fixed;
+top: 0; left: 32px; right: 0;
+height: var(--nav-h);
+z-index: 150;
+background: var(--paper);
+border-bottom: 2.5px solid var(--ink);
+display: flex;
+align-items: center;
+padding: 0 2rem;
+      }
+.topnav-in {
+width: 100%;
+max-width: 1200px;
+margin: 0 auto;
+display: flex;
+justify-content: space-between;
+align-items: center;
+      }
+.logo {
+font-family: var(--font-hand);
+font-size: 22px;
+font-weight: 700;
+color: var(--ink);
+text-decoration: none;
+position: relative;
+      }
+.logo::after {
+content: '';
+position: absolute;
+bottom: -2px; left: 0; right: 0;
+height: 3px;
+background: var(--sf-amber);
+border-radius: 2px;
+transform: rotate(-0.8deg);
+      }
+.nav-links {
+display: flex;
+gap: 2rem;
+list-style: none;
+      }
+.nav-links a {
+font-family: var(--font-hand);
+font-size: 16px;
+color: var(--ink-faint);
+text-decoration: none;
+position: relative;
+padding-bottom: 2px;
+transition: color 0.2s;
+      }
+.nav-links a::after {
+content: '';
+position: absolute;
+bottom: 0; left: 0;
+width: 0; height: 2px;
+background: var(--ink);
+transition: width 0.25s;
+      }
+.nav-links a:hover { color: var(--ink); }
+.nav-links a:hover::after { width: 100%; }
+
+.sidenav {
+position: fixed;
+top: var(--nav-h);
+left: 32px;
+width: var(--side-w);
+height: calc(100vh - var(--nav-h));
+padding: 2rem 1rem 2rem 1.5rem;
+border-right: 1.5px solid rgba(180,170,155,0.35);
+background: var(--paper);
+display: flex;
+flex-direction: column;
+gap: 1.5rem;
+overflow-y: auto;
+z-index: 100;
+      }
+.sidenav::before {
+content: '';
+position: absolute;
+left: 44px; top: 0; bottom: 0;
+width: 1.5px;
+background: rgba(201,134,10,0.15);
+pointer-events: none;
+      }
+.back-link {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+color: var(--sf-amber);
+text-decoration: none;
+font-family: var(--font-hand);
+font-size: 15px;
+font-weight: 600;
+transition: gap 0.2s;
+white-space: nowrap;
+      }
+.back-link:hover { gap: 10px; }
+.side-lbl {
+font-family: var(--font-mono);
+font-size: 9px;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(--pencil);
+margin-bottom: 0.5rem;
+      }
+.side-list { display: flex; flex-direction: column; }
+.side-a {
+display: flex;
+align-items: center;
+gap: 8px;
+padding: 6px 0 6px 10px;
+color: var(--pencil);
+text-decoration: none;
+font-family: var(--font-hand);
+font-size: 15px;
+border-left: 2px solid transparent;
+transition: color 0.2s, border-color 0.2s;
+white-space: nowrap;
+      }
+.side-a:hover { color: var(--ink-light); border-left-color: var(--pencil); }
+.side-a.active { color: var(--sf-amber); border-left-color: var(--sf-amber); font-weight: 700; }
+.side-num {
+font-family: var(--font-mono);
+font-size: 8px;
+color: var(--pencil);
+min-width: 16px;
+      }
+.side-a.active .side-num { color: var(--sf-amber); }
+
+.main {
+margin-left: calc(32px + var(--side-w));
+padding: calc(var(--nav-h) + 3rem) 3.5rem 7rem 3rem;
+max-width: calc(860px + var(--side-w));
+position: relative;
+z-index: 1;
+      }
+
+.tags {
+display: flex;
+gap: 0.5rem;
+flex-wrap: wrap;
+margin-bottom: 1.25rem;
+      }
+.tag {
+font-family: var(--font-mono);
+font-size: 9px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--sf-amber);
+padding: 3px 10px;
+border: 1.5px solid rgba(201,134,10,0.3);
+background: rgba(201,134,10,0.06);
+transform: rotate(-0.3deg);
+display: inline-block;
+      }
+.tag:nth-child(2) {
+transform: rotate(0.5deg);
+color: var(--ink-light);
+border-color: rgba(31,27,22,0.3);
+background: rgba(31,27,22,0.05);
+      }
+.tag:nth-child(3) {
+transform: rotate(-0.2deg);
+color: var(--ink-faint);
+border-color: rgba(138,127,114,0.3);
+background: rgba(138,127,114,0.05);
+      }
+
+.hero-h {
+font-family: var(--font-hand);
+font-size: clamp(2.6rem, 5vw, 4.2rem);
+font-weight: 700;
+line-height: 1.05;
+margin-bottom: 0.5rem;
+letter-spacing: -1px;
+      }
+.hero-h .squiggle-wrap {
+position: relative;
+display: inline-block;
+      }
+.hero-h .squiggle-wrap svg {
+position: absolute;
+bottom: -6px; left: -4px;
+width: calc(100% + 8px);
+pointer-events: none;
+      }
+.hero-sub {
+font-family: var(--font-mono);
+font-size: 10px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--ink-faint);
+margin-bottom: 0.75rem;
+margin-top: 0.75rem;
+      }
+.hero-p {
+font-family: var(--font-hand);
+font-size: 19px;
+color: var(--ink-light);
+line-height: 1.65;
+max-width: 520px;
+margin-bottom: 1.75rem;
+      }
+
+.hero-img {
+border: 2px solid var(--ink);
+background: var(--sf-dark);
+position: relative;
+margin-bottom: 1.75rem;
+transform: rotate(-0.3deg);
+box-shadow: 5px 5px 0 rgba(26,22,18,0.12);
+max-width: 340px;
+      }
+.hero-img::before {
+content: '';
+position: absolute;
+top: -11px; left: 50%;
+transform: translateX(-50%) rotate(-0.5deg);
+width: 60px; height: 20px;
+background: rgba(232,184,75,0.42);
+border-top: 1px solid rgba(232,184,75,0.55);
+border-bottom: 1px solid rgba(232,184,75,0.55);
+z-index: 10;
+      }
+.hero-img img {
+width: 100%;
+display: block;
+      }
+.hero-img::after {
+content: '';
+position: absolute;
+bottom: -5px; right: -5px;
+width: 100%; height: 100%;
+border: 1.5px solid rgba(26,22,18,0.15);
+z-index: -1;
+      }
+
+.ico {
+width: 18px; height: 18px;
+fill: none;
+stroke: var(--ink-light);
+stroke-width: 1.5;
+stroke-linecap: round;
+stroke-linejoin: round;
+display: block;
+transition: stroke 0.2s ease;
+      }
+.fr:hover .ico { stroke: var(--sf-amber); }
+.ic .ico { width: 22px; height: 22px; stroke: var(--sf-amber); }
+.nda-icon .ico { width: 20px; height: 20px; stroke: var(--sf-amber); }
+
+.nda {
+display: flex;
+gap: 1rem;
+align-items: flex-start;
+padding: 1rem 1.25rem;
+background: rgba(201,134,10,0.05);
+border: 1.5px solid rgba(201,134,10,0.28);
+margin-bottom: 2rem;
+position: relative;
+transform: rotate(0.2deg);
+      }
+.nda::before {
+content: '';
+position: absolute;
+top: -11px; left: 20px;
+width: 36px; height: 20px;
+background: rgba(232,184,75,0.38);
+border-top: 1px solid rgba(232,184,75,0.5);
+border-bottom: 1px solid rgba(232,184,75,0.5);
+transform: rotate(1.5deg);
+      }
+.nda-icon { margin-top: 2px; }
+.nda-t {
+font-family: var(--font-hand);
+font-size: 15px;
+font-weight: 700;
+margin-bottom: 3px;
+color: var(--sf-amber);
+      }
+.nda-d {
+font-family: var(--font-hand);
+font-size: 14px;
+color: var(--ink-light);
+line-height: 1.6;
+      }
+
+.stats {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+border: 2px solid var(--ink);
+margin-bottom: 1.5rem;
+transform: rotate(0.2deg);
+box-shadow: 4px 4px 0 rgba(26,22,18,0.1);
+background: var(--paper-dark);
+      }
+.stat {
+padding: 1.1rem 1rem;
+border-right: 1.5px solid rgba(26,22,18,0.2);
+position: relative;
+      }
+.stat:last-child { border-right: none; }
+.s-n {
+font-family: var(--font-hand);
+font-size: 2.4rem;
+font-weight: 700;
+color: var(--sf-amber);
+line-height: 1;
+margin-bottom: 4px;
+      }
+.s-l {
+font-family: var(--font-hand);
+font-size: 14px;
+color: var(--ink-light);
+line-height: 1.35;
+      }
+.s-sub {
+font-family: var(--font-mono);
+font-size: 8px;
+letter-spacing: 1px;
+color: var(--pencil);
+margin-top: 2px;
+      }
+
+.meta {
+display: flex;
+gap: 2rem;
+flex-wrap: wrap;
+padding-top: 1.25rem;
+border-top: 2px solid rgba(26,22,18,0.15);
+margin-bottom: 5rem;
+      }
+.m-k {
+font-family: var(--font-mono);
+font-size: 8px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--sf-amber);
+margin-bottom: 4px;
+      }
+.m-v {
+font-family: var(--font-hand);
+font-size: 15px;
+color: var(--ink-light);
+line-height: 1.5;
+      }
+
+.sec { margin-bottom: 5rem; }
+.phase {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+margin-bottom: 0.75rem;
+      }
+.p-dot {
+width: 22px; height: 22px;
+border-radius: 50%;
+border: 2px solid var(--ink);
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: var(--font-mono);
+font-size: 9px;
+color: var(--ink);
+font-weight: 700;
+      }
+.p-txt {
+font-family: var(--font-mono);
+font-size: 9px;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(--ink-faint);
+      }
+.sec-h {
+font-family: var(--font-hand);
+font-size: 2.2rem;
+font-weight: 700;
+line-height: 1.1;
+margin-bottom: 0.5rem;
+letter-spacing: -0.5px;
+display: inline-block;
+position: relative;
+      }
+.sec-h::after {
+content: '';
+display: block;
+height: 3px;
+background: var(--sf-amber);
+border-radius: 2px;
+transform: rotate(-0.5deg);
+margin-top: 3px;
+width: 80%;
+      }
+.sec-lead {
+font-family: var(--font-hand);
+font-size: 18px;
+color: var(--ink-light);
+line-height: 1.75;
+max-width: 560px;
+margin-bottom: 1.5rem;
+margin-top: 0.5rem;
+      }
+.rule {
+height: 1.5px;
+background: rgba(26,22,18,0.12);
+margin-bottom: 1.5rem;
+      }
+.sub {
+font-family: var(--font-mono);
+font-size: 9px;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(--sf-amber);
+margin-bottom: 0.875rem;
+      }
+
+.g3 {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 10px;
+margin-bottom: 1.5rem;
+      }
+.g2 {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 10px;
+margin-bottom: 1.5rem;
+      }
+
+.nc {
+background: var(--paper-dark);
+border: 2px solid var(--ink);
+padding: 1.1rem;
+position: relative;
+transition: transform 0.2s;
+      }
+.nc:hover { transform: translate(-2px,-2px); }
+.nc::after {
+content: '';
+position: absolute;
+bottom: -4px; right: -4px;
+width: 100%; height: 100%;
+border: 1.5px solid rgba(26,22,18,0.18);
+z-index: -1;
+      }
+.nc-n {
+font-family: var(--font-hand);
+font-size: 2.2rem;
+font-weight: 700;
+color: var(--sf-amber);
+line-height: 1;
+margin-bottom: 5px;
+      }
+.nc-t {
+font-family: var(--font-hand);
+font-size: 15px;
+font-weight: 700;
+margin-bottom: 3px;
+      }
+.nc-d {
+font-family: var(--font-hand);
+font-size: 14px;
+color: var(--ink-light);
+line-height: 1.5;
+      }
+
+.flist {
+display: flex;
+flex-direction: column;
+gap: 6px;
+margin-bottom: 1.5rem;
+      }
+.fr {
+display: flex;
+gap: 0.875rem;
+align-items: flex-start;
+padding: 0.875rem 1rem;
+background: var(--paper-dark);
+border: 1.5px solid rgba(26,22,18,0.15);
+transition: border-color 0.2s, transform 0.2s;
+      }
+.fr:hover { border-color: rgba(201,134,10,0.4); transform: translateX(2px); }
+.fr-i {
+width: 30px; height: 30px; min-width: 30px;
+border: 1.5px solid rgba(26,22,18,0.2);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 0.82rem;
+background: var(--paper);
+      }
+.fr-t {
+font-family: var(--font-hand);
+font-size: 15px;
+font-weight: 700;
+margin-bottom: 2px;
+      }
+.fr-d {
+font-family: var(--font-hand);
+font-size: 14px;
+color: var(--ink-light);
+line-height: 1.55;
+      }
+
+.slist {
+display: flex;
+flex-direction: column;
+gap: 6px;
+margin-bottom: 1.5rem;
+      }
+.st {
+display: flex;
+gap: 0.875rem;
+padding: 0.875rem 1rem;
+background: var(--paper-dark);
+border: 1.5px solid rgba(26,22,18,0.15);
+      }
+.st-n {
+font-family: var(--font-hand);
+font-size: 1.3rem;
+font-weight: 700;
+color: var(--sf-amber);
+min-width: 20px;
+line-height: 1.4;
+      }
+.st-t {
+font-family: var(--font-hand);
+font-size: 15px;
+font-weight: 700;
+margin-bottom: 2px;
+      }
+.st-d {
+font-family: var(--font-hand);
+font-size: 13px;
+color: var(--ink-light);
+line-height: 1.5;
+      }
+
+.ic {
+background: var(--paper-dark);
+border: 2px solid var(--ink);
+padding: 1.1rem;
+position: relative;
+      }
+.ic::after {
+content: '';
+position: absolute;
+bottom: -4px; right: -4px;
+width: 100%; height: 100%;
+border: 1.5px solid rgba(26,22,18,0.18);
+z-index: -1;
+      }
+.ic-ico { margin-bottom: 0.6rem; }
+.ic-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+.ic-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.55; }
+
+.quote {
+border-left: 3px solid var(--sf-amber);
+padding: 0.875rem 1.25rem;
+margin: 1.25rem 0;
+background: rgba(201,134,10,0.05);
+position: relative;
+transform: rotate(-0.3deg);
+      }
+.quote::before {
+content: '';
+position: absolute;
+top: -11px; left: 20px;
+width: 36px; height: 20px;
+background: rgba(232,184,75,0.38);
+border-top: 1px solid rgba(232,184,75,0.5);
+border-bottom: 1px solid rgba(232,184,75,0.5);
+transform: rotate(1.5deg);
+      }
+.quote p {
+font-family: var(--font-serif);
+font-size: 1.25rem;
+font-style: italic;
+line-height: 1.65;
+color: var(--ink);
+      }
+.quote-attr {
+font-family: var(--font-mono);
+font-size: 9px;
+letter-spacing: 1px;
+color: var(--ink-faint);
+margin-top: 0.75rem;
+text-transform: uppercase;
+      }
+.quote-attr span {
+color: var(--sf-amber);
+display: block;
+margin-top: 2px;
+font-weight: 700;
+      }
+
+.res {
+background: var(--paper-dark);
+border: 2px solid var(--ink);
+padding: 1.1rem;
+display: flex;
+align-items: flex-start;
+gap: 0.875rem;
+position: relative;
+transition: transform 0.2s;
+      }
+.res:hover { transform: translate(-2px,-2px); }
+.res::after {
+content: '';
+position: absolute;
+bottom: -4px; right: -4px;
+width: 100%; height: 100%;
+border: 1.5px solid rgba(26,22,18,0.18);
+z-index: -1;
+      }
+.res-n {
+font-family: var(--font-hand);
+font-size: 2.4rem;
+font-weight: 700;
+color: var(--sf-amber);
+line-height: 1;
+min-width: 60px;
+      }
+.res-n .ico { width: 34px; height: 34px; stroke: var(--sf-amber); stroke-width: 1.8; }
+.res-l {
+font-family: var(--font-hand);
+font-size: 15px;
+color: var(--ink-light);
+line-height: 1.5;
+margin-top: 2px;
+      }
+.res-ctx {
+font-family: var(--font-mono);
+font-size: 8px;
+letter-spacing: 1px;
+color: var(--pencil);
+margin-top: 3px;
+      }
+
+.rc {
+background: var(--paper-dark);
+border: 1.5px solid rgba(26,22,18,0.15);
+padding: 1.1rem;
+      }
+.rc-t {
+font-family: var(--font-hand);
+font-size: 15px;
+font-weight: 700;
+color: var(--sf-amber);
+margin-bottom: 5px;
+      }
+.rc-d {
+font-family: var(--font-hand);
+font-size: 14px;
+color: var(--ink-light);
+line-height: 1.7;
+      }
+
+.imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
+.imgs.c1 { grid-template-columns: 1fr; }
+.imgs.c2 { grid-template-columns: 1fr 1fr; }
+.imgs.c3 { grid-template-columns: 1fr 1fr 1fr; }
+.iw {
+border: 2px solid var(--ink);
+background: var(--sf-dark);
+position: relative;
+transition: transform 0.2s;
+      }
+.iw:hover { transform: translate(-2px,-2px); }
+.iw::after {
+content: '';
+position: absolute;
+bottom: -4px; right: -4px;
+width: 100%; height: 100%;
+border: 1.5px solid rgba(26,22,18,0.15);
+z-index: -1;
+      }
+.iw img { width: 100%; display: block; }
+.icap {
+padding: 7px 10px;
+font-family: var(--font-hand);
+font-size: 13px;
+color: var(--ink-faint);
+border-top: 1px solid rgba(26,22,18,0.12);
+line-height: 1.4;
+background: var(--paper-dark);
+      }
+
+.tools {
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
+margin-bottom: 1.5rem;
+      }
+.tool {
+font-family: var(--font-mono);
+font-size: 9px;
+letter-spacing: 1px;
+padding: 3px 10px;
+background: var(--paper-dark);
+border: 1.5px solid rgba(26,22,18,0.2);
+color: var(--ink-light);
+text-transform: uppercase;
+      }
+
+.hl-y {
+background: linear-gradient(120deg, rgba(232,184,75,0)0%, rgba(232,184,75,0.45)10%, rgba(232,184,75,0.45)90%, rgba(232,184,75,0)100%);
+padding: 0 2px;
+      }
+
+.corner-fold {
+position: absolute;
+bottom: 0; right: 0;
+width: 24px; height: 24px;
+background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
+border-top: 1px solid var(--pencil);
+border-left: 1px solid var(--pencil);
+pointer-events: none;
+      }
+
+/* USER FLOW DIAGRAM */
+.flow-wrap {
+background: var(--paper-dark);
+border: 2px solid var(--ink);
+padding: 1.5rem 1.25rem;
+margin-bottom: 1.5rem;
+position: relative;
+box-shadow: 4px 4px 0 rgba(26,22,18,0.1);
+transform: rotate(-0.15deg);
+overflow-x: auto;
+      }
+.flow-wrap::after {
+content: '';
+position: absolute;
+bottom: -5px; right: -5px;
+width: 100%; height: 100%;
+border: 1.5px solid rgba(26,22,18,0.15);
+z-index: -1;
+      }
+.flow-group { margin-bottom: 1.75rem; }
+.flow-group:last-child { margin-bottom: 0; }
+.flow-group-t {
+font-family: var(--font-mono);
+font-size: 9px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--sf-amber);
+margin-bottom: 0.75rem;
+      }
+.flow-row {
+display: flex;
+align-items: center;
+flex-wrap: wrap;
+gap: 0;
+min-width: 620px;
+      }
+.flow-box {
+background: var(--paper);
+border: 1.5px solid var(--ink);
+padding: 0.6rem 0.9rem;
+min-width: 128px;
+max-width: 150px;
+text-align: center;
+      }
+.flow-box-t {
+font-family: var(--font-hand);
+font-size: 14px;
+font-weight: 700;
+color: var(--ink);
+line-height: 1.2;
+      }
+.flow-box-s {
+font-family: var(--font-mono);
+font-size: 8px;
+color: var(--ink-faint);
+margin-top: 3px;
+line-height: 1.3;
+      }
+.flow-arrow {
+font-family: var(--font-hand);
+font-size: 20px;
+color: var(--sf-amber);
+padding: 0 8px;
+flex-shrink: 0;
+      }
+
+.legend {
+display: flex;
+gap: 1.25rem;
+flex-wrap: wrap;
+margin-top: 0.5rem;
+      }
+.legend-item {
+display: flex;
+align-items: center;
+gap: 6px;
+font-family: var(--font-mono);
+font-size: 9px;
+color: var(--ink-faint);
+text-transform: uppercase;
+letter-spacing: 1px;
+      }
+.legend-dot {
+width: 10px; height: 10px;
+border: 1.5px solid var(--ink);
+      }
+
+.rev {
+opacity: 0;
+transform: translateY(16px);
+transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+.rev.in { opacity: 1; transform: none; }
+
+footer {
+border-top: 2.5px solid var(--ink);
+padding: 1.25rem 2rem;
+text-align: center;
+font-family: var(--font-mono);
+font-size: 9px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--pencil);
+margin-left: 32px;
+      }
+
+@media (max-width: 860px) {
+.sidenav { display: none; }
+.main { margin-left: 32px; padding: 5rem 1.5rem 5rem; }
+.stats { grid-template-columns: repeat(2, 1fr); }
+.g3, .g2 { grid-template-columns: 1fr; }
+.imgs.c2, .imgs.c3 { grid-template-columns: 1fr; }
+.hero-img { max-width: 100%; }
+      }
+@media (max-width: 600px) {
+.spiral-binding { display: none; }
+.topnav, footer { margin-left: 0; left: 0; }
+.main { margin-left: 0; padding: 5rem 1.25rem 4rem; }
+.nav-links { display: none; }
+.hero-h { font-size: 2.2rem; }
+      }
+</style>
+</head>
+<body>
+
+<!-- HAND-DRAWN ICON SPRITE (no emoji) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<defs>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.2" y="10.4" width="15.6" height="10.2" rx="1.6"/><path d="M7.8 10.2V7.4a4.2 4.2 0 0 1 8.4-.2v3"/><path d="M12 14.4v2.6"/></symbol>
+<symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.8 8.2 13.9 13.9 8.2 15.8 10.1 10.1z"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21.4s7-5.9 7-11.2a7 7 0 0 0-14 0c0 5.3 7 11.2 7 11.2z"/><circle cx="12" cy="10.1" r="2.8"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><rect x="4.4" y="3.4" width="15.2" height="17.2" rx="1.8"/><path d="M8.4 8.2h7.2M8.4 12h7.2M8.4 15.8h4.4"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 9.6a6 6 0 0 1 12 0c0 4.2 1.4 5.6 2 6.4H4c.6-.8 2-2.2 2-6.4z"/><path d="M9.8 18.8a2.3 2.3 0 0 0 4.4 0"/></symbol>
+<symbol id="i-box" viewBox="0 0 24 24"><path d="M3.4 7.6 12 3l8.6 4.6v9L12 21l-8.6-4.4z"/><path d="M3.4 7.6 12 12l8.6-4.4M12 12v9"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20.4V3.6M4 20.4h16.6"/><path d="M8 17.2v-5M13 17.2V8M18 17.2v-8.4"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.2" r="3.4"/><path d="M3 20c0-3.6 2.8-6 6-6s6 2.4 6 6"/><circle cx="17.6" cy="9" r="2.6"/><path d="M15.8 14.4c2.6.2 4.6 2.2 4.6 5.6"/></symbol>
+<symbol id="i-sync" viewBox="0 0 24 24"><path d="M20.4 12a8.4 8.4 0 0 1-14.3 6"/><path d="M3.6 12a8.4 8.4 0 0 1 14.3-6"/><path d="M17.6 2.6v3.6h-3.6M6.4 21.4v-3.6h3.6"/></symbol>
+<symbol id="i-cart" viewBox="0 0 24 24"><path d="M3.4 4.4h2.6l2.4 12.2h10.2l1.8-8.4H6.6"/><circle cx="9.6" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.4" y="2.6" width="11.2" height="18.8" rx="2"/><path d="M10.4 18.4h3.2"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.6" cy="10.6" r="6.8"/><path d="M15.6 15.6 20.8 20.8"/></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.4"/><circle cx="12" cy="12" r="8.4"/><path d="M12 2.4v3.2M12 18.4v3.2M2.4 12h3.2M18.4 12h3.2M5.2 5.2l2.3 2.3M16.5 16.5l2.3 2.3M18.8 5.2l-2.3 2.3M7.5 16.5l-2.3 2.3"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6.8V12l4 2.4"/></symbol>
+<symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3.4 21.4 20H2.6z"/><path d="M12 9.6v4.4"/><circle cx="12" cy="17.2" r="0.4" fill="currentColor"/></symbol>
+<symbol id="i-rise" viewBox="0 0 24 24"><path d="M12 20.4V4.2"/><path d="M5.8 10.4 12 3.8l6.2 6.6"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3 21 8l-9 5-9-5z"/><path d="M3 12l9 5 9-5M3 16l9 5 9-5"/></symbol>
+</defs>
+</svg>
+
+<div class="spiral-binding" aria-hidden="true" id="spiralBinding"></div>
+
+<nav class="topnav">
+<div class="topnav-in">
+<a href="../index.html" class="logo">Inayat</a>
+<ul class="nav-links">
+<li><a href="../index.html">Home</a></li>
+<li><a href="../About.html">About</a></li>
+<li><a href="../Projects.html">Projects</a></li>
+<li><a href="../Resume.html">Résumé</a></li>
+<li><a href="../index.html#contact">Contact</a></li>
+</ul>
+</div>
+</nav>
+
+<aside class="sidenav">
+<a href="../Projects.html" class="back-link">← Projects</a>
+<div>
+<div class="side-lbl">Case Study</div>
+<nav class="side-list">
+<a href="#overview"    class="side-a active"><span class="side-num">00</span>Overview</a>
+<a href="#problem"     class="side-a"><span class="side-num">01</span>Problem</a>
+<a href="#discovery"   class="side-a"><span class="side-num">02</span>Discovery</a>
+<a href="#flow"        class="side-a"><span class="side-num">03</span>User Flow</a>
+<a href="#ideation"    class="side-a"><span class="side-num">04</span>Ideation</a>
+<a href="#screens"     class="side-a"><span class="side-num">05</span>Inside the App</a>
+<a href="#build"       class="side-a"><span class="side-num">06</span>Build Process</a>
+<a href="#outcome"     class="side-a"><span class="side-num">07</span>Outcome</a>
+<a href="#reflection"  class="side-a"><span class="side-num">08</span>Reflection</a>
+</nav>
+</div>
+<div style="margin-top:auto; padding-top:1rem; opacity:0.28; pointer-events:none;">
+<svg viewBox="0 0 80 64" style="width:70px">
+<rect x="14" y="18" width="24" height="24" rx="3" stroke="#c9860a" stroke-width="1.5" fill="rgba(201,134,10,0.08)"/>
+<rect x="40" y="18" width="24" height="24" rx="3" stroke="#1f1b16" stroke-width="1.5" fill="rgba(31,27,22,0.06)"/>
+<text x="6" y="58" font-family="Reenie Beanie, cursive" font-size="9" fill="#8a7f72">solo product design</text>
+</svg>
+</div>
+</aside>
+
+<main class="main">
+
+<!-- HERO -->
+<header id="top" style="margin-bottom:4rem">
+<div class="tags">
+<span class="tag">Product Design</span>
+<span class="tag">Inventory + Sales OS</span>
+<span class="tag">Client Project</span>
+</div>
+
+<h1 class="hero-h">
+          Turning invoices<br/>
+<span class="squiggle-wrap" style="color: var(--sf-amber);">into inventory intelligence
+<svg viewBox="0 0 200 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2,8 C30,3 60,13 90,7 C120,2 150,11 198,7" stroke="#1f1b16" stroke-width="3" fill="none" stroke-linecap="round"/>
+</svg>
+</span>
+</h1>
+
+<p class="hero-sub">Case Study — Product Design &amp; Vibe-Coded Build · July 2026–Present</p>
+
+<p class="hero-p">
+          Designing <strong>StockFlow Pro</strong> for Devgon Industries — a phone-and-iPad-friendly inventory, sales, and customer-pattern system built to replace guesswork with a single source of truth.
+</p>
+
+<div class="hero-img">
+<img
+src="./Images/stockflow_dashboard_blurred.png"
+alt="StockFlow Pro dashboard — home screen"
+/>
+</div>
+
+<!-- NDA BANNER -->
+<div class="nda">
+<div class="nda-icon"><svg class="ico" aria-hidden="true"><use href="#i-lock"/></svg></div>
+<div>
+<div class="nda-t">Private Client Project</div>
+<div class="nda-d">
+              This app runs on Devgon Industries' live business data. Screens shown here have sensitive figures — revenue, customer names, contact details, and specific stock counts — blurred for confidentiality. Structure, flows, and design decisions are shown in full.
+</div>
+</div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+<div class="stat">
+<div class="s-n">1</div>
+<div class="s-l">Designer + vibe-coded backend</div>
+<div class="s-sub">End-to-end ownership</div>
+</div>
+<div class="stat">
+<div class="s-n">4</div>
+<div class="s-l">Core systems unified</div>
+<div class="s-sub">Sales · Inventory · Customers · Alerts</div>
+</div>
+<div class="stat">
+<div class="s-n">258+</div>
+<div class="s-l">SKUs tracked live</div>
+<div class="s-sub">Real catalogue in production</div>
+</div>
+<div class="stat">
+<div class="s-n">1</div>
+<div class="s-l">Accounting platform synced</div>
+<div class="s-sub">Zoho</div>
+</div>
+</div>
+
+<!-- META -->
+<div class="meta">
+<div>
+<div class="m-k">Timeline</div>
+<div class="m-v">July 2026 – Present<br/>Ongoing</div>
+</div>
+<div>
+<div class="m-k">My Role</div>
+<div class="m-v">UX/UI Designer<br/>Vibe-coded backend</div>
+</div>
+<div>
+<div class="m-k">Client</div>
+<div class="m-v">Devgon Industries<br/>devgonindustries.ca</div>
+</div>
+<div>
+<div class="m-k">Tools</div>
+<div class="m-v">Figma, Base44<br/>Zoho, JSON</div>
+</div>
+</div>
+</header>
+
+<!-- 00 OVERVIEW -->
+<section id="overview" class="sec rev">
+<div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
+<h2 class="sec-h">The Project</h2>
+<p class="sec-lead">Devgon Industries runs its books through accounting software that tracks invoices and totals well — but has no idea what's actually happening to inventory.</p>
+<div class="rule"></div>
+<p style="font-family:var(--font-hand); font-size:17px; color:var(--ink-light); line-height:1.75; max-width:600px; margin-bottom:1.25rem">
+          I designed StockFlow Pro as a private, mobile-and-tablet-friendly web app that sits alongside the client's existing accounting workflow — connecting sales, inventory, customers, and smart alerts into one place, with sync back to Zoho so nothing lives in two disconnected systems.
+</p>
+<p style="font-family:var(--font-hand); font-size:17px; color:var(--ink-light); line-height:1.75; max-width:600px; margin-bottom:1.5rem">
+          I worked as the sole UX/UI designer on this project, and used AI-assisted "vibe coding" to build and iterate on the backend myself — meaning I owned the product from research through a working, shipped system.
+</p>
+<div class="sub">Tools &amp; Methods</div>
+<div class="tools">
+<span class="tool">Figma</span>
+<span class="tool">Base44</span>
+<span class="tool">Zoho Sync</span>
+<span class="tool">Vibe Coding</span>
+<span class="tool">User Interviews</span>
+<span class="tool">Workflow Observation</span>
+<span class="tool">Information Architecture</span>
+<span class="tool">Flowcharting</span>
+</div>
+</section>
+
+<!-- 01 PROBLEM -->
+<section id="problem" class="sec rev">
+<div class="phase"><div class="p-dot">1</div><span class="p-txt">The Problem</span></div>
+<h2 class="sec-h">Sales Were Tracked.<br/>Stock Was a Mystery.</h2>
+<p class="sec-lead">The client's accounting software recorded every invoice and every total sale — but told him almost nothing about the products behind those numbers.</p>
+<div class="rule"></div>
+
+<div class="g3" style="margin-bottom:2rem">
+<div class="nc">
+<div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">No Visibility</div>
+<div class="nc-t">Stock levels unknown</div>
+<div class="nc-d">No way to see how much of any product was actually on hand at a given time</div>
+</div>
+<div class="nc">
+<div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">No Signal</div>
+<div class="nc-t">Reorder timing was guesswork</div>
+<div class="nc-d">Fast vs. slow movers weren't distinguished, so reordering happened too late or too early</div>
+</div>
+<div class="nc">
+<div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">No Pattern</div>
+<div class="nc-t">Customer habits were invisible</div>
+<div class="nc-d">No record of what each customer regularly bought or when they'd likely order again</div>
+</div>
+</div>
+
+<div class="quote">
+<p>How might we give a small business owner one accurate, always-current view of stock, sales, and customer behaviour — without asking him to abandon the accounting software he already relies on?</p>
+</div>
+</section>
+
+<!-- 02 DISCOVERY -->
+<section id="discovery" class="sec rev">
+<div class="phase"><div class="p-dot">2</div><span class="p-txt">Discovery &amp; Research</span></div>
+<h2 class="sec-h">Watching How the<br/>Business Actually Runs</h2>
+<p class="sec-lead">I talked directly with the client about where the pain was, then observed his existing Zoho accounts to understand what data already existed and what was missing.</p>
+<div class="rule"></div>
+
+<div class="sub">Key Research Insights</div>
+<div class="flist">
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-box"/></svg></div>
+<div>
+<div class="fr-t">Inventory lived nowhere accurate</div>
+<div class="fr-d">Zoho recorded that a sale happened, but stock-on-hand per product wasn't tracked anywhere reliable — it was reconstructed from memory or spot-checks.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-users"/></svg></div>
+<div>
+<div class="fr-t">No sense of customer rhythm</div>
+<div class="fr-d">The client could see who bought what once, but had no structured way to know that a given customer reorders roughly every 80–90 days — until they were already calling.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-search"/></svg></div>
+<div>
+<div class="fr-t">Staff accuracy was an open question</div>
+<div class="fr-d">Without a consistent record of what was sold and at what quantity, the client had no easy way to confirm sales were being logged correctly at the point of entry.</div>
+</div>
+</div>
+</div>
+
+<div class="sub">What the Client Needed</div>
+<div class="slist">
+<div class="st">
+<div class="st-n">01</div>
+<div>
+<div class="st-t">A phone-and-iPad-friendly app</div>
+<div class="st-d">Something usable on the floor, not just at a desk — matching how the business actually operates day to day.</div>
+</div>
+</div>
+<div class="st">
+<div class="st-n">02</div>
+<div>
+<div class="st-t">One place for sales, inventory, and customers</div>
+<div class="st-d">Instead of three disconnected mental models, a single system that updates together.</div>
+</div>
+</div>
+<div class="st">
+<div class="st-n">03</div>
+<div>
+<div class="st-t">Smart alerts, not manual checking</div>
+<div class="st-d">The system should surface what needs attention today, rather than requiring the owner to go looking for problems.</div>
+</div>
+</div>
+<div class="st">
+<div class="st-n">04</div>
+<div>
+<div class="st-t">A sync path to accounting</div>
+<div class="st-d">The new system needed to complement Zoho, not replace or duplicate it.</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 03 USER FLOW -->
+<section id="flow" class="sec rev">
+<div class="phase"><div class="p-dot">3</div><span class="p-txt">User Flow</span></div>
+<h2 class="sec-h">Following One Sale<br/>Through the Whole System</h2>
+<p class="sec-lead">Rather than designing sales, inventory, and customer tracking as separate features, I mapped how a single sale ripples through all four systems — this became the backbone of the IA.</p>
+<div class="rule"></div>
+
+<div class="flow-wrap">
+
+<div class="flow-group">
+<div class="flow-group-t">1 · Create a sale</div>
+<div class="flow-row">
+<div class="flow-box"><div class="flow-box-t">Select customer</div><div class="flow-box-s">Existing or new</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box"><div class="flow-box-t">Add products</div><div class="flow-box-s">Quantities per item</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box"><div class="flow-box-t">Review total</div><div class="flow-box-s">Auto-calculated</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box"><div class="flow-box-t">Cash or invoice</div><div class="flow-box-s">Payment type</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box"><div class="flow-box-t">Confirm sale</div><div class="flow-box-s">Locks the record</div></div>
+</div>
+</div>
+
+<div class="flow-group">
+<div class="flow-group-t">2 · Inventory + alerts update</div>
+<div class="flow-row">
+<div class="flow-box"><div class="flow-box-t">Reduce stock</div><div class="flow-box-s">Per product sold</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box"><div class="flow-box-t">Check reorder threshold</div><div class="flow-box-s">Per-product rule</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box"><div class="flow-box-t">Trigger low-stock alert</div><div class="flow-box-s">Ranked by $ impact</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box"><div class="flow-box-t">Update dashboard</div><div class="flow-box-s">Fast vs. slow movers</div></div>
+</div>
+</div>
+
+<div class="flow-group">
+<div class="flow-group-t">3 · Customer buying patterns</div>
+<div class="flow-row">
+<div class="flow-box"><div class="flow-box-t">Log sale to customer</div><div class="flow-box-s">History + frequency</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box"><div class="flow-box-t">Detect purchase cadence</div><div class="flow-box-s">e.g. every ~86 days</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box"><div class="flow-box-t">Surface reorder-due accounts</div><div class="flow-box-s">Sorted, top sellers first</div></div>
+</div>
+</div>
+
+<div class="flow-group">
+<div class="flow-group-t">4 · Accounting sync + owner view</div>
+<div class="flow-row">
+<div class="flow-box"><div class="flow-box-t">Sync with Zoho</div><div class="flow-box-s">Sales + invoices</div></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box"><div class="flow-box-t">Owner sees full picture</div><div class="flow-box-s">Stock, sales, patterns</div></div>
+</div>
+</div>
+
+<div class="legend">
+<div class="legend-item"><span class="legend-dot"></span>Every stage was validated against Zoho export data before being treated as ground truth</div>
+</div>
+
+</div>
+</section>
+
+<!-- 04 IDEATION -->
+<section id="ideation" class="sec rev">
+<div class="phase"><div class="p-dot">4</div><span class="p-txt">Ideation &amp; Design Decisions</span></div>
+<h2 class="sec-h">Four Decisions<br/>That Shaped the System</h2>
+<p class="sec-lead">Every decision traced back to one goal: make the thing that's costing the client money today impossible to miss.</p>
+<div class="rule"></div>
+
+<div class="flist">
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-bell"/></svg></div>
+<div>
+<div class="fr-t">Decision 1 — Alerts ranked by financial impact, not just count</div>
+<div class="fr-d">Rather than a flat notifications list, alerts are split into "Chase these first" (revenue-generating, like a customer due to reorder) versus "Needs you today" (loss-prevention, like out-of-stock items). The framing itself teaches prioritization.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-users"/></svg></div>
+<div>
+<div class="fr-t">Decision 2 — Customer segmentation by behaviour, not alphabet</div>
+<div class="fr-d">Customers are filterable by status — owes money, reorder due, not ordering, no orders yet — so the owner can act on a segment instead of scanning a full list.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-clock"/></svg></div>
+<div>
+<div class="fr-t">Decision 3 — Reorder cadence per customer, not a generic rule</div>
+<div class="fr-d">Instead of a single global "reorder after X days" setting, the system learns each customer's own buying rhythm from their order history and predicts their next likely order individually.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-sync"/></svg></div>
+<div>
+<div class="fr-t">Decision 4 — Sit beside accounting, not replace it</div>
+<div class="fr-d">StockFlow syncs sales and invoice data with Zoho rather than asking the client to migrate his books — reducing adoption risk and keeping one system as the source of financial truth.</div>
+</div>
+</div>
+</div>
+
+<div class="sub">Core Navigation</div>
+<div class="g2">
+<div class="ic">
+<div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-chart"/></svg></div>
+<div class="ic-t">Home</div>
+<div class="ic-d">Revenue, outstanding balance, inventory value, and active customers at a glance, plus a 7-day trend.</div>
+</div>
+<div class="ic">
+<div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-box"/></svg></div>
+<div class="ic-t">Products</div>
+<div class="ic-d">Full catalogue with cost, retail price, stock on hand, and per-product reorder thresholds.</div>
+</div>
+<div class="ic">
+<div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-cart"/></svg></div>
+<div class="ic-t">Sales</div>
+<div class="ic-d">New sale flow plus a running record of past transactions and payment status.</div>
+</div>
+<div class="ic">
+<div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-bell"/></svg></div>
+<div class="ic-t">Alerts</div>
+<div class="ic-d">A prioritized, timestamped live scan of everything needing attention — reorders, out-of-stock, slow movers.</div>
+</div>
+</div>
+</section>
+
+<!-- 05 SCREENS -->
+<section id="screens" class="sec rev">
+<div class="phase"><div class="p-dot">5</div><span class="p-txt">Inside the App</span></div>
+<h2 class="sec-h">Four Screens,<br/>One System</h2>
+<p class="sec-lead">Sensitive figures are blurred, but the structure below is exactly what shipped.</p>
+<div class="rule"></div>
+
+<div class="imgs c2">
+<div class="iw">
+<img src=".Images/stockflow_dashboard_blurred.png" alt="StockFlow Pro home dashboard"/>
+<div class="icap">Home — revenue, outstanding balance, inventory value, and active customers, with a 7-day trend below the fold.</div>
+</div>
+<div class="iw">
+<img src=".Images/stockflow_alerts_blurred.png" alt="StockFlow Pro alerts screen"/>
+<div class="icap">Alerts — a live scan split into revenue-first actions ("chase these") and loss-prevention actions ("needs you today").</div>
+</div>
+</div>
+<div class="imgs c2">
+<div class="iw">
+<img src=".Images/stockflow_products_blurred.png" alt="StockFlow Pro product catalogue"/>
+<div class="icap">Products — full catalogue filterable by needs-reorder, out-of-stock, and slow-moving status, with cost and reorder threshold per item.</div>
+</div>
+<div class="iw">
+<img src="stockflow_customers_blurred.png" alt="StockFlow Pro customer list"/>
+<div class="icap">Customers — segmented by behaviour: owes money, reorder due, not ordering, no orders yet.</div>
+</div>
+</div>
+</section>
+
+<!-- 06 BUILD PROCESS -->
+<section id="build" class="sec rev">
+<div class="phase"><div class="p-dot">6</div><span class="p-txt">Build Process</span></div>
+<h2 class="sec-h">Designing and<br/>Building It Myself</h2>
+<p class="sec-lead">With no dedicated engineer on this project, I used AI-assisted "vibe coding" to translate my own Figma decisions directly into a working product.</p>
+<div class="rule"></div>
+
+<div class="flist">
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-layers"/></svg></div>
+<div>
+<div class="fr-t">Design-to-build in one loop</div>
+<div class="fr-d">Because I owned both the interface decisions and the implementation, I could test a flow, feel where it broke, and fix the structure the same day — no handoff lag.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-sync"/></svg></div>
+<div>
+<div class="fr-t">Grounding the build in real Zoho data</div>
+<div class="fr-d">Rather than designing against sample data, the catalogue and customer records were imported from the client's actual Zoho account from day one, so edge cases showed up early.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg></div>
+<div>
+<div class="fr-t">Mobile-and-tablet-first by requirement</div>
+<div class="fr-d">Since the client explicitly needed phone and iPad support, every screen was designed and tested at that scale first, with desktop treated as secondary.</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 07 OUTCOME -->
+<section id="outcome" class="sec rev">
+<div class="phase"><div class="p-dot">7</div><span class="p-txt">Outcome &amp; Status</span></div>
+<h2 class="sec-h">A Live System,<br/>Still Growing</h2>
+<p class="sec-lead">StockFlow Pro is in active use by Devgon Industries, with the product catalogue and customer base already reflecting the real business.</p>
+<div class="rule"></div>
+
+<div class="g2" style="margin-bottom:2rem">
+<div class="res">
+<div class="res-n"><svg class="ico" aria-hidden="true"><use href="#i-box"/></svg></div>
+<div>
+<div class="res-l">Full catalogue live</div>
+<div class="res-ctx">258+ real SKUs tracked with cost, price, and reorder thresholds</div>
+</div>
+</div>
+<div class="res">
+<div class="res-n"><svg class="ico" aria-hidden="true"><use href="#i-users"/></svg></div>
+<div>
+<div class="res-l">Full customer base onboarded</div>
+<div class="res-ctx">Accounts segmented and scored by ordering behaviour from day one</div>
+</div>
+</div>
+<div class="res">
+<div class="res-n"><svg class="ico" aria-hidden="true"><use href="#i-bell"/></svg></div>
+<div>
+<div class="res-l">Proactive alerts replacing guesswork</div>
+<div class="res-ctx">Reorder timing is now surfaced automatically instead of reconstructed from memory</div>
+</div>
+</div>
+<div class="res">
+<div class="res-n"><svg class="ico" aria-hidden="true"><use href="#i-sync"/></svg></div>
+<div>
+<div class="res-l">Accounting sync in place</div>
+<div class="res-ctx">Sales and invoices stay connected to Zoho rather than living in a separate silo</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 08 REFLECTION -->
+<section id="reflection" class="sec rev">
+<div class="phase"><div class="p-dot">8</div><span class="p-txt">Reflection</span></div>
+<h2 class="sec-h">What This Project<br/>Taught Me</h2>
+<p class="sec-lead">Designing for one real business, with real stakes, is a different discipline than designing for a hypothetical user.</p>
+<div class="rule"></div>
+
+<div class="g2">
+<div class="rc">
+<div class="rc-t">Designing around an existing system, not against it</div>
+<div class="rc-d">The right answer wasn't to replace the client's accounting software — it was to design something that made that software more useful without asking him to change how he already works.</div>
+</div>
+<div class="rc">
+<div class="rc-t">Alerts are a design problem, not a feature checkbox</div>
+<div class="rc-d">The difference between a useless notification feed and a genuinely useful one came down to ranking by financial consequence — a decision made in the interface, not the database.</div>
+</div>
+<div class="rc">
+<div class="rc-t">Owning the build changes how you design</div>
+<div class="rc-d">Vibe-coding the backend myself meant every design decision had to be one I could actually implement and defend — it kept the system honest and grounded in what was buildable.</div>
+</div>
+<div class="rc">
+<div class="rc-t">Real data surfaces real problems early</div>
+<div class="rc-d">Designing against the client's actual Zoho export from the start surfaced messy, real-world edge cases that a clean sample dataset would have hidden until launch.</div>
+</div>
+</div>
+
+<div style="margin-top:3rem; padding:1.5rem; border:1.5px solid rgba(26,22,18,0.12); background:var(--paper-dark); position:relative; transform:rotate(-0.3deg)">
+<div style="position:absolute; top:-11px; left:20px; width:40px; height:20px; background:rgba(201,134,10,0.28); border-top:1px solid rgba(201,134,10,0.4); border-bottom:1px solid rgba(201,134,10,0.4); transform:rotate(1.5deg)"></div>
+<p style="font-family:var(--font-serif); font-size:1.1rem; font-style:italic; color:var(--ink-light); line-height:1.7">
+            The best compliment this project could get isn't a compliment at all — it's the client no longer needing to remember anything, because the system <span class="hl-y">remembers it for him</span>.
+</p>
+<p style="font-family:var(--font-scrawl); font-size:18px; color:var(--sf-amber); margin-top:0.75rem; transform:rotate(-1deg); display:inline-block">— Inayat</p>
+<div class="corner-fold"></div>
+</div>
+</section>
+
+</main>
+
+<footer>© 2026 Inayat &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; Product Design · Inventory OS · Client Project</footer>
+
+<script>
+const spiral = document.getElementById('spiralBinding');
+const count = Math.floor(window.innerHeight / 44) + 2;
+for (let i = 0; i < count; i++) {
+const h = document.createElement('div');
+h.className = 'spiral-hole';
+spiral.appendChild(h);
+      }
+
+const ro = new IntersectionObserver(es => es.forEach(e => {
+if (e.isIntersecting) e.target.classList.add('in');
+      }), { threshold: 0.06 });
+document.querySelectorAll('.rev').forEach(el => ro.observe(el));
+
+const links = document.querySelectorAll('.side-a');
+const secs  = document.querySelectorAll('.sec');
+const so = new IntersectionObserver(es => {
+es.forEach(e => {
+if (e.isIntersecting) {
+links.forEach(l => l.classList.remove('active'));
+const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
+if (a) a.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-15% 0px -65% 0px' });
+secs.forEach(s => so.observe(s));
+</script>
+</body>
+</html>
