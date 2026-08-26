@@ -1,1382 +1,1420 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mastercard SharePoint Redesign — Inayat</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --paper: #faf8f2;
-        --paper-dark: #f0ecdf;
-        --paper-worn: #e8e2d0;
-        --ink: #1a1612;
-        --ink-light: #3d3530;
-        --ink-faint: #8a7f72;
-        --pencil: #b8b0a0;
-        --pencil-light: #d4cfc4;
-        --red: #c0392b;
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mastercard SharePoint Redesign — Inayat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap"
+rel="stylesheet"
+/>
+<style>
+:root {
+--paper: #faf8f2;
+--paper-dark: #f0ecdf;
+--paper-worn: #e8e2d0;
+--ink: #1a1612;
+--ink-light: #3d3530;
+--ink-faint: #8a7f72;
+--pencil: #b8b0a0;
+--pencil-light: #d4cfc4;
+--red: #c0392b;
 
-        /* Mastercard accent — deep red/orange + gold */
-        --mc-red: #b5261e;
-        --mc-red-l: #d4372d;
-        --mc-gold: #c9860a;
-        --mc-gold-l: #e0a020;
-        --mc-orange: #bf5a1a; /* shared warm accent for nav elements */
-        --yellow: #e8b84b;
+/* Mastercard accent — deep red/orange + gold */
+--mc-red: #b5261e;
+--mc-red-l: #d4372d;
+--mc-gold: #c9860a;
+--mc-gold-l: #e0a020;
+--mc-orange: #bf5a1a; /* shared warm accent for nav elements */
+--yellow: #e8b84b;
 
-        --font-hand: 'Caveat', cursive;
-        --font-scrawl: 'Reenie Beanie', cursive;
-        --font-mono: 'Space Mono', monospace;
-        --font-serif: 'EB Garamond', serif;
+--font-hand: 'Caveat', cursive;
+--font-scrawl: 'Reenie Beanie', cursive;
+--font-mono: 'Space Mono', monospace;
+--font-serif: 'EB Garamond', serif;
 
-        --nav-h: 58px;
-        --side-w: 196px;
-      }
-
-      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-      html { scroll-behavior: smooth; }
-
-      body {
-        font-family: var(--font-hand);
-        background: var(--paper);
-        color: var(--ink);
-        line-height: 1.6;
-        overflow-x: hidden;
-        -webkit-font-smoothing: antialiased;
+--nav-h: 58px;
+--side-w: 196px;
       }
 
-      /* Ruled paper lines */
-      body::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background-image:
-          repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.11) 27px, rgba(180,170,155,0.11) 28px);
-        pointer-events: none;
-        z-index: 0;
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+font-family: var(--font-hand);
+background: var(--paper);
+color: var(--ink);
+line-height: 1.6;
+overflow-x: hidden;
+-webkit-font-smoothing: antialiased;
       }
 
-      /* Spiral binding */
-      .spiral-binding {
-        position: fixed;
-        left: 0; top: 0; bottom: 0;
-        width: 32px;
-        background: var(--paper-worn);
-        border-right: 2.5px solid var(--ink);
-        z-index: 200;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        padding-top: 24px;
-        pointer-events: none;
-      }
-      .spiral-hole {
-        width: 16px; height: 16px;
-        border-radius: 50%;
-        border: 2px solid var(--ink);
-        background: var(--paper);
-        margin-bottom: 28px;
-        flex-shrink: 0;
-        box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
+/* Ruled paper lines */
+body::before {
+content: '';
+position: fixed;
+inset: 0;
+background-image:
+repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.11) 27px, rgba(180,170,155,0.11) 28px);
+pointer-events: none;
+z-index: 0;
       }
 
-      /* TOP NAV */
-      .topnav {
-        position: fixed;
-        top: 0; left: 32px; right: 0;
-        height: var(--nav-h);
-        z-index: 150;
-        background: var(--paper);
-        border-bottom: 2.5px solid var(--ink);
-        display: flex;
-        align-items: center;
-        padding: 0 2rem;
+/* Spiral binding */
+.spiral-binding {
+position: fixed;
+left: 0; top: 0; bottom: 0;
+width: 32px;
+background: var(--paper-worn);
+border-right: 2.5px solid var(--ink);
+z-index: 200;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: flex-start;
+padding-top: 24px;
+pointer-events: none;
       }
-      .topnav-in {
-        width: 100%;
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .logo {
-        font-family: var(--font-hand);
-        font-size: 22px;
-        font-weight: 700;
-        color: var(--ink);
-        text-decoration: none;
-        position: relative;
-      }
-      .logo::after {
-        content: '';
-        position: absolute;
-        bottom: -2px; left: 0; right: 0;
-        height: 3px;
-        background: var(--mc-red);
-        border-radius: 2px;
-        transform: rotate(-0.8deg);
-      }
-      .nav-links {
-        display: flex;
-        gap: 2rem;
-        list-style: none;
-      }
-      .nav-links a {
-        font-family: var(--font-hand);
-        font-size: 16px;
-        color: var(--ink-faint);
-        text-decoration: none;
-        position: relative;
-        padding-bottom: 2px;
-        transition: color 0.2s;
-      }
-      .nav-links a::after {
-        content: '';
-        position: absolute;
-        bottom: 0; left: 0;
-        width: 0; height: 2px;
-        background: var(--ink);
-        transition: width 0.25s;
-      }
-      .nav-links a:hover { color: var(--ink); }
-      .nav-links a:hover::after { width: 100%; }
-
-      /* SIDENAV */
-      .sidenav {
-        position: fixed;
-        top: var(--nav-h);
-        left: 32px;
-        width: var(--side-w);
-        height: calc(100vh - var(--nav-h));
-        padding: 2rem 1rem 2rem 1.5rem;
-        border-right: 1.5px solid rgba(180,170,155,0.35);
-        background: var(--paper);
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        overflow-y: auto;
-        z-index: 100;
-      }
-      .sidenav::before {
-        content: '';
-        position: absolute;
-        left: 44px; top: 0; bottom: 0;
-        width: 1.5px;
-        background: rgba(181,38,30,0.13);
-        pointer-events: none;
-      }
-      .back-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        color: var(--mc-red);
-        text-decoration: none;
-        font-family: var(--font-hand);
-        font-size: 15px;
-        font-weight: 600;
-        transition: gap 0.2s;
-        white-space: nowrap;
-      }
-      .back-link:hover { gap: 10px; }
-      .side-lbl {
-        font-family: var(--font-mono);
-        font-size: 9px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: var(--pencil);
-        margin-bottom: 0.5rem;
-      }
-      .side-list { display: flex; flex-direction: column; }
-      .side-a {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 0 6px 10px;
-        color: var(--pencil);
-        text-decoration: none;
-        font-family: var(--font-hand);
-        font-size: 15px;
-        border-left: 2px solid transparent;
-        transition: color 0.2s, border-color 0.2s;
-        white-space: nowrap;
-      }
-      .side-a:hover { color: var(--ink-light); border-left-color: var(--pencil); }
-      .side-a.active { color: var(--mc-red); border-left-color: var(--mc-red); font-weight: 700; }
-      .side-num {
-        font-family: var(--font-mono);
-        font-size: 8px;
-        color: var(--pencil);
-        min-width: 16px;
-      }
-      .side-a.active .side-num { color: var(--mc-red); }
-
-      /* MAIN */
-      .main {
-        margin-left: calc(32px + var(--side-w));
-        padding: calc(var(--nav-h) + 3rem) 3.5rem 7rem 3rem;
-        max-width: calc(860px + var(--side-w));
-        position: relative;
-        z-index: 1;
+.spiral-hole {
+width: 16px; height: 16px;
+border-radius: 50%;
+border: 2px solid var(--ink);
+background: var(--paper);
+margin-bottom: 28px;
+flex-shrink: 0;
+box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
       }
 
-      /* HERO */
-      .tags {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-        margin-bottom: 1.25rem;
+/* TOP NAV */
+.topnav {
+position: fixed;
+top: 0; left: 32px; right: 0;
+height: var(--nav-h);
+z-index: 150;
+background: var(--paper);
+border-bottom: 2.5px solid var(--ink);
+display: flex;
+align-items: center;
+padding: 0 2rem;
       }
-      .tag {
-        font-family: var(--font-mono);
-        font-size: 9px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: var(--mc-red);
-        padding: 3px 10px;
-        border: 1.5px solid rgba(181,38,30,0.3);
-        background: rgba(181,38,30,0.05);
-        transform: rotate(-0.3deg);
-        display: inline-block;
+.topnav-in {
+width: 100%;
+max-width: 1200px;
+margin: 0 auto;
+display: flex;
+justify-content: space-between;
+align-items: center;
       }
-      .tag:nth-child(2) {
-        transform: rotate(0.5deg);
-        color: var(--mc-gold);
-        border-color: rgba(201,134,10,0.3);
-        background: rgba(201,134,10,0.05);
+.logo {
+font-family: var(--font-hand);
+font-size: 22px;
+font-weight: 700;
+color: var(--ink);
+text-decoration: none;
+position: relative;
       }
-      .tag:nth-child(3) {
-        transform: rotate(-0.2deg);
-        color: var(--ink-faint);
-        border-color: rgba(138,127,114,0.3);
-        background: rgba(138,127,114,0.05);
+.logo::after {
+content: '';
+position: absolute;
+bottom: -2px; left: 0; right: 0;
+height: 3px;
+background: var(--mc-red);
+border-radius: 2px;
+transform: rotate(-0.8deg);
+      }
+.nav-links {
+display: flex;
+gap: 2rem;
+list-style: none;
+      }
+.nav-links a {
+font-family: var(--font-hand);
+font-size: 16px;
+color: var(--ink-faint);
+text-decoration: none;
+position: relative;
+padding-bottom: 2px;
+transition: color 0.2s;
+      }
+.nav-links a::after {
+content: '';
+position: absolute;
+bottom: 0; left: 0;
+width: 0; height: 2px;
+background: var(--ink);
+transition: width 0.25s;
+      }
+.nav-links a:hover { color: var(--ink); }
+.nav-links a:hover::after { width: 100%; }
+
+/* SIDENAV */
+.sidenav {
+position: fixed;
+top: var(--nav-h);
+left: 32px;
+width: var(--side-w);
+height: calc(100vh - var(--nav-h));
+padding: 2rem 1rem 2rem 1.5rem;
+border-right: 1.5px solid rgba(180,170,155,0.35);
+background: var(--paper);
+display: flex;
+flex-direction: column;
+gap: 1.5rem;
+overflow-y: auto;
+z-index: 100;
+      }
+.sidenav::before {
+content: '';
+position: absolute;
+left: 44px; top: 0; bottom: 0;
+width: 1.5px;
+background: rgba(181,38,30,0.13);
+pointer-events: none;
+      }
+.back-link {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+color: var(--mc-red);
+text-decoration: none;
+font-family: var(--font-hand);
+font-size: 15px;
+font-weight: 600;
+transition: gap 0.2s;
+white-space: nowrap;
+      }
+.back-link:hover { gap: 10px; }
+.side-lbl {
+font-family: var(--font-mono);
+font-size: 9px;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(--pencil);
+margin-bottom: 0.5rem;
+      }
+.side-list { display: flex; flex-direction: column; }
+.side-a {
+display: flex;
+align-items: center;
+gap: 8px;
+padding: 6px 0 6px 10px;
+color: var(--pencil);
+text-decoration: none;
+font-family: var(--font-hand);
+font-size: 15px;
+border-left: 2px solid transparent;
+transition: color 0.2s, border-color 0.2s;
+white-space: nowrap;
+      }
+.side-a:hover { color: var(--ink-light); border-left-color: var(--pencil); }
+.side-a.active { color: var(--mc-red); border-left-color: var(--mc-red); font-weight: 700; }
+.side-num {
+font-family: var(--font-mono);
+font-size: 8px;
+color: var(--pencil);
+min-width: 16px;
+      }
+.side-a.active .side-num { color: var(--mc-red); }
+
+/* MAIN */
+.main {
+margin-left: calc(32px + var(--side-w));
+padding: calc(var(--nav-h) + 3rem) 3.5rem 7rem 3rem;
+max-width: calc(860px + var(--side-w));
+position: relative;
+z-index: 1;
       }
 
-      .hero-h {
-        font-family: var(--font-hand);
-        font-size: clamp(2.6rem, 5vw, 4.2rem);
-        font-weight: 700;
-        line-height: 1.05;
-        margin-bottom: 0.5rem;
-        letter-spacing: -1px;
+/* HERO */
+.tags {
+display: flex;
+gap: 0.5rem;
+flex-wrap: wrap;
+margin-bottom: 1.25rem;
       }
-      .hero-h .squiggle-wrap {
-        position: relative;
-        display: inline-block;
+.tag {
+font-family: var(--font-mono);
+font-size: 9px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--mc-red);
+padding: 3px 10px;
+border: 1.5px solid rgba(181,38,30,0.3);
+background: rgba(181,38,30,0.05);
+transform: rotate(-0.3deg);
+display: inline-block;
       }
-      .hero-h .squiggle-wrap svg {
-        position: absolute;
-        bottom: -6px; left: -4px;
-        width: calc(100% + 8px);
-        pointer-events: none;
+.tag:nth-child(2) {
+transform: rotate(0.5deg);
+color: var(--mc-gold);
+border-color: rgba(201,134,10,0.3);
+background: rgba(201,134,10,0.05);
       }
-      .hero-sub {
-        font-family: var(--font-mono);
-        font-size: 10px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: var(--ink-faint);
-        margin-bottom: 0.75rem;
-        margin-top: 0.75rem;
-      }
-      .hero-p {
-        font-family: var(--font-hand);
-        font-size: 19px;
-        color: var(--ink-light);
-        line-height: 1.65;
-        max-width: 520px;
-        margin-bottom: 1.75rem;
+.tag:nth-child(3) {
+transform: rotate(-0.2deg);
+color: var(--ink-faint);
+border-color: rgba(138,127,114,0.3);
+background: rgba(138,127,114,0.05);
       }
 
-      /* HERO IMAGE */
-      .hero-img {
-        border: 2px solid var(--ink);
-        background: var(--paper-dark);
-        position: relative;
-        margin-bottom: 1.75rem;
-        transform: rotate(-0.3deg);
-        box-shadow: 5px 5px 0 rgba(26,22,18,0.12);
+.hero-h {
+font-family: var(--font-hand);
+font-size: clamp(2.6rem, 5vw, 4.2rem);
+font-weight: 700;
+line-height: 1.05;
+margin-bottom: 0.5rem;
+letter-spacing: -1px;
       }
-      .hero-img::before {
-        content: '';
-        position: absolute;
-        top: -11px; left: 50%;
-        transform: translateX(-50%) rotate(-0.5deg);
-        width: 60px; height: 20px;
-        background: rgba(232,184,75,0.42);
-        border-top: 1px solid rgba(232,184,75,0.55);
-        border-bottom: 1px solid rgba(232,184,75,0.55);
-        z-index: 10;
+.hero-h .squiggle-wrap {
+position: relative;
+display: inline-block;
       }
-      .hero-img img {
-        width: 100%;
-        display: block;
+.hero-h .squiggle-wrap svg {
+position: absolute;
+bottom: -6px; left: -4px;
+width: calc(100% + 8px);
+pointer-events: none;
       }
-      .hero-img::after {
-        content: '';
-        position: absolute;
-        bottom: -5px; right: -5px;
-        width: 100%; height: 100%;
-        border: 1.5px solid rgba(26,22,18,0.15);
-        z-index: -1;
+.hero-sub {
+font-family: var(--font-mono);
+font-size: 10px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--ink-faint);
+margin-bottom: 0.75rem;
+margin-top: 0.75rem;
       }
-
-      /* NDA BANNER */
-      .nda {
-        display: flex;
-        gap: 1rem;
-        align-items: flex-start;
-        padding: 1rem 1.25rem;
-        background: rgba(181,38,30,0.04);
-        border: 1.5px solid rgba(181,38,30,0.25);
-        margin-bottom: 2rem;
-        position: relative;
-        transform: rotate(0.2deg);
-      }
-      .nda::before {
-        content: '';
-        position: absolute;
-        top: -11px; left: 20px;
-        width: 36px; height: 20px;
-        background: rgba(232,184,75,0.38);
-        border-top: 1px solid rgba(232,184,75,0.5);
-        border-bottom: 1px solid rgba(232,184,75,0.5);
-        transform: rotate(1.5deg);
-      }
-      .nda-icon { font-size: 1.1rem; margin-top: 1px; }
-      .nda-t {
-        font-family: var(--font-hand);
-        font-size: 15px;
-        font-weight: 700;
-        margin-bottom: 3px;
-        color: var(--mc-red);
-      }
-      .nda-d {
-        font-family: var(--font-hand);
-        font-size: 14px;
-        color: var(--ink-light);
-        line-height: 1.6;
+.hero-p {
+font-family: var(--font-hand);
+font-size: 19px;
+color: var(--ink-light);
+line-height: 1.65;
+max-width: 520px;
+margin-bottom: 1.75rem;
       }
 
-      /* STATS */
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        border: 2px solid var(--ink);
-        margin-bottom: 1.5rem;
-        transform: rotate(0.2deg);
-        box-shadow: 4px 4px 0 rgba(26,22,18,0.1);
-        background: var(--paper-dark);
+/* HERO IMAGE */
+.hero-img {
+border: 2px solid var(--ink);
+background: var(--paper-dark);
+position: relative;
+margin-bottom: 1.75rem;
+transform: rotate(-0.3deg);
+box-shadow: 5px 5px 0 rgba(26,22,18,0.12);
       }
-      .stat {
-        padding: 1.1rem 1rem;
-        border-right: 1.5px solid rgba(26,22,18,0.2);
-        position: relative;
+.hero-img::before {
+content: '';
+position: absolute;
+top: -11px; left: 50%;
+transform: translateX(-50%) rotate(-0.5deg);
+width: 60px; height: 20px;
+background: rgba(232,184,75,0.42);
+border-top: 1px solid rgba(232,184,75,0.55);
+border-bottom: 1px solid rgba(232,184,75,0.55);
+z-index: 10;
       }
-      .stat:last-child { border-right: none; }
-      .s-n {
-        font-family: var(--font-hand);
-        font-size: 2.4rem;
-        font-weight: 700;
-        color: var(--mc-red);
-        line-height: 1;
-        margin-bottom: 4px;
+.hero-img img {
+width: 100%;
+display: block;
       }
-      .s-l {
-        font-family: var(--font-hand);
-        font-size: 14px;
-        color: var(--ink-light);
-        line-height: 1.35;
-      }
-      .s-sub {
-        font-family: var(--font-mono);
-        font-size: 8px;
-        letter-spacing: 1px;
-        color: var(--pencil);
-        margin-top: 2px;
+.hero-img::after {
+content: '';
+position: absolute;
+bottom: -5px; right: -5px;
+width: 100%; height: 100%;
+border: 1.5px solid rgba(26,22,18,0.15);
+z-index: -1;
       }
 
-      /* META */
-      .meta {
-        display: flex;
-        gap: 2rem;
-        flex-wrap: wrap;
-        padding-top: 1.25rem;
-        border-top: 2px solid rgba(26,22,18,0.15);
-        margin-bottom: 5rem;
+/* ---- hand-drawn line icons (replaces emoji) ---- */
+.ico {
+width: 18px; height: 18px;
+fill: none;
+stroke: var(--ink-light);
+stroke-width: 1.5;
+stroke-linecap: round;
+stroke-linejoin: round;
+display: block;
+transition: stroke 0.2s ease;
       }
-      .m-k {
-        font-family: var(--font-mono);
-        font-size: 8px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: var(--mc-red);
-        margin-bottom: 4px;
+.fr:hover .ico { stroke: var(--mc-red); }
+.ic .ico { width: 22px; height: 22px; stroke: var(--mc-red); }
+.nda-icon .ico { width: 20px; height: 20px; stroke: var(--mc-red); }
+
+/* NDA BANNER */
+.nda {
+display: flex;
+gap: 1rem;
+align-items: flex-start;
+padding: 1rem 1.25rem;
+background: rgba(181,38,30,0.04);
+border: 1.5px solid rgba(181,38,30,0.25);
+margin-bottom: 2rem;
+position: relative;
+transform: rotate(0.2deg);
       }
-      .m-v {
-        font-family: var(--font-hand);
-        font-size: 15px;
-        color: var(--ink-light);
-        line-height: 1.5;
+.nda::before {
+content: '';
+position: absolute;
+top: -11px; left: 20px;
+width: 36px; height: 20px;
+background: rgba(232,184,75,0.38);
+border-top: 1px solid rgba(232,184,75,0.5);
+border-bottom: 1px solid rgba(232,184,75,0.5);
+transform: rotate(1.5deg);
+      }
+.nda-icon { margin-top: 2px; }
+.nda-t {
+font-family: var(--font-hand);
+font-size: 15px;
+font-weight: 700;
+margin-bottom: 3px;
+color: var(--mc-red);
+      }
+.nda-d {
+font-family: var(--font-hand);
+font-size: 14px;
+color: var(--ink-light);
+line-height: 1.6;
       }
 
-      /* SECTION */
-      .sec { margin-bottom: 5rem; }
-      .phase {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 0.75rem;
+/* STATS */
+.stats {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+border: 2px solid var(--ink);
+margin-bottom: 1.5rem;
+transform: rotate(0.2deg);
+box-shadow: 4px 4px 0 rgba(26,22,18,0.1);
+background: var(--paper-dark);
       }
-      .p-dot {
-        width: 22px; height: 22px;
-        border-radius: 50%;
-        border: 2px solid var(--ink);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: var(--font-mono);
-        font-size: 9px;
-        color: var(--ink);
-        font-weight: 700;
+.stat {
+padding: 1.1rem 1rem;
+border-right: 1.5px solid rgba(26,22,18,0.2);
+position: relative;
       }
-      .p-txt {
-        font-family: var(--font-mono);
-        font-size: 9px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: var(--ink-faint);
+.stat:last-child { border-right: none; }
+.s-n {
+font-family: var(--font-hand);
+font-size: 2.4rem;
+font-weight: 700;
+color: var(--mc-red);
+line-height: 1;
+margin-bottom: 4px;
       }
-      .sec-h {
-        font-family: var(--font-hand);
-        font-size: 2.2rem;
-        font-weight: 700;
-        line-height: 1.1;
-        margin-bottom: 0.5rem;
-        letter-spacing: -0.5px;
-        display: inline-block;
-        position: relative;
+.s-l {
+font-family: var(--font-hand);
+font-size: 14px;
+color: var(--ink-light);
+line-height: 1.35;
       }
-      .sec-h::after {
-        content: '';
-        display: block;
-        height: 3px;
-        background: var(--mc-red);
-        border-radius: 2px;
-        transform: rotate(-0.5deg);
-        margin-top: 3px;
-        width: 80%;
-      }
-      .sec-lead {
-        font-family: var(--font-hand);
-        font-size: 18px;
-        color: var(--ink-light);
-        line-height: 1.75;
-        max-width: 560px;
-        margin-bottom: 1.5rem;
-        margin-top: 0.5rem;
-      }
-      .rule {
-        height: 1.5px;
-        background: rgba(26,22,18,0.12);
-        margin-bottom: 1.5rem;
-      }
-      .sub {
-        font-family: var(--font-mono);
-        font-size: 9px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: var(--mc-red);
-        margin-bottom: 0.875rem;
+.s-sub {
+font-family: var(--font-mono);
+font-size: 8px;
+letter-spacing: 1px;
+color: var(--pencil);
+margin-top: 2px;
       }
 
-      /* GRIDS */
-      .g3 {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        margin-bottom: 1.5rem;
+/* META */
+.meta {
+display: flex;
+gap: 2rem;
+flex-wrap: wrap;
+padding-top: 1.25rem;
+border-top: 2px solid rgba(26,22,18,0.15);
+margin-bottom: 5rem;
       }
-      .g2 {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin-bottom: 1.5rem;
+.m-k {
+font-family: var(--font-mono);
+font-size: 8px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--mc-red);
+margin-bottom: 4px;
       }
-
-      /* NOTEBOOK CARD */
-      .nc {
-        background: var(--paper-dark);
-        border: 2px solid var(--ink);
-        padding: 1.1rem;
-        position: relative;
-        transition: transform 0.2s;
-      }
-      .nc:hover { transform: translate(-2px,-2px); }
-      .nc::after {
-        content: '';
-        position: absolute;
-        bottom: -4px; right: -4px;
-        width: 100%; height: 100%;
-        border: 1.5px solid rgba(26,22,18,0.18);
-        z-index: -1;
-      }
-      .nc-n {
-        font-family: var(--font-hand);
-        font-size: 2.2rem;
-        font-weight: 700;
-        color: var(--mc-red);
-        line-height: 1;
-        margin-bottom: 5px;
-      }
-      .nc-t {
-        font-family: var(--font-hand);
-        font-size: 15px;
-        font-weight: 700;
-        margin-bottom: 3px;
-      }
-      .nc-d {
-        font-family: var(--font-hand);
-        font-size: 14px;
-        color: var(--ink-light);
-        line-height: 1.5;
+.m-v {
+font-family: var(--font-hand);
+font-size: 15px;
+color: var(--ink-light);
+line-height: 1.5;
       }
 
-      /* FINDING ROW */
-      .flist {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        margin-bottom: 1.5rem;
+/* SECTION */
+.sec { margin-bottom: 5rem; }
+.phase {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+margin-bottom: 0.75rem;
       }
-      .fr {
-        display: flex;
-        gap: 0.875rem;
-        align-items: flex-start;
-        padding: 0.875rem 1rem;
-        background: var(--paper-dark);
-        border: 1.5px solid rgba(26,22,18,0.15);
-        transition: border-color 0.2s, transform 0.2s;
+.p-dot {
+width: 22px; height: 22px;
+border-radius: 50%;
+border: 2px solid var(--ink);
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: var(--font-mono);
+font-size: 9px;
+color: var(--ink);
+font-weight: 700;
       }
-      .fr:hover { border-color: rgba(181,38,30,0.4); transform: translateX(2px); }
-      .fr-i {
-        width: 30px; height: 30px; min-width: 30px;
-        border: 1.5px solid rgba(26,22,18,0.2);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.82rem;
-        background: var(--paper);
+.p-txt {
+font-family: var(--font-mono);
+font-size: 9px;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(--ink-faint);
       }
-      .fr-t {
-        font-family: var(--font-hand);
-        font-size: 15px;
-        font-weight: 700;
-        margin-bottom: 2px;
+.sec-h {
+font-family: var(--font-hand);
+font-size: 2.2rem;
+font-weight: 700;
+line-height: 1.1;
+margin-bottom: 0.5rem;
+letter-spacing: -0.5px;
+display: inline-block;
+position: relative;
       }
-      .fr-d {
-        font-family: var(--font-hand);
-        font-size: 14px;
-        color: var(--ink-light);
-        line-height: 1.55;
+.sec-h::after {
+content: '';
+display: block;
+height: 3px;
+background: var(--mc-red);
+border-radius: 2px;
+transform: rotate(-0.5deg);
+margin-top: 3px;
+width: 80%;
       }
-
-      /* STEP LIST */
-      .slist {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        margin-bottom: 1.5rem;
+.sec-lead {
+font-family: var(--font-hand);
+font-size: 18px;
+color: var(--ink-light);
+line-height: 1.75;
+max-width: 560px;
+margin-bottom: 1.5rem;
+margin-top: 0.5rem;
       }
-      .st {
-        display: flex;
-        gap: 0.875rem;
-        padding: 0.875rem 1rem;
-        background: var(--paper-dark);
-        border: 1.5px solid rgba(26,22,18,0.15);
+.rule {
+height: 1.5px;
+background: rgba(26,22,18,0.12);
+margin-bottom: 1.5rem;
       }
-      .st-n {
-        font-family: var(--font-hand);
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: var(--mc-red);
-        min-width: 20px;
-        line-height: 1.4;
-      }
-      .st-t {
-        font-family: var(--font-hand);
-        font-size: 15px;
-        font-weight: 700;
-        margin-bottom: 2px;
-      }
-      .st-d {
-        font-family: var(--font-hand);
-        font-size: 13px;
-        color: var(--ink-light);
-        line-height: 1.5;
+.sub {
+font-family: var(--font-mono);
+font-size: 9px;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(--mc-red);
+margin-bottom: 0.875rem;
       }
 
-      /* ICON CARD */
-      .ic {
-        background: var(--paper-dark);
-        border: 2px solid var(--ink);
-        padding: 1.1rem;
-        position: relative;
+/* GRIDS */
+.g3 {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 10px;
+margin-bottom: 1.5rem;
       }
-      .ic::after {
-        content: '';
-        position: absolute;
-        bottom: -4px; right: -4px;
-        width: 100%; height: 100%;
-        border: 1.5px solid rgba(26,22,18,0.18);
-        z-index: -1;
-      }
-      .ic-ico { font-size: 1rem; margin-bottom: 0.5rem; }
-      .ic-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 3px; }
-      .ic-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.55; }
-
-      /* BEFORE/AFTER */
-      .ba-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 1.5rem;
-      }
-      .ba-wrap {
-        border: 2px solid var(--ink);
-        background: var(--paper-dark);
-        position: relative;
-        transition: transform 0.2s;
-      }
-      .ba-wrap:hover { transform: translate(-2px,-2px); }
-      .ba-wrap::after {
-        content: '';
-        position: absolute;
-        bottom: -4px; right: -4px;
-        width: 100%; height: 100%;
-        border: 1.5px solid rgba(26,22,18,0.15);
-        z-index: -1;
-      }
-      .ba-wrap img { width: 100%; display: block; }
-      .ba-label {
-        padding: 8px 12px;
-        font-family: var(--font-mono);
-        font-size: 8px;
-        letter-spacing: 2px;
-        font-weight: 700;
-        border-top: 1.5px solid rgba(26,22,18,0.15);
-        text-transform: uppercase;
-      }
-      .ba-wrap.before .ba-label { color: var(--pencil); }
-      .ba-wrap.after  .ba-label { color: var(--mc-red); }
-
-      /* QUOTE */
-      .quote {
-        border-left: 3px solid var(--mc-red);
-        padding: 0.875rem 1.25rem;
-        margin: 1.25rem 0;
-        background: rgba(181,38,30,0.04);
-        position: relative;
-        transform: rotate(-0.3deg);
-      }
-      .quote::before {
-        content: '';
-        position: absolute;
-        top: -11px; left: 20px;
-        width: 36px; height: 20px;
-        background: rgba(232,184,75,0.38);
-        border-top: 1px solid rgba(232,184,75,0.5);
-        border-bottom: 1px solid rgba(232,184,75,0.5);
-        transform: rotate(1.5deg);
-      }
-      .quote p {
-        font-family: var(--font-serif);
-        font-size: 1.25rem;
-        font-style: italic;
-        line-height: 1.65;
-        color: var(--ink);
-      }
-      .quote-attr {
-        font-family: var(--font-mono);
-        font-size: 9px;
-        letter-spacing: 1px;
-        color: var(--ink-faint);
-        margin-top: 0.75rem;
-        text-transform: uppercase;
-      }
-      .quote-attr span {
-        color: var(--mc-red);
-        display: block;
-        margin-top: 2px;
-        font-weight: 700;
+.g2 {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 10px;
+margin-bottom: 1.5rem;
       }
 
-      /* RESULT CARD */
-      .res {
-        background: var(--paper-dark);
-        border: 2px solid var(--ink);
-        padding: 1.1rem;
-        display: flex;
-        align-items: flex-start;
-        gap: 0.875rem;
-        position: relative;
-        transition: transform 0.2s;
+/* NOTEBOOK CARD */
+.nc {
+background: var(--paper-dark);
+border: 2px solid var(--ink);
+padding: 1.1rem;
+position: relative;
+transition: transform 0.2s;
       }
-      .res:hover { transform: translate(-2px,-2px); }
-      .res::after {
-        content: '';
-        position: absolute;
-        bottom: -4px; right: -4px;
-        width: 100%; height: 100%;
-        border: 1.5px solid rgba(26,22,18,0.18);
-        z-index: -1;
+.nc:hover { transform: translate(-2px,-2px); }
+.nc::after {
+content: '';
+position: absolute;
+bottom: -4px; right: -4px;
+width: 100%; height: 100%;
+border: 1.5px solid rgba(26,22,18,0.18);
+z-index: -1;
       }
-      .res-n {
-        font-family: var(--font-hand);
-        font-size: 2.4rem;
-        font-weight: 700;
-        color: var(--mc-red);
-        line-height: 1;
-        min-width: 60px;
+.nc-n {
+font-family: var(--font-hand);
+font-size: 2.2rem;
+font-weight: 700;
+color: var(--mc-red);
+line-height: 1;
+margin-bottom: 5px;
       }
-      .res-l {
-        font-family: var(--font-hand);
-        font-size: 15px;
-        color: var(--ink-light);
-        line-height: 1.5;
-        margin-top: 2px;
+.nc-t {
+font-family: var(--font-hand);
+font-size: 15px;
+font-weight: 700;
+margin-bottom: 3px;
       }
-      .res-ctx {
-        font-family: var(--font-mono);
-        font-size: 8px;
-        letter-spacing: 1px;
-        color: var(--pencil);
-        margin-top: 3px;
+.nc-d {
+font-family: var(--font-hand);
+font-size: 14px;
+color: var(--ink-light);
+line-height: 1.5;
       }
 
-      /* REFLECTION CARD */
-      .rc {
-        background: var(--paper-dark);
-        border: 1.5px solid rgba(26,22,18,0.15);
-        padding: 1.1rem;
+/* FINDING ROW */
+.flist {
+display: flex;
+flex-direction: column;
+gap: 6px;
+margin-bottom: 1.5rem;
       }
-      .rc-t {
-        font-family: var(--font-hand);
-        font-size: 15px;
-        font-weight: 700;
-        color: var(--mc-red);
-        margin-bottom: 5px;
+.fr {
+display: flex;
+gap: 0.875rem;
+align-items: flex-start;
+padding: 0.875rem 1rem;
+background: var(--paper-dark);
+border: 1.5px solid rgba(26,22,18,0.15);
+transition: border-color 0.2s, transform 0.2s;
       }
-      .rc-d {
-        font-family: var(--font-hand);
-        font-size: 14px;
-        color: var(--ink-light);
-        line-height: 1.7;
+.fr:hover { border-color: rgba(181,38,30,0.4); transform: translateX(2px); }
+.fr-i {
+width: 30px; height: 30px; min-width: 30px;
+border: 1.5px solid rgba(26,22,18,0.2);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 0.82rem;
+background: var(--paper);
       }
-
-      /* IMAGES */
-      .imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
-      .imgs.c1 { grid-template-columns: 1fr; }
-      .imgs.c2 { grid-template-columns: 1fr 1fr; }
-      .iw {
-        border: 2px solid var(--ink);
-        background: var(--paper-dark);
-        position: relative;
-        transition: transform 0.2s;
+.fr-t {
+font-family: var(--font-hand);
+font-size: 15px;
+font-weight: 700;
+margin-bottom: 2px;
       }
-      .iw:hover { transform: translate(-2px,-2px); }
-      .iw::after {
-        content: '';
-        position: absolute;
-        bottom: -4px; right: -4px;
-        width: 100%; height: 100%;
-        border: 1.5px solid rgba(26,22,18,0.15);
-        z-index: -1;
-      }
-      .iw img { width: 100%; display: block; }
-      .icap {
-        padding: 7px 10px;
-        font-family: var(--font-hand);
-        font-size: 13px;
-        color: var(--ink-faint);
-        border-top: 1px solid rgba(26,22,18,0.12);
-        line-height: 1.4;
+.fr-d {
+font-family: var(--font-hand);
+font-size: 14px;
+color: var(--ink-light);
+line-height: 1.55;
       }
 
-      /* TOOLS PILLS */
-      .tools {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-        margin-bottom: 1.5rem;
+/* STEP LIST */
+.slist {
+display: flex;
+flex-direction: column;
+gap: 6px;
+margin-bottom: 1.5rem;
       }
-      .tool {
-        font-family: var(--font-mono);
-        font-size: 9px;
-        letter-spacing: 1px;
-        padding: 3px 10px;
-        background: var(--paper-dark);
-        border: 1.5px solid rgba(26,22,18,0.2);
-        color: var(--ink-light);
-        text-transform: uppercase;
+.st {
+display: flex;
+gap: 0.875rem;
+padding: 0.875rem 1rem;
+background: var(--paper-dark);
+border: 1.5px solid rgba(26,22,18,0.15);
       }
-
-      /* HIGHLIGHT */
-      .hl-y {
-        background: linear-gradient(120deg, rgba(232,184,75,0)0%, rgba(232,184,75,0.45)10%, rgba(232,184,75,0.45)90%, rgba(232,184,75,0)100%);
-        padding: 0 2px;
+.st-n {
+font-family: var(--font-hand);
+font-size: 1.3rem;
+font-weight: 700;
+color: var(--mc-red);
+min-width: 20px;
+line-height: 1.4;
       }
-
-      /* CORNER FOLD */
-      .corner-fold {
-        position: absolute;
-        bottom: 0; right: 0;
-        width: 24px; height: 24px;
-        background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
-        border-top: 1px solid var(--pencil);
-        border-left: 1px solid var(--pencil);
-        pointer-events: none;
+.st-t {
+font-family: var(--font-hand);
+font-size: 15px;
+font-weight: 700;
+margin-bottom: 2px;
       }
-
-      /* SCROLL REVEAL */
-      .rev {
-        opacity: 0;
-        transform: translateY(16px);
-        transition: opacity 0.5s ease, transform 0.5s ease;
-      }
-      .rev.in { opacity: 1; transform: none; }
-
-      /* FOOTER */
-      footer {
-        border-top: 2.5px solid var(--ink);
-        padding: 1.25rem 2rem;
-        text-align: center;
-        font-family: var(--font-mono);
-        font-size: 9px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: var(--pencil);
-        margin-left: 32px;
+.st-d {
+font-family: var(--font-hand);
+font-size: 13px;
+color: var(--ink-light);
+line-height: 1.5;
       }
 
-      /* RESPONSIVE */
-      @media (max-width: 860px) {
-        .sidenav { display: none; }
-        .main { margin-left: 32px; padding: 5rem 1.5rem 5rem; }
-        .stats { grid-template-columns: repeat(2, 1fr); }
-        .g3, .g2 { grid-template-columns: 1fr; }
-        .ba-grid { grid-template-columns: 1fr; }
-        .imgs.c2 { grid-template-columns: 1fr; }
+/* ICON CARD */
+.ic {
+background: var(--paper-dark);
+border: 2px solid var(--ink);
+padding: 1.1rem;
+position: relative;
       }
-      @media (max-width: 600px) {
-        .spiral-binding { display: none; }
-        .topnav, footer { margin-left: 0; left: 0; }
-        .main { margin-left: 0; padding: 5rem 1.25rem 4rem; }
-        .nav-links { display: none; }
-        .hero-h { font-size: 2.2rem; }
+.ic::after {
+content: '';
+position: absolute;
+bottom: -4px; right: -4px;
+width: 100%; height: 100%;
+border: 1.5px solid rgba(26,22,18,0.18);
+z-index: -1;
       }
-    </style>
-  </head>
-  <body>
+.ic-ico { margin-bottom: 0.6rem; }
+.ic-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+.ic-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.55; }
 
-    <!-- SPIRAL BINDING -->
-    <div class="spiral-binding" aria-hidden="true" id="spiralBinding"></div>
+/* BEFORE/AFTER */
+.ba-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 10px;
+margin-bottom: 1.5rem;
+      }
+.ba-wrap {
+border: 2px solid var(--ink);
+background: var(--paper-dark);
+position: relative;
+transition: transform 0.2s;
+      }
+.ba-wrap:hover { transform: translate(-2px,-2px); }
+.ba-wrap::after {
+content: '';
+position: absolute;
+bottom: -4px; right: -4px;
+width: 100%; height: 100%;
+border: 1.5px solid rgba(26,22,18,0.15);
+z-index: -1;
+      }
+.ba-wrap img { width: 100%; display: block; }
+.ba-label {
+padding: 8px 12px;
+font-family: var(--font-mono);
+font-size: 8px;
+letter-spacing: 2px;
+font-weight: 700;
+border-top: 1.5px solid rgba(26,22,18,0.15);
+text-transform: uppercase;
+      }
+.ba-wrap.before .ba-label { color: var(--pencil); }
+.ba-wrap.after  .ba-label { color: var(--mc-red); }
 
-    <!-- TOP NAV -->
-    <nav class="topnav">
-      <div class="topnav-in">
-        <a href="../index.html" class="logo">Inayat</a>
-        <ul class="nav-links">
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="../About.html">About</a></li>
-          <li><a href="../Projects.html">Projects</a></li>
-          <li><a href="../Resume.html">Résumé</a></li>
-          <li><a href="../index.html#contact">Contact</a></li>
-        </ul>
-      </div>
-    </nav>
+/* QUOTE */
+.quote {
+border-left: 3px solid var(--mc-red);
+padding: 0.875rem 1.25rem;
+margin: 1.25rem 0;
+background: rgba(181,38,30,0.04);
+position: relative;
+transform: rotate(-0.3deg);
+      }
+.quote::before {
+content: '';
+position: absolute;
+top: -11px; left: 20px;
+width: 36px; height: 20px;
+background: rgba(232,184,75,0.38);
+border-top: 1px solid rgba(232,184,75,0.5);
+border-bottom: 1px solid rgba(232,184,75,0.5);
+transform: rotate(1.5deg);
+      }
+.quote p {
+font-family: var(--font-serif);
+font-size: 1.25rem;
+font-style: italic;
+line-height: 1.65;
+color: var(--ink);
+      }
+.quote-attr {
+font-family: var(--font-mono);
+font-size: 9px;
+letter-spacing: 1px;
+color: var(--ink-faint);
+margin-top: 0.75rem;
+text-transform: uppercase;
+      }
+.quote-attr span {
+color: var(--mc-red);
+display: block;
+margin-top: 2px;
+font-weight: 700;
+      }
 
-    <!-- FIXED SIDENAV -->
-    <aside class="sidenav">
-      <a href="../Projects.html" class="back-link">← Projects</a>
-      <div>
-        <div class="side-lbl">Case Study</div>
-        <nav class="side-list">
-          <a href="#overview"      class="side-a active"><span class="side-num">00</span>Overview</a>
-          <a href="#problem"       class="side-a"><span class="side-num">01</span>Problem</a>
-          <a href="#discovery"     class="side-a"><span class="side-num">02</span>Discovery</a>
-          <a href="#ideation"      class="side-a"><span class="side-num">03</span>Ideation</a>
-          <a href="#beforeafter"   class="side-a"><span class="side-num">04</span>Before &amp; After</a>
-          <a href="#collaboration" class="side-a"><span class="side-num">05</span>Collaboration</a>
-          <a href="#outcome"       class="side-a"><span class="side-num">06</span>Outcome</a>
-          <a href="#reflection"    class="side-a"><span class="side-num">07</span>Reflection</a>
-        </nav>
-      </div>
-      <!-- Mastercard doodle -->
-      <div style="margin-top:auto; padding-top:1rem; opacity:0.28; pointer-events:none;">
-        <svg viewBox="0 0 80 64" style="width:70px">
-          <!-- Two overlapping circles (MC logo nod) -->
-          <circle cx="28" cy="32" r="16" stroke="#b5261e" stroke-width="1.5" fill="rgba(181,38,30,0.08)"/>
-          <circle cx="44" cy="32" r="16" stroke="#c9860a" stroke-width="1.5" fill="rgba(201,134,10,0.08)"/>
-          <text x="6" y="58" font-family="Reenie Beanie, cursive" font-size="9" fill="#8a7f72">enterprise ux</text>
-        </svg>
-      </div>
-    </aside>
+/* RESULT CARD */
+.res {
+background: var(--paper-dark);
+border: 2px solid var(--ink);
+padding: 1.1rem;
+display: flex;
+align-items: flex-start;
+gap: 0.875rem;
+position: relative;
+transition: transform 0.2s;
+      }
+.res:hover { transform: translate(-2px,-2px); }
+.res::after {
+content: '';
+position: absolute;
+bottom: -4px; right: -4px;
+width: 100%; height: 100%;
+border: 1.5px solid rgba(26,22,18,0.18);
+z-index: -1;
+      }
+.res-n {
+font-family: var(--font-hand);
+font-size: 2.4rem;
+font-weight: 700;
+color: var(--mc-red);
+line-height: 1;
+min-width: 60px;
+      }
+.res-n .ico { width: 34px; height: 34px; stroke: var(--mc-red); stroke-width: 1.8; }
+.res-l {
+font-family: var(--font-hand);
+font-size: 15px;
+color: var(--ink-light);
+line-height: 1.5;
+margin-top: 2px;
+      }
+.res-ctx {
+font-family: var(--font-mono);
+font-size: 8px;
+letter-spacing: 1px;
+color: var(--pencil);
+margin-top: 3px;
+      }
 
-    <!-- MAIN -->
-    <main class="main">
+/* REFLECTION CARD */
+.rc {
+background: var(--paper-dark);
+border: 1.5px solid rgba(26,22,18,0.15);
+padding: 1.1rem;
+      }
+.rc-t {
+font-family: var(--font-hand);
+font-size: 15px;
+font-weight: 700;
+color: var(--mc-red);
+margin-bottom: 5px;
+      }
+.rc-d {
+font-family: var(--font-hand);
+font-size: 14px;
+color: var(--ink-light);
+line-height: 1.7;
+      }
 
-      <!-- HERO -->
-      <header id="top" style="margin-bottom:4rem">
-        <div class="tags">
-          <span class="tag">Enterprise UX</span>
-          <span class="tag">SharePoint</span>
-          <span class="tag">Internship</span>
-        </div>
+/* IMAGES */
+.imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
+.imgs.c1 { grid-template-columns: 1fr; }
+.imgs.c2 { grid-template-columns: 1fr 1fr; }
+.iw {
+border: 2px solid var(--ink);
+background: var(--paper-dark);
+position: relative;
+transition: transform 0.2s;
+      }
+.iw:hover { transform: translate(-2px,-2px); }
+.iw::after {
+content: '';
+position: absolute;
+bottom: -4px; right: -4px;
+width: 100%; height: 100%;
+border: 1.5px solid rgba(26,22,18,0.15);
+z-index: -1;
+      }
+.iw img { width: 100%; display: block; }
+.icap {
+padding: 7px 10px;
+font-family: var(--font-hand);
+font-size: 13px;
+color: var(--ink-faint);
+border-top: 1px solid rgba(26,22,18,0.12);
+line-height: 1.4;
+      }
 
-        <h1 class="hero-h">
+/* TOOLS PILLS */
+.tools {
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
+margin-bottom: 1.5rem;
+      }
+.tool {
+font-family: var(--font-mono);
+font-size: 9px;
+letter-spacing: 1px;
+padding: 3px 10px;
+background: var(--paper-dark);
+border: 1.5px solid rgba(26,22,18,0.2);
+color: var(--ink-light);
+text-transform: uppercase;
+      }
+
+/* HIGHLIGHT */
+.hl-y {
+background: linear-gradient(120deg, rgba(232,184,75,0)0%, rgba(232,184,75,0.45)10%, rgba(232,184,75,0.45)90%, rgba(232,184,75,0)100%);
+padding: 0 2px;
+      }
+
+/* CORNER FOLD */
+.corner-fold {
+position: absolute;
+bottom: 0; right: 0;
+width: 24px; height: 24px;
+background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
+border-top: 1px solid var(--pencil);
+border-left: 1px solid var(--pencil);
+pointer-events: none;
+      }
+
+/* SCROLL REVEAL */
+.rev {
+opacity: 0;
+transform: translateY(16px);
+transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+.rev.in { opacity: 1; transform: none; }
+
+/* FOOTER */
+footer {
+border-top: 2.5px solid var(--ink);
+padding: 1.25rem 2rem;
+text-align: center;
+font-family: var(--font-mono);
+font-size: 9px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--pencil);
+margin-left: 32px;
+      }
+
+/* RESPONSIVE */
+@media (max-width: 860px) {
+.sidenav { display: none; }
+.main { margin-left: 32px; padding: 5rem 1.5rem 5rem; }
+.stats { grid-template-columns: repeat(2, 1fr); }
+.g3, .g2 { grid-template-columns: 1fr; }
+.ba-grid { grid-template-columns: 1fr; }
+.imgs.c2 { grid-template-columns: 1fr; }
+      }
+@media (max-width: 600px) {
+.spiral-binding { display: none; }
+.topnav, footer { margin-left: 0; left: 0; }
+.main { margin-left: 0; padding: 5rem 1.25rem 4rem; }
+.nav-links { display: none; }
+.hero-h { font-size: 2.2rem; }
+      }
+</style>
+</head>
+<body>
+
+<!-- HAND-DRAWN ICON SPRITE (no emoji) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<defs>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.2" y="10.4" width="15.6" height="10.2" rx="1.6"/><path d="M7.8 10.2V7.4a4.2 4.2 0 0 1 8.4-.2v3"/><path d="M12 14.4v2.6"/></symbol>
+<symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.8 8.2 13.9 13.9 8.2 15.8 10.1 10.1z"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21.4s7-5.9 7-11.2a7 7 0 0 0-14 0c0 5.3 7 11.2 7 11.2z"/><circle cx="12" cy="10.1" r="2.8"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><rect x="4.4" y="3.4" width="15.2" height="17.2" rx="1.8"/><path d="M8.4 8.2h7.2M8.4 12h7.2M8.4 15.8h4.4"/></symbol>
+<symbol id="i-sidebar" viewBox="0 0 24 24"><rect x="3" y="4.2" width="18" height="15.6" rx="1.8"/><path d="M9.4 4.4v15.2"/><path d="M5.4 8.4h2M5.4 12h2M5.4 15.6h2"/><path d="M12.2 8.6h6M12.2 12.2h6M12.2 15.8h3.6"/></symbol>
+<symbol id="i-hierarchy" viewBox="0 0 24 24"><rect x="9" y="2.8" width="6" height="4.6" rx="1"/><rect x="2.6" y="16.6" width="6" height="4.6" rx="1"/><rect x="15.4" y="16.6" width="6" height="4.6" rx="1"/><path d="M12 7.6v3.8M5.6 16.4v-2.6h12.8v2.6M5.6 13.8h12.8"/></symbol>
+<symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3.2c5 0 9 3.6 9 8 0 2.6-2 4.2-4.4 4.2h-1.7c-1.2 0-2.1.9-2.1 2 0 .5.2.9.5 1.3.3.4.5.8.5 1.2 0 1.1-.9 1.9-2 1.9-5 0-8.8-4-8.8-9.1S7 3.2 12 3.2z"/><path d="M7.6 11.4h.02M10.4 7.8h.02M14.6 8.2h.02M17.4 11.8h.02"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="3.9" ry="9"/><path d="M3.2 9.2h17.6M3.2 14.8h17.6"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M2.8 11.2 12 3l9.2 8.2v9.6H2.8z"/><path d="M9.4 20.8v-6.2h5.2v6.2"/></symbol>
+<symbol id="i-transit" viewBox="0 0 24 24"><rect x="3.4" y="3.6" width="17.2" height="13.4" rx="2.4"/><path d="M3.6 10.6h17"/><path d="M8.4 3.8v6.6M15.6 3.8v6.6"/><circle cx="7.6" cy="19.6" r="1.8"/><circle cx="16.4" cy="19.6" r="1.8"/><path d="M9.4 19.6h5.2"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.2" y="5.4" width="17.6" height="15.2" rx="1.6"/><path d="M3.4 10h17.2M8 3.4v4M16 3.4v4"/><path d="M7.6 13.8h2.2M13.4 13.8h3M7.6 17.2h5.4"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 2.8h7.4L18.6 8v13.2H6z"/><path d="M13.2 3v5.2h5.2"/><path d="M8.6 12.6h7.2M8.6 16.2h7.2M8.6 9h3"/></symbol>
+<symbol id="i-cycle" viewBox="0 0 24 24"><path d="M20.4 12a8.4 8.4 0 0 1-14.3 6"/><path d="M3.6 12a8.4 8.4 0 0 1 14.3-6"/><path d="M17.6 2.6v3.6h-3.6M6.4 21.4v-3.6h3.6"/></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.4"/><circle cx="12" cy="12" r="8.4"/><path d="M12 2.4v3.2M12 18.4v3.2M2.4 12h3.2M18.4 12h3.2M5.2 5.2l2.3 2.3M16.5 16.5l2.3 2.3M18.8 5.2l-2.3 2.3M7.5 16.5l-2.3 2.3"/></symbol>
+<symbol id="i-network" viewBox="0 0 24 24"><circle cx="12" cy="4.4" r="2.6"/><circle cx="4.6" cy="18.4" r="2.6"/><circle cx="19.4" cy="18.4" r="2.6"/><path d="M10.6 6.6 6.2 16M13.4 6.6 17.8 16M7.2 18.4h9.6"/></symbol>
+<symbol id="i-rise" viewBox="0 0 24 24"><path d="M12 20.4V4.2"/><path d="M5.8 10.4 12 3.8l6.2 6.6"/></symbol>
+</defs>
+</svg>
+
+<!-- SPIRAL BINDING -->
+<div class="spiral-binding" aria-hidden="true" id="spiralBinding"></div>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+<div class="topnav-in">
+<a href="../index.html" class="logo">Inayat</a>
+<ul class="nav-links">
+<li><a href="../index.html">Home</a></li>
+<li><a href="../About.html">About</a></li>
+<li><a href="../Projects.html">Projects</a></li>
+<li><a href="../Resume.html">Résumé</a></li>
+<li><a href="../index.html#contact">Contact</a></li>
+</ul>
+</div>
+</nav>
+
+<!-- FIXED SIDENAV -->
+<aside class="sidenav">
+<a href="../Projects.html" class="back-link">← Projects</a>
+<div>
+<div class="side-lbl">Case Study</div>
+<nav class="side-list">
+<a href="#overview"      class="side-a active"><span class="side-num">00</span>Overview</a>
+<a href="#problem"       class="side-a"><span class="side-num">01</span>Problem</a>
+<a href="#discovery"     class="side-a"><span class="side-num">02</span>Discovery</a>
+<a href="#ideation"      class="side-a"><span class="side-num">03</span>Ideation</a>
+<a href="#beforeafter"   class="side-a"><span class="side-num">04</span>Before &amp; After</a>
+<a href="#collaboration" class="side-a"><span class="side-num">05</span>Collaboration</a>
+<a href="#outcome"       class="side-a"><span class="side-num">06</span>Outcome</a>
+<a href="#reflection"    class="side-a"><span class="side-num">07</span>Reflection</a>
+</nav>
+</div>
+<!-- Mastercard doodle -->
+<div style="margin-top:auto; padding-top:1rem; opacity:0.28; pointer-events:none;">
+<svg viewBox="0 0 80 64" style="width:70px">
+<!-- Two overlapping circles (MC logo nod) -->
+<circle cx="28" cy="32" r="16" stroke="#b5261e" stroke-width="1.5" fill="rgba(181,38,30,0.08)"/>
+<circle cx="44" cy="32" r="16" stroke="#c9860a" stroke-width="1.5" fill="rgba(201,134,10,0.08)"/>
+<text x="6" y="58" font-family="Reenie Beanie, cursive" font-size="9" fill="#8a7f72">enterprise ux</text>
+</svg>
+</div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- HERO -->
+<header id="top" style="margin-bottom:4rem">
+<div class="tags">
+<span class="tag">Enterprise UX</span>
+<span class="tag">SharePoint</span>
+<span class="tag">Internship</span>
+</div>
+
+<h1 class="hero-h">
           Workplace Experience<br/>
-          <span class="squiggle-wrap" style="color: var(--mc-red);">SharePoint
-            <svg viewBox="0 0 200 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2,8 C30,3 60,13 90,7 C120,2 150,11 198,7" stroke="#c9860a" stroke-width="3" fill="none" stroke-linecap="round"/>
-            </svg>
-          </span>
-        </h1>
+<span class="squiggle-wrap" style="color: var(--mc-red);">SharePoint
+<svg viewBox="0 0 200 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2,8 C30,3 60,13 90,7 C120,2 150,11 198,7" stroke="#c9860a" stroke-width="3" fill="none" stroke-linecap="round"/>
+</svg>
+</span>
+</h1>
 
-        <p class="hero-sub">Case Study — Enterprise UX · May–Aug 2025 · 4 months</p>
+<p class="hero-sub">Case Study — Enterprise UX · May–Aug 2025 · 4 months</p>
 
-        <p class="hero-p">
+<p class="hero-p">
           Redesigning Mastercard Vancouver's internal SharePoint from a static archive into a <span class="hl-y">navigable, employee-first workplace guide</span> — built for local staff and visiting employees across global offices.
-        </p>
+</p>
 
-        <div class="hero-img">
-          <img
-            src="https://framerusercontent.com/images/3bPjYIUexggbXzSEECfMd4rdc.png"
-            alt="Mastercard SharePoint Project"
-          />
-        </div>
+<div class="hero-img">
+<img
+src="https://framerusercontent.com/images/3bPjYIUexggbXzSEECfMd4rdc.png"
+alt="Mastercard SharePoint Project"
+/>
+</div>
 
-        <!-- NDA BANNER -->
-        <div class="nda">
-          <div class="nda-icon">🔒</div>
-          <div>
-            <div class="nda-t">Non-Disclosure Agreement</div>
-            <div class="nda-d">
+<!-- NDA BANNER -->
+<div class="nda">
+<div class="nda-icon"><svg class="ico" aria-hidden="true"><use href="#i-lock"/></svg></div>
+<div>
+<div class="nda-t">Non-Disclosure Agreement</div>
+<div class="nda-d">
               High-fidelity screens and internal structures are protected under NDA. The following highlights my design process, research insights, and decisions within NDA boundaries. For a deeper discussion, reach out via email or LinkedIn.
-            </div>
-          </div>
-        </div>
+</div>
+</div>
+</div>
 
-        <!-- STATS -->
-        <div class="stats">
-          <div class="stat">
-            <div class="s-n">40%</div>
-            <div class="s-l">Faster resource access</div>
-            <div class="s-sub">Post-launch navigation</div>
-          </div>
-          <div class="stat">
-            <div class="s-n">15k+</div>
-            <div class="s-l">Global employees</div>
-            <div class="s-sub">Platform serves</div>
-          </div>
-          <div class="stat">
-            <div class="s-n">3</div>
-            <div class="s-l">Global regions</div>
-            <div class="s-sub">Dublin, India, US</div>
-          </div>
-          <div class="stat">
-            <div class="s-n">1</div>
-            <div class="s-l">Designer on team</div>
-            <div class="s-sub">End-to-end ownership</div>
-          </div>
-        </div>
+<!-- STATS -->
+<div class="stats">
+<div class="stat">
+<div class="s-n">40%</div>
+<div class="s-l">Faster resource access</div>
+<div class="s-sub">Post-launch navigation</div>
+</div>
+<div class="stat">
+<div class="s-n">15k+</div>
+<div class="s-l">Global employees</div>
+<div class="s-sub">Platform serves</div>
+</div>
+<div class="stat">
+<div class="s-n">3</div>
+<div class="s-l">Global regions</div>
+<div class="s-sub">Dublin, India, US</div>
+</div>
+<div class="stat">
+<div class="s-n">1</div>
+<div class="s-l">Designer on team</div>
+<div class="s-sub">End-to-end ownership</div>
+</div>
+</div>
 
-        <!-- META -->
-        <div class="meta">
-          <div>
-            <div class="m-k">Timeline</div>
-            <div class="m-v">May – Aug 2025<br/>4 months</div>
-          </div>
-          <div>
-            <div class="m-k">My Role</div>
-            <div class="m-v">UX/UI Intern<br/>Solo Designer</div>
-          </div>
-          <div>
-            <div class="m-k">Team</div>
-            <div class="m-v">VP, Project Manager<br/>UX/UI Intern</div>
-          </div>
-          <div>
-            <div class="m-k">Tools</div>
-            <div class="m-v">Figma, SharePoint<br/>JSON, IA</div>
-          </div>
-        </div>
-      </header>
+<!-- META -->
+<div class="meta">
+<div>
+<div class="m-k">Timeline</div>
+<div class="m-v">May – Aug 2025<br/>4 months</div>
+</div>
+<div>
+<div class="m-k">My Role</div>
+<div class="m-v">UX/UI Intern<br/>Solo Designer</div>
+</div>
+<div>
+<div class="m-k">Team</div>
+<div class="m-v">VP, Project Manager<br/>UX/UI Intern</div>
+</div>
+<div>
+<div class="m-k">Tools</div>
+<div class="m-v">Figma, SharePoint<br/>JSON, IA</div>
+</div>
+</div>
+</header>
 
-      <!-- 00 OVERVIEW -->
-      <section id="overview" class="sec rev">
-        <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
-        <h2 class="sec-h">The Project</h2>
-        <p class="sec-lead">During my UX/UI internship at Mastercard's Vancouver Tech Hub, I worked within the Workplace Experience Department under the VP of Workplace Experience.</p>
-        <div class="rule"></div>
-        <p style="font-family:var(--font-hand); font-size:17px; color:var(--ink-light); line-height:1.75; max-width:600px; margin-bottom:1.25rem">
+<!-- 00 OVERVIEW -->
+<section id="overview" class="sec rev">
+<div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
+<h2 class="sec-h">The Project</h2>
+<p class="sec-lead">During my UX/UI internship at Mastercard's Vancouver Tech Hub, I worked within the Workplace Experience Department under the VP of Workplace Experience.</p>
+<div class="rule"></div>
+<p style="font-family:var(--font-hand); font-size:17px; color:var(--ink-light); line-height:1.75; max-width:600px; margin-bottom:1.25rem">
           My main focus was redesigning the internal SharePoint — transforming it from a static information repository into a comprehensive user guide system. The redesign served the Vancouver office primarily, while incorporating feedback from global teams.
-        </p>
-        <p style="font-family:var(--font-hand); font-size:17px; color:var(--ink-light); line-height:1.75; max-width:600px; margin-bottom:1.5rem">
+</p>
+<p style="font-family:var(--font-hand); font-size:17px; color:var(--ink-light); line-height:1.75; max-width:600px; margin-bottom:1.5rem">
           The platform consolidated everything from office policies, catering services, and facility booking forms to travel information and event resources — so every employee could navigate workplace processes without friction.
-        </p>
-        <div class="sub">Tools &amp; Methods</div>
-        <div class="tools">
-          <span class="tool">Figma</span>
-          <span class="tool">SharePoint</span>
-          <span class="tool">JSON</span>
-          <span class="tool">Information Architecture</span>
-          <span class="tool">User Personas</span>
-          <span class="tool">Journey Mapping</span>
-          <span class="tool">Qualitative Research</span>
-          <span class="tool">Async Collaboration</span>
-        </div>
-      </section>
+</p>
+<div class="sub">Tools &amp; Methods</div>
+<div class="tools">
+<span class="tool">Figma</span>
+<span class="tool">SharePoint</span>
+<span class="tool">JSON</span>
+<span class="tool">Information Architecture</span>
+<span class="tool">User Personas</span>
+<span class="tool">Journey Mapping</span>
+<span class="tool">Qualitative Research</span>
+<span class="tool">Async Collaboration</span>
+</div>
+</section>
 
-      <!-- 01 PROBLEM -->
-      <section id="problem" class="sec rev">
-        <div class="phase"><div class="p-dot">1</div><span class="p-txt">The Problem</span></div>
-        <h2 class="sec-h">A Platform Designed<br/>for Storage, Not People</h2>
-        <p class="sec-lead">The existing SharePoint served as an information archive — lacking the structure, visual clarity, and discoverability employees actually needed.</p>
-        <div class="rule"></div>
+<!-- 01 PROBLEM -->
+<section id="problem" class="sec rev">
+<div class="phase"><div class="p-dot">1</div><span class="p-txt">The Problem</span></div>
+<h2 class="sec-h">A Platform Designed<br/>for Storage, Not People</h2>
+<p class="sec-lead">The existing SharePoint served as an information archive — lacking the structure, visual clarity, and discoverability employees actually needed.</p>
+<div class="rule"></div>
 
-        <div class="g3" style="margin-bottom:2rem">
-          <div class="nc">
-            <div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Bottlenecks</div>
-            <div class="nc-t">Communication friction</div>
-            <div class="nc-d">Repeated support emails for resources that should have been self-serve</div>
-          </div>
-          <div class="nc">
-            <div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Lost</div>
-            <div class="nc-t">Visiting employees</div>
-            <div class="nc-d">Staff from other global offices couldn't locate essential Vancouver-specific resources</div>
-          </div>
-          <div class="nc">
-            <div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Low</div>
-            <div class="nc-t">Platform engagement</div>
-            <div class="nc-d">The structure didn't reflect how people naturally interact with information daily</div>
-          </div>
-        </div>
+<div class="g3" style="margin-bottom:2rem">
+<div class="nc">
+<div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Bottlenecks</div>
+<div class="nc-t">Communication friction</div>
+<div class="nc-d">Repeated support emails for resources that should have been self-serve</div>
+</div>
+<div class="nc">
+<div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Lost</div>
+<div class="nc-t">Visiting employees</div>
+<div class="nc-d">Staff from other global offices couldn't locate essential Vancouver-specific resources</div>
+</div>
+<div class="nc">
+<div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Low</div>
+<div class="nc-t">Platform engagement</div>
+<div class="nc-d">The structure didn't reflect how people naturally interact with information daily</div>
+</div>
+</div>
 
-        <div class="quote">
-          <p>"How might we redesign the Workplace Experience SharePoint into an accessible, user-centric guide that simplifies onboarding, supports cross-branch employees, and fosters a cohesive workplace experience?"</p>
-        </div>
-      </section>
+<div class="quote">
+<p>"How might we redesign the Workplace Experience SharePoint into an accessible, user-centric guide that simplifies onboarding, supports cross-branch employees, and fosters a cohesive workplace experience?"</p>
+</div>
+</section>
 
-      <!-- 02 DISCOVERY -->
-      <section id="discovery" class="sec rev">
-        <div class="phase"><div class="p-dot">2</div><span class="p-txt">Discovery &amp; Research</span></div>
-        <h2 class="sec-h">Understanding Employees<br/>Across Regions</h2>
-        <p class="sec-lead">I conducted qualitative interviews and workplace observations with local Vancouver staff and visiting employees — then collaborated with Workplace Experience teams in Dublin, India, and the US.</p>
-        <div class="rule"></div>
+<!-- 02 DISCOVERY -->
+<section id="discovery" class="sec rev">
+<div class="phase"><div class="p-dot">2</div><span class="p-txt">Discovery &amp; Research</span></div>
+<h2 class="sec-h">Understanding Employees<br/>Across Regions</h2>
+<p class="sec-lead">I conducted qualitative interviews and workplace observations with local Vancouver staff and visiting employees — then collaborated with Workplace Experience teams in Dublin, India, and the US.</p>
+<div class="rule"></div>
 
-        <div class="sub">Key Research Insights</div>
-        <div class="flist">
-          <div class="fr">
-            <div class="fr-i">🧭</div>
-            <div>
-              <div class="fr-t">Inconsistent navigation</div>
-              <div class="fr-d">Employees couldn't find important forms or resources quickly — especially catering, IT requests, and event bookings.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div class="fr-i">🌏</div>
-            <div>
-              <div class="fr-t">Lack of local context</div>
-              <div class="fr-d">Visiting employees from Dublin, India, and the US felt uncertain about Vancouver-specific services and workspace processes.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div class="fr-i">📋</div>
-            <div>
-              <div class="fr-t">Outdated layout</div>
-              <div class="fr-d">The existing structure was organised by department ownership, not by employee goals — making common tasks unnecessarily hard to find.</div>
-            </div>
-          </div>
-        </div>
+<div class="sub">Key Research Insights</div>
+<div class="flist">
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-compass"/></svg></div>
+<div>
+<div class="fr-t">Inconsistent navigation</div>
+<div class="fr-d">Employees couldn't find important forms or resources quickly — especially catering, IT requests, and event bookings.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-pin"/></svg></div>
+<div>
+<div class="fr-t">Lack of local context</div>
+<div class="fr-d">Visiting employees from Dublin, India, and the US felt uncertain about Vancouver-specific services and workspace processes.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-list"/></svg></div>
+<div>
+<div class="fr-t">Outdated layout</div>
+<div class="fr-d">The existing structure was organised by department ownership, not by employee goals — making common tasks unnecessarily hard to find.</div>
+</div>
+</div>
+</div>
 
-        <div class="sub">Most Common Employee Tasks Identified</div>
-        <div class="slist">
-          <div class="st">
-            <div class="st-n">01</div>
-            <div>
-              <div class="st-t">Book meeting rooms</div>
-              <div class="st-d">Frequently needed, buried multiple clicks deep in the old structure.</div>
-            </div>
-          </div>
-          <div class="st">
-            <div class="st-n">02</div>
-            <div>
-              <div class="st-t">Request catering</div>
-              <div class="st-d">Form location was inconsistent — different employees found it in different places.</div>
-            </div>
-          </div>
-          <div class="st">
-            <div class="st-n">03</div>
-            <div>
-              <div class="st-t">Access workplace policies</div>
-              <div class="st-d">Policy pages had no clear hierarchy — visiting employees had no way to distinguish Vancouver-specific from global content.</div>
-            </div>
-          </div>
-        </div>
-      </section>
+<div class="sub">Most Common Employee Tasks Identified</div>
+<div class="slist">
+<div class="st">
+<div class="st-n">01</div>
+<div>
+<div class="st-t">Book meeting rooms</div>
+<div class="st-d">Frequently needed, buried multiple clicks deep in the old structure.</div>
+</div>
+</div>
+<div class="st">
+<div class="st-n">02</div>
+<div>
+<div class="st-t">Request catering</div>
+<div class="st-d">Form location was inconsistent — different employees found it in different places.</div>
+</div>
+</div>
+<div class="st">
+<div class="st-n">03</div>
+<div>
+<div class="st-t">Access workplace policies</div>
+<div class="st-d">Policy pages had no clear hierarchy — visiting employees had no way to distinguish Vancouver-specific from global content.</div>
+</div>
+</div>
+</div>
+</section>
 
-      <!-- 03 IDEATION -->
-      <section id="ideation" class="sec rev">
-        <div class="phase"><div class="p-dot">3</div><span class="p-txt">Ideation &amp; Design Process</span></div>
-        <h2 class="sec-h">Four Key<br/>Design Decisions</h2>
-        <p class="sec-lead">Collaborating with the VP and Project Manager, I synthesised research into clear design directions — then validated them with teams in Dublin, India, and the US.</p>
-        <div class="rule"></div>
+<!-- 03 IDEATION -->
+<section id="ideation" class="sec rev">
+<div class="phase"><div class="p-dot">3</div><span class="p-txt">Ideation &amp; Design Process</span></div>
+<h2 class="sec-h">Four Key<br/>Design Decisions</h2>
+<p class="sec-lead">Collaborating with the VP and Project Manager, I synthesised research into clear design directions — then validated them with teams in Dublin, India, and the US.</p>
+<div class="rule"></div>
 
-        <div class="flist">
-          <div class="fr">
-            <div class="fr-i">🗂</div>
-            <div>
-              <div class="fr-t">Decision 1 — Modular homepage with side navigation</div>
-              <div class="fr-d">Designed a structured side navigation menu with key categories (Home, Visiting Vancouver, Transportation, Amenities, Events, Floor Plans, Forms &amp; Policies) — replacing the scattered layout so employees could find what they needed within seconds.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div class="fr-i">🏗</div>
-            <div>
-              <div class="fr-t">Decision 2 — Information architecture overhaul</div>
-              <div class="fr-d">Restructured the entire information hierarchy based on user goals rather than departmental ownership. New categories like "Plan Your Visit," "Book a Space," and "Workplace Support" reflected how employees naturally searched for information.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div class="fr-i">🎨</div>
-            <div>
-              <div class="fr-t">Decision 3 — Visual identity + accessibility</div>
-              <div class="fr-d">Established a refined colour and layout system: black and off-white for sub-categories, black for all interactive buttons (strong contrast, accessibility compliant), muted grey for circulars, bright orange for notices.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div class="fr-i">🌐</div>
-            <div>
-              <div class="fr-t">Decision 4 — Global scalability</div>
-              <div class="fr-d">Shared Figma prototypes async with teams in Dublin, India, and the US for feedback. The final framework was flexible enough to accommodate local content while maintaining consistent IA and design language across all global instances.</div>
-            </div>
-          </div>
-        </div>
+<div class="flist">
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-sidebar"/></svg></div>
+<div>
+<div class="fr-t">Decision 1 — Modular homepage with side navigation</div>
+<div class="fr-d">Designed a structured side navigation menu with key categories (Home, Visiting Vancouver, Transportation, Amenities, Events, Floor Plans, Forms &amp; Policies) — replacing the scattered layout so employees could find what they needed within seconds.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-hierarchy"/></svg></div>
+<div>
+<div class="fr-t">Decision 2 — Information architecture overhaul</div>
+<div class="fr-d">Restructured the entire information hierarchy based on user goals rather than departmental ownership. New categories like "Plan Your Visit," "Book a Space," and "Workplace Support" reflected how employees naturally searched for information.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-palette"/></svg></div>
+<div>
+<div class="fr-t">Decision 3 — Visual identity + accessibility</div>
+<div class="fr-d">Established a refined colour and layout system: black and off-white for sub-categories, black for all interactive buttons (strong contrast, accessibility compliant), muted grey for circulars, bright orange for notices.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-globe"/></svg></div>
+<div>
+<div class="fr-t">Decision 4 — Global scalability</div>
+<div class="fr-d">Shared Figma prototypes async with teams in Dublin, India, and the US for feedback. The final framework was flexible enough to accommodate local content while maintaining consistent IA and design language across all global instances.</div>
+</div>
+</div>
+</div>
 
-        <div class="sub">Navigation Structure</div>
-        <div class="g2">
-          <div class="ic">
-            <div class="ic-ico">🏠</div>
-            <div class="ic-t">Home + Visiting Vancouver</div>
-            <div class="ic-d">Landing page with quick access to the most common tasks for new and visiting employees.</div>
-          </div>
-          <div class="ic">
-            <div class="ic-ico">🚌</div>
-            <div class="ic-t">Transportation + Amenities</div>
-            <div class="ic-d">Getting to the office, parking, storage, and on-site facilities — all in one place.</div>
-          </div>
-          <div class="ic">
-            <div class="ic-ico">📅</div>
-            <div class="ic-t">Events + Teams in Vancouver</div>
-            <div class="ic-d">Workplace events, team directories, and Vancouver-specific team information.</div>
-          </div>
-          <div class="ic">
-            <div class="ic-ico">📄</div>
-            <div class="ic-t">Forms + Policies</div>
-            <div class="ic-d">Access card info, booking forms, catering requests, and workplace policies — consolidated.</div>
-          </div>
-        </div>
-      </section>
+<div class="sub">Navigation Structure</div>
+<div class="g2">
+<div class="ic">
+<div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-home"/></svg></div>
+<div class="ic-t">Home + Visiting Vancouver</div>
+<div class="ic-d">Landing page with quick access to the most common tasks for new and visiting employees.</div>
+</div>
+<div class="ic">
+<div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-transit"/></svg></div>
+<div class="ic-t">Transportation + Amenities</div>
+<div class="ic-d">Getting to the office, parking, storage, and on-site facilities — all in one place.</div>
+</div>
+<div class="ic">
+<div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-calendar"/></svg></div>
+<div class="ic-t">Events + Teams in Vancouver</div>
+<div class="ic-d">Workplace events, team directories, and Vancouver-specific team information.</div>
+</div>
+<div class="ic">
+<div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-doc"/></svg></div>
+<div class="ic-t">Forms + Policies</div>
+<div class="ic-d">Access card info, booking forms, catering requests, and workplace policies — consolidated.</div>
+</div>
+</div>
+</section>
 
-      <!-- 04 BEFORE & AFTER -->
-      <section id="beforeafter" class="sec rev">
-        <div class="phase"><div class="p-dot">4</div><span class="p-txt">Before &amp; After</span></div>
-        <h2 class="sec-h">The Transformation</h2>
-        <p class="sec-lead">From a static archive to a structured, employee-first guide. Note: high-fidelity screens are under NDA — these images show the approved shareable versions.</p>
-        <div class="rule"></div>
+<!-- 04 BEFORE & AFTER -->
+<section id="beforeafter" class="sec rev">
+<div class="phase"><div class="p-dot">4</div><span class="p-txt">Before &amp; After</span></div>
+<h2 class="sec-h">The Transformation</h2>
+<p class="sec-lead">From a static archive to a structured, employee-first guide. Note: high-fidelity screens are under NDA — these images show the approved shareable versions.</p>
+<div class="rule"></div>
 
-        <div class="ba-grid">
-          <div class="ba-wrap before">
-            <img src="https://framerusercontent.com/images/qj7ErSWHQh5zEzWE7SbjDasz0Y.png" alt="Before redesign"/>
-            <div class="ba-label">Before — information archive</div>
-          </div>
-          <div class="ba-wrap after">
-            <img src="https://framerusercontent.com/images/W9B3XG2Jn7wEsMGo1v6ZJHOoyBU.png" alt="After redesign"/>
-            <div class="ba-label">After — user-centric guide</div>
-          </div>
-        </div>
-      </section>
+<div class="ba-grid">
+<div class="ba-wrap before">
+<img src="https://framerusercontent.com/images/qj7ErSWHQh5zEzWE7SbjDasz0Y.png" alt="Before redesign"/>
+<div class="ba-label">Before — information archive</div>
+</div>
+<div class="ba-wrap after">
+<img src="https://framerusercontent.com/images/W9B3XG2Jn7wEsMGo1v6ZJHOoyBU.png" alt="After redesign"/>
+<div class="ba-label">After — user-centric guide</div>
+</div>
+</div>
+</section>
 
-      <!-- 05 COLLABORATION -->
-      <section id="collaboration" class="sec rev">
-        <div class="phase"><div class="p-dot">5</div><span class="p-txt">Collaboration &amp; Implementation</span></div>
-        <h2 class="sec-h">Working Within<br/>Enterprise Constraints</h2>
-        <p class="sec-lead">As the only UX/UI designer in the department, I led the end-to-end design process — from research to shipped product.</p>
-        <div class="rule"></div>
+<!-- 05 COLLABORATION -->
+<section id="collaboration" class="sec rev">
+<div class="phase"><div class="p-dot">5</div><span class="p-txt">Collaboration &amp; Implementation</span></div>
+<h2 class="sec-h">Working Within<br/>Enterprise Constraints</h2>
+<p class="sec-lead">As the only UX/UI designer in the department, I led the end-to-end design process — from research to shipped product.</p>
+<div class="rule"></div>
 
-        <div class="flist" style="margin-bottom:2rem">
-          <div class="fr">
-            <div class="fr-i">🔄</div>
-            <div>
-              <div class="fr-t">Biweekly design syncs</div>
-              <div class="fr-d">Regular alignment sessions with the VP and Project Manager to present progress, surface blockers, and refine direction based on stakeholder priorities.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div class="fr-i">⚙️</div>
-            <div>
-              <div class="fr-t">SharePoint technical translation</div>
-              <div class="fr-d">Partnered directly with IT support to translate design specifications into feasible SharePoint modules — ensuring visual quality was never compromised by system constraints.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div class="fr-i">🌍</div>
-            <div>
-              <div class="fr-t">Cross-regional async feedback</div>
-              <div class="fr-d">Shared Figma prototypes with Dublin, India, and US teams for async review. Iterated on the live SharePoint based on regional responses to validate scalability.</div>
-            </div>
-          </div>
-        </div>
+<div class="flist" style="margin-bottom:2rem">
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-cycle"/></svg></div>
+<div>
+<div class="fr-t">Biweekly design syncs</div>
+<div class="fr-d">Regular alignment sessions with the VP and Project Manager to present progress, surface blockers, and refine direction based on stakeholder priorities.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-gear"/></svg></div>
+<div>
+<div class="fr-t">SharePoint technical translation</div>
+<div class="fr-d">Partnered directly with IT support to translate design specifications into feasible SharePoint modules — ensuring visual quality was never compromised by system constraints.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-network"/></svg></div>
+<div>
+<div class="fr-t">Cross-regional async feedback</div>
+<div class="fr-d">Shared Figma prototypes with Dublin, India, and US teams for async review. Iterated on the live SharePoint based on regional responses to validate scalability.</div>
+</div>
+</div>
+</div>
 
-        <div class="imgs c1">
-          <div class="iw">
-            <img src="https://framerusercontent.com/images/EGEmZLYRoCQC3N8DK6Hj1DJqmz4.png" alt="Collaboration process"/>
-            <div class="icap">Collaboration and implementation process — cross-regional feedback and design sync workflow</div>
-          </div>
-        </div>
-      </section>
+<div class="imgs c1">
+<div class="iw">
+<img src="https://framerusercontent.com/images/EGEmZLYRoCQC3N8DK6Hj1DJqmz4.png" alt="Collaboration process"/>
+<div class="icap">Collaboration and implementation process — cross-regional feedback and design sync workflow</div>
+</div>
+</div>
+</section>
 
-      <!-- 06 OUTCOME -->
-      <section id="outcome" class="sec rev">
-        <div class="phase"><div class="p-dot">6</div><span class="p-txt">Outcome &amp; Impact</span></div>
-        <h2 class="sec-h">Measurable Results</h2>
-        <p class="sec-lead">The redesigned SharePoint significantly improved usability and engagement across Mastercard's internal teams.</p>
-        <div class="rule"></div>
+<!-- 06 OUTCOME -->
+<section id="outcome" class="sec rev">
+<div class="phase"><div class="p-dot">6</div><span class="p-txt">Outcome &amp; Impact</span></div>
+<h2 class="sec-h">Measurable Results</h2>
+<p class="sec-lead">The redesigned SharePoint significantly improved usability and engagement across Mastercard's internal teams.</p>
+<div class="rule"></div>
 
-        <div class="g2" style="margin-bottom:2rem">
-          <div class="res">
-            <div class="res-n">40%</div>
-            <div>
-              <div class="res-l">Faster resource access</div>
-              <div class="res-ctx">Employees located key resources up to 40% faster through reorganised navigation</div>
-            </div>
-          </div>
-          <div class="res">
-            <div class="res-n">3</div>
-            <div>
-              <div class="res-l">Global regions validated</div>
-              <div class="res-ctx">Dublin, India, and US teams provided feedback confirming scalability</div>
-            </div>
-          </div>
-          <div class="res">
-            <div class="res-n">15k+</div>
-            <div>
-              <div class="res-l">Employees served</div>
-              <div class="res-ctx">Platform redesign in consideration for adoption across global Mastercard branches</div>
-            </div>
-          </div>
-          <div class="res">
-            <div class="res-n">↑</div>
-            <div>
-              <div class="res-l">Department visibility</div>
-              <div class="res-ctx">Workplace Experience gained greater recognition for clarity and communication efficiency</div>
-            </div>
-          </div>
-        </div>
+<div class="g2" style="margin-bottom:2rem">
+<div class="res">
+<div class="res-n">40%</div>
+<div>
+<div class="res-l">Faster resource access</div>
+<div class="res-ctx">Employees located key resources up to 40% faster through reorganised navigation</div>
+</div>
+</div>
+<div class="res">
+<div class="res-n">3</div>
+<div>
+<div class="res-l">Global regions validated</div>
+<div class="res-ctx">Dublin, India, and US teams provided feedback confirming scalability</div>
+</div>
+</div>
+<div class="res">
+<div class="res-n">15k+</div>
+<div>
+<div class="res-l">Employees served</div>
+<div class="res-ctx">Platform redesign in consideration for adoption across global Mastercard branches</div>
+</div>
+</div>
+<div class="res">
+<div class="res-n"><svg class="ico" aria-hidden="true"><use href="#i-rise"/></svg></div>
+<div>
+<div class="res-l">Department visibility</div>
+<div class="res-ctx">Workplace Experience gained greater recognition for clarity and communication efficiency</div>
+</div>
+</div>
+</div>
 
-        <div class="quote">
-          <p>"Inayat brought professionalism, dedication, and high-quality work to everything she did. She was proactive, sought feedback, asked smart questions, and consistently delivered work aligned with team goals. She didn't just complete tasks — she added value."</p>
-          <div class="quote-attr">
+<div class="quote">
+<p>"Inayat brought professionalism, dedication, and high-quality work to everything she did. She was proactive, sought feedback, asked smart questions, and consistently delivered work aligned with team goals. She didn't just complete tasks — she added value."</p>
+<div class="quote-attr">
             Supervisor, Workplace Experience
-            <span>Mastercard Vancouver</span>
-          </div>
-        </div>
+<span>Mastercard Vancouver</span>
+</div>
+</div>
 
-        <div class="imgs c1">
-          <div class="iw">
-            <img src="https://framerusercontent.com/images/QjUZtqCzDzdT4yAp2bXwGgS6Q4s.png" alt="Project insights"/>
-            <div class="icap">Project insights and final deliverables overview</div>
-          </div>
-        </div>
-      </section>
+<div class="imgs c1">
+<div class="iw">
+<img src="https://framerusercontent.com/images/QjUZtqCzDzdT4yAp2bXwGgS6Q4s.png" alt="Project insights"/>
+<div class="icap">Project insights and final deliverables overview</div>
+</div>
+</div>
+</section>
 
-      <!-- 07 REFLECTION -->
-      <section id="reflection" class="sec rev">
-        <div class="phase"><div class="p-dot">7</div><span class="p-txt">Reflection</span></div>
-        <h2 class="sec-h">What I Learned</h2>
-        <p class="sec-lead">Enterprise UX taught me things no classroom project could — about constraints, stakeholders, and shipping work at real scale.</p>
-        <div class="rule"></div>
+<!-- 07 REFLECTION -->
+<section id="reflection" class="sec rev">
+<div class="phase"><div class="p-dot">7</div><span class="p-txt">Reflection</span></div>
+<h2 class="sec-h">What I Learned</h2>
+<p class="sec-lead">Enterprise UX taught me things no classroom project could — about constraints, stakeholders, and shipping work at real scale.</p>
+<div class="rule"></div>
 
-        <div class="g2">
-          <div class="rc">
-            <div class="rc-t">Designing for global teams</div>
-            <div class="rc-d">I learned how to create systems flexible enough to work across countries, cultures, and time zones — balancing regional specificity with consistent information architecture.</div>
-          </div>
-          <div class="rc">
-            <div class="rc-t">Strategic thinking at scale</div>
-            <div class="rc-d">Journey mapping and persona development helped me tie every UX decision directly to employee pain points and organisational goals — making stakeholder buy-in straightforward.</div>
-          </div>
-          <div class="rc">
-            <div class="rc-t">Adaptability in constraints</div>
-            <div class="rc-d">Designing within SharePoint's technical framework taught me to balance creativity with feasibility — an essential skill for enterprise UX that you can't learn from Figma alone.</div>
-          </div>
-          <div class="rc">
-            <div class="rc-t">Leadership without a title</div>
-            <div class="rc-d">As the only designer, I had to communicate, advocate, and make informed design decisions confidently — often translating design rationale for non-design stakeholders in real time.</div>
-          </div>
-        </div>
+<div class="g2">
+<div class="rc">
+<div class="rc-t">Designing for global teams</div>
+<div class="rc-d">I learned how to create systems flexible enough to work across countries, cultures, and time zones — balancing regional specificity with consistent information architecture.</div>
+</div>
+<div class="rc">
+<div class="rc-t">Strategic thinking at scale</div>
+<div class="rc-d">Journey mapping and persona development helped me tie every UX decision directly to employee pain points and organisational goals — making stakeholder buy-in straightforward.</div>
+</div>
+<div class="rc">
+<div class="rc-t">Adaptability in constraints</div>
+<div class="rc-d">Designing within SharePoint's technical framework taught me to balance creativity with feasibility — an essential skill for enterprise UX that you can't learn from Figma alone.</div>
+</div>
+<div class="rc">
+<div class="rc-t">Leadership without a title</div>
+<div class="rc-d">As the only designer, I had to communicate, advocate, and make informed design decisions confidently — often translating design rationale for non-design stakeholders in real time.</div>
+</div>
+</div>
 
-        <!-- Closing scrawl -->
-        <div style="margin-top:3rem; padding:1.5rem; border:1.5px solid rgba(26,22,18,0.12); background:var(--paper-dark); position:relative; transform:rotate(-0.3deg)">
-          <div style="position:absolute; top:-11px; left:20px; width:40px; height:20px; background:rgba(181,38,30,0.28); border-top:1px solid rgba(181,38,30,0.4); border-bottom:1px solid rgba(181,38,30,0.4); transform:rotate(1.5deg)"></div>
-          <p style="font-family:var(--font-serif); font-size:1.1rem; font-style:italic; color:var(--ink-light); line-height:1.7">
+<!-- Closing scrawl -->
+<div style="margin-top:3rem; padding:1.5rem; border:1.5px solid rgba(26,22,18,0.12); background:var(--paper-dark); position:relative; transform:rotate(-0.3deg)">
+<div style="position:absolute; top:-11px; left:20px; width:40px; height:20px; background:rgba(181,38,30,0.28); border-top:1px solid rgba(181,38,30,0.4); border-bottom:1px solid rgba(181,38,30,0.4); transform:rotate(1.5deg)"></div>
+<p style="font-family:var(--font-serif); font-size:1.1rem; font-style:italic; color:var(--ink-light); line-height:1.7">
             The biggest insight wasn't about SharePoint at all — it was that people want to feel <span class="hl-y">seen by their tools</span>. A platform that respects how employees actually work will always outlast one that was built for the org chart.
-          </p>
-          <p style="font-family:var(--font-scrawl); font-size:18px; color:var(--mc-red); margin-top:0.75rem; transform:rotate(-1deg); display:inline-block">— Inayat ✏️</p>
-          <div class="corner-fold"></div>
-        </div>
-      </section>
+</p>
+<p style="font-family:var(--font-scrawl); font-size:18px; color:var(--mc-red); margin-top:0.75rem; transform:rotate(-1deg); display:inline-block">— Inayat</p>
+<div class="corner-fold"></div>
+</div>
+</section>
 
-    </main>
+</main>
 
-    <footer>© 2025 Inayat &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; Enterprise UX · SharePoint · Internship</footer>
+<footer>© 2025 Inayat &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; Enterprise UX · SharePoint · Internship</footer>
 
-    <script>
-      // Spiral holes
-      const spiral = document.getElementById('spiralBinding');
-      const count = Math.floor(window.innerHeight / 44) + 2;
-      for (let i = 0; i < count; i++) {
-        const h = document.createElement('div');
-        h.className = 'spiral-hole';
-        spiral.appendChild(h);
+<script>
+// Spiral holes
+const spiral = document.getElementById('spiralBinding');
+const count = Math.floor(window.innerHeight / 44) + 2;
+for (let i = 0; i < count; i++) {
+const h = document.createElement('div');
+h.className = 'spiral-hole';
+spiral.appendChild(h);
       }
 
-      // Scroll reveal
-      const ro = new IntersectionObserver(es => es.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add('in');
+// Scroll reveal
+const ro = new IntersectionObserver(es => es.forEach(e => {
+if (e.isIntersecting) e.target.classList.add('in');
       }), { threshold: 0.06 });
-      document.querySelectorAll('.rev').forEach(el => ro.observe(el));
+document.querySelectorAll('.rev').forEach(el => ro.observe(el));
 
-      // Active sidenav
-      const links = document.querySelectorAll('.side-a');
-      const secs  = document.querySelectorAll('.sec');
-      const so = new IntersectionObserver(es => {
-        es.forEach(e => {
-          if (e.isIntersecting) {
-            links.forEach(l => l.classList.remove('active'));
-            const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
-            if (a) a.classList.add('active');
+// Active sidenav
+const links = document.querySelectorAll('.side-a');
+const secs  = document.querySelectorAll('.sec');
+const so = new IntersectionObserver(es => {
+es.forEach(e => {
+if (e.isIntersecting) {
+links.forEach(l => l.classList.remove('active'));
+const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
+if (a) a.classList.add('active');
           }
         });
       }, { rootMargin: '-15% 0px -65% 0px' });
-      secs.forEach(s => so.observe(s));
-    </script>
-  </body>
+secs.forEach(s => so.observe(s));
+</script>
+</body>
 </html>
