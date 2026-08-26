@@ -817,12 +817,12 @@
       </a>
 
       <!-- 1. FEATURED: Mastercard Fraud Dashboard -->
+           <!-- 1. Mastercard Fraud Dashboard -->
       <a href="./Projects/mastercard-fraud-dashboard.html"
-         class="project-card featured reveal"
+         class="project-card reveal"
          data-category="case-study">
         <div class="card-image">
           <img src="./Images/Chart 2.png" alt="Fraud Detection Dashboard" />
-          <span class="scrawl-note" style="bottom: 24px; left: 20px;">← AI-driven flags!</span>
         </div>
         <div class="card-body">
           <div class="card-tags">
@@ -1066,9 +1066,9 @@
             card.style.display = '';
             card.style.opacity = '0';
             card.style.transform = 'translateY(16px)';
-            if (card.classList.contains('featured')) {
-              card.style.gridColumn = (filter === 'all') ? 'span 2' : 'span 1';
-            }
+           if (card.classList.contains('featured')) {
+  card.style.gridColumn = (filter === 'all') ? 'span 2' : 'span 1';
+}
             setTimeout(() => {
               card.style.opacity = '1';
               card.style.transform = 'translateY(0)';
