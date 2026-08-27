@@ -358,7 +358,7 @@ min-height: 280px; border-right: 2px solid var(--ink); border-bottom: none;
 .page-edge::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: linear-gradient(90deg, rgba(0,0,0,0.06) 0%, transparent 100%); pointer-events: none; }
 
 .washi-banner {
-position: relative; padding: 10px var(--gutter);
+position: relative; padding: 10px 0;
 background: rgba(44,95,138,0.12);
 border-top: 1.5px solid rgba(44,95,138,0.25);
 border-bottom: 1.5px solid rgba(44,95,138,0.25);
@@ -366,8 +366,19 @@ font-family: var(--font-scrawl); font-size: var(--fs-washi); color: var(--accent
 letter-spacing: 0.08em; overflow: hidden; white-space: nowrap;
 transform: rotate(-0.3deg);
       }
-.washi-banner-inner { display: inline-block; animation: marquee 22s linear infinite; }
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.washi-track {
+display: flex; width: max-content;
+animation: marquee var(--marquee-dur, 24s) linear infinite;
+will-change: transform;
+      }
+.washi-group { display: flex; flex-shrink: 0; white-space: nowrap; }
+@keyframes marquee {
+from { transform: translateX(0); }
+to   { transform: translateX(calc(-1 * var(--marquee-shift, 50%))); }
+      }
+@media (prefers-reduced-motion: reduce) {
+.washi-track { animation: none; }
+      }
 
 .process-strip { display: flex; gap: 0; align-items: center; flex-wrap: wrap; border: 2px solid var(--ink); background: var(--paper); padding: 16px 20px; transform: rotate(-0.5deg); position: relative; margin-top: 32px; }
 .process-strip-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 10px; width: 100%; }
@@ -408,7 +419,6 @@ section { padding: 64px var(--gutter); }
 footer { padding: 20px var(--gutter); }
 nav { padding: 14px var(--gutter); }
 .projects-grid { gap: 20px; }
-.washi-banner { padding: 10px var(--gutter); }
 .hanging-cards { width: 42%; }
 .hang:nth-child(2), .hang:nth-child(5) { display: none; }
 .hang .tag { min-width: 74px; padding: 12px 10px 10px; }
@@ -429,7 +439,6 @@ nav { padding: 14px var(--gutter); }
 .btn-sketch { padding: 10px 22px; }
 section { padding: 48px var(--gutter); }
 .section-header { margin-bottom: 36px; gap: 10px; }
-.washi-banner { padding: 10px var(--gutter); }
 .projects-grid { grid-template-columns: 1fr; gap: 20px; }
 .project-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
 .project-card.featured .card-image { border-right: none; border-bottom: 2px solid var(--ink); min-height: 200px; }
@@ -554,7 +563,7 @@ width: 100%; height: 100%; object-fit: contain; padding: 14px;
 .skills-board { gap: 20px; }
 .skill-cluster { padding: 20px; }
 .skill-cluster-label { font-size: 10px; }
-.washi-banner { padding: 13px var(--gutter); }
+.washi-banner { padding: 13px 0; }
 .contact-inner { max-width: 700px; }
 footer p { font-size: 12px; }
 .corner-fold { width: 34px; height: 34px; }
@@ -604,7 +613,7 @@ section { padding: 110px var(--gutter); }
 .skills-board { gap: 26px; }
 .skill-cluster { padding: 26px; }
 .skill-cluster-label { font-size: 12px; }
-.washi-banner { padding: 16px var(--gutter); }
+.washi-banner { padding: 16px 0; }
 .contact-section { padding: 110px var(--gutter); }
 .contact-inner { max-width: 840px; }
 .process-strip { padding: 20px 26px; }
@@ -743,10 +752,9 @@ footer p { font-size: 14px; }
 </section>
 
 <div class="washi-banner" aria-hidden="true">
-<span class="washi-banner-inner">
-        ✏️ research &nbsp;&nbsp;·&nbsp;&nbsp; sketch &nbsp;&nbsp;·&nbsp;&nbsp; iterate &nbsp;&nbsp;·&nbsp;&nbsp; test &nbsp;&nbsp;·&nbsp;&nbsp; ship &nbsp;&nbsp;·&nbsp;&nbsp; repeat &nbsp;&nbsp;·&nbsp;&nbsp;
-        ✏️ research &nbsp;&nbsp;·&nbsp;&nbsp; sketch &nbsp;&nbsp;·&nbsp;&nbsp; iterate &nbsp;&nbsp;·&nbsp;&nbsp; test &nbsp;&nbsp;·&nbsp;&nbsp; ship &nbsp;&nbsp;·&nbsp;&nbsp; repeat &nbsp;&nbsp;·&nbsp;&nbsp;
-</span>
+<div class="washi-track" id="washiTrack">
+<span class="washi-group">&nbsp;✏️ research &nbsp;&nbsp;·&nbsp;&nbsp; sketch &nbsp;&nbsp;·&nbsp;&nbsp; iterate &nbsp;&nbsp;·&nbsp;&nbsp; test &nbsp;&nbsp;·&nbsp;&nbsp; ship &nbsp;&nbsp;·&nbsp;&nbsp; repeat &nbsp;&nbsp;·&nbsp;&nbsp;</span>
+</div>
 </div>
 
 <!-- SELECTED WORK -->
@@ -856,10 +864,38 @@ spiral.appendChild(hole);
         }
       }
 buildSpiral();
+
+/* ---- washi marquee: clone the strip until it always overflows the viewport,
+       then scroll by exactly one copy so the loop point is invisible.
+       Duration is derived from width, so speed stays constant at any size. ---- */
+const MARQUEE_SPEED = 55; // pixels per second
+function buildMarquee() {
+const track = document.getElementById("washiTrack");
+if (!track) return;
+track.querySelectorAll(".washi-group.clone").forEach(n => n.remove());
+const first = track.querySelector(".washi-group");
+if (!first) return;
+const groupW = first.getBoundingClientRect().width;
+if (!groupW) return;                       // fonts not ready yet
+const copies = Math.ceil(window.innerWidth / groupW) + 1;
+const frag = document.createDocumentFragment();
+for (let i = 1; i < copies; i++) {
+const c = first.cloneNode(true);
+c.classList.add("clone");
+frag.appendChild(c);
+        }
+track.appendChild(frag);
+track.style.setProperty("--marquee-shift", groupW + "px");
+track.style.setProperty("--marquee-dur", (groupW / MARQUEE_SPEED) + "s");
+      }
+buildMarquee();
+/* re-measure once webfonts land, since Reenie Beanie changes the strip width */
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildMarquee);
+
 let resizeTimer;
 window.addEventListener("resize", () => {
 clearTimeout(resizeTimer);
-resizeTimer = setTimeout(buildSpiral, 150);
+resizeTimer = setTimeout(() => { buildSpiral(); buildMarquee(); }, 150);
       });
 
 const trailContainer = document.getElementById("cursorTrail");
