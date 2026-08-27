@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Inayat Gulati — UX/UI Designer</title>
-<meta name="description" content="Inayat Gulati — Vancouver-based UX/UI designer and frontend developer. Research-backed, technically feasible, built to ship." />
-<meta property="og:title" content="Inayat Gulati — UX/UI Designer" />
-<meta property="og:description" content="Vancouver-based UX/UI designer with frontend chops. Research-backed, technically feasible, built to ship." />
+<title>Inayat Gulati — UX/UI &amp; Interaction Designer</title>
+<meta name="description" content="Inayat Gulati — Vancouver-based UX/UI and interaction designer. I design web and mobile interfaces — flows, states and details — and build them in code." />
+<meta property="og:title" content="Inayat Gulati — UX/UI &amp; Interaction Designer" />
+<meta property="og:description" content="I design web and mobile interfaces — the flows, the states and the small details — then build them in code." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://inayatgulati.github.io/Inayat_Portfolio/" />
 <meta property="og:image" content="https://inayatgulati.github.io/Inayat_Portfolio/assets/og-image.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Inayat Gulati — UX/UI Designer" />
-<meta name="twitter:description" content="Vancouver-based UX/UI designer and frontend dev. Built to ship." />
+<meta name="twitter:title" content="Inayat Gulati — UX/UI &amp; Interaction Designer" />
+<meta name="twitter:description" content="Interaction designer for web and mobile. I design the flows and build them." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Karla:wght@400;500;700&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
@@ -51,7 +51,9 @@
    Every reading size is a continuous function of viewport width:
    clamp(floor, intercept + slope*vw, ceiling). No breakpoint steps. */
 --fs-base:    clamp(15px,   calc(14.43px + 0.179vw), 19px);
---fs-lead:    clamp(16px,   calc(15.26px + 0.19vw),  20.5px);  /* hero desc, about copy */
+--fs-lead:    clamp(16px,   calc(15.26px + 0.19vw),  20.5px);  /* about copy, card copy */
+--fs-hero:    clamp(19px,   calc(15.5px + 1.0vw),    42px);   /* the one line that has to land */
+--fs-quote:   clamp(22px,   calc(18px + 0.85vw),    44px);   /* pull quote */
 --fs-body:    clamp(14.5px, calc(13.96px + 0.138vw), 17.5px);  /* card copy, skills, process */
 --fs-ui:      clamp(14px,   calc(13.44px + 0.143vw), 17px);    /* buttons, nav, small links */
 --fs-contact: clamp(17px,   calc(15.92px + 0.277vw), 23px);
@@ -166,13 +168,19 @@ padding: 6px 14px; border: 2px solid var(--ink); background: transparent;
 text-transform: uppercase; position: relative; transform: rotate(-0.5deg); transition: transform 0.2s, background 0.2s;
       }
 .role-pill:nth-child(2) { transform: rotate(0.8deg); }
+.role-pill:nth-child(3) { transform: rotate(-0.7deg); }
 .role-pill.filled { background: var(--ink); color: var(--paper); }
 .hero-mobile-skills { display: none; gap: 8px; flex-wrap: wrap; margin: 20px 0 28px; }
 .mobile-skill-pill { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; padding: 4px 10px; border: 1.5px solid var(--ink); text-transform: uppercase; color: var(--ink-light); }
 .mobile-skill-pill.blue { border-color: var(--accent-blue); color: var(--accent-blue); }
 .mobile-skill-pill.green { border-color: var(--accent-green); color: var(--accent-green); }
 .mobile-skill-pill.orange { border-color: var(--accent-orange); color: var(--accent-orange); }
-.hero-desc { font-family: var(--font-text); font-size: var(--fs-lead); color: var(--ink-light); max-width: calc(var(--hero-copy) * 0.77); line-height: 1.55; margin-bottom: 40px; }
+.hero-desc {
+font-family: var(--font-text); font-size: var(--fs-hero);
+color: var(--ink-light); max-width: calc(var(--hero-copy) * 0.88);
+line-height: 1.35; letter-spacing: -0.2px; margin-bottom: 40px;
+      }
+.hero-desc b { color: var(--ink); font-weight: 700; }
 .hero-cta-group { display: flex; gap: 16px; flex-wrap: wrap; }
 .btn-sketch {
 font-family: var(--font-text); font-size: var(--fs-ui); font-weight: 700;
@@ -298,14 +306,17 @@ content: ""; position: absolute; bottom: -5px; right: -5px;
 width: 100%; height: 100%; border: 2px solid var(--ink);
 opacity: 0.2; z-index: 0; transition: all 0.25s;
       }
-.project-card:hover { transform: translate(-3px,-3px); }
+.project-card { box-shadow: 3px 4px 0 rgba(26,22,18,0.10); }
+.project-card:hover { transform: translate(-3px,-3px); box-shadow: 6px 8px 0 rgba(26,22,18,0.16); }
 .project-card:hover::after { bottom: -8px; right: -8px; opacity: 0.35; }
 .project-card.featured { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; }
 
-/* REAL IMAGE area */
+/* REAL IMAGE area — fixed ratio so every card reserves the same
+   vertical space no matter what the asset's own proportions are */
 .card-image {
 position: relative; overflow: hidden;
-background: var(--paper-dark); min-height: 200px;
+background: var(--paper-dark);
+aspect-ratio: 16 / 11; min-height: 0;
 border-bottom: 2px solid var(--ink);
       }
 .card-image::before {
@@ -333,7 +344,8 @@ min-height: 280px; border-right: 2px solid var(--ink); border-bottom: none;
 .card-arrow { display: inline-block; margin-top: 16px; font-family: var(--font-text); font-size: var(--fs-ui); color: var(--ink-faint); text-decoration: none; transition: all 0.2s; border-bottom: 1.5px solid var(--pencil); }
 .project-card:hover .card-arrow { color: var(--ink); border-color: var(--ink); }
 
-.view-all-wrap { margin-top: 36px; text-align: right; }
+.view-all-wrap { margin-top: 36px; display: flex; justify-content: flex-end; gap: 28px; flex-wrap: wrap; }
+.view-all-link.secondary { font-weight: 400; color: var(--ink-light); border-bottom-color: var(--pencil); }
 .view-all-link { font-family: var(--font-text); font-size: var(--fs-ui); font-weight: 700; color: var(--ink); text-decoration: none; border-bottom: 2px solid var(--ink); padding-bottom: 2px; transition: opacity 0.2s; }
 .view-all-link:hover { opacity: 0.6; }
 
@@ -391,6 +403,7 @@ to   { transform: translateX(calc(-1 * var(--marquee-shift, 50%))); }
 .contact-section { background: var(--ink); color: var(--paper); padding: 80px var(--gutter); position: relative; overflow: hidden; }
 .contact-section::before { content: ""; position: absolute; inset: 0; background-image: repeating-linear-gradient(0deg, transparent, transparent calc(var(--rule) - 1px), rgba(255,255,255,0.04) calc(var(--rule) - 1px), rgba(255,255,255,0.04) var(--rule)); pointer-events: none; }
 .contact-inner { position: relative; z-index: 1; max-width: 600px; }
+.contact-num { display: block; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: rgba(255,255,255,0.45); margin-bottom: 16px; }
 .contact-title { font-family: var(--font-hand); font-size: var(--fs-h2); font-weight: 700; line-height: 1; margin-bottom: 20px; letter-spacing: -1px; }
 .contact-sub { font-family: var(--font-text); font-size: var(--fs-ui); color: rgba(255,255,255,0.6); margin-bottom: 40px; line-height: 1.55; }
 .contact-links { display: flex; flex-direction: column; gap: 16px; }
@@ -473,19 +486,50 @@ align-items: stretch;
 .project-card.bento-lg {
 grid-column: span 4;
 display: grid;
-grid-template-columns: 1fr 1fr;
+grid-template-columns: 1.25fr 1fr;
 }
 .project-card.bento-sm { grid-column: span 2; }
 
 .project-card.bento-lg .card-image {
-min-height: 300px;
+aspect-ratio: auto; height: 100%; min-height: 320px;
 border-right: 2px solid var(--ink);
 border-bottom: none;
 }
-.project-card.bento-sm .card-image { min-height: 200px; }
 .project-card.bento-lg .card-body {
 display: flex; flex-direction: column; justify-content: center;
 }
+
+/* ===== ABOUT TEASER =====
+   Sits between the work grid and contact. Its job is to break a
+   1536px run of bordered rectangles with a different shape (a face,
+   a quote) on a different ground — and to hand the reader onward. */
+.about-teaser { background: var(--paper-worn); padding-top: 64px; padding-bottom: 64px; }
+.teaser-grid {
+display: grid; grid-template-columns: var(--photo, 240px) minmax(0, 1fr);
+gap: clamp(28px, 3.5vw, 64px); align-items: start;
+      }
+.about-teaser .about-photo-frame { margin-bottom: 0; }
+.about-photo-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.teaser-quote {
+font-family: var(--font-hand); font-size: var(--fs-quote);
+font-weight: 700; line-height: 1.3; color: var(--ink);
+max-width: 26ch; margin-bottom: 26px; position: relative;
+      }
+.teaser-quote::before {
+content: ""; position: absolute; left: -22px; top: 6px; bottom: 6px;
+width: 3px; background: var(--accent-red); opacity: 0.55; border-radius: 2px;
+      }
+.teaser-bio {
+font-family: var(--font-text); font-size: var(--fs-lead);
+color: var(--ink-light); line-height: 1.6; max-width: 58ch; margin-bottom: 24px;
+      }
+.teaser-bio strong { color: var(--ink); font-weight: 700; }
+@media (max-width: 768px) {
+.teaser-grid { grid-template-columns: 1fr; }
+.about-teaser .about-photo-frame { max-width: 180px; }
+.teaser-quote { max-width: 100%; }
+.teaser-quote::before { left: -14px; }
+      }
 
 /* metric always gets its own line */
 .card-metric { display: flex; }
@@ -579,6 +623,8 @@ footer p { font-size: 12px; }
    Each floor equals the base ramp's ceiling, so the handoff is seamless. */
 --fs-base:    clamp(19px,   calc(7px + 0.469vw),   25px);
 --fs-lead:    clamp(20.5px, calc(3.5px + 0.664vw), 29px);
+--fs-hero:    clamp(41px,   calc(12px + 1.13vw),   56px);
+--fs-quote:   clamp(39.8px, calc(12px + 1.09vw),  54px);
 --fs-body:    clamp(17.5px, calc(6.5px + 0.43vw),  23px);
 --fs-ui:      clamp(17px,   calc(7px + 0.391vw),   22px);
 --fs-contact: clamp(23px,   calc(5px + 0.703vw),   32px);
@@ -715,7 +761,7 @@ footer p { font-size: 14px; }
 </div>
 
 <div class="hero-content">
-<div class="hero-tag">Vancouver-based designer</div>
+<div class="hero-tag">Vancouver, BC</div>
 <h1 class="hero-name">
           Hi, I'm
 <span class="underline-squiggle">Inayat
@@ -725,7 +771,8 @@ footer p { font-size: 14px; }
 </span>
 </h1>
 <div class="hero-roles">
-<span class="role-pill filled">UX/UI Design</span>
+<span class="role-pill filled">Interaction Design</span>
+<span class="role-pill">UX / UI</span>
 <span class="role-pill">Frontend Dev</span>
 </div>
 <div class="hero-mobile-skills">
@@ -736,7 +783,7 @@ footer p { font-size: 14px; }
 <span class="mobile-skill-pill orange">Framer</span>
 <span class="mobile-skill-pill blue">UX/UI</span>
 </div>
-<p class="hero-desc">Turning messy problems into tested solutions — research-backed, technically feasible, and built to actually ship.</p>
+<p class="hero-desc">I design <b>web and mobile interfaces</b> — the flows, the states, and the small details people actually tap through. Then I build them.</p>
 <div class="hero-cta-group">
 <a href="#work" class="btn-sketch primary">View my work →</a>
 <a href="#contact" class="btn-sketch">Say hello</a>
@@ -757,11 +804,31 @@ footer p { font-size: 14px; }
 </div>
 </div>
 
-<!-- SELECTED WORK -->
-<section id="work" class="page-edge">
+<!-- 01 · HOW I THINK -->
+<section id="about-teaser" class="page-edge about-teaser">
 <div class="margin-strip"></div>
 <div class="section-header">
 <span class="section-num">01</span>
+<h2 class="section-title">How I think</h2>
+<div class="section-line"></div>
+</div>
+<div class="teaser-grid">
+<div class="about-photo-frame reveal">
+<div class="photo-tape"></div>
+<img src="./Images/E39BD264-A72A-49D9-88B0-B2E49D0D9E62_1_105_c.jpeg" alt="Inayat Gulati" />
+</div>
+<div class="teaser-copy reveal">
+<p class="teaser-quote">"Most products do not fail because of bad visuals — they fail because no one talked to the person using them first."</p>
+<a href="./About.html" class="view-all-link">More about me →</a>
+</div>
+</div>
+</section>
+
+<!-- 02 · SELECTED WORK -->
+<section id="work" class="page-edge" style="background:var(--paper-dark)">
+<div class="margin-strip"></div>
+<div class="section-header">
+<span class="section-num">02</span>
 <h2 class="section-title">Selected work</h2>
 <div class="section-line"></div>
 <span style="font-family:'Reenie Beanie',cursive;font-size:16px;color:var(--accent-red);transform:rotate(3deg);display:inline-block;margin-left:8px;opacity:0.8;">← click to explore!</span>
@@ -782,9 +849,21 @@ footer p { font-size: 14px; }
 <div class="corner-fold"></div>
 </a>
 
-<!-- 2. Pawth Pet App -->
+<!-- 2. Stockflow — Devgon Industries -->
+<a href="./Projects/Stockflow.html" class="project-card bento-sm reveal">
+<div class="card-image"><img src="./Images/stockflow_dashboard_blurred.png" alt="Stockflow inventory dashboard" /></div>
+<div class="card-body">
+<div class="card-tags"><span class="card-tag">Devgon Industries</span><span class="card-tag">Product Design</span><span class="card-tag">2026</span></div>
+<h3 class="card-title">Stockflow</h3>
+<p class="card-desc">Designed and vibe-coded an inventory, sales, and customer-pattern system for a real client — replacing guesswork about stock levels and reorder timing with one connected, mobile-friendly system.</p>
+<span class="card-arrow">Explore case study →</span>
+</div>
+<div class="corner-fold"></div>
+</a>
+
+<!-- 3. Pawth Pet App -->
 <a href="./Projects/Pawth_Project.html" class="project-card bento-sm reveal">
-<div class="card-image"><video src="./Images/Pawth.mp4" autoplay muted loop playsinline></video></div>
+<div class="card-image card-image--contain"><video src="./Images/Pawth.mp4" autoplay muted loop playsinline></video></div>
 <div class="card-body">
 <div class="card-tags"><span class="card-tag">UX/UI</span><span class="card-tag">Frontend</span><span class="card-tag">2026</span></div>
 <h3 class="card-title">Pawth Pet App</h3>
@@ -794,7 +873,7 @@ footer p { font-size: 14px; }
 <div class="corner-fold"></div>
 </a>
 
-<!-- 3. Mastercard Workplace UX -->
+<!-- 4. Mastercard Workplace UX -->
 <a href="./Projects/Mastercard_Project.html" class="project-card bento-sm reveal">
 <div class="card-image"><img src="./Images/Mastercard.png" alt="Mastercard SharePoint" /></div>
 <div class="card-body">
@@ -807,15 +886,15 @@ footer p { font-size: 14px; }
 <div class="corner-fold"></div>
 </a>
 
-<!-- 4. InScope -->
-<a href="./Projects/Inscope.html" class="project-card bento-lg reveal">
+<!-- 5. InScope -->
+<a href="./Projects/Inscope.html" class="project-card bento-sm reveal">
 <div class="card-image card-image--contain">
 <video src="./Images/Inscope_1.mp4" autoplay muted loop playsinline></video>
 </div>
 <div class="card-body">
 <div class="card-tags"><span class="card-tag">Coast Capital</span><span class="card-tag">UX/UI + Design System</span><span class="card-tag">2026</span></div>
 <h3 class="card-title">InScope — what it really costs</h3>
-<p class="card-desc">A financial planning app for under-25s buying their first car, built so the true cost arrives before the commitment. Then I rebuilt all 32 screens as working code — which is how I found the defects my own Figma file was hiding.</p>
+<p class="card-desc">A financial planning app for under-25s buying their first car, built so the true cost arrives before the commitment. I rebuilt all 32 screens as working code.</p>
 <div class="card-metric">10 defects caught in my own work</div>
 <span class="card-arrow">Explore case study →</span>
 </div>
@@ -832,6 +911,7 @@ footer p { font-size: 14px; }
 <!-- CONTACT -->
 <div id="contact" class="contact-section">
 <div class="contact-inner">
+<span class="contact-num">03</span>
 <h2 class="contact-title">Let's work<br/>together.</h2>
 <p class="contact-sub">Always open to discussing new projects, creative ideas, or opportunities.</p>
 <div class="contact-links">
