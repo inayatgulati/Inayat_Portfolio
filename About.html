@@ -1,947 +1,694 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About — Inayat</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Kalam:wght@300;400;700&family=DM+Serif+Display&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --paper: #faf8f2;
-      --paper-dark: #f0ecdf;
-      --paper-worn: #e8e2d0;
-      --ink: #1a1612;
-      --ink-light: #3d3530;
-      --ink-faint: #8a7f72;
-      --pencil: #b8b0a0;
-      --pencil-light: #d4cfc4;
-      --accent-red: #c0392b;
-      --accent-blue: #2c5f8a;
-      --accent-yellow: #e8b84b;
-      --accent-green: #3a7d44;
-      --font-hand: 'Caveat', cursive;
-      --font-scrawl: 'Reenie Beanie', cursive;
-      --font-mono: 'Space Mono', monospace;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background: var(--paper);
-      color: var(--ink);
-      font-family: var(--font-hand);
-      font-size: 18px;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.13) 27px, rgba(180,170,155,0.13) 28px),
-        repeating-linear-gradient(90deg, transparent, transparent 27px, rgba(180,170,155,0.05) 27px, rgba(180,170,155,0.05) 28px);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.5;
-    }
-
-    .spiral-binding {
-      position: fixed;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 32px;
-      background: var(--paper-worn);
-      border-right: 2.5px solid var(--ink);
-      z-index: 50;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 24px;
-      pointer-events: none;
-    }
-
-    .spiral-hole {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 2px solid var(--ink);
-      background: var(--paper);
-      margin-bottom: 28px;
-      flex-shrink: 0;
-      box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
-    }
-
-    nav,
-    section,
-    footer {
-      margin-left: 32px;
-    }
-
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: var(--paper);
-      border-bottom: 2.5px solid var(--ink);
-      padding: 14px 48px;
-    }
-
-    .nav-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-family: var(--font-hand);
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--ink);
-      text-decoration: none;
-      position: relative;
-    }
-
-    .logo::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--accent-red);
-      border-radius: 2px;
-      transform: rotate(-0.8deg);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 32px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: var(--font-hand);
-      font-size: 18px;
-      color: var(--ink);
-      text-decoration: none;
-      position: relative;
-      padding-bottom: 2px;
-    }
-
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--ink);
-      transition: width 0.25s;
-    }
-
-    .nav-links a:hover::after,
-    .nav-links a.active::after {
-      width: 100%;
-    }
-
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-    }
-
-    .hamburger span {
-      width: 25px;
-      height: 2px;
-      background: var(--ink);
-      transition: all 0.3s ease;
-    }
-
-    section {
-      position: relative;
-      padding: 80px 48px;
-      z-index: 1;
-    }
-
-    .page-edge::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 6px;
-      background: linear-gradient(90deg, rgba(0,0,0,0.06) 0%, transparent 100%);
-      pointer-events: none;
-    }
-
-    .margin-strip {
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 44px;
-      border-right: 2px solid rgba(192,57,43,0.2);
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 56px;
-    }
-
-    .section-num {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-faint);
-      letter-spacing: 0.1em;
-    }
-
-    .section-title {
-      font-family: var(--font-hand);
-      font-size: 36px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      position: relative;
-    }
-
-    .section-line {
-      flex: 1;
-      height: 1.5px;
-      background: var(--ink);
-      opacity: 0.2;
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      align-items: start;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .about-text {
-      font-family: var(--font-hand);
-      font-size: 20px;
-      line-height: 1.7;
-      color: var(--ink-light);
-      position: relative;
-    }
-
-    .about-text strong {
-      color: var(--ink);
-      font-weight: 700;
-    }
-
-    .highlight-yellow {
-      background: linear-gradient(120deg, rgba(232,184,75,0) 0%, rgba(232,184,75,0.45) 10%, rgba(232,184,75,0.45) 90%, rgba(232,184,75,0) 100%);
-      padding: 0 2px;
-    }
-
-    .highlight-blue {
-      background: linear-gradient(120deg, rgba(44,95,138,0) 0%, rgba(44,95,138,0.18) 10%, rgba(44,95,138,0.18) 90%, rgba(44,95,138,0) 100%);
-      padding: 0 2px;
-    }
-
-    .skills-board {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .skill-cluster {
-      border: 2px solid var(--ink);
-      padding: 16px;
-      position: relative;
-      background: var(--paper);
-      transition: transform 0.2s;
-    }
-
-    .skill-cluster:nth-child(1) {
-      transform: rotate(-0.4deg);
-    }
-
-    .skill-cluster:nth-child(2) {
-      transform: rotate(0.5deg);
-    }
-
-    .skill-cluster:nth-child(3) {
-      transform: rotate(0.3deg);
-    }
-
-    .skill-cluster:nth-child(4) {
-      transform: rotate(-0.5deg);
-    }
-
-    .skill-cluster:hover {
-      transform: rotate(0deg) translate(-2px, -2px);
-      box-shadow: 4px 4px 0 rgba(26,22,18,0.15);
-    }
-
-    .skill-cluster-label {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      margin-bottom: 10px;
-    }
-
-    .skill-item {
-      font-family: var(--font-hand);
-      font-size: 16px;
-      color: var(--ink-light);
-      padding: 2px 0;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .skill-item::before {
-      content: '—';
-      color: var(--pencil);
-      font-size: 14px;
-    }
-
-    .process-strip {
-      display: flex;
-      gap: 0;
-      align-items: center;
-      flex-wrap: wrap;
-      border: 2px solid var(--ink);
-      background: var(--paper);
-      padding: 16px 20px;
-      transform: rotate(-0.5deg);
-      position: relative;
-      margin-top: 32px;
-    }
-
-    .process-strip::before {
-      content: '';
-      position: absolute;
-      top: -11px;
-      left: 20px;
-      width: 50px;
-      height: 22px;
-      background: rgba(232,184,75,0.4);
-      border-top: 1px solid rgba(232,184,75,0.5);
-      border-bottom: 1px solid rgba(232,184,75,0.5);
-      transform: rotate(1deg);
-    }
-
-    .process-strip-label {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      margin-bottom: 10px;
-      width: 100%;
-    }
-
-    .process-step {
-      font-family: var(--font-hand);
-      font-size: 16px;
-      color: var(--ink-light);
-      padding: 4px 10px;
-      border: 1.5px solid var(--pencil);
-      transition: background 0.2s;
-    }
-
-    .process-step.done {
-      color: var(--ink);
-      border-color: var(--ink);
-      background: var(--paper-dark);
-      font-weight: 700;
-    }
-
-    .process-arrow {
-      color: var(--pencil);
-      padding: 0 6px;
-    }
-
-    .about-note {
-      max-width: 1200px;
-      margin: 56px auto 0;
-      border: 2px solid var(--ink);
-      background: var(--paper);
-      padding: 22px 26px;
-      position: relative;
-      transform: rotate(-0.3deg);
-      box-shadow: 5px 5px 0 rgba(26,22,18,0.12);
-    }
-
-    .about-note::before {
-      content: '';
-      position: absolute;
-      top: -11px;
-      left: 26px;
-      width: 54px;
-      height: 22px;
-      background: rgba(232,184,75,0.4);
-      border-top: 1px solid rgba(232,184,75,0.5);
-      border-bottom: 1px solid rgba(232,184,75,0.5);
-    }
-
-    .about-note-label {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      margin-bottom: 8px;
-    }
-
-    .about-note-text {
-      font-size: 24px;
-      line-height: 1.45;
-      color: var(--ink);
-    }
-
-    .resume-row {
-      max-width: 1200px;
-      margin: 36px auto 0;
-    }
-
-    .btn-sketch {
-      font-family: var(--font-hand);
-      font-size: 18px;
-      font-weight: 700;
-      padding: 12px 28px;
-      border: 2.5px solid var(--ink);
-      background: var(--ink);
-      color: var(--paper);
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      position: relative;
-      transition: all 0.2s;
-      transform: rotate(-0.4deg);
-    }
-
-    .btn-sketch:hover {
-      transform: rotate(0deg) translate(-2px, -2px);
-      box-shadow: 4px 4px 0 rgba(26,22,18,0.25);
-    }
-
-    .journey {
-      padding-top: 40px;
-    }
-
-    .timeline {
-      max-width: 1000px;
-      margin: 0 auto;
-      position: relative;
-      padding-left: 28px;
-      border-left: 2px solid var(--ink);
-    }
-
-    .timeline-item {
-      position: relative;
-      padding: 0 0 38px 28px;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-
-    .timeline-item.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .timeline-dot {
-      position: absolute;
-      left: -38px;
-      top: 4px;
-      width: 18px;
-      height: 18px;
-      background: var(--paper);
-      border: 2.5px solid var(--ink);
-      border-radius: 50%;
-      box-shadow: 2px 2px 0 rgba(26,22,18,0.15);
-    }
-
-    .timeline-year {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      color: var(--accent-red);
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-
-    .timeline-title {
-      font-family: var(--font-hand);
-      font-size: 28px;
-      line-height: 1.15;
-      color: var(--ink);
-      margin-bottom: 8px;
-    }
-
-    .timeline-desc {
-      font-size: 19px;
-      color: var(--ink-light);
-      line-height: 1.55;
-      max-width: 760px;
-    }
-
-    .timeline-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 14px;
-    }
-
-    .timeline-tag {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 4px 9px;
-      border: 1.5px solid var(--ink);
-      color: var(--ink-faint);
-      background: var(--paper);
-    }
-
-    .contact-section {
-      background: var(--ink);
-      color: var(--paper);
-      padding: 80px 48px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .contact-section::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(255,255,255,0.04) 27px, rgba(255,255,255,0.04) 28px);
-      pointer-events: none;
-    }
-
-    .contact-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .contact-title {
-      font-family: var(--font-hand);
-      font-size: 56px;
-      font-weight: 700;
-      line-height: 1;
-      margin-bottom: 20px;
-      letter-spacing: -1px;
-    }
-
-    .contact-sub {
-      font-family: var(--font-hand);
-      font-size: 20px;
-      color: rgba(255,255,255,0.65);
-      margin-bottom: 36px;
-      line-height: 1.55;
-      max-width: 600px;
-    }
-
-    .contact-links {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(220px, 1fr));
-      gap: 18px;
-    }
-
-    .contact-link {
-      border: 2px solid rgba(255,255,255,0.25);
-      color: var(--paper);
-      text-decoration: none;
-      padding: 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      transition: all 0.2s ease;
-    }
-
-    .contact-link:hover {
-      transform: translate(-3px, -3px);
-      box-shadow: 5px 5px 0 rgba(255,255,255,0.12);
-      border-color: var(--paper);
-    }
-
-    .contact-link strong {
-      font-size: 26px;
-      font-family: var(--font-hand);
-    }
-
-    .contact-link span {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: rgba(255,255,255,0.6);
-    }
-
-    footer {
-      border-top: 2px solid var(--ink);
-      padding: 22px 48px;
-      background: var(--paper);
-      position: relative;
-      z-index: 1;
-    }
-
-    footer p {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.06em;
-      color: var(--ink-faint);
-      text-transform: uppercase;
-      text-align: center;
-    }
-
-    @media (max-width: 768px) {
-      .spiral-binding {
-        display: none;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>About — Inayat</title>
+<meta name="description" content="Inayat Gulati — Vancouver-based UX/UI designer. Research, craft, and technical feasibility, with a sketchbook always close by." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Karla:wght@400;500;700&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+--paper: #faf8f2;
+--paper-dark: #f0ecdf;
+--paper-worn: #e8e2d0;
+--ink: #1a1612;
+--ink-light: #332c26;
+--ink-faint: #8a7f72;
+--pencil: #b8b0a0;
+--pencil-light: #d4cfc4;
+--accent-red: #c0392b;
+--accent-blue: #2c5f8a;
+--accent-yellow: #e8b84b;
+--accent-green: #3a7d44;
+--font-hand: "Caveat", cursive;                 /* display only */
+--font-text: "Karla", system-ui, -apple-system, "Segoe UI", sans-serif;  /* all body copy */
+--font-scrawl: "Reenie Beanie", cursive;
+--font-mono: "Space Mono", monospace;
+
+/* ===== LAYOUT SCALE (drives big-screen behaviour) ===== */
+--max-w: 1440px;          /* content never grows wider than this */
+--pad: 48px;              /* minimum side padding on small screens */
+--gutter: max(var(--pad), calc((100% - var(--max-w)) / 2));
+--spiral: 32px;           /* notebook binding width */
+--rule: 28px;             /* paper ruled-line spacing */
+--photo: 280px;           /* about photo width */
+
+/* ===== FLUID TYPE =====
+   Every reading size is a continuous function of viewport width:
+   clamp(floor, intercept + slope*vw, ceiling). No breakpoint steps. */
+--fs-base:    clamp(15px,   calc(14.43px + 0.179vw), 19px);
+--fs-lead:    clamp(16px,   calc(15.26px + 0.19vw),  20.5px);  /* about copy, timeline copy */
+--fs-body:    clamp(14.5px, calc(13.96px + 0.138vw), 17.5px);  /* skills, process steps */
+--fs-ui:      clamp(14px,   calc(13.44px + 0.143vw), 17px);    /* buttons, nav, small links */
+--fs-quote:   clamp(19px,   calc(17.14px + 0.476vw), 29.5px);  /* philosophy pull-quote */
+--fs-h2:      clamp(36px,   calc(31.3px + 1.71vw),   100px);
+--fs-stitle:  clamp(26px,   calc(22.3px + 0.95vw),   60px);
+--fs-ctitle:  clamp(19px,   calc(18.5px + 0.38vw),   36px);    /* timeline + contact headings */
+--fs-logo:    clamp(22px,   calc(20.5px + 0.38vw),   40px);
       }
 
-      nav,
-      section,
-      footer {
-        margin-left: 0;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+background: var(--paper);
+color: var(--ink);
+font-family: var(--font-text);
+font-size: var(--fs-base);
+line-height: 1.6;
+overflow-x: hidden;
       }
 
-      nav {
-        padding: 14px 24px;
+body::before {
+content: "";
+position: fixed;
+inset: 0;
+background-image:
+repeating-linear-gradient(0deg, transparent, transparent calc(var(--rule) - 1px), rgba(180,170,155,0.13) calc(var(--rule) - 1px), rgba(180,170,155,0.13) var(--rule)),
+repeating-linear-gradient(90deg, transparent, transparent calc(var(--rule) - 1px), rgba(180,170,155,0.05) calc(var(--rule) - 1px), rgba(180,170,155,0.05) var(--rule));
+pointer-events: none;
+z-index: 0;
       }
 
-      .nav-links {
-        position: fixed;
-        top: 62px;
-        left: -100%;
-        width: 100%;
-        background: var(--paper);
-        border-bottom: 2px solid var(--ink);
-        flex-direction: column;
-        padding: 24px;
-        gap: 18px;
-        transition: left 0.3s ease;
+body::after {
+content: "";
+position: fixed;
+inset: 0;
+background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+pointer-events: none;
+z-index: 0;
+opacity: 0.5;
       }
 
-      .nav-links.active {
-        left: 0;
+.spiral-binding {
+position: fixed; left: 0; top: 0; bottom: 0;
+width: var(--spiral);
+background: var(--paper-worn);
+border-right: 2.5px solid var(--ink);
+z-index: 50;
+display: flex; flex-direction: column; align-items: center;
+padding-top: 24px; pointer-events: none;
+      }
+.spiral-hole {
+width: 50%; aspect-ratio: 1; border-radius: 50%;
+border: 2px solid var(--ink); background: var(--paper);
+margin-bottom: 28px; flex-shrink: 0;
+box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
       }
 
-      .hamburger {
-        display: flex;
+nav, section, footer { margin-left: var(--spiral); }
+
+/* NAV */
+nav {
+position: sticky; top: 0; z-index: 100;
+background: var(--paper);
+border-bottom: 2.5px solid var(--ink);
+padding: 14px var(--gutter);
+      }
+.nav-container { display: flex; justify-content: space-between; align-items: center; }
+.logo {
+font-family: var(--font-hand); font-size: var(--fs-logo); font-weight: 700;
+color: var(--ink); text-decoration: none; position: relative;
+      }
+.logo::after {
+content: ""; position: absolute; bottom: -2px; left: 0; right: 0;
+height: 3px; background: var(--accent-red); border-radius: 2px; transform: rotate(-0.8deg);
+      }
+.nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+.nav-links a {
+font-family: var(--font-text); font-size: var(--fs-ui); color: var(--ink);
+text-decoration: none; position: relative; padding-bottom: 2px;
+      }
+.nav-links a::after {
+content: ""; position: absolute; bottom: 0; left: 0;
+width: 0; height: 2px; background: var(--ink); transition: width 0.25s; border-radius: 1px;
+      }
+.nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.hamburger span { display: block; width: 25px; height: 2px; background: var(--ink); border-radius: 2px; transition: all 0.3s ease; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* SECTIONS */
+section { position: relative; padding: 80px var(--gutter); z-index: 1; }
+.page-edge::before {
+content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px;
+background: linear-gradient(90deg, rgba(0,0,0,0.06) 0%, transparent 100%);
+pointer-events: none;
+      }
+.margin-strip {
+position: absolute; left: 0; top: 0; bottom: 0; width: 44px;
+border-right: 2px solid rgba(192,57,43,0.2); pointer-events: none; z-index: 1;
+      }
+.section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 56px; }
+.section-num { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.1em; }
+.section-title { font-family: var(--font-hand); font-size: var(--fs-stitle); font-weight: 700; letter-spacing: -0.5px; position: relative; }
+.section-line { flex: 1; height: 1.5px; background: var(--ink); opacity: 0.2; }
+
+/* ABOUT GRID — photo beside the copy, skills spanning underneath */
+.about-grid {
+display: grid;
+grid-template-columns: var(--photo) minmax(0, 1fr);
+gap: 44px;
+align-items: start;
       }
 
-      section {
-        padding: 60px 24px;
+/* photo */
+.about-photo-frame {
+width: 100%; max-width: var(--photo); aspect-ratio: 3/4;
+border: 2px solid var(--ink); background: var(--paper-dark);
+position: relative; margin-bottom: 26px; transform: rotate(-1.2deg);
+      }
+.about-photo-frame::after {
+content: ""; position: absolute; bottom: -5px; right: -5px;
+width: 100%; height: 100%; border: 2px solid var(--ink); opacity: 0.2;
+      }
+.about-photo-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo-tape {
+position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+width: 60px; height: 20px; background: rgba(232,184,75,0.4);
+border-top: 1px solid rgba(232,184,75,0.5); border-bottom: 1px solid rgba(232,184,75,0.5);
+z-index: 2;
+      }
+.photo-caption {
+font-family: var(--font-scrawl); font-size: 17px; color: var(--ink-faint);
+transform: rotate(-1deg); margin: -18px 0 0 6px;
       }
 
-      .about-grid {
-        grid-template-columns: 1fr;
-        gap: 32px;
+.about-text { font-family: var(--font-text); font-size: var(--fs-lead); line-height: 1.65; color: var(--ink-light); max-width: 62ch; position: relative; }
+.about-text p + p { margin-top: 1.15em; }
+.about-text strong { color: var(--ink); font-weight: 700; }
+.highlight-yellow { background: linear-gradient(120deg, rgba(232,184,75,0) 0%, rgba(232,184,75,0.45) 10%, rgba(232,184,75,0.45) 90%, rgba(232,184,75,0) 100%); padding: 0 2px; }
+.highlight-blue { background: linear-gradient(120deg, rgba(44,95,138,0) 0%, rgba(44,95,138,0.18) 10%, rgba(44,95,138,0.18) 90%, rgba(44,95,138,0) 100%); padding: 0 2px; }
+
+/* SKILLS */
+.skills-board {
+grid-column: 1 / -1;
+display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+gap: 16px; margin-top: 16px;
+      }
+.skill-cluster { border: 2px solid var(--ink); padding: 16px; position: relative; background: var(--paper); transition: transform 0.2s, box-shadow 0.2s; }
+.skill-cluster:nth-child(1) { transform: rotate(-0.4deg); }
+.skill-cluster:nth-child(2) { transform: rotate(0.5deg); }
+.skill-cluster:nth-child(3) { transform: rotate(0.3deg); }
+.skill-cluster:nth-child(4) { transform: rotate(-0.5deg); }
+.skill-cluster:hover { transform: rotate(0deg) translate(-2px, -2px); box-shadow: 4px 4px 0 rgba(26,22,18,0.15); }
+.skill-cluster-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 10px; }
+.skill-item { font-family: var(--font-text); font-size: var(--fs-body); color: var(--ink-light); padding: 2px 0; display: flex; align-items: center; gap: 6px; }
+.skill-item::before { content: "—"; color: var(--pencil); font-size: 14px; }
+
+/* PROCESS */
+.process-strip {
+display: flex; gap: 0; align-items: center; flex-wrap: wrap;
+border: 2px solid var(--ink); background: var(--paper);
+padding: 16px 20px; transform: rotate(-0.5deg); position: relative; margin-top: 34px;
+width: fit-content; max-width: 100%;
+      }
+.process-strip::before {
+content: ""; position: absolute; top: -11px; left: 20px;
+width: 50px; height: 22px; background: rgba(232,184,75,0.4);
+border-top: 1px solid rgba(232,184,75,0.5); border-bottom: 1px solid rgba(232,184,75,0.5);
+transform: rotate(1deg);
+      }
+.process-strip-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 10px; width: 100%; }
+.process-step { font-family: var(--font-text); font-size: var(--fs-body); color: var(--ink-light); padding: 4px 10px; border: 1.5px solid var(--pencil); transition: background 0.2s; }
+.process-step:hover { background: var(--paper-dark); }
+.process-step.done { color: var(--ink); border-color: var(--ink); background: var(--paper-dark); font-weight: 700; }
+.process-arrow { color: var(--pencil); padding: 0 6px; }
+
+/* PULL QUOTE */
+.about-note {
+margin: 56px 0 0; border: 2px solid var(--ink); background: var(--paper);
+padding: 26px 30px; position: relative; transform: rotate(-0.3deg);
+box-shadow: 5px 5px 0 rgba(26,22,18,0.12); max-width: 68ch;
+      }
+.about-note::before {
+content: ""; position: absolute; top: -11px; left: 26px;
+width: 54px; height: 22px; background: rgba(232,184,75,0.4);
+border-top: 1px solid rgba(232,184,75,0.5); border-bottom: 1px solid rgba(232,184,75,0.5);
+      }
+.about-note-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 10px; }
+.about-note-text { font-family: var(--font-hand); font-size: var(--fs-quote); line-height: 1.4; color: var(--ink); }
+
+.resume-row { margin: 36px 0 0; }
+.btn-sketch {
+font-family: var(--font-text); font-size: var(--fs-ui); font-weight: 700;
+padding: 12px 28px; border: 2.5px solid var(--ink);
+background: var(--ink); color: var(--paper);
+cursor: pointer; text-decoration: none;
+display: inline-flex; align-items: center; gap: 8px;
+position: relative; transition: all 0.2s; transform: rotate(-0.4deg);
+      }
+.btn-sketch:hover { transform: rotate(0deg) translate(-2px, -2px); box-shadow: 4px 4px 0 rgba(26,22,18,0.25); }
+
+/* TIMELINE */
+.journey { padding-top: 40px; }
+.timeline { max-width: 1000px; position: relative; padding-left: 28px; border-left: 2px solid var(--ink); }
+.timeline-item {
+position: relative; padding: 0 0 38px 28px;
+opacity: 0; transform: translateY(20px);
+transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+.timeline-item.visible { opacity: 1; transform: translateY(0); }
+.timeline-dot {
+position: absolute; left: -38px; top: 4px;
+width: 18px; height: 18px; background: var(--paper);
+border: 2.5px solid var(--ink); border-radius: 50%;
+box-shadow: 2px 2px 0 rgba(26,22,18,0.15);
+      }
+.timeline-year { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--accent-red); text-transform: uppercase; margin-bottom: 6px; }
+.timeline-title { font-family: var(--font-hand); font-size: var(--fs-ctitle); font-weight: 700; line-height: 1.15; color: var(--ink); margin-bottom: 8px; }
+.timeline-desc { font-family: var(--font-text); font-size: var(--fs-lead); color: var(--ink-light); line-height: 1.6; max-width: 62ch; }
+.timeline-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.timeline-tag { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 9px; border: 1.5px solid var(--ink); color: var(--ink-faint); background: var(--paper); }
+
+/* CONTACT */
+.contact-section { background: var(--ink); color: var(--paper); padding: 80px var(--gutter); position: relative; overflow: hidden; margin-left: var(--spiral); }
+.contact-section::before {
+content: ""; position: absolute; inset: 0;
+background-image: repeating-linear-gradient(0deg, transparent, transparent calc(var(--rule) - 1px), rgba(255,255,255,0.04) calc(var(--rule) - 1px), rgba(255,255,255,0.04) var(--rule));
+pointer-events: none;
+      }
+.contact-inner { position: relative; z-index: 1; max-width: 900px; }
+.contact-title { font-family: var(--font-hand); font-size: var(--fs-h2); font-weight: 700; line-height: 1; margin-bottom: 20px; letter-spacing: -1px; }
+.contact-sub { font-family: var(--font-text); font-size: var(--fs-ui); color: rgba(255,255,255,0.65); margin-bottom: 36px; line-height: 1.6; max-width: 58ch; }
+.contact-links { display: grid; grid-template-columns: repeat(2, minmax(220px, 1fr)); gap: 18px; }
+.contact-link {
+border: 2px solid rgba(255,255,255,0.25); color: var(--paper); text-decoration: none;
+padding: 22px; display: flex; flex-direction: column; gap: 6px; transition: all 0.2s ease;
+      }
+.contact-link:hover { transform: translate(-3px, -3px); box-shadow: 5px 5px 0 rgba(255,255,255,0.12); border-color: var(--paper); }
+.contact-link strong { font-size: var(--fs-ctitle); font-family: var(--font-hand); font-weight: 700; }
+.contact-link span { font-family: var(--font-mono); font-size: 12px; color: rgba(255,255,255,0.6); word-break: break-word; }
+
+footer { border-top: 2px solid var(--ink); padding: 22px var(--gutter); background: var(--paper); position: relative; z-index: 1; }
+footer p { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--ink-faint); text-transform: uppercase; text-align: center; }
+
+@media (prefers-reduced-motion: reduce) {
+.timeline-item { opacity: 1; transform: none; transition: none; }
       }
 
-      .skills-board {
-        grid-template-columns: 1fr;
+/* ---------- SMALL SCREENS ---------- */
+@media (max-width: 1024px) {
+:root { --pad: 36px; --photo: 240px; }
+.nav-links { gap: 20px; }
+section { padding: 64px var(--gutter); }
+.contact-section { padding: 64px var(--gutter); }
+.about-grid { gap: 36px; }
+.skills-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       }
 
-      .contact-links {
-        grid-template-columns: 1fr;
+@media (max-width: 768px) {
+:root { --pad: 20px; --spiral: 0px; --photo: 220px; }
+.spiral-binding { display: none; }
+nav, section, footer, .contact-section { margin-left: 0; }
+.nav-links {
+position: fixed; top: 60px; left: -100%; width: 100%;
+background: var(--paper); border-bottom: 2px solid var(--ink);
+flex-direction: column; align-items: flex-start;
+padding: 24px var(--gutter); gap: 18px; transition: left 0.3s ease;
+      }
+.nav-links.active { left: 0; }
+.nav-links a { font-size: 18px; }
+.hamburger { display: flex; }
+section { padding: 52px var(--gutter); }
+.section-header { margin-bottom: 36px; gap: 10px; }
+.about-grid { grid-template-columns: 1fr; gap: 30px; }
+.skills-board { grid-column: auto; }
+.timeline { padding-left: 22px; }
+.timeline-item { padding-left: 22px; }
+.timeline-dot { left: -32px; }
+.contact-section { padding: 52px var(--gutter); }
+.contact-links { grid-template-columns: 1fr; }
+footer { padding: 20px var(--gutter); }
       }
 
-      footer {
-        padding: 20px 24px;
+@media (max-width: 480px) {
+:root { --pad: 16px; --photo: 180px; }
+section { padding: 40px var(--gutter); }
+.skills-board { grid-template-columns: 1fr; gap: 12px; }
+.photo-caption { font-size: 16px; }
+.about-note { padding: 22px 20px; }
+.btn-sketch { width: 100%; justify-content: center; }
+.process-strip { padding: 16px 14px; }
       }
+
+/* ==========================================================
+   BIG SCREENS — content stays centred inside --max-w and the
+   layout scales up; type is already fluid via the clamp tokens.
+   ========================================================== */
+@media (min-width: 1600px) {
+:root { --max-w: 1500px; --pad: 56px; --photo: 310px; }
+.about-grid { gap: 52px; }
+.skills-board { gap: 20px; margin-top: 22px; }
+      }
+
+@media (min-width: 1920px) {
+:root { --max-w: 1620px; --pad: 64px; --spiral: 40px; --rule: 32px; --photo: 340px; }
+.nav-links { gap: 38px; }
+.section-header { margin-bottom: 64px; }
+.section-num { font-size: 12px; }
+.about-grid { gap: 60px; }
+.skills-board { gap: 22px; margin-top: 26px; }
+.skill-cluster { padding: 20px; }
+.skill-cluster-label { font-size: 10px; }
+.about-note { padding: 30px 34px; }
+.about-note-label { font-size: 11px; }
+.timeline { padding-left: 34px; max-width: 1150px; }
+.timeline-item { padding: 0 0 44px 34px; }
+.timeline-dot { width: 20px; height: 20px; left: -45px; }
+.timeline-year { font-size: 12px; }
+.timeline-tag { font-size: 10px; padding: 5px 11px; }
+.contact-inner { max-width: 1000px; }
+.contact-link { padding: 26px; }
+.contact-link span { font-size: 13px; }
+footer p { font-size: 12px; }
+      }
+
+@media (min-width: 2560px) {
+:root {
+--max-w: 1880px; --pad: 80px; --spiral: 48px; --rule: 38px; --photo: 400px;
+/* second ramp: a TV is viewed from further away, so type climbs faster.
+   Each floor equals the base ramp's ceiling, so the handoff is seamless. */
+--fs-base:   clamp(19px,   calc(7px + 0.469vw),    25px);
+--fs-lead:   clamp(20.5px, calc(3.5px + 0.664vw),  29px);
+--fs-body:   clamp(17.5px, calc(6.5px + 0.43vw),   23px);
+--fs-ui:     clamp(17px,   calc(7px + 0.391vw),    22px);
+--fs-quote:  clamp(29.5px, calc(11.5px + 0.703vw), 38px);
     }
-  </style>
+section { padding: 110px var(--gutter); }
+.section-header { margin-bottom: 76px; }
+.section-num { font-size: 14px; }
+.about-grid { gap: 72px; }
+.skills-board { gap: 28px; margin-top: 34px; }
+.skill-cluster { padding: 26px; }
+.skill-cluster-label { font-size: 12px; }
+.about-note { padding: 38px 42px; }
+.about-note-label { font-size: 13px; }
+.timeline { padding-left: 42px; max-width: 1350px; }
+.timeline-item { padding: 0 0 56px 42px; }
+.timeline-dot { width: 24px; height: 24px; left: -55px; }
+.timeline-year { font-size: 14px; }
+.timeline-tag { font-size: 12px; padding: 6px 13px; }
+.contact-section { padding: 110px var(--gutter); }
+.contact-inner { max-width: 1200px; }
+.contact-link { padding: 34px; }
+.contact-link span { font-size: 15px; }
+.contact-links { gap: 24px; }
+.btn-sketch { border-width: 3px; padding: 16px 38px; }
+footer { padding: 30px var(--gutter); }
+footer p { font-size: 14px; }
+.margin-strip { width: 56px; }
+      }
+
+/* 4K / TV — viewed from further away, so push scale again */
+@media (min-width: 3200px) {
+:root { --max-w: 2200px; --pad: 100px; --spiral: 60px; --rule: 46px; --photo: 480px; }
+.timeline { max-width: 1600px; }
+.about-grid { gap: 88px; }
+      }
+</style>
 </head>
 
 <body>
-  <div class="spiral-binding" aria-hidden="true"></div>
+<div class="spiral-binding" aria-hidden="true"></div>
 
-  <nav>
-    <div class="nav-container">
-      <a href="./index.html" class="logo">Inayat</a>
+<nav>
+<div class="nav-container">
+<a href="./index.html" class="logo">Inayat</a>
 
-      <ul class="nav-links">
-        <li><a href="./index.html">Home</a></li>
-        <li><a href="./About.html" class="active">About</a></li>
-        <li><a href="./Projects.html">Projects</a></li>
-        <li><a href="./assets/Resume_InayatDesign.pdf" target="_blank">Résumé</a></li>
-        <li><a href="./index.html#contact">Contact</a></li>
-      </ul>
+<ul class="nav-links" id="navLinks">
+<li><a href="./index.html">Home</a></li>
+<li><a href="./About.html" class="active">About</a></li>
+<li><a href="./Projects.html">Projects</a></li>
+<li><a href="./assets/Resume_InayatDesign.pdf" target="_blank">Résumé</a></li>
+<li><a href="./index.html#contact">Contact</a></li>
+</ul>
 
-      <div class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </div>
-  </nav>
+<button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+<span></span><span></span><span></span>
+</button>
+</div>
+</nav>
 
-  <section id="about" class="page-edge about-page">
-    <div class="margin-strip"></div>
+<section id="about" class="page-edge about-page">
+<div class="margin-strip"></div>
 
-    <div class="section-header">
-      <span class="section-num">02</span>
-      <h2 class="section-title">A bit about me</h2>
-      <div class="section-line"></div>
-    </div>
+<div class="section-header">
+<span class="section-num">02</span>
+<h2 class="section-title">A bit about me</h2>
+<div class="section-line"></div>
+</div>
 
-    <div class="about-grid">
-      <div class="about-text">
-        <p>
-          I’m a <strong>Vancouver-based UX/UI designer</strong> with a background in
-          frontend development and a <span class="highlight-yellow">genuine passion for architecture</span> —
-          sketchbook always close by.
-        </p>
+<div class="about-grid">
+<div class="about-photo-col">
+<div class="about-photo-frame">
+<div class="photo-tape"></div>
+<img src="./Images/E39BD264-A72A-49D9-88B0-B2E49D0D9E62_1_105_c.jpeg" alt="Inayat Gulati" />
+</div>
+<p class="photo-caption">— that's me, sketchbook nearby</p>
+</div>
 
-        <br>
+<div class="about-copy">
+<div class="about-text">
+<p>
+            I'm a <strong>Vancouver-based UX/UI designer</strong> with a background in
+            frontend development and a <span class="highlight-yellow">genuine passion for architecture</span> —
+            sketchbook always close by.
+</p>
 
-        <p>
-          I explored architecture for a while, and although I never finished the degree,
-          it left me with a <strong>deep love for sketching buildings</strong>,
-          thinking in systems, and caring obsessively about spatial logic.
-          That passion bleeds into everything I design.
-        </p>
+<p>
+            I explored architecture for a while, and although I never finished the degree,
+            it left me with a <strong>deep love for sketching buildings</strong>,
+            thinking in systems, and caring obsessively about spatial logic.
+            That passion bleeds into everything I design.
+</p>
 
-        <br>
+<p>
+            My work tends to live at the intersection of
+<span class="highlight-blue">research, craft, and technical feasibility.</span>
+            I can actually <strong>build the things I design.</strong> No pixel left unjustified.
+</p>
+</div>
 
-        <p>
-          My work tends to live at the intersection of
-          <span class="highlight-blue">research, craft, and technical feasibility.</span>
-          I can actually <strong>build the things I design.</strong> No pixel left unjustified.
-        </p>
+<div class="process-strip">
+<div class="process-strip-label">Process</div>
+<span class="process-step">Discover</span>
+<span class="process-arrow">→</span>
+<span class="process-step">Define</span>
+<span class="process-arrow">→</span>
+<span class="process-step">Sketch</span>
+<span class="process-arrow">→</span>
+<span class="process-step done">Ship ✓</span>
+</div>
+</div>
 
-        <div class="process-strip">
-          <div class="process-strip-label">Process</div>
-          <span class="process-step">Discover</span>
-          <span class="process-arrow">→</span>
-          <span class="process-step">Define</span>
-          <span class="process-arrow">→</span>
-          <span class="process-step">Sketch</span>
-          <span class="process-arrow">→</span>
-          <span class="process-step done">Ship ✓</span>
-        </div>
-      </div>
+<div class="skills-board">
+<div class="skill-cluster">
+<div class="skill-cluster-label">Design Tools</div>
+<div class="skill-item">Figma</div>
+<div class="skill-item">Framer</div>
+<div class="skill-item">Prototyping</div>
+<div class="skill-item">Design Systems</div>
+</div>
 
-      <div class="skills-board">
-        <div class="skill-cluster">
-          <div class="skill-cluster-label">Design Tools</div>
-          <div class="skill-item">Figma</div>
-          <div class="skill-item">Framer</div>
-          <div class="skill-item">Prototyping</div>
-          <div class="skill-item">Design Systems</div>
-        </div>
+<div class="skill-cluster">
+<div class="skill-cluster-label">Research</div>
+<div class="skill-item">User Interviews</div>
+<div class="skill-item">Usability Testing</div>
+<div class="skill-item">Journey Mapping</div>
+<div class="skill-item">Heuristics</div>
+</div>
 
-        <div class="skill-cluster">
-          <div class="skill-cluster-label">Research</div>
-          <div class="skill-item">User Interviews</div>
-          <div class="skill-item">Usability Testing</div>
-          <div class="skill-item">Journey Mapping</div>
-          <div class="skill-item">Heuristics</div>
-        </div>
+<div class="skill-cluster">
+<div class="skill-cluster-label">Frontend</div>
+<div class="skill-item">HTML/CSS</div>
+<div class="skill-item">JavaScript</div>
+<div class="skill-item">React</div>
+<div class="skill-item">Git</div>
+</div>
 
-        <div class="skill-cluster">
-          <div class="skill-cluster-label">Frontend</div>
-          <div class="skill-item">HTML/CSS</div>
-          <div class="skill-item">JavaScript</div>
-          <div class="skill-item">React</div>
-          <div class="skill-item">Git</div>
-        </div>
+<div class="skill-cluster">
+<div class="skill-cluster-label">Architecture</div>
+<div class="skill-item">Spatial Design</div>
+<div class="skill-item">Building Sketches</div>
+<div class="skill-item">AutoCAD</div>
+<div class="skill-item">Rhino</div>
+</div>
+</div>
+</div>
 
-        <div class="skill-cluster">
-          <div class="skill-cluster-label">Architecture</div>
-          <div class="skill-item">Spatial Design</div>
-          <div class="skill-item">Building Sketches</div>
-          <div class="skill-item">AutoCAD</div>
-          <div class="skill-item">Rhino</div>
-        </div>
-      </div>
-    </div>
+<div class="about-note">
+<p class="about-note-label">Design philosophy</p>
+<p class="about-note-text">
+        "Most products do not fail because of bad visuals — they fail because no one talked to the person using them first."
+</p>
+</div>
 
-    <div class="about-note">
-      <p class="about-note-label">Design philosophy</p>
-      <p class="about-note-text">
-        “Most products do not fail because of bad visuals — they fail because no one talked to the person using them first.”
-      </p>
-    </div>
+<div class="resume-row">
+<a href="./assets/Resume_InayatDesign.pdf" target="_blank" class="btn-sketch">
+        Download Résumé →
+</a>
+</div>
+</section>
 
-    <div class="resume-row">
-      <a href="./assets/Resume_InayatDesign.pdf" target="_blank" class="btn-sketch">
-        Download Resume →
-      </a>
-    </div>
-  </section>
+<section class="journey">
+<div class="section-header">
+<span class="section-num">03</span>
+<h2 class="section-title">My Journey</h2>
+<div class="section-line"></div>
+</div>
 
-  <section class="journey">
-    <div class="section-header">
-      <span class="section-num">03</span>
-      <h2 class="section-title">My Journey</h2>
-      <div class="section-line"></div>
-    </div>
-
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-year">2022 – 2023</div>
-        <h3 class="timeline-title">Where Creativity Meets Evidence</h3>
-        <p class="timeline-desc">
+<div class="timeline">
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-year">2022 – 2023</div>
+<h3 class="timeline-title">Where Creativity Meets Evidence</h3>
+<p class="timeline-desc">
           Started building fluency in Figma, usability testing, and information architecture while studying at SFU.
           Realized design is not just about making things look good — it is about making things work.
-        </p>
-        <div class="timeline-tags">
-          <span class="timeline-tag">Figma</span>
-          <span class="timeline-tag">User Research</span>
-          <span class="timeline-tag">Information Architecture</span>
-          <span class="timeline-tag">Prototyping</span>
-        </div>
-      </div>
+</p>
+<div class="timeline-tags">
+<span class="timeline-tag">Figma</span>
+<span class="timeline-tag">User Research</span>
+<span class="timeline-tag">Information Architecture</span>
+<span class="timeline-tag">Prototyping</span>
+</div>
+</div>
 
-      <div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-year">2023 – 2024</div>
-        <h3 class="timeline-title">Research Changes Everything</h3>
-        <p class="timeline-desc">
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-year">2023 – 2024</div>
+<h3 class="timeline-title">Research Changes Everything</h3>
+<p class="timeline-desc">
           Moved from designing for imagined users to designing for real ones. Conducted interviews,
           mapped journeys, and learned to turn messy qualitative insights into clear design decisions.
-        </p>
-        <div class="timeline-tags">
-          <span class="timeline-tag">Usability Testing</span>
-          <span class="timeline-tag">Journey Mapping</span>
-          <span class="timeline-tag">Personas</span>
-          <span class="timeline-tag">Iterative Design</span>
-        </div>
-      </div>
+</p>
+<div class="timeline-tags">
+<span class="timeline-tag">Usability Testing</span>
+<span class="timeline-tag">Journey Mapping</span>
+<span class="timeline-tag">Personas</span>
+<span class="timeline-tag">Iterative Design</span>
+</div>
+</div>
 
-      <div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-year">Summer 2025</div>
-        <h3 class="timeline-title">Enterprise UX at Mastercard</h3>
-        <p class="timeline-desc">
-          Worked on internal SharePoint experiences for Mastercard’s Workplace Experience team,
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-year">Summer 2025</div>
+<h3 class="timeline-title">Enterprise UX at Mastercard</h3>
+<p class="timeline-desc">
+          Worked on internal SharePoint experiences for Mastercard's Workplace Experience team,
           learning how to design for large-scale systems, global teams, and real business constraints.
-        </p>
-        <div class="timeline-tags">
-          <span class="timeline-tag">Enterprise UX</span>
-          <span class="timeline-tag">SharePoint</span>
-          <span class="timeline-tag">Stakeholders</span>
-          <span class="timeline-tag">Cross-cultural UX</span>
-        </div>
-      </div>
+</p>
+<div class="timeline-tags">
+<span class="timeline-tag">Enterprise UX</span>
+<span class="timeline-tag">SharePoint</span>
+<span class="timeline-tag">Stakeholders</span>
+<span class="timeline-tag">Cross-cultural UX</span>
+</div>
+</div>
 
-      <div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-year">2026 — Now</div>
-        <h3 class="timeline-title">Design Beyond the Screen</h3>
-        <p class="timeline-desc">
+<div class="timeline-item">
+<div class="timeline-dot"></div>
+<div class="timeline-year">2026 — Now</div>
+<h3 class="timeline-title">Design Beyond the Screen</h3>
+<p class="timeline-desc">
           Exploring how design principles translate across digital products, architecture,
           physical products, service experiences, startup events, and design jams.
-        </p>
-        <div class="timeline-tags">
-          <span class="timeline-tag">Service Design</span>
-          <span class="timeline-tag">Architecture</span>
-          <span class="timeline-tag">Product Design</span>
-          <span class="timeline-tag">Design Jams</span>
-        </div>
-      </div>
-    </div>
-  </section>
+</p>
+<div class="timeline-tags">
+<span class="timeline-tag">Service Design</span>
+<span class="timeline-tag">Architecture</span>
+<span class="timeline-tag">Product Design</span>
+<span class="timeline-tag">Design Jams</span>
+</div>
+</div>
+</div>
+</section>
 
-  <section id="contact" class="contact-section">
-    <div class="contact-inner">
-      <h2 class="contact-title">Let’s talk</h2>
-      <p class="contact-sub">
-        I’m always open to discussing UX projects, design feedback, portfolio ideas, or new opportunities.
-      </p>
+<section id="contact" class="contact-section">
+<div class="contact-inner">
+<h2 class="contact-title">Let's talk</h2>
+<p class="contact-sub">
+        I'm always open to discussing UX projects, design feedback, portfolio ideas, or new opportunities.
+</p>
 
-      <div class="contact-links">
-        <a href="mailto:inayatgulati@gmail.com" class="contact-link">
-          <strong>Email</strong>
-          <span>inayatgulati@gmail.com</span>
-        </a>
+<div class="contact-links">
+<a href="mailto:inayatgulati@gmail.com" class="contact-link">
+<strong>Email</strong>
+<span>inayatgulati@gmail.com</span>
+</a>
 
-        <a href="https://www.linkedin.com/in/inayat-inayat" target="_blank" class="contact-link">
-          <strong>LinkedIn</strong>
-          <span>Connect with me</span>
-        </a>
-      </div>
-    </div>
-  </section>
+<a href="https://www.linkedin.com/in/inayat-gulati" target="_blank" class="contact-link">
+<strong>LinkedIn</strong>
+<span>Connect with me</span>
+</a>
+</div>
+</div>
+</section>
 
-  <footer>
-    <p>&copy; 2025 Inayat. All rights reserved.</p>
-  </footer>
+<footer>
+<p>&copy; 2026 Inayat Gulati &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; UX/UI · Frontend · Architecture</p>
+</footer>
 
-  <script>
-    const spiral = document.querySelector(".spiral-binding");
-    const holeCount = Math.floor(window.innerHeight / 44) + 2;
-
-    for (let i = 0; i < holeCount; i++) {
-      const hole = document.createElement("div");
-      hole.className = "spiral-hole";
-      spiral.appendChild(hole);
+<script>
+/* ---- spiral binding: rebuild holes on resize so it scales with the viewport ---- */
+const spiral = document.querySelector(".spiral-binding");
+function buildSpiral() {
+if (!spiral) return;
+spiral.innerHTML = "";
+const w = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--spiral")) || 32;
+if (!w) return;
+const step = Math.max(36, w * 1.4);
+const holeCount = Math.floor(window.innerHeight / step) + 2;
+for (let i = 0; i < holeCount; i++) {
+const hole = document.createElement("div");
+hole.className = "spiral-hole";
+hole.style.marginBottom = (step - w * 0.5) + "px";
+spiral.appendChild(hole);
+      }
     }
-
-    const hamburger = document.querySelector(".hamburger");
-    const navLinks = document.querySelector(".nav-links");
-
-    hamburger.addEventListener("click", () => {
-      navLinks.classList.toggle("active");
+buildSpiral();
+let resizeTimer;
+window.addEventListener("resize", () => {
+clearTimeout(resizeTimer);
+resizeTimer = setTimeout(buildSpiral, 150);
     });
 
-    document.querySelectorAll(".nav-links a").forEach((link) => {
-      link.addEventListener("click", () => {
-        navLinks.classList.remove("active");
+/* ---- mobile nav ---- */
+const hamburger = document.getElementById("hamburger");
+const navLinks = document.getElementById("navLinks");
+
+hamburger.addEventListener("click", () => {
+const open = navLinks.classList.toggle("active");
+hamburger.classList.toggle("open", open);
+hamburger.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+
+document.querySelectorAll(".nav-links a").forEach((link) => {
+link.addEventListener("click", () => {
+navLinks.classList.remove("active");
+hamburger.classList.remove("open");
+hamburger.setAttribute("aria-expanded", "false");
       });
     });
 
-    const timelineItems = document.querySelectorAll(".timeline-item");
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry, i) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => entry.target.classList.add("visible"), i * 100);
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
-    timelineItems.forEach((item) => observer.observe(item));
-  </script>
+/* ---- timeline reveal ---- */
+const timelineItems = document.querySelectorAll(".timeline-item");
+const observer = new IntersectionObserver((entries) => {
+entries.forEach((entry, i) => {
+if (entry.isIntersecting) {
+setTimeout(() => entry.target.classList.add("visible"), i * 100);
+observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
+timelineItems.forEach((item) => observer.observe(item));
+</script>
 </body>
 </html>
