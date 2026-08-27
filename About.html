@@ -193,11 +193,10 @@ display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
 gap: 16px; margin-top: 16px;
       }
 .skill-cluster { border: 2px solid var(--ink); padding: 16px; position: relative; background: var(--paper); transition: transform 0.2s, box-shadow 0.2s; }
-.skill-cluster:nth-child(1) { transform: rotate(-0.4deg); }
-.skill-cluster:nth-child(2) { transform: rotate(0.5deg); }
-.skill-cluster:nth-child(3) { transform: rotate(0.3deg); }
-.skill-cluster:nth-child(4) { transform: rotate(-0.5deg); }
-.skill-cluster:hover { transform: rotate(0deg) translate(-2px, -2px); box-shadow: 4px 4px 0 rgba(26,22,18,0.15); }
+/* No rotation here. A tilt reads as charm on a lone element (the photo,
+   the process strip) but as a misalignment bug on a row of identical
+   boxes, because the shared baseline makes every degree visible. */
+.skill-cluster:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 rgba(26,22,18,0.15); }
 .skill-cluster-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 10px; }
 .skill-item { font-family: var(--font-text); font-size: var(--fs-body); color: var(--ink-light); padding: 2px 0; display: flex; align-items: center; gap: 6px; }
 .skill-item::before { content: "—"; color: var(--pencil); font-size: 14px; }
