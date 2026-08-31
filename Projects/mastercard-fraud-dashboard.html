@@ -4,310 +4,223 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Fraud Detection Dashboard — Inayat</title>
+<meta name="description" content="Fraud Detection Dashboard — turning complex fraud data into actionable insights for Mastercard analysts. A UX/UI case study by Inayat Gulati." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap"
-rel="stylesheet"
-/>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Karla:wght@400;500;700&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
 <style>
 :root {
 --paper: #faf8f2;
 --paper-dark: #f0ecdf;
 --paper-worn: #e8e2d0;
 --ink: #1a1612;
---ink-light: #3d3530;
+--ink-light: #332c26;
 --ink-faint: #8a7f72;
 --pencil: #b8b0a0;
 --pencil-light: #d4cfc4;
-
 /* Fraud dashboard accent — deep navy + amber alert */
 --fd-blue: #1e3a5f;
 --fd-blue-l: #2e5491;
---fd-amber: #b87a0a;
+--fd-amber: #96650a;          /* darkened from #b87a0a to clear AA on paper */
 --fd-amber-l: #d4940e;
 --fd-red: #c0392b;
 --fd-green: #2e7d44;
 --yellow: #e8b84b;
 
---font-hand: 'Caveat', cursive;
---font-scrawl: 'Reenie Beanie', cursive;
---font-mono: 'Space Mono', monospace;
---font-serif: 'EB Garamond', serif;
+--font-hand: "Caveat", cursive;                 /* display only */
+--font-text: "Karla", system-ui, -apple-system, "Segoe UI", sans-serif;  /* all body copy */
+--font-scrawl: "Reenie Beanie", cursive;
+--font-mono: "Space Mono", monospace;
+--font-serif: "EB Garamond", serif;             /* pull quotes only */
 
---nav-h: 58px;
---side-w: 196px;
+/* ===== LAYOUT SCALE ===== */
+--spiral: 32px;
+--nav-h: 60px;
+--side-w: 200px;
+--main-max: 880px;
+--main-pad: 3rem;
+--rule: 28px;
+--hero-media-h: 420px;    /* hero showreel cap */
+--fig-max-h: 420px;       /* un-annotated figures */
+
+/* ===== FLUID TYPE =====
+   clamp(floor, intercept + slope*vw, ceiling) — continuous, no steps. */
+--fs-base:    clamp(15px,   calc(14.43px + 0.179vw), 19px);
+--fs-lead:    clamp(16px,   calc(15.26px + 0.19vw),  20.5px);
+--fs-body:    clamp(14.5px, calc(13.96px + 0.138vw), 17.5px);
+--fs-ui:      clamp(14px,   calc(13.44px + 0.143vw), 17px);
+--fs-cap:     clamp(13px,   calc(12.5px + 0.12vw),   16px);
+--fs-quote:   clamp(18px,   calc(16.4px + 0.42vw),   30px);
+--fs-h1:      clamp(38px,   calc(28px + 2.6vw),      104px);
+--fs-stitle:  clamp(26px,   calc(22.3px + 0.95vw),   60px);
+--fs-stat:    clamp(30px,   calc(25px + 1.1vw),      64px);
+--fs-logo:    clamp(20px,   calc(18.8px + 0.32vw),   34px);
+/* the old 8–9px mono labels were below comfortable reading size */
+--fs-mono-s:  clamp(10px,   calc(9px + 0.1vw),       14px);
+--fs-mono-m:  clamp(11px,   calc(10px + 0.12vw),     16px);
       }
-
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-
 body {
-font-family: var(--font-hand);
+font-family: var(--font-text);
+font-size: var(--fs-base);
 background: var(--paper);
 color: var(--ink);
 line-height: 1.6;
 overflow-x: hidden;
 -webkit-font-smoothing: antialiased;
       }
-
 /* Ruled paper lines */
 body::before {
-content: '';
-position: fixed;
-inset: 0;
-background-image:
-repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.11) 27px, rgba(180,170,155,0.11) 28px);
-pointer-events: none;
-z-index: 0;
+content: "";
+position: fixed; inset: 0;
+background-image: repeating-linear-gradient(0deg, transparent, transparent calc(var(--rule) - 1px), rgba(180,170,155,0.11) calc(var(--rule) - 1px), rgba(180,170,155,0.11) var(--rule));
+pointer-events: none; z-index: 0;
       }
-
 /* Spiral binding */
 .spiral-binding {
-position: fixed;
-left: 0; top: 0; bottom: 0;
-width: 32px;
+position: fixed; left: 0; top: 0; bottom: 0;
+width: var(--spiral);
 background: var(--paper-worn);
 border-right: 2.5px solid var(--ink);
 z-index: 200;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: flex-start;
-padding-top: 24px;
-pointer-events: none;
+display: flex; flex-direction: column;
+align-items: center; justify-content: flex-start;
+padding-top: 24px; pointer-events: none;
       }
 .spiral-hole {
-width: 16px; height: 16px;
-border-radius: 50%;
-border: 2px solid var(--ink);
-background: var(--paper);
-margin-bottom: 28px;
-flex-shrink: 0;
+width: 50%; aspect-ratio: 1; border-radius: 50%;
+border: 2px solid var(--ink); background: var(--paper);
+margin-bottom: 28px; flex-shrink: 0;
 box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
       }
-
 /* TOP NAV */
 .topnav {
 position: fixed;
-top: 0; left: 32px; right: 0;
-height: var(--nav-h);
+top: 0; left: var(--spiral); right: 0;
+min-height: var(--nav-h);
 z-index: 150;
 background: var(--paper);
 border-bottom: 2.5px solid var(--ink);
-display: flex;
-align-items: center;
-padding: 0 2rem;
+display: flex; align-items: center;
+padding: 10px 2rem;
       }
-.topnav-in {
-width: 100%;
-max-width: 1200px;
-margin: 0 auto;
-display: flex;
-justify-content: space-between;
-align-items: center;
-      }
+.topnav-in { width: 100%; display: flex; justify-content: space-between; align-items: center; }
 .logo {
 font-family: var(--font-hand);
-font-size: 22px;
-font-weight: 700;
-color: var(--ink);
-text-decoration: none;
-position: relative;
+font-size: var(--fs-logo); font-weight: 700;
+color: var(--ink); text-decoration: none; position: relative;
       }
 .logo::after {
-content: '';
-position: absolute;
-bottom: -2px; left: 0; right: 0;
-height: 3px;
-background: var(--fd-blue);
-border-radius: 2px;
-transform: rotate(-0.8deg);
+content: ""; position: absolute; bottom: -2px; left: 0; right: 0;
+height: 3px; background: var(--fd-blue);
+border-radius: 2px; transform: rotate(-0.8deg);
       }
-.nav-links {
-display: flex;
-gap: 2rem;
-list-style: none;
-      }
+.nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
 .nav-links a {
-font-family: var(--font-hand);
-font-size: 16px;
-color: var(--ink-faint);
-text-decoration: none;
-position: relative;
-padding-bottom: 2px;
-transition: color 0.2s;
+font-family: var(--font-text); font-size: var(--fs-ui);
+color: var(--ink-faint); text-decoration: none;
+position: relative; padding-bottom: 2px; transition: color 0.2s;
       }
 .nav-links a::after {
-content: '';
-position: absolute;
-bottom: 0; left: 0;
-width: 0; height: 2px;
-background: var(--ink);
-transition: width 0.25s;
+content: ""; position: absolute; bottom: 0; left: 0;
+width: 0; height: 2px; background: var(--ink); transition: width 0.25s;
       }
 .nav-links a:hover { color: var(--ink); }
 .nav-links a:hover::after { width: 100%; }
 
+.hamburger {
+display: none; flex-direction: column; gap: 5px;
+cursor: pointer; background: none; border: none; padding: 4px;
+      }
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: all 0.25s; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
 /* SIDENAV */
 .sidenav {
 position: fixed;
-top: var(--nav-h);
-left: 32px;
+top: var(--nav-h); left: var(--spiral);
 width: var(--side-w);
 height: calc(100vh - var(--nav-h));
 padding: 2rem 1rem 2rem 1.5rem;
 border-right: 1.5px solid rgba(180,170,155,0.35);
 background: var(--paper);
-display: flex;
-flex-direction: column;
-gap: 1.5rem;
-overflow-y: auto;
-z-index: 100;
-      }
-.sidenav::before {
-content: '';
-position: absolute;
-left: 44px; top: 0; bottom: 0;
-width: 1.5px;
-background: rgba(30,58,95,0.12);
-pointer-events: none;
+display: flex; flex-direction: column; gap: 1.5rem;
+overflow-y: auto; z-index: 100;
       }
 .back-link {
-display: inline-flex;
-align-items: center;
-gap: 6px;
-color: var(--fd-blue);
-text-decoration: none;
-font-family: var(--font-hand);
-font-size: 15px;
-font-weight: 600;
-transition: gap 0.2s;
-white-space: nowrap;
+display: inline-flex; align-items: center; gap: 6px;
+color: var(--fd-blue); text-decoration: none;
+font-family: var(--font-text); font-size: var(--fs-ui); font-weight: 700;
+transition: gap 0.2s; white-space: nowrap;
       }
 .back-link:hover { gap: 10px; }
 .side-lbl {
-font-family: var(--font-mono);
-font-size: 9px;
-letter-spacing: 3px;
-text-transform: uppercase;
-color: var(--pencil);
-margin-bottom: 0.5rem;
+font-family: var(--font-mono); font-size: var(--fs-mono-s);
+letter-spacing: 2px; text-transform: uppercase;
+color: var(--pencil); margin-bottom: 0.5rem;
       }
 .side-list { display: flex; flex-direction: column; }
 .side-a {
-display: flex;
-align-items: center;
-gap: 8px;
-padding: 6px 0 6px 10px;
-color: var(--pencil);
-text-decoration: none;
-font-family: var(--font-hand);
-font-size: 14px;
+display: flex; align-items: center; gap: 8px;
+padding: 7px 0 7px 10px;
+color: var(--ink-faint); text-decoration: none;
+font-family: var(--font-text); font-size: var(--fs-ui);
 border-left: 2px solid transparent;
-transition: color 0.2s, border-color 0.2s;
-white-space: nowrap;
+transition: color 0.2s, border-color 0.2s; white-space: nowrap;
       }
-.side-a:hover { color: var(--ink-light); border-left-color: var(--pencil); }
+.side-a:hover { color: var(--ink); border-left-color: var(--pencil); }
 .side-a.active { color: var(--fd-blue); border-left-color: var(--fd-blue); font-weight: 700; }
-.side-num {
-font-family: var(--font-mono);
-font-size: 8px;
-color: var(--pencil);
-min-width: 16px;
-      }
+.side-num { font-family: var(--font-mono); font-size: var(--fs-mono-s); color: var(--pencil); min-width: 18px; }
 .side-a.active .side-num { color: var(--fd-blue); }
-
 /* MAIN */
 .main {
-margin-left: calc(32px + var(--side-w));
-padding: calc(var(--nav-h) + 3rem) 3.5rem 7rem 3rem;
-max-width: calc(860px + var(--side-w));
-position: relative;
-z-index: 1;
+margin-left: calc(var(--spiral) + var(--side-w));
+padding: calc(var(--nav-h) + 3rem) var(--main-pad) 7rem;
+max-width: calc(var(--spiral) + var(--side-w) + var(--main-max));
+position: relative; z-index: 1;
       }
-
 /* TAGS */
-.tags {
-display: flex;
-gap: 0.5rem;
-flex-wrap: wrap;
-margin-bottom: 1.25rem;
-      }
+.tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
 .tag {
-font-family: var(--font-mono);
-font-size: 9px;
-letter-spacing: 2px;
-text-transform: uppercase;
+font-family: var(--font-mono); font-size: var(--fs-mono-s);
+letter-spacing: 1.5px; text-transform: uppercase;
 color: var(--fd-blue);
-padding: 3px 10px;
-border: 1.5px solid rgba(30,58,95,0.3);
+padding: 4px 11px;
+border: 1.5px solid rgba(30,58,95,0.32);
 background: rgba(30,58,95,0.05);
-transform: rotate(-0.3deg);
 display: inline-block;
       }
-.tag:nth-child(2) {
-transform: rotate(0.5deg);
-color: var(--fd-amber);
-border-color: rgba(184,122,10,0.3);
-background: rgba(184,122,10,0.05);
-      }
-.tag:nth-child(3) {
-transform: rotate(-0.2deg);
-color: var(--ink-faint);
-border-color: rgba(138,127,114,0.3);
-background: rgba(138,127,114,0.05);
-      }
-
+.tag:nth-child(2) { color: var(--fd-amber); border-color: rgba(150,101,10,0.32); background: rgba(150,101,10,0.05); }
+.tag:nth-child(3) { color: var(--ink-faint); border-color: rgba(138,127,114,0.32); background: rgba(138,127,114,0.05); }
 .hero-h {
-font-family: var(--font-hand);
-font-size: clamp(2.6rem, 5vw, 4.2rem);
-font-weight: 700;
-line-height: 1.05;
-margin-bottom: 0.5rem;
-letter-spacing: -1px;
+font-family: var(--font-hand); font-size: var(--fs-h1);
+font-weight: 700; line-height: 1.05;
+margin-bottom: 0.5rem; letter-spacing: -1px;
       }
-.hero-h .squiggle-wrap {
-position: relative;
-display: inline-block;
-      }
-.hero-h .squiggle-wrap svg {
-position: absolute;
-bottom: -6px; left: -4px;
-width: calc(100% + 8px);
-pointer-events: none;
-      }
+.hero-h .squiggle-wrap { position: relative; display: inline-block; }
+.hero-h .squiggle-wrap svg { position: absolute; bottom: -6px; left: -4px; width: calc(100% + 8px); pointer-events: none; }
 .hero-sub {
-font-family: var(--font-mono);
-font-size: 10px;
-letter-spacing: 2px;
-text-transform: uppercase;
-color: var(--ink-faint);
-margin-bottom: 0.75rem;
-margin-top: 0.75rem;
+font-family: var(--font-mono); font-size: var(--fs-mono-m);
+letter-spacing: 1.5px; text-transform: uppercase;
+color: var(--ink-faint); margin: 0.75rem 0;
       }
 .hero-p {
-font-family: var(--font-hand);
-font-size: 19px;
-color: var(--ink-light);
-line-height: 1.65;
-max-width: 520px;
-margin-bottom: 1.75rem;
+font-family: var(--font-text); font-size: var(--fs-lead);
+color: var(--ink-light); line-height: 1.6;
+max-width: 58ch; margin-bottom: 1.75rem;
       }
-
 /* HERO VIDEO */
 .hero-video {
 border: 2px solid var(--ink);
 background: var(--paper-dark);
-position: relative;
-margin-bottom: 1.75rem;
-transform: rotate(-0.3deg);
+position: relative; margin-bottom: 1.75rem;
 box-shadow: 5px 5px 0 rgba(26,22,18,0.12);
       }
 .hero-video::before {
-content: '';
-position: absolute;
-top: -11px; left: 50%;
+content: ""; position: absolute; top: -11px; left: 50%;
 transform: translateX(-50%) rotate(-0.5deg);
 width: 60px; height: 20px;
 background: rgba(232,184,75,0.42);
@@ -315,280 +228,129 @@ border-top: 1px solid rgba(232,184,75,0.55);
 border-bottom: 1px solid rgba(232,184,75,0.55);
 z-index: 10;
       }
-.hero-video::after {
-content: '';
-position: absolute;
-bottom: -5px; right: -5px;
-width: 100%; height: 100%;
-border: 1.5px solid rgba(26,22,18,0.15);
-z-index: -1;
-      }
-.hero-video video {
-width: 100%;
-display: block;
-max-height: 460px;
-object-fit: cover;
-      }
-
+.hero-video video { width: 100%; display: block; max-height: var(--hero-media-h); object-fit: cover; }
 /* STATS */
 .stats {
-display: grid;
-grid-template-columns: repeat(4, 1fr);
+display: grid; grid-template-columns: repeat(4, minmax(0,1fr));
 border: 2px solid var(--ink);
 margin-bottom: 1.5rem;
-transform: rotate(0.2deg);
 box-shadow: 4px 4px 0 rgba(26,22,18,0.1);
 background: var(--paper-dark);
       }
-.stat {
-padding: 1.1rem 1rem;
-border-right: 1.5px solid rgba(26,22,18,0.2);
-      }
+.stat { padding: 1.2rem 1.1rem; border-right: 1.5px solid rgba(26,22,18,0.2); }
 .stat:last-child { border-right: none; }
-.s-n {
-font-family: var(--font-hand);
-font-size: 2.4rem;
-font-weight: 700;
-color: var(--fd-blue);
-line-height: 1;
-margin-bottom: 4px;
-      }
-.s-l {
-font-family: var(--font-hand);
-font-size: 14px;
-color: var(--ink-light);
-line-height: 1.35;
-      }
-.s-sub {
-font-family: var(--font-mono);
-font-size: 8px;
-letter-spacing: 1px;
-color: var(--pencil);
-margin-top: 2px;
-      }
+.s-n { font-family: var(--font-hand); font-size: var(--fs-stat); font-weight: 700; color: var(--fd-blue); line-height: 1; margin-bottom: 6px; }
+.s-l { font-family: var(--font-text); font-size: var(--fs-body); color: var(--ink-light); line-height: 1.4; }
+.s-sub { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 0.5px; color: var(--pencil); margin-top: 5px; }
 /* stats that are the author's own research output */
-.stat.mine{position:relative}
-.stat.mine::before{
-content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--fd-blue);
-      }
-.stat.mine .s-sub{color:var(--fd-blue)}
-
+.stat.mine { position: relative; }
+.stat.mine::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--fd-blue); }
+.stat.mine .s-sub { color: var(--fd-blue); }
 /* META */
 .meta {
-display: flex;
-gap: 2rem;
-flex-wrap: wrap;
+display: flex; gap: 2rem; flex-wrap: wrap;
 padding-top: 1.25rem;
 border-top: 2px solid rgba(26,22,18,0.15);
 margin-bottom: 5rem;
       }
-.m-k {
-font-family: var(--font-mono);
-font-size: 8px;
-letter-spacing: 2px;
-text-transform: uppercase;
-color: var(--fd-blue);
-margin-bottom: 4px;
-      }
-.m-v {
-font-family: var(--font-hand);
-font-size: 15px;
-color: var(--ink-light);
-line-height: 1.5;
-      }
-
+.m-k { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 1.5px; text-transform: uppercase; color: var(--fd-blue); margin-bottom: 5px; }
+.m-v { font-family: var(--font-text); font-size: var(--fs-body); color: var(--ink-light); line-height: 1.5; }
 /* SECTION */
-.sec { margin-bottom: 5rem; }
-.phase {
-display: inline-flex;
-align-items: center;
-gap: 8px;
-margin-bottom: 0.75rem;
-      }
+.sec { margin-bottom: 5rem; scroll-margin-top: calc(var(--nav-h) + 24px); }
+.phase { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
 .p-dot {
-width: 22px; height: 22px;
-border-radius: 50%;
+width: 24px; height: 24px; border-radius: 50%;
 border: 2px solid var(--ink);
-display: flex;
-align-items: center;
-justify-content: center;
-font-family: var(--font-mono);
-font-size: 9px;
-color: var(--ink);
-font-weight: 700;
+display: flex; align-items: center; justify-content: center;
+font-family: var(--font-mono); font-size: var(--fs-mono-s); color: var(--ink); font-weight: 700;
       }
-.p-txt {
-font-family: var(--font-mono);
-font-size: 9px;
-letter-spacing: 3px;
-text-transform: uppercase;
-color: var(--ink-faint);
-      }
+.p-txt { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 2.5px; text-transform: uppercase; color: var(--ink-faint); }
 .sec-h {
-font-family: var(--font-hand);
-font-size: 2.2rem;
-font-weight: 700;
-line-height: 1.1;
-margin-bottom: 0.5rem;
-letter-spacing: -0.5px;
-display: inline-block;
-position: relative;
+font-family: var(--font-hand); font-size: var(--fs-stitle);
+font-weight: 700; line-height: 1.1;
+margin-bottom: 0.5rem; letter-spacing: -0.5px;
+display: inline-block; position: relative;
       }
 .sec-h::after {
-content: '';
-display: block;
-height: 3px;
-background: var(--fd-blue);
-border-radius: 2px;
-transform: rotate(-0.5deg);
-margin-top: 3px;
-width: 80%;
+content: ""; display: block; height: 3px;
+background: var(--fd-blue); border-radius: 2px;
+transform: rotate(-0.5deg); margin-top: 3px; width: 80%;
       }
 .sec-lead {
-font-family: var(--font-hand);
-font-size: 18px;
-color: var(--ink-light);
-line-height: 1.75;
-max-width: 560px;
-margin-bottom: 1.5rem;
-margin-top: 0.5rem;
+font-family: var(--font-text); font-size: var(--fs-lead);
+color: var(--ink-light); line-height: 1.65;
+max-width: 58ch; margin: 0.75rem 0 1.5rem;
       }
-.rule {
-height: 1.5px;
-background: rgba(26,22,18,0.12);
-margin-bottom: 1.5rem;
-      }
-.sub {
-font-family: var(--font-mono);
-font-size: 9px;
-letter-spacing: 3px;
-text-transform: uppercase;
-color: var(--fd-blue);
-margin-bottom: 0.875rem;
-      }
-
+.rule { height: 1.5px; background: rgba(26,22,18,0.12); margin-bottom: 1.5rem; }
+.sub { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 2.5px; text-transform: uppercase; color: var(--fd-blue); margin-bottom: 0.875rem; }
 /* GRIDS */
-.g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
-.g2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 1.5rem; }
-
+.g3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; margin-bottom: 1.5rem; }
+.g2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; margin-bottom: 1.5rem; }
 /* NOTEBOOK CARD */
 .nc {
-background: var(--paper-dark);
-border: 2px solid var(--ink);
-padding: 1.1rem;
-position: relative;
-transition: transform 0.2s;
+background: var(--paper-dark); border: 2px solid var(--ink);
+padding: 1.2rem; position: relative;
+transition: transform 0.2s, box-shadow 0.2s;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
       }
-.nc:hover { transform: translate(-2px,-2px); }
-.nc::after {
-content: '';
-position: absolute;
-bottom: -4px; right: -4px;
-width: 100%; height: 100%;
-border: 1.5px solid rgba(26,22,18,0.18);
-z-index: -1;
-      }
-.nc-n {
-font-family: var(--font-hand);
-font-size: 2.2rem;
-font-weight: 700;
-color: var(--fd-blue);
-line-height: 1;
-margin-bottom: 5px;
-      }
-.nc-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 3px; }
-.nc-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.5; }
-
+.nc:hover { transform: translate(-2px,-2px); box-shadow: 5px 7px 0 rgba(26,22,18,0.16); }
+.nc-n { font-family: var(--font-hand); font-size: var(--fs-stitle); font-weight: 700; color: var(--fd-blue); line-height: 1; margin-bottom: 6px; }
+.nc-lbl { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 1.5px; text-transform: uppercase; color: var(--fd-blue); margin-bottom: 8px; }
+.nc-t { font-family: var(--font-text); font-size: var(--fs-body); font-weight: 700; margin-bottom: 4px; }
+.nc-d { font-family: var(--font-text); font-size: var(--fs-body); color: var(--ink-light); line-height: 1.5; }
 /* ICON CARD */
 .ic {
-background: var(--paper-dark);
-border: 2px solid var(--ink);
-padding: 1.1rem;
-position: relative;
+background: var(--paper-dark); border: 2px solid var(--ink);
+padding: 1.2rem; position: relative;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
       }
-.ic::after {
-content: '';
-position: absolute;
-bottom: -4px; right: -4px;
-width: 100%; height: 100%;
-border: 1.5px solid rgba(26,22,18,0.18);
-z-index: -1;
-      }
-.ic-ico { font-size: 1rem; margin-bottom: 0.5rem; }
-.ic-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 3px; }
-.ic-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.55; }
-
-/* ---- hand-drawn line icons (replaces emoji) ---- */
+.ic-ico { margin-bottom: 0.6rem; }
+.ic-t { font-family: var(--font-text); font-size: var(--fs-body); font-weight: 700; margin-bottom: 4px; }
+.ic-d { font-family: var(--font-text); font-size: var(--fs-body); color: var(--ink-light); line-height: 1.55; }
+/* ---- hand-drawn line icons ---- */
 .ico {
-width: 18px; height: 18px;
-fill: none;
-stroke: var(--ink-light);
-stroke-width: 1.5;
-stroke-linecap: round;
-stroke-linejoin: round;
-display: block;
-transition: stroke 0.2s ease;
+width: 18px; height: 18px; fill: none;
+stroke: var(--ink-light); stroke-width: 1.5;
+stroke-linecap: round; stroke-linejoin: round;
+display: block; transition: stroke 0.2s ease;
       }
 .fr:hover .ico { stroke: var(--fd-blue); }
 .ic .ico { width: 22px; height: 22px; stroke: var(--fd-blue); }
-
 /* FINDING ROW */
-.flist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+.flist { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
 .fr {
-display: flex;
-gap: 0.875rem;
-align-items: flex-start;
-padding: 0.875rem 1rem;
+display: flex; gap: 0.95rem; align-items: flex-start;
+padding: 1rem 1.1rem;
 background: var(--paper-dark);
 border: 1.5px solid rgba(26,22,18,0.15);
 transition: border-color 0.2s, transform 0.2s;
       }
-.fr:hover { border-color: rgba(30,58,95,0.35); transform: translateX(2px); }
+.fr:hover { border-color: rgba(30,58,95,0.4); transform: translateX(2px); }
 .fr-i {
-width: 30px; height: 30px; min-width: 30px;
+width: 32px; height: 32px; min-width: 32px;
 border: 1.5px solid rgba(26,22,18,0.2);
 display: flex; align-items: center; justify-content: center;
-font-size: 0.82rem;
 background: var(--paper);
       }
-.fr-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
-.fr-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.55; }
-
+.fr-t { font-family: var(--font-text); font-size: var(--fs-body); font-weight: 700; margin-bottom: 3px; }
+.fr-d { font-family: var(--font-text); font-size: var(--fs-body); color: var(--ink-light); line-height: 1.55; max-width: 70ch; }
 /* STEP LIST */
-.slist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
-.st {
-display: flex;
-gap: 0.875rem;
-padding: 0.875rem 1rem;
-background: var(--paper-dark);
-border: 1.5px solid rgba(26,22,18,0.15);
-      }
-.st-n { font-family: var(--font-hand); font-size: 1.3rem; font-weight: 700; color: var(--fd-blue); min-width: 20px; line-height: 1.4; }
-.st-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
-.st-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.5; }
-
+.slist { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+.st { display: flex; gap: 0.95rem; padding: 1rem 1.1rem; background: var(--paper-dark); border: 1.5px solid rgba(26,22,18,0.15); }
+.st-n { font-family: var(--font-mono); font-size: var(--fs-mono-m); font-weight: 700; color: var(--fd-blue); min-width: 26px; line-height: 1.6; }
+.st-t { font-family: var(--font-text); font-size: var(--fs-body); font-weight: 700; margin-bottom: 3px; }
+.st-d { font-family: var(--font-text); font-size: var(--fs-body); color: var(--ink-light); line-height: 1.55; max-width: 70ch; }
 /* PERSONA CARD */
 .pcard {
-background: var(--paper-dark);
-border: 2px solid var(--ink);
-padding: 1.25rem;
+background: var(--paper-dark); border: 2px solid var(--ink);
+padding: 1.35rem;
 border-bottom: 4px solid var(--fd-blue);
-position: relative;
-transition: transform 0.2s;
+position: relative; transition: transform 0.2s, box-shadow 0.2s;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
       }
-.pcard:hover { transform: translate(-2px,-2px); }
-.pcard::after {
-content: '';
-position: absolute;
-bottom: -6px; right: -5px;
-width: 100%; height: 100%;
-border: 1.5px solid rgba(26,22,18,0.15);
-z-index: -1;
-      }
+.pcard:hover { transform: translate(-2px,-2px); box-shadow: 5px 7px 0 rgba(26,22,18,0.16); }
 .pcard::before {
-content: '';
-position: absolute;
-top: -11px; left: 20px;
+content: ""; position: absolute; top: -11px; left: 20px;
 width: 40px; height: 20px;
 background: rgba(232,184,75,0.38);
 border-top: 1px solid rgba(232,184,75,0.5);
@@ -596,68 +358,46 @@ border-bottom: 1px solid rgba(232,184,75,0.5);
 transform: rotate(-1.5deg);
       }
 .pcard-av {
-width: 40px; height: 40px;
-border-radius: 50%;
+width: 42px; height: 42px; border-radius: 50%;
 border: 2px solid var(--fd-blue);
 display: flex; align-items: center; justify-content: center;
-font-family: var(--font-hand);
-font-size: 1.4rem; font-weight: 700;
-color: var(--fd-blue);
-margin-bottom: 0.75rem;
-      }
-.pcard-name { font-family: var(--font-hand); font-size: 16px; font-weight: 700; margin-bottom: 2px; }
-.pcard-role {
-font-family: var(--font-mono);
-font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
+font-family: var(--font-hand); font-size: 24px; font-weight: 700;
 color: var(--fd-blue); margin-bottom: 0.75rem;
       }
+.pcard-name { font-family: var(--font-text); font-size: var(--fs-lead); font-weight: 700; margin-bottom: 3px; }
+.pcard-role {
+font-family: var(--font-mono); font-size: var(--fs-mono-s);
+letter-spacing: 1.5px; text-transform: uppercase;
+color: var(--fd-blue); margin-bottom: 0.85rem;
+      }
 .pcard-quote {
-font-family: var(--font-serif);
-font-size: 1rem; font-style: italic;
+font-family: var(--font-serif); font-size: var(--fs-lead); font-style: italic;
 color: var(--ink-light); line-height: 1.5;
-margin-bottom: 1rem;
-padding-left: 0.75rem;
+margin-bottom: 1rem; padding-left: 0.85rem;
 border-left: 2.5px solid rgba(30,58,95,0.3);
-min-height: 4.6em;
       }
 .pcard-sub {
-font-family: var(--font-mono);
-font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase;
-color: var(--fd-blue); font-weight: 600;
-margin-bottom: 0.5rem; margin-top: 0.875rem;
+font-family: var(--font-mono); font-size: var(--fs-mono-s);
+letter-spacing: 1.5px; text-transform: uppercase;
+color: var(--fd-blue); font-weight: 700;
+margin: 0.95rem 0 0.5rem;
       }
-.pcard-list { display: flex; flex-direction: column; gap: 3px; }
+.pcard-list { display: flex; flex-direction: column; gap: 4px; }
 .pcard-item {
-font-family: var(--font-hand);
-font-size: 13px; color: var(--ink-light);
-padding-left: 0.75rem; position: relative; line-height: 1.5;
+font-family: var(--font-text); font-size: var(--fs-body);
+color: var(--ink-light); padding-left: 0.85rem;
+position: relative; line-height: 1.5;
       }
 .pcard-item::before { content: "—"; position: absolute; left: 0; color: var(--pencil); }
-
 /* DIRECTION CARD */
 .dcard {
-background: var(--paper-dark);
-border: 2px solid var(--ink);
-padding: 1.25rem;
-position: relative;
+background: var(--paper-dark); border: 2px solid var(--ink);
+padding: 1.35rem; position: relative;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
       }
-.dcard::after {
-content: '';
-position: absolute;
-bottom: -4px; right: -4px;
-width: 100%; height: 100%;
-border: 1.5px solid rgba(26,22,18,0.15);
-z-index: -1;
-      }
-.dcard.chosen {
-border-color: var(--fd-blue);
-background: rgba(30,58,95,0.04);
-border-bottom: 4px solid var(--fd-blue);
-      }
+.dcard.chosen { border-color: var(--fd-blue); background: rgba(30,58,95,0.04); border-bottom: 4px solid var(--fd-blue); }
 .dcard.chosen::before {
-content: '';
-position: absolute;
-top: -11px; left: 20px;
+content: ""; position: absolute; top: -11px; left: 20px;
 width: 40px; height: 20px;
 background: rgba(232,184,75,0.38);
 border-top: 1px solid rgba(232,184,75,0.5);
@@ -665,338 +405,383 @@ border-bottom: 1px solid rgba(232,184,75,0.5);
 transform: rotate(1.5deg);
       }
 .dcard-label {
-font-family: var(--font-mono);
-font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
-font-weight: 600; margin-bottom: 0.5rem;
-display: inline-flex; align-items: center; gap: 5px;
+font-family: var(--font-mono); font-size: var(--fs-mono-s);
+letter-spacing: 1.5px; text-transform: uppercase;
+font-weight: 700; margin-bottom: 0.6rem;
+display: inline-flex; align-items: center; gap: 6px;
       }
 .dcard.chosen .dcard-label { color: var(--fd-blue); }
-.dcard:not(.chosen) .dcard-label { color: var(--pencil); }
-.dcard-label .ico { width: 12px; height: 12px; stroke: var(--fd-blue); stroke-width: 2.2; }
-.dcard-t { font-family: var(--font-hand); font-size: 16px; font-weight: 700; margin-bottom: 0.5rem; }
-.dcard-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.6; }
-
+.dcard:not(.chosen) .dcard-label { color: var(--ink-faint); }
+.dcard-label .ico { width: 13px; height: 13px; stroke: var(--fd-blue); stroke-width: 2.2; }
+.dcard-t { font-family: var(--font-text); font-size: var(--fs-lead); font-weight: 700; margin-bottom: 0.5rem; }
+.dcard-d { font-family: var(--font-text); font-size: var(--fs-body); color: var(--ink-light); line-height: 1.6; }
 /* ============================================================
    ANNOTATION SYSTEM — attributes work on screens
    Navy pin = mine · grey pin = team
+   NOTE: pin --x/--y are percentages of the media box, so the media
+   must keep its natural aspect ratio. Never object-fit these.
    ============================================================ */
-.annot-fig{
-position:relative;
-border:2px solid var(--ink);
-background:var(--paper-dark);
-margin-bottom:1.5rem;
+.annot-fig {
+position: relative;
+border: 2px solid var(--ink);
+background: var(--paper-dark);
+margin-bottom: 1.5rem;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
       }
-.annot-fig::after{
-content:'';position:absolute;bottom:-4px;right:-4px;
-width:100%;height:100%;border:1.5px solid rgba(26,22,18,.15);z-index:-1;
+.annot-media { position: relative; display: block; line-height: 0; }
+.annot-media img, .annot-media video { width: 100%; display: block; }
+.annot-layer { position: absolute; inset: 0; pointer-events: none; transition: opacity .25s ease; }
+.annot-fig.pins-off .annot-layer { opacity: 0; }
+.annot-pin {
+position: absolute;
+left: var(--x); top: var(--y);
+transform: translate(-50%,-50%);
+width: 30px; height: 30px; border-radius: 50%;
+display: grid; place-items: center;
+font-family: var(--font-mono); font-size: var(--fs-mono-s); font-weight: 700;
+background: var(--paper);
+border: 2px solid var(--pencil);
+color: var(--ink-faint);
+cursor: pointer; pointer-events: auto; padding: 0;
+box-shadow: 0 0 0 3px rgba(250,248,242,.85);
+transition: transform .18s ease, box-shadow .18s ease;
       }
-.annot-media{position:relative;display:block;line-height:0}
-.annot-media img,.annot-media video{width:100%;display:block}
-.annot-layer{position:absolute;inset:0;pointer-events:none;transition:opacity .25s ease}
-.annot-fig.pins-off .annot-layer{opacity:0}
-
-.annot-pin{
-position:absolute;
-left:var(--x);top:var(--y);
-transform:translate(-50%,-50%);
-width:28px;height:28px;border-radius:50%;
-display:grid;place-items:center;
-font-family:var(--font-mono);font-size:11px;font-weight:700;
-background:var(--paper);
-border:2px solid var(--pencil);
-color:var(--ink-faint);
-cursor:pointer;pointer-events:auto;padding:0;
-box-shadow:0 0 0 3px rgba(250,248,242,.85);
-transition:transform .18s ease,box-shadow .18s ease;
+.annot-pin.mine { border-color: var(--fd-blue); color: var(--fd-blue); }
+.annot-pin.mine::after {
+content: ""; position: absolute; inset: -6px; border-radius: 50%;
+border: 1.5px dashed rgba(30,58,95,.4);
+animation: pin-breathe 3.2s ease-in-out infinite;
       }
-.annot-pin.mine{border-color:var(--fd-blue);color:var(--fd-blue)}
-.annot-pin.mine::after{
-content:'';position:absolute;inset:-6px;border-radius:50%;
-border:1.5px dashed rgba(30,58,95,.4);
-animation:pin-breathe 3.2s ease-in-out infinite;
+@keyframes pin-breathe { 0%,100%{opacity:.35;transform:scale(1)} 50%{opacity:.8;transform:scale(1.09)} }
+@media (prefers-reduced-motion: reduce) { .annot-pin.mine::after { animation: none; opacity: .55; } }
+.annot-pin:hover, .annot-pin:focus-visible, .annot-pin.hot {
+transform: translate(-50%,-50%) scale(1.22);
+box-shadow: 0 0 0 4px rgba(250,248,242,.95), 3px 3px 0 rgba(26,22,18,.18);
+outline: none;
       }
-@keyframes pin-breathe{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:.8;transform:scale(1.09)}}
-.annot-pin:hover,.annot-pin:focus-visible,.annot-pin.hot{
-transform:translate(-50%,-50%) scale(1.22);
-box-shadow:0 0 0 4px rgba(250,248,242,.95),3px 3px 0 rgba(26,22,18,.18);
-outline:none;
+.annot-bar {
+display: flex; align-items: center; justify-content: space-between; gap: 12px;
+padding: 11px 14px; border-top: 1.5px solid rgba(26,22,18,.15);
+background: var(--paper-dark); flex-wrap: wrap;
       }
-
-.annot-bar{
-display:flex;align-items:center;justify-content:space-between;gap:12px;
-padding:9px 14px;border-top:1.5px solid rgba(26,22,18,.15);
-background:var(--paper-dark);flex-wrap:wrap;
+.annot-cap { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; color: var(--ink); line-height: 1.4; }
+.annot-cap span { display: block; font-weight: 400; color: var(--ink-light); margin-top: 3px; }
+.annot-key { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.annot-key b {
+font-family: var(--font-mono); font-size: var(--fs-mono-s);
+letter-spacing: 1.2px; text-transform: uppercase;
+color: var(--ink-faint); font-weight: 400;
+display: inline-flex; align-items: center; gap: 5px;
       }
-.annot-cap{font-family:var(--font-hand);font-size:14px;font-weight:700;color:var(--ink);line-height:1.35}
-.annot-cap span{display:block;font-weight:400;font-size:13px;color:var(--ink-faint);margin-top:2px}
-.annot-key{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.annot-key b{
-font-family:var(--font-mono);font-size:8px;letter-spacing:1.4px;text-transform:uppercase;
-color:var(--ink-faint);font-weight:400;display:inline-flex;align-items:center;gap:5px;
+.annot-key i { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--pencil); display: inline-block; }
+.annot-key i.mine { border-color: var(--fd-blue); }
+.annot-toggle {
+font-family: var(--font-mono); font-size: var(--fs-mono-s);
+letter-spacing: 1.2px; text-transform: uppercase;
+padding: 6px 11px; border: 1.5px solid var(--ink);
+background: var(--paper); color: var(--ink-light); cursor: pointer;
       }
-.annot-key i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--pencil);display:inline-block}
-.annot-key i.mine{border-color:var(--fd-blue)}
-.annot-toggle{
-font-family:var(--font-mono);font-size:8px;letter-spacing:1.4px;text-transform:uppercase;
-padding:5px 10px;border:1.5px solid var(--ink);background:var(--paper);
-color:var(--ink-light);cursor:pointer;
+.annot-toggle:hover { background: var(--ink); color: var(--paper); }
+.annot-legend { border-top: 1.5px solid rgba(26,22,18,.15); background: var(--paper); display: grid; grid-template-columns: 1fr 1fr; }
+.annot-row {
+display: grid; grid-template-columns: 26px 1fr; gap: 11px; align-items: start;
+padding: 12px 14px;
+border-right: 1px solid rgba(26,22,18,.12);
+border-bottom: 1px solid rgba(26,22,18,.12);
+transition: background .18s ease;
       }
-.annot-toggle:hover{background:var(--ink);color:var(--paper)}
-
-.annot-legend{border-top:1.5px solid rgba(26,22,18,.15);background:var(--paper);display:grid;grid-template-columns:1fr 1fr}
-.annot-row{
-display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:start;
-padding:11px 14px;
-border-right:1px solid rgba(26,22,18,.12);
-border-bottom:1px solid rgba(26,22,18,.12);
-transition:background .18s ease;
+.annot-row:nth-child(2n) { border-right: none; }
+.annot-row.hot { background: rgba(30,58,95,.06); }
+.annot-num {
+width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+font-family: var(--font-mono); font-size: var(--fs-mono-s); font-weight: 700;
+border: 1.5px solid var(--pencil); color: var(--ink-faint);
       }
-.annot-row:nth-child(2n){border-right:none}
-.annot-row.hot{background:rgba(30,58,95,.06)}
-.annot-num{
-width:24px;height:24px;border-radius:50%;display:grid;place-items:center;
-font-family:var(--font-mono);font-size:10px;font-weight:700;
-border:1.5px solid var(--pencil);color:var(--ink-faint);
+.annot-row.mine .annot-num { border-color: var(--fd-blue); color: var(--fd-blue); }
+.annot-who {
+font-family: var(--font-mono); font-size: var(--fs-mono-s);
+letter-spacing: 1.4px; text-transform: uppercase;
+color: var(--ink-faint); display: block; margin-bottom: 3px;
       }
-.annot-row.mine .annot-num{border-color:var(--fd-blue);color:var(--fd-blue)}
-.annot-who{
-font-family:var(--font-mono);font-size:8px;letter-spacing:1.6px;text-transform:uppercase;
-color:var(--pencil);display:block;margin-bottom:2px;
-      }
-.annot-row.mine .annot-who{color:var(--fd-blue)}
-.annot-txt{font-family:var(--font-hand);font-size:14px;color:var(--ink-light);line-height:1.45;display:block}
-
+.annot-row.mine .annot-who { color: var(--fd-blue); }
+.annot-txt { font-family: var(--font-text); font-size: var(--fs-body); color: var(--ink-light); line-height: 1.5; display: block; }
 /* placement helper — only active with ?annotate=1 */
-.ann-help{
-position:fixed;right:16px;bottom:16px;z-index:900;
-background:var(--ink);color:var(--paper);
-font-family:var(--font-mono);font-size:11px;line-height:1.6;
-padding:12px 14px;max-width:330px;box-shadow:4px 4px 0 rgba(0,0,0,.25);
+.ann-help {
+position: fixed; right: 16px; bottom: 16px; z-index: 900;
+background: var(--ink); color: var(--paper);
+font-family: var(--font-mono); font-size: 12px; line-height: 1.6;
+padding: 12px 14px; max-width: 330px; box-shadow: 4px 4px 0 rgba(0,0,0,.25);
       }
-.ann-help b{display:block;font-size:9px;letter-spacing:1.6px;text-transform:uppercase;color:var(--yellow);margin-bottom:6px}
-.ann-help code{display:block;background:rgba(255,255,255,.1);padding:6px 8px;margin-top:6px;word-break:break-all;font-size:10px}
-body.annotating .annot-media{cursor:crosshair}
-body.annotating .annot-media::after{
-content:'';position:absolute;inset:0;border:2px dashed rgba(184,122,10,.7);pointer-events:none;
+.ann-help b { display: block; font-size: 10px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--yellow); margin-bottom: 6px; }
+.ann-help code { display: block; background: rgba(255,255,255,.1); padding: 6px 8px; margin-top: 6px; word-break: break-all; font-size: 11px; }
+body.annotating .annot-media { cursor: crosshair; }
+body.annotating .annot-media::after {
+content: ""; position: absolute; inset: 0; border: 2px dashed rgba(150,101,10,.7); pointer-events: none;
       }
-
-@media (max-width:860px){
-.annot-legend{grid-template-columns:1fr}
-.annot-row{border-right:none}
-.annot-pin{width:24px;height:24px;font-size:10px}
-      }
-
 /* VIDEO BLOCK */
 .vid-block {
-border: 2px solid var(--ink);
-background: var(--paper-dark);
-position: relative;
-margin-bottom: 1.5rem;
-transition: transform 0.2s;
+border: 2px solid var(--ink); background: var(--paper-dark);
+position: relative; margin-bottom: 1.5rem;
+transition: transform 0.2s; box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
       }
 .vid-block:hover { transform: translate(-2px,-2px); }
-.vid-block::after {
-content: '';
-position: absolute;
-bottom: -4px; right: -4px;
-width: 100%; height: 100%;
-border: 1.5px solid rgba(26,22,18,0.15);
-z-index: -1;
-      }
 .vid-block video { width: 100%; display: block; }
 .vid-cap {
-padding: 10px 14px;
-font-family: var(--font-hand);
-font-size: 14px; font-weight: 700;
-color: var(--ink);
-border-top: 1.5px solid rgba(26,22,18,0.15);
-line-height: 1.4;
+padding: 11px 14px;
+font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700;
+color: var(--ink); border-top: 1.5px solid rgba(26,22,18,0.15); line-height: 1.45;
       }
-.vid-cap span {
-font-family: var(--font-hand);
-font-size: 13px; font-weight: 400;
-color: var(--ink-faint); display: block; margin-top: 2px;
-      }
-
+.vid-cap span { font-weight: 400; color: var(--ink-light); display: block; margin-top: 3px; }
 /* BEFORE / AFTER */
-.ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
+.ba-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; margin-bottom: 1.5rem; }
 .ba-wrap {
-border: 2px solid var(--ink);
-background: var(--paper-dark);
-position: relative;
-transition: transform 0.2s;
+border: 2px solid var(--ink); background: var(--paper-dark);
+position: relative; transition: transform 0.2s, box-shadow 0.2s;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
       }
-.ba-wrap:hover { transform: translate(-2px,-2px); }
-.ba-wrap::after {
-content: '';
-position: absolute;
-bottom: -4px; right: -4px;
-width: 100%; height: 100%;
-border: 1.5px solid rgba(26,22,18,0.15);
-z-index: -1;
-      }
-.ba-wrap img { width: 100%; display: block; }
+.ba-wrap:hover { transform: translate(-2px,-2px); box-shadow: 5px 7px 0 rgba(26,22,18,0.16); }
+.ba-wrap img { width: 100%; display: block; max-height: var(--fig-max-h); object-fit: contain; }
 .ba-label {
-padding: 8px 12px;
-font-family: var(--font-mono);
-font-size: 8px; letter-spacing: 2px; font-weight: 700;
-border-top: 1.5px solid rgba(26,22,18,0.15);
-text-transform: uppercase;
+padding: 9px 12px;
+font-family: var(--font-mono); font-size: var(--fs-mono-s);
+letter-spacing: 1.5px; font-weight: 700;
+border-top: 1.5px solid rgba(26,22,18,0.15); text-transform: uppercase;
       }
-.ba-wrap.before .ba-label { color: var(--pencil); }
+.ba-wrap.before .ba-label { color: var(--ink-faint); }
 .ba-wrap.after  .ba-label { color: var(--fd-blue); }
-
 /* ITERATION */
-.ilist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
-.it { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: center; gap: 8px; }
-.it-b {
-padding: 0.875rem 1rem;
-border: 1.5px solid rgba(26,22,18,0.15);
-      }
+.ilist { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+.it { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: center; gap: 10px; }
+.it-b { padding: 1rem 1.1rem; border: 1.5px solid rgba(26,22,18,0.15); }
 .it-b.bef { background: var(--paper-dark); }
 .it-b.aft { background: rgba(30,58,95,0.04); border-color: rgba(30,58,95,0.3); }
 .it-lbl {
-font-family: var(--font-mono);
-font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
-font-weight: 600; margin-bottom: 3px;
+font-family: var(--font-mono); font-size: var(--fs-mono-s);
+letter-spacing: 1.5px; text-transform: uppercase;
+font-weight: 700; margin-bottom: 5px;
       }
-.it-b.bef .it-lbl { color: var(--pencil); }
+.it-b.bef .it-lbl { color: var(--ink-faint); }
 .it-b.aft .it-lbl { color: var(--fd-blue); }
-.it-txt { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.45; }
+.it-txt { font-family: var(--font-text); font-size: var(--fs-body); color: var(--ink-light); line-height: 1.5; }
 .it-b.aft .it-txt { color: var(--ink); }
-.it-arr { text-align: center; color: var(--fd-blue); font-size: 1rem; font-weight: 700; }
-
+.it-arr { text-align: center; color: var(--fd-blue); font-size: 1.1rem; font-weight: 700; }
 /* QUOTE */
 .quote {
 border-left: 3px solid var(--fd-blue);
-padding: 0.875rem 1.25rem;
-margin: 1.25rem 0;
-background: rgba(30,58,95,0.04);
-position: relative;
-transform: rotate(-0.3deg);
+padding: 1rem 1.35rem; margin: 1.25rem 0;
+background: rgba(30,58,95,0.04); position: relative;
       }
 .quote::before {
-content: '';
-position: absolute;
-top: -11px; left: 20px;
+content: ""; position: absolute; top: -11px; left: 20px;
 width: 36px; height: 20px;
 background: rgba(232,184,75,0.38);
 border-top: 1px solid rgba(232,184,75,0.5);
 border-bottom: 1px solid rgba(232,184,75,0.5);
 transform: rotate(1.5deg);
       }
-.quote p {
-font-family: var(--font-serif);
-font-size: 1.25rem; font-style: italic;
-line-height: 1.65; color: var(--ink);
-      }
-.quote-attr {
-font-family: var(--font-mono);
-font-size: 9px; letter-spacing: 1px;
-color: var(--ink-faint); margin-top: 0.5rem; text-transform: uppercase;
-      }
-
+.quote p { font-family: var(--font-serif); font-size: var(--fs-quote); font-style: italic; line-height: 1.55; color: var(--ink); max-width: 56ch; }
+.quote-attr { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 1px; color: var(--ink-faint); margin-top: 0.75rem; text-transform: uppercase; }
 /* REFLECTION CARD */
-.rc { background: var(--paper-dark); border: 1.5px solid rgba(26,22,18,0.15); padding: 1.1rem; }
-.rc-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; color: var(--fd-blue); margin-bottom: 5px; }
-.rc-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.7; }
-
+.rc { background: var(--paper-dark); border: 1.5px solid rgba(26,22,18,0.15); padding: 1.2rem; }
+.rc-t { font-family: var(--font-text); font-size: var(--fs-body); font-weight: 700; color: var(--fd-blue); margin-bottom: 6px; }
+.rc-d { font-family: var(--font-text); font-size: var(--fs-body); color: var(--ink-light); line-height: 1.65; }
 /* IMAGES */
-.imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
+.imgs { display: grid; gap: 12px; margin-bottom: 1.5rem; }
 .imgs.c1 { grid-template-columns: 1fr; }
+.imgs.c2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
 .iw {
-border: 2px solid var(--ink);
-background: var(--paper-dark);
-position: relative;
-transition: transform 0.2s;
+border: 2px solid var(--ink); background: var(--paper-dark);
+position: relative; transition: transform 0.2s, box-shadow 0.2s;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
       }
-.iw:hover { transform: translate(-2px,-2px); }
-.iw::after {
-content: '';
-position: absolute;
-bottom: -4px; right: -4px;
-width: 100%; height: 100%;
-border: 1.5px solid rgba(26,22,18,0.15);
-z-index: -1;
-      }
-.iw img { width: 100%; display: block; }
+.iw:hover { transform: translate(-2px,-2px); box-shadow: 5px 7px 0 rgba(26,22,18,0.16); }
+.iw img { width: 100%; display: block; max-height: var(--fig-max-h); object-fit: contain; }
 .icap {
-padding: 7px 10px;
-font-family: var(--font-hand);
-font-size: 13px; color: var(--ink-faint);
-border-top: 1px solid rgba(26,22,18,0.12); line-height: 1.4;
+padding: 9px 12px;
+font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light);
+border-top: 1px solid rgba(26,22,18,0.12); line-height: 1.45;
       }
-
 /* TOOLS PILLS */
 .tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
 .tool {
-font-family: var(--font-mono);
-font-size: 9px; letter-spacing: 1px;
-padding: 3px 10px;
+font-family: var(--font-mono); font-size: var(--fs-mono-s);
+letter-spacing: 1px; padding: 4px 11px;
 background: var(--paper-dark);
 border: 1.5px solid rgba(26,22,18,0.2);
-color: var(--ink-light);
-text-transform: uppercase;
+color: var(--ink-light); text-transform: uppercase;
       }
-
 /* HIGHLIGHT */
-.hl-y {
-background: linear-gradient(120deg, rgba(232,184,75,0)0%, rgba(232,184,75,0.45)10%, rgba(232,184,75,0.45)90%, rgba(232,184,75,0)100%);
-padding: 0 2px;
-      }
-
+.hl-y { background: linear-gradient(120deg, rgba(232,184,75,0)0%, rgba(232,184,75,0.45)10%, rgba(232,184,75,0.45)90%, rgba(232,184,75,0)100%); padding: 0 2px; }
 /* CORNER FOLD */
 .corner-fold {
-position: absolute;
-bottom: 0; right: 0;
+position: absolute; bottom: 0; right: 0;
 width: 24px; height: 24px;
 background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
-border-top: 1px solid var(--pencil);
-border-left: 1px solid var(--pencil);
+border-top: 1px solid var(--pencil); border-left: 1px solid var(--pencil);
 pointer-events: none;
       }
-
-/* SCROLL REVEAL */
-.rev {
-opacity: 0;
-transform: translateY(16px);
-transition: opacity 0.5s ease, transform 0.5s ease;
+/* CLOSING NOTE */
+.closing {
+margin-top: 3rem; padding: 1.6rem;
+border: 1.5px solid rgba(26,22,18,0.12);
+background: var(--paper-dark); position: relative;
       }
+.closing::before {
+content: ""; position: absolute; top: -11px; left: 20px;
+width: 40px; height: 20px;
+background: rgba(30,58,95,0.22);
+border-top: 1px solid rgba(30,58,95,0.35);
+border-bottom: 1px solid rgba(30,58,95,0.35);
+transform: rotate(1.5deg);
+      }
+.closing p.q { font-family: var(--font-serif); font-size: var(--fs-quote); font-style: italic; color: var(--ink-light); line-height: 1.6; max-width: 58ch; }
+.closing p.sig { font-family: var(--font-scrawl); font-size: 20px; color: var(--fd-blue); margin-top: 0.75rem; transform: rotate(-1deg); display: inline-block; }
+/* ===== LIGHTBOX =====
+   Dense figures (journey maps especially) are unreadable at column
+   width. Click to open full-size. */
+.zoomable { cursor: zoom-in; }
+.lb {
+position: fixed; inset: 0; z-index: 500;
+background: rgba(26,22,18,.94);
+display: none; align-items: center; justify-content: center;
+padding: 5vh 4vw 8vh;
+      }
+.lb.open { display: flex; }
+.lb img {
+max-width: 100%; max-height: 88vh;
+object-fit: contain; display: block;
+border: 2px solid var(--paper); background: var(--paper);
+      }
+.lb-close {
+position: absolute; top: 14px; right: 18px;
+width: 42px; height: 42px;
+background: var(--paper); border: 2px solid var(--ink);
+color: var(--ink); cursor: pointer;
+font-family: var(--font-mono); font-size: 18px; line-height: 1;
+display: grid; place-items: center;
+      }
+.lb-close:hover { background: var(--ink); color: var(--paper); }
+.lb-cap {
+position: absolute; bottom: 18px; left: 0; right: 0;
+text-align: center; padding: 0 6vw;
+font-family: var(--font-text); font-size: var(--fs-cap);
+color: rgba(255,255,255,.82); line-height: 1.5;
+      }
+.lb-hint {
+font-family: var(--font-mono); font-size: var(--fs-mono-s);
+letter-spacing: 1.2px; text-transform: uppercase;
+color: rgba(255,255,255,.45); display: block; margin-top: 6px;
+      }
+/* SCROLL REVEAL */
+.rev { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
 .rev.in { opacity: 1; transform: none; }
-
+@media (prefers-reduced-motion: reduce) { .rev { opacity: 1; transform: none; transition: none; } }
 /* FOOTER */
 footer {
 border-top: 2.5px solid var(--ink);
-padding: 1.25rem 2rem;
-text-align: center;
-font-family: var(--font-mono);
-font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-color: var(--pencil);
-margin-left: 32px;
+padding: 1.4rem 2rem; text-align: center;
+font-family: var(--font-mono); font-size: var(--fs-mono-s);
+letter-spacing: 1.5px; text-transform: uppercase;
+color: var(--ink-faint); margin-left: var(--spiral);
       }
 
-/* RESPONSIVE */
-@media (max-width: 860px) {
+/* ---------- SMALL SCREENS ---------- */
+@media (max-width: 1180px) {
+:root { --side-w: 178px; --main-pad: 2.25rem; }
+.nav-links { gap: 1.4rem; }
+      }
+
+@media (max-width: 1024px) {
+:root { --spiral: 0px; }
+.spiral-binding { display: none; }
 .sidenav { display: none; }
-.main { margin-left: 32px; padding: 5rem 1.5rem 5rem; }
-.stats { grid-template-columns: repeat(2, 1fr); }
+.main { margin-left: 0; max-width: 100%; padding: calc(var(--nav-h) + 2.5rem) 2rem 5rem; }
+.g3 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      }
+
+@media (max-width: 860px) {
+.annot-legend { grid-template-columns: 1fr; }
+.annot-row { border-right: none; }
+.annot-pin { width: 26px; height: 26px; }
+      }
+
+@media (max-width: 768px) {
+:root { --hero-media-h: 300px; --fig-max-h: 320px; }
+.hamburger { display: flex; }
+.nav-links {
+position: absolute; top: calc(100% + 2.5px); left: -100%;
+width: 100%; background: var(--paper);
+border-bottom: 2.5px solid var(--ink);
+flex-direction: column; align-items: stretch;
+padding: 20px 1.5rem 24px; gap: 0;
+transition: left 0.3s ease; z-index: 99;
+      }
+.nav-links.open { left: 0; }
+.nav-links a { font-size: 18px; padding: 10px 0; width: 100%; border-bottom: 1px solid var(--pencil-light); color: var(--ink); }
+.nav-links li:last-child a { border-bottom: none; }
+.topnav { padding: 10px 1.5rem; }
+.main { padding: calc(var(--nav-h) + 2rem) 1.5rem 4rem; }
+.stats { grid-template-columns: repeat(2, minmax(0,1fr)); }
+.stat:nth-child(2) { border-right: none; }
+.stat:nth-child(1), .stat:nth-child(2) { border-bottom: 1.5px solid rgba(26,22,18,0.2); }
 .g3, .g2 { grid-template-columns: 1fr; }
 .ba-grid { grid-template-columns: 1fr; }
+.imgs.c2 { grid-template-columns: 1fr; }
 .it { grid-template-columns: 1fr; }
 .it-arr { display: none; }
-.pcard-quote { min-height: 0; }
+.sec { margin-bottom: 3.5rem; }
+.meta { gap: 1.5rem; margin-bottom: 3.5rem; }
       }
-@media (max-width: 600px) {
-.spiral-binding { display: none; }
-.topnav, footer { margin-left: 0; left: 0; }
-.main { margin-left: 0; padding: 5rem 1.25rem 4rem; }
-.nav-links { display: none; }
-.hero-h { font-size: 2.2rem; }
+
+@media (max-width: 480px) {
+.topnav { padding: 10px 1rem; }
+.main { padding: calc(var(--nav-h) + 1.75rem) 1rem 3.5rem; }
+.stats { grid-template-columns: 1fr; }
+.stat { border-right: none; border-bottom: 1.5px solid rgba(26,22,18,0.2); }
+.stat:last-child { border-bottom: none; }
+      }
+
+/* ==========================================================
+   BIG SCREENS — the column grows instead of stranding an
+   880px measure in the middle of a large display.
+   ========================================================== */
+@media (min-width: 1600px) {
+:root { --side-w: 224px; --main-max: 980px; --main-pad: 3.5rem; --nav-h: 66px; --hero-media-h: 470px; --fig-max-h: 460px; }
+      }
+
+@media (min-width: 1920px) {
+:root { --side-w: 250px; --main-max: 1090px; --main-pad: 4rem; --nav-h: 72px; --spiral: 40px; --rule: 32px; --hero-media-h: 520px; --fig-max-h: 510px; }
+.nav-links { gap: 2.4rem; }
+.sec { margin-bottom: 6rem; }
+.g3, .g2 { gap: 16px; }
+      }
+
+@media (min-width: 2560px) {
+:root {
+--side-w: 300px; --main-max: 1320px; --main-pad: 5rem; --nav-h: 84px; --spiral: 48px; --rule: 38px;
+--hero-media-h: 640px; --fig-max-h: 620px;
+/* second ramp for TV viewing distance; each floor equals the base ceiling */
+--fs-base:   clamp(19px,   calc(7px + 0.469vw),   25px);
+--fs-lead:   clamp(20.5px, calc(3.5px + 0.664vw), 29px);
+--fs-body:   clamp(17.5px, calc(6.5px + 0.43vw),  23px);
+--fs-ui:     clamp(17px,   calc(7px + 0.391vw),   22px);
+--fs-cap:    clamp(16px,   calc(6px + 0.39vw),    21px);
+--fs-quote:  clamp(30px,   calc(9px + 0.82vw),    40px);
+--fs-mono-s: clamp(14px,   calc(7.4px + 0.258vw), 18px);
+--fs-mono-m: clamp(16px,   calc(8.8px + 0.281vw), 21px);
+    }
+.sec { margin-bottom: 7.5rem; }
+.g3, .g2 { gap: 22px; }
+.stat { padding: 1.8rem 1.6rem; }
+.annot-pin { width: 40px; height: 40px; }
+      }
+
+@media (min-width: 3200px) {
+:root { --side-w: 360px; --main-max: 1620px; --main-pad: 6rem; --nav-h: 96px; --spiral: 60px; --rule: 46px; --hero-media-h: 780px; --fig-max-h: 760px; }
       }
 </style>
 </head>
 <body>
-
 <!-- HAND-DRAWN ICON SPRITE (no emoji) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
 <defs>
@@ -1023,24 +808,25 @@ margin-left: 32px;
 <symbol id="i-check" viewBox="0 0 24 24"><path d="M4.4 12.6 9.6 18 19.8 6.4"/></symbol>
 </defs>
 </svg>
-
 <!-- SPIRAL BINDING -->
 <div class="spiral-binding" aria-hidden="true" id="spiralBinding"></div>
-
 <!-- TOP NAV -->
 <nav class="topnav">
 <div class="topnav-in">
 <a href="../index.html" class="logo">Inayat</a>
-<ul class="nav-links">
+<ul class="nav-links" id="navLinks">
 <li><a href="../index.html">Home</a></li>
 <li><a href="../About.html">About</a></li>
 <li><a href="../Projects.html">Projects</a></li>
-<li><a href="../Resume.html">Résumé</a></li>
+<li><a href="../Playground.html">Playground</a></li>
+<li><a href="../assets/Resume_InayatDesign.pdf" target="_blank">Résumé</a></li>
 <li><a href="../index.html#contact">Contact</a></li>
 </ul>
+<button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+<span></span><span></span><span></span>
+</button>
 </div>
 </nav>
-
 <!-- SIDENAV -->
 <aside class="sidenav">
 <a href="../Projects.html" class="back-link">← Projects</a>
@@ -1063,19 +849,15 @@ margin-left: 32px;
 <!-- Fraud doodle -->
 <div style="margin-top:auto; padding-top:1rem; opacity:0.28; pointer-events:none;">
 <svg viewBox="0 0 80 64" style="width:70px">
-<!-- Shield -->
 <path d="M40,8 L58,16 L58,34 C58,46 40,56 40,56 C40,56 22,46 22,34 L22,16 Z" stroke="#1e3a5f" stroke-width="1.5" fill="rgba(30,58,95,0.08)"/>
-<!-- Magnifier -->
-<circle cx="38" cy="30" r="8" stroke="#b87a0a" stroke-width="1.2" fill="none"/>
-<line x1="44" y1="36" x2="50" y2="42" stroke="#b87a0a" stroke-width="1.5" stroke-linecap="round"/>
+<circle cx="38" cy="30" r="8" stroke="#96650a" stroke-width="1.2" fill="none"/>
+<line x1="44" y1="36" x2="50" y2="42" stroke="#96650a" stroke-width="1.5" stroke-linecap="round"/>
 <text x="4" y="60" font-family="Reenie Beanie, cursive" font-size="9" fill="#8a7f72">fraud detect</text>
 </svg>
 </div>
 </aside>
-
 <!-- MAIN -->
 <main class="main">
-
 <!-- HERO -->
 <header style="margin-bottom:4rem">
 <div class="tags">
@@ -1083,28 +865,23 @@ margin-left: 32px;
 <span class="tag">Data Visualisation</span>
 <span class="tag">Lead Researcher</span>
 </div>
-
 <h1 class="hero-h">
           Fraud Detection<br/>
 <span class="squiggle-wrap" style="color: var(--fd-blue);">Dashboard
 <svg viewBox="0 0 210 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M2,8 C35,3 70,13 105,7 C140,2 175,11 208,7" stroke="#b87a0a" stroke-width="3" fill="none" stroke-linecap="round"/>
+<path d="M2,8 C35,3 70,13 105,7 C140,2 175,11 208,7" stroke="#96650a" stroke-width="3" fill="none" stroke-linecap="round"/>
 </svg>
 </span>
 </h1>
-
 <p class="hero-sub">Case Study — Mastercard · 4 months</p>
-
 <p class="hero-p">
           Transforming complex fraud data into <span class="hl-y">actionable insights</span> — supporting faster, clearer, and more confident fraud investigations.
 </p>
-
 <div class="hero-video">
 <video autoplay muted loop playsinline>
 <source src="../Images/Mastercard-IAT333.mp4" type="video/mp4" />
 </video>
 </div>
-
 <div class="stats">
 <div class="stat">
 <div class="s-n">60%</div>
@@ -1127,7 +904,6 @@ margin-left: 32px;
 <div class="s-sub">Run by me, weekly</div>
 </div>
 </div>
-
 <div class="meta">
 <div><div class="m-k">Timeline</div><div class="m-v">4 months</div></div>
 <div><div class="m-k">My Role</div><div class="m-v">Lead Researcher<br/>Comms Co-Lead</div></div>
@@ -1135,27 +911,25 @@ margin-left: 32px;
 <div><div class="m-k">Tools</div><div class="m-v">Figma, User Research<br/>Data Visualisation</div></div>
 </div>
 </header>
-
 <!-- 00 OVERVIEW -->
 <section id="overview" class="sec rev">
 <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
 <h2 class="sec-h">The Problem</h2>
 <p class="sec-lead">Mastercard's fraud dashboard relied on dense data tables and fragmented views — making it difficult to spot trends, assess performance, and prioritise investigations.</p>
 <div class="rule"></div>
-
 <div class="g2" style="margin-bottom:2rem">
 <div class="nc">
-<div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Dense tables</div>
+<div class="nc-lbl">Dense tables</div>
 <div class="nc-t">No visual patterns</div>
 <div class="nc-d">Critical fraud signals buried in rows and columns — analysts had to manually scroll and mentally reconstruct trends</div>
 </div>
 <div class="nc">
-<div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Fragmented</div>
+<div class="nc-lbl">Fragmented</div>
 <div class="nc-t">Scattered across tabs</div>
 <div class="nc-d">Information split across multiple views, forcing constant context-switching and loss of the bigger picture</div>
 </div>
 <div class="nc">
-<div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">No context</div>
+<div class="nc-lbl">No context</div>
 <div class="nc-t">Spikes unexplained</div>
 <div class="nc-d">When fraud spikes occurred, analysts had no immediate reason why — leading to uncertainty and delayed responses</div>
 </div>
@@ -1165,7 +939,6 @@ margin-left: 32px;
 <div class="nc-d">With 50+ detection rules running simultaneously, there was no way to compare performance or see which needed attention</div>
 </div>
 </div>
-
 <div class="sub">Design Goals</div>
 <div class="flist">
 <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-target"/></svg></div><div><div class="fr-t">Improve data accuracy</div><div class="fr-d">Detect and reduce false positives that overwhelm analysts and erode trust in the system.</div></div></div>
@@ -1173,7 +946,6 @@ margin-left: 32px;
 <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-shield"/></svg></div><div><div class="fr-t">Protect customers and merchants</div><div class="fr-d">Showing direct fraud impact helps analysts connect data to real-world consequences.</div></div></div>
 <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-people"/></svg></div><div><div class="fr-t">Improve team collaboration</div><div class="fr-d">Shared knowledge and visibility across teams reduces risk and improves detection rates.</div></div></div>
 </div>
-
 <div class="sub">Tools &amp; Methods</div>
 <div class="tools">
 <span class="tool">Figma</span>
@@ -1185,28 +957,24 @@ margin-left: 32px;
 <span class="tool">Stakeholder Comms</span>
 </div>
 </section>
-
 <!-- 01 MY ROLE -->
 <section id="contrib" class="sec rev">
 <div class="phase"><div class="p-dot">1</div><span class="p-txt">My Role</span></div>
 <h2 class="sec-h">My Contributions</h2>
 <p class="sec-lead">As Lead Researcher and Communication Co-Lead, I owned the end of the process that turns ambiguous user needs into clear design decisions.</p>
 <div class="rule"></div>
-
 <div class="g3">
 <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-search"/></svg></div><div class="ic-t">Lead Researcher</div><div class="ic-d">Conducted weekly stakeholder interviews with Mastercard's fraud analyst team. Created journey maps for Jordan and Chen. Led user workshops to validate design concepts.</div></div>
 <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg></div><div class="ic-t">Communication Co-Lead</div><div class="ic-d">Facilitated weekly syncs with Mastercard's Product Design team. Presented research findings and design iterations. Documented decisions and coordinated cross-functional collaboration.</div></div>
 <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-palette"/></svg></div><div class="ic-t">Design Contributions</div><div class="ic-d">Co-designed the Visual Insider dashboard concept. Created wireframes and prototypes for testing. Developed the data visualisation strategy for fraud metrics.</div></div>
 </div>
 </section>
-
 <!-- 02 PERSONAS -->
 <section id="personas" class="sec rev">
 <div class="phase"><div class="p-dot">2</div><span class="p-txt">User Personas</span></div>
 <h2 class="sec-h">Three Users,<br/>Three Different Needs</h2>
 <p class="sec-lead">I ran the six analyst interviews these personas came out of. We shaped the three profiles together as a team — each one a different relationship to the dashboard.</p>
 <div class="rule"></div>
-
 <div class="g3">
 <div class="pcard">
 <div class="pcard-av">J</div>
@@ -1260,14 +1028,12 @@ margin-left: 32px;
 </div>
 </div>
 </section>
-
 <!-- 03 DIRECTIONS -->
 <section id="directions" class="sec rev">
 <div class="phase"><div class="p-dot">3</div><span class="p-txt">Potential Directions</span></div>
 <h2 class="sec-h">Three Directions<br/>We Explored</h2>
 <p class="sec-lead">We evaluated three distinct design directions before converging on the one that served all three personas most effectively.</p>
 <div class="rule"></div>
-
 <div class="g3">
 <div class="dcard">
 <div class="dcard-label">Direction A</div>
@@ -1285,20 +1051,17 @@ margin-left: 32px;
 <div class="dcard-d">Automate audit readiness and documentation. Addresses Blair's pain around audit prep — auto-generated reports, real-time compliance scoring, and evidence library.</div>
 </div>
 </div>
-
 <div class="quote">
 <p>We chose the Fraud Impact Dashboard because it was the only direction that served all three personas at once — Jordan's testing needs, Blair's audit trail, and Chen's business case.</p>
 <div class="quote-attr">— Team decision, week 6</div>
 </div>
 </section>
-
 <!-- 04 JOURNEY MAP -->
 <section id="journey" class="sec rev">
 <div class="phase"><div class="p-dot">4</div><span class="p-txt">Journey Mapping</span></div>
 <h2 class="sec-h">Jordan's Workflow</h2>
-<p class="sec-lead">I mapped Jordan's entire fraud rule creation process to identify exactly where friction occurred and where design could intervene.</p>
+<p class="sec-lead">I mapped two journeys — Jordan's rule-creation process and Chen's executive view — because the same dashboard has to answer two very different questions.</p>
 <div class="rule"></div>
-
 <div class="slist" style="margin-bottom:2rem">
 <div class="st"><div class="st-n">01</div><div><div class="st-t">Observe &amp; Analyse</div><div class="st-d">Understand emerging fraud patterns and identify weaknesses in current rule sets.</div></div></div>
 <div class="st"><div class="st-n">02</div><div><div class="st-t">Ideate &amp; Preventative</div><div class="st-d">Design rules that pre-emptively stop emerging fraud patterns before they scale.</div></div></div>
@@ -1306,11 +1069,10 @@ margin-left: 32px;
 <div class="st"><div class="st-n">04</div><div><div class="st-t">Deploy &amp; Mitigate</div><div class="st-d">Release the new rule into production to minimise active risk across transactions.</div></div></div>
 <div class="st"><div class="st-n">05</div><div><div class="st-t">Evaluate &amp; Learn</div><div class="st-d">Measure post-deployment performance and feed insights back into the lifecycle.</div></div></div>
 </div>
-
 <!-- ANNOTATED · pin positions are placeholders — open this page with ?annotate=1 and click to set them -->
 <figure class="annot-fig" id="fig-journey">
 <div class="annot-media">
-<img src="https://inayatgulati.github.io/Inayat_Portfolio/Images/UJ2.png" alt="Fraud Rule Creator Journey Map"/>
+<img src="../Images/UJ2.png" alt="Fraud Rule Creator Journey Map"/>
 <div class="annot-layer">
 <button class="annot-pin mine" style="--x:18%;--y:42%" data-n="1" aria-label="Annotation 1">1</button>
 <button class="annot-pin mine" style="--x:50%;--y:42%" data-n="2" aria-label="Annotation 2">2</button>
@@ -1321,6 +1083,7 @@ margin-left: 32px;
 <div class="annot-cap">Jordan's journey map<span>I built this from the analyst interviews — rule creation, end to end</span></div>
 <div class="annot-key">
 <b><i class="mine"></i> My work</b><b><i></i> Team</b>
+<button class="annot-toggle" data-zoom-fig="fig-journey">Enlarge</button>
 <button class="annot-toggle" data-toggle="fig-journey">Hide pins</button>
 </div>
 </div>
@@ -1342,22 +1105,27 @@ margin-left: 32px;
 </div>
 </div>
 </figure>
-</section>
 
+<div class="sub">The Executive View</div>
+<div class="imgs c1">
+<div class="iw">
+<img src="../Images/UJ-Chen.png" alt="Chen Li — Senior Leader journey map" class="zoomable" data-cap="Chen Li's journey — monitoring, ROI justification, board reporting, cross-functional alignment and review. Mapped alongside Jordan's because the executive asks &quot;was this worth it?&quot; where the analyst asks &quot;what do I do next?&quot;"/>
+<div class="icap">Chen Li's journey map — the executive path through the same system. Click to enlarge.</div>
+</div>
+</div>
+</section>
 <!-- 05 WORKSHOP -->
 <section id="workshop" class="sec rev">
 <div class="phase"><div class="p-dot">5</div><span class="p-txt">Design Workshop</span></div>
 <h2 class="sec-h">Testing With<br/>Real Scenarios</h2>
 <p class="sec-lead">I designed and facilitated the peer test workshops, where participants role-played as fraud analysts — using game mechanics to surface real usability insights.</p>
 <div class="rule"></div>
-
 <div class="sub">Workshop Activities</div>
 <div class="flist" style="margin-bottom:2rem">
 <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-eye"/></svg></div><div><div class="fr-t">Eye Doctor Game</div><div class="fr-d">Participants compared visual designs to identify which presented risk signals more effectively — surfacing clarity and hierarchy issues.</div></div></div>
 <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-inspect"/></svg></div><div><div class="fr-t">Murder Mystery Game</div><div class="fr-d">Teams analysed mock customer data to uncover fraudulent accounts — directly testing pattern recognition abilities in realistic conditions.</div></div></div>
 <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-pen"/></svg></div><div><div class="fr-t">Dashboard Creation</div><div class="fr-d">Participants designed their ideal fraud detection dashboard with pen and paper — revealing mental models and priority hierarchies.</div></div></div>
 </div>
-
 <div class="sub">Key Insights from Testing</div>
 <div class="flist" style="margin-bottom:2rem">
 <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-bulb"/></svg></div><div><div class="fr-t">Clarity over density</div><div class="fr-d">Participants strongly preferred clearer, labelled designs — readability directly increased perceived trustworthiness of the data.</div></div></div>
@@ -1365,7 +1133,6 @@ margin-left: 32px;
 <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-map"/></svg></div><div><div class="fr-t">Context is non-negotiable</div><div class="fr-d">Legends, consistent scales, and regional context were specifically requested — data without context caused confusion and distrust.</div></div></div>
 <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-cursor"/></svg></div><div><div class="fr-t">One-click drill-downs</div><div class="fr-d">Participants wanted to go deeper without leaving the main view — progressive disclosure, not navigation away.</div></div></div>
 </div>
-
 <div class="sub">Revisions Identified</div>
 <div class="ilist">
 <div class="it">
@@ -1380,14 +1147,12 @@ margin-left: 32px;
 </div>
 </div>
 </section>
-
 <!-- 06 SOLUTION -->
 <section id="solution" class="sec rev">
 <div class="phase"><div class="p-dot">6</div><span class="p-txt">Design Solution</span></div>
 <h2 class="sec-h">The Redesigned<br/>Dashboard</h2>
 <p class="sec-lead">Three interconnected views — each solving a specific part of the analysts' workflow.</p>
 <div class="rule"></div>
-
 <!-- ANNOTATED · placeholder pin positions — set with ?annotate=1 -->
 <figure class="annot-fig" id="fig-main">
 <div class="annot-media">
@@ -1404,6 +1169,7 @@ margin-left: 32px;
 <div class="annot-cap">Main Dashboard Overview<span>Fraud trends, geographic patterns, merchant activity and rule performance in one view</span></div>
 <div class="annot-key">
 <b><i class="mine"></i> My work</b><b><i></i> Team</b>
+<button class="annot-toggle" data-zoom-fig="fig-main">Enlarge</button>
 <button class="annot-toggle" data-toggle="fig-main">Hide pins</button>
 </div>
 </div>
@@ -1440,6 +1206,7 @@ margin-left: 32px;
 <div class="annot-cap">Rule Performance Analytics<span>All 50+ fraud rules in one comparable view</span></div>
 <div class="annot-key">
 <b><i class="mine"></i> My work</b><b><i></i> Team</b>
+<button class="annot-toggle" data-zoom-fig="fig-rules">Enlarge</button>
 <button class="annot-toggle" data-toggle="fig-rules">Hide pins</button>
 </div>
 </div>
@@ -1471,6 +1238,7 @@ margin-left: 32px;
 <div class="annot-cap">AI-Powered Spike Explanations<span>Context for every anomaly, in place</span></div>
 <div class="annot-key">
 <b><i class="mine"></i> My work</b><b><i></i> Team</b>
+<button class="annot-toggle" data-zoom-fig="fig-ai">Enlarge</button>
 <button class="annot-toggle" data-toggle="fig-ai">Hide pins</button>
 </div>
 </div>
@@ -1487,6 +1255,17 @@ margin-left: 32px;
 </div>
 </div>
 </figure>
+<div class="sub">Detail Views</div>
+<div class="imgs c2">
+<div class="iw">
+<img src="../Images/false-positives-screen.png" alt="Missed fraud / false positives screen with date filter open" class="zoomable" data-cap="Missed fraud (false positives) with the unified date control open — one range setting that every chart on the page inherits."/>
+<div class="icap">Unified date filtering — set the range once, every chart follows.</div>
+</div>
+<div class="iw">
+<img src="../Images/failed-rules-screen.png" alt="Failed rule breakdown for rule CA-221" class="zoomable" data-cap="Failed rule breakdown for CA-221 — the AI-written explanation of why the rule underperformed, plus the transaction sample behind it."/>
+<div class="icap">Rule detail — the explanation engine and the evidence behind it.</div>
+</div>
+</div>
 
 <div class="sub">Key Features</div>
 <div class="flist">
@@ -1498,14 +1277,12 @@ margin-left: 32px;
 <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-export"/></svg></div><div><div class="fr-t">Export Capabilities</div><div class="fr-d">One-click report generation for stakeholder communication and audit documentation.</div></div></div>
 </div>
 </section>
-
 <!-- 07 PROBLEMS SOLVED -->
 <section id="problems" class="sec rev">
 <div class="phase"><div class="p-dot">7</div><span class="p-txt">Problems Solved</span></div>
 <h2 class="sec-h">Six Problems,<br/>Six Solutions</h2>
 <p class="sec-lead">Every design decision mapped directly back to a specific, research-validated pain point.</p>
 <div class="rule"></div>
-
 <div class="ilist">
 <div class="it">
 <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Critical patterns buried in endless rows and columns</div></div>
@@ -1539,149 +1316,214 @@ margin-left: 32px;
 </div>
 </div>
 </section>
-
 <!-- 08 BEFORE & AFTER -->
 <section id="beforeafter" class="sec rev">
 <div class="phase"><div class="p-dot">8</div><span class="p-txt">Before &amp; After</span></div>
 <h2 class="sec-h">The Transformation</h2>
 <p class="sec-lead">From a cluttered table view to a clear, hierarchical dashboard that surfaces the right information at the right time.</p>
 <div class="rule"></div>
-
 <div class="ba-grid">
 <div class="ba-wrap before">
-<img src="https://inayatgulati.github.io/Inayat_Portfolio/Images/before.png" alt="Before design"/>
+<img src="../Images/before.png" alt="Before design" class="zoomable" data-cap="Before — the original fraud dashboard: dense tables, no visual hierarchy, no context for spikes."/>
 <div class="ba-label">Before — cluttered, low clarity</div>
 </div>
 <div class="ba-wrap after">
-<img src="https://inayatgulati.github.io/Inayat_Portfolio/Images/Chart 2.png" alt="After design"/>
+<img src="../Images/Chart 2.png" alt="After design" class="zoomable" data-cap="After — clear hierarchy, labelled axes, and regional context on every comparison."/>
 <div class="ba-label">After — clear hierarchy + context</div>
 </div>
 </div>
 </section>
-
 <!-- 09 IMPACT -->
 <section id="impact" class="sec rev">
 <div class="phase"><div class="p-dot">9</div><span class="p-txt">Impact &amp; Results</span></div>
 <h2 class="sec-h">Measured Outcomes</h2>
 <p class="sec-lead">Validated through testing with the same fraud analyst team who informed the research.</p>
 <div class="rule"></div>
-
 <div class="g2" style="margin-bottom:2rem">
 <div class="nc"><div class="nc-n">60%</div><div class="nc-t">Less time interpreting data</div><div class="nc-d">Analysts spend more time on strategic fraud prevention, less on manual comparison</div></div>
-<div class="nc"><div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Faster</div><div class="nc-t">Pattern recognition speed</div><div class="nc-d">Visual comparison across time periods replaced manual side-by-side analysis</div></div>
-<div class="nc"><div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Higher</div><div class="nc-t">Decision confidence</div><div class="nc-d">Context provided for anomalies increased analysts' confidence in their investigation conclusions</div></div>
-<div class="nc"><div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Improved</div><div class="nc-t">Team collaboration</div><div class="nc-d">Clear, exportable visualisations improved cross-team communication and shared knowledge</div></div>
+<div class="nc"><div class="nc-lbl">Faster</div><div class="nc-t">Pattern recognition speed</div><div class="nc-d">Visual comparison across time periods replaced manual side-by-side analysis</div></div>
+<div class="nc"><div class="nc-lbl">Higher</div><div class="nc-t">Decision confidence</div><div class="nc-d">Context provided for anomalies increased analysts' confidence in their investigation conclusions</div></div>
+<div class="nc"><div class="nc-lbl">Improved</div><div class="nc-t">Team collaboration</div><div class="nc-d">Clear, exportable visualisations improved cross-team communication and shared knowledge</div></div>
 </div>
-
 <div class="quote">
 <p>"The new dashboard completely transformed how we work. What used to take hours of manual comparison now takes minutes. The AI explanations give us confidence in our decisions."</p>
 <div class="quote-attr">— Senior Fraud Analyst, Mastercard</div>
 </div>
 </section>
-
 <!-- 10 REFLECTION -->
 <section id="reflection" class="sec rev">
 <div class="phase"><div class="p-dot">10</div><span class="p-txt">Reflection</span></div>
 <h2 class="sec-h">What I Learned</h2>
 <p class="sec-lead">Enterprise dashboard design in a high-stakes environment taught me things no other project type could.</p>
 <div class="rule"></div>
-
 <div class="g2">
 <div class="rc"><div class="rc-t">Context is king</div><div class="rc-d">Data without context leads to confusion and delayed decisions. Providing the "why" behind metrics is as important as the metrics themselves — especially in fraud detection where wrong calls have real consequences.</div></div>
 <div class="rc"><div class="rc-t">Progressive disclosure</div><div class="rc-d">In complex systems, showing everything at once overwhelms users. Layering information through interaction creates clarity — the overview should earn the drill-down, not replace it.</div></div>
 <div class="rc"><div class="rc-t">Test with real scenarios</div><div class="rc-d">Workshop activities that simulate actual work tasks reveal insights that interviews alone cannot. The Murder Mystery game surfaced pattern recognition issues we'd never have found in a standard usability test.</div></div>
 <div class="rc"><div class="rc-t">Visual hierarchy is a design decision</div><div class="rc-d">Colour, size, and position guide attention. In a dashboard where every metric competes for focus, strategic visual hierarchy is the difference between a tool and a liability.</div></div>
 </div>
-
 <!-- Closing scrawl -->
-<div style="margin-top:3rem; padding:1.5rem; border:1.5px solid rgba(26,22,18,0.12); background:var(--paper-dark); position:relative; transform:rotate(-0.3deg)">
-<div style="position:absolute; top:-11px; left:20px; width:40px; height:20px; background:rgba(30,58,95,0.22); border-top:1px solid rgba(30,58,95,0.35); border-bottom:1px solid rgba(30,58,95,0.35); transform:rotate(1.5deg)"></div>
-<p style="font-family:var(--font-serif); font-size:1.1rem; font-style:italic; color:var(--ink-light); line-height:1.7">
+<div class="closing">
+<p class="q">
             The biggest insight was that <span class="hl-y">clarity is a form of trust</span>. When analysts can see not just what is happening but why, they stop second-guessing the tool and start using it to do their best work.
 </p>
-<p style="font-family:var(--font-scrawl); font-size:18px; color:var(--fd-blue); margin-top:0.75rem; transform:rotate(-1deg); display:inline-block">— Inayat</p>
+<p class="sig">— Inayat</p>
 <div class="corner-fold"></div>
 </div>
 </section>
-
 </main>
+<!-- LIGHTBOX -->
+<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image">
+<button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+<img id="lbImg" src="" alt="" />
+<div class="lb-cap" id="lbCap"></div>
+</div>
 
-<footer>© 2025 Inayat &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; Enterprise UX · Data Visualisation · Research</footer>
-
+<footer>&copy; 2026 Inayat &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; Enterprise UX · Data Visualisation · Research</footer>
 <script>
-// Spiral holes
-const spiral = document.getElementById('spiralBinding');
-const count = Math.floor(window.innerHeight / 44) + 2;
-for (let i = 0; i < count; i++) {
-const h = document.createElement('div');
-h.className = 'spiral-hole';
+/* ---- spiral binding: rebuild holes on resize so it scales with the viewport ---- */
+const spiral = document.getElementById("spiralBinding");
+function buildSpiral() {
+if (!spiral) return;
+spiral.innerHTML = "";
+const w = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--spiral")) || 32;
+if (!w) return;
+const step = Math.max(36, w * 1.4);
+const holeCount = Math.floor(window.innerHeight / step) + 2;
+for (let i = 0; i < holeCount; i++) {
+const h = document.createElement("div");
+h.className = "spiral-hole";
+h.style.marginBottom = (step - w * 0.5) + "px";
 spiral.appendChild(h);
       }
+    }
+buildSpiral();
+let resizeTimer;
+window.addEventListener("resize", () => {
+clearTimeout(resizeTimer);
+resizeTimer = setTimeout(buildSpiral, 150);
+    });
 
-// Scroll reveal
+/* ---- mobile nav (the old layout simply hid the links, leaving no nav at all) ---- */
+const hamburger = document.getElementById("hamburger");
+const navLinks = document.getElementById("navLinks");
+hamburger.addEventListener("click", () => {
+const open = navLinks.classList.toggle("open");
+hamburger.classList.toggle("open", open);
+hamburger.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+navLinks.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
+navLinks.classList.remove("open");
+hamburger.classList.remove("open");
+hamburger.setAttribute("aria-expanded", "false");
+    }));
+
+/* ---- scroll reveal ---- */
 const ro = new IntersectionObserver(es => es.forEach(e => {
-if (e.isIntersecting) e.target.classList.add('in');
-      }), { threshold: 0.06 });
-document.querySelectorAll('.rev').forEach(el => ro.observe(el));
+if (e.isIntersecting) { e.target.classList.add("in"); ro.unobserve(e.target); }
+    }), { threshold: 0.06 });
+document.querySelectorAll(".rev").forEach(el => ro.observe(el));
 
-// ---- Annotations: pin / legend highlight sync, show-hide ----
-document.querySelectorAll('.annot-fig').forEach(function (fig) {
+/* ---- Annotations: pin / legend highlight sync, show-hide ---- */
+document.querySelectorAll(".annot-fig").forEach(function (fig) {
   var link = function (n, on) {
     fig.querySelectorAll('[data-n="' + n + '"]').forEach(function (el) {
-      el.classList.toggle('hot', on);
+      el.classList.toggle("hot", on);
     });
   };
-  fig.querySelectorAll('.annot-pin, .annot-row').forEach(function (el) {
-    var n = el.getAttribute('data-n');
-    ['mouseenter', 'focus'].forEach(function (ev) {
+  fig.querySelectorAll(".annot-pin, .annot-row").forEach(function (el) {
+    var n = el.getAttribute("data-n");
+    ["mouseenter", "focus"].forEach(function (ev) {
       el.addEventListener(ev, function () { link(n, true); });
     });
-    ['mouseleave', 'blur'].forEach(function (ev) {
+    ["mouseleave", "blur"].forEach(function (ev) {
       el.addEventListener(ev, function () { link(n, false); });
     });
   });
 });
-document.querySelectorAll('.annot-toggle').forEach(function (btn) {
-  btn.addEventListener('click', function () {
+document.querySelectorAll(".annot-toggle[data-toggle]").forEach(function (btn) {
+  btn.addEventListener("click", function () {
     var fig = document.getElementById(btn.dataset.toggle);
-    var off = fig.classList.toggle('pins-off');
-    btn.textContent = off ? 'Show pins' : 'Hide pins';
+    var off = fig.classList.toggle("pins-off");
+    btn.textContent = off ? "Show pins" : "Hide pins";
   });
 });
 
-// ---- Pin placement helper: add ?annotate=1 to the URL ----
-if (new URLSearchParams(location.search).has('annotate')) {
-  document.body.classList.add('annotating');
-  var box = document.createElement('div');
-  box.className = 'ann-help';
+/* ---- Pin placement helper: add ?annotate=1 to the URL ---- */
+if (new URLSearchParams(location.search).has("annotate")) {
+  document.body.classList.add("annotating");
+  var box = document.createElement("div");
+  box.className = "ann-help";
   box.innerHTML = '<b>Pin placement mode</b>Click anywhere on a screen to get its coordinates. ' +
                   'The markup is copied to your clipboard.<code>waiting for a click…</code>';
   document.body.appendChild(box);
-  var out = box.querySelector('code');
-  document.querySelectorAll('.annot-media').forEach(function (media) {
-    media.addEventListener('click', function (e) {
+  var out = box.querySelector("code");
+  document.querySelectorAll(".annot-media").forEach(function (media) {
+    media.addEventListener("click", function (e) {
       var r = media.getBoundingClientRect();
       var x = (((e.clientX - r.left) / r.width) * 100).toFixed(1);
       var y = (((e.clientY - r.top) / r.height) * 100).toFixed(1);
       var snippet = 'style="--x:' + x + '%;--y:' + y + '%"';
-      out.textContent = media.closest('.annot-fig').id + '  →  ' + snippet;
+      out.textContent = media.closest(".annot-fig").id + "  →  " + snippet;
       if (navigator.clipboard) navigator.clipboard.writeText(snippet).catch(function () {});
     });
   });
 }
 
-// Active sidenav
-const links = document.querySelectorAll('.side-a');
-const secs  = document.querySelectorAll('.sec');
+/* ---- Lightbox ---- */
+const lb = document.getElementById("lightbox");
+const lbImg = document.getElementById("lbImg");
+const lbCap = document.getElementById("lbCap");
+let lastFocus = null;
+
+function openLB(src, alt, cap) {
+lastFocus = document.activeElement;
+lbImg.src = src;
+lbImg.alt = alt || "";
+lbCap.innerHTML = (cap || "") + '<span class="lb-hint">Click anywhere or press Esc to close</span>';
+lb.classList.add("open");
+document.body.style.overflow = "hidden";
+document.getElementById("lbClose").focus();
+    }
+function closeLB() {
+lb.classList.remove("open");
+lbImg.src = "";
+document.body.style.overflow = "";
+if (lastFocus) lastFocus.focus();
+    }
+
+document.querySelectorAll("img.zoomable").forEach(function (img) {
+  img.addEventListener("click", function () {
+    openLB(img.currentSrc || img.src, img.alt, img.dataset.cap);
+  });
+});
+/* annotated figures get an explicit button — clicking the media itself
+   would fight with the pins sitting on top of it */
+document.querySelectorAll("[data-zoom-fig]").forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    var fig = document.getElementById(btn.dataset.zoomFig);
+    var img = fig && fig.querySelector(".annot-media img");
+    if (!img) return;
+    var cap = fig.querySelector(".annot-cap");
+    openLB(img.currentSrc || img.src, img.alt, cap ? cap.textContent : "");
+  });
+});
+document.getElementById("lbClose").addEventListener("click", closeLB);
+lb.addEventListener("click", e => { if (e.target !== lbImg) closeLB(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && lb.classList.contains("open")) closeLB(); });
+
+/* ---- Active sidenav ---- */
+const links = document.querySelectorAll(".side-a");
+const secs  = document.querySelectorAll(".sec");
 const so = new IntersectionObserver(es => {
 es.forEach(e => {
 if (e.isIntersecting) {
-links.forEach(l => l.classList.remove('active'));
+links.forEach(l => l.classList.remove("active"));
 const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
-if (a) a.classList.add('active');
-          }
-        });
-      }, { rootMargin: '-15% 0px -65% 0px' });
+if (a) a.classList.add("active");
+        }
+      });
+    }, { rootMargin: "-15% 0px -65% 0px" });
 secs.forEach(s => so.observe(s));
 </script>
 </body>
