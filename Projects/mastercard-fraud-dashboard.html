@@ -596,6 +596,10 @@ box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
       }
 .iw:hover { transform: translate(-2px,-2px); box-shadow: 5px 7px 0 rgba(26,22,18,0.16); }
 .iw img { width: 100%; display: block; max-height: var(--fig-max-h); object-fit: contain; }
+/* .iw.full — no height cap, so the image fills its box edge to edge at its
+   own aspect ratio. For maps that are taller than --fig-max-h, the cap plus
+   object-fit:contain would letterbox them into the middle of the frame. */
+.iw.full img { max-height: none; }
 .icap {
 padding: 9px 12px;
 font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light);
@@ -1141,7 +1145,7 @@ transition: left 0.3s ease; z-index: 99;
 
 <div class="sub">The Executive View</div>
 <div class="imgs c1">
-<div class="iw">
+<div class="iw full">
 <img src="../Images/UJ1.png" alt="Chen Li — Senior Leader journey map" class="zoomable" data-cap="Chen Li's journey — monitoring, ROI justification, board reporting, cross-functional alignment and review. Mapped alongside Jordan's because the executive asks &quot;was this worth it?&quot; where the analyst asks &quot;what do I do next?&quot;"/>
 <div class="icap">Chen Li's journey map — the executive path through the same system. Click to enlarge.</div>
 </div>
