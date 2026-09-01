@@ -647,10 +647,41 @@ display: none; align-items: center; justify-content: center;
 padding: 5vh 4vw 8vh;
       }
 .lb.open { display: flex; }
+/* the stage scrolls once the image is bigger than the screen, so a wide
+   journey map can be read at full size instead of shrunk to fit */
+.lb-stage {
+max-width: 100%; max-height: 88vh;
+overflow: auto; display: flex;
+align-items: center; justify-content: center;
+-webkit-overflow-scrolling: touch;
+      }
+.lb.zoomed .lb-stage { align-items: flex-start; justify-content: flex-start; cursor: grab; }
+.lb.zoomed .lb-stage.dragging { cursor: grabbing; }
 .lb img {
 max-width: 100%; max-height: 88vh;
 object-fit: contain; display: block;
 border: 2px solid var(--paper); background: var(--paper);
+      }
+.lb.zoomed img { max-width: none; max-height: none; }
+.lb img.can-zoom { cursor: zoom-in; }
+.lb.zoomed img { cursor: inherit; }
+.lb-zoom {
+position: absolute; top: 14px; right: 70px;
+display: none; align-items: center; gap: 8px;
+background: var(--paper); border: 2px solid var(--ink);
+height: 42px; padding: 0 6px;
+      }
+.lb-zoom.on { display: flex; }
+.lb-zoom button {
+background: none; border: 0; cursor: pointer; color: var(--ink);
+font-family: var(--font-mono); font-size: 17px; line-height: 1;
+width: 28px; height: 30px; display: grid; place-items: center;
+      }
+.lb-zoom button:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+.lb-zoom button:disabled { opacity: .3; cursor: default; }
+.lb-lvl {
+font-family: var(--font-mono); font-size: var(--fs-mono-s);
+letter-spacing: 1px; color: var(--ink); min-width: 46px; text-align: center;
       }
 .lb-close {
 position: absolute; top: 14px; right: 18px;
@@ -662,8 +693,10 @@ display: grid; place-items: center;
       }
 .lb-close:hover { background: var(--ink); color: var(--paper); }
 .lb-cap {
-position: absolute; bottom: 18px; left: 0; right: 0;
-text-align: center; padding: 0 6vw;
+position: absolute; bottom: 0; left: 0; right: 0;
+text-align: center; padding: 26px 6vw 18px;
+/* the zoomed image scrolls underneath, so the caption needs its own ground */
+background: linear-gradient(to bottom, rgba(26,22,18,0), rgba(26,22,18,.95) 34%);
 font-family: var(--font-text); font-size: var(--fs-cap);
 color: rgba(255,255,255,.82); line-height: 1.5;
       }
@@ -1375,7 +1408,14 @@ transition: left 0.3s ease; z-index: 99;
 <!-- LIGHTBOX -->
 <div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image">
 <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+<div class="lb-zoom" id="lbZoom">
+<button id="lbOut" aria-label="Zoom out">−</button>
+<span class="lb-lvl" id="lbLvl">FIT</span>
+<button id="lbIn" aria-label="Zoom in">+</button>
+</div>
+<div class="lb-stage" id="lbStage">
 <img id="lbImg" src="" alt="" />
+</div>
 <div class="lb-cap" id="lbCap"></div>
 </div>
 
@@ -1471,26 +1511,123 @@ if (new URLSearchParams(location.search).has("annotate")) {
 }
 
 /* ---- Lightbox ---- */
-const lb = document.getElementById("lightbox");
+const lb    = document.getElementById("lightbox");
 const lbImg = document.getElementById("lbImg");
 const lbCap = document.getElementById("lbCap");
+const lbStage = document.getElementById("lbStage");
+const lbZoom  = document.getElementById("lbZoom");
+const lbLvl   = document.getElementById("lbLvl");
+const lbIn    = document.getElementById("lbIn");
+const lbOut   = document.getElementById("lbOut");
 let lastFocus = null;
+
+/* Zoom levels are multiples of the image's own pixel size. 0 = fit to
+   screen. A wide journey map fitted to the screen is ~70% scale, which
+   is why the text is unreadable until you go past 1. */
+const LEVELS = [0, 1, 1.5, 2];
+let zi = 0, fitW = 0;
+
+function widthAt(i) { return lbImg.naturalWidth * LEVELS[i]; }
+function canZoom() {
+/* worth offering only if some level is meaningfully bigger than the fit */
+return widthAt(LEVELS.length - 1) > fitW * 1.05;
+    }
+/* from FIT, skip straight past any level that isn't actually larger —
+   a map exported at roughly screen width gains nothing from "100%" */
+function nextLevel() {
+for (var i = zi + 1; i < LEVELS.length; i++) {
+if (widthAt(i) > fitW * 1.05) return i;
+      }
+return 0;
+    }
+function applyZoom(originX, originY) {
+if (zi === 0) {
+lb.classList.remove("zoomed");
+lbImg.style.width = "";
+lbImg.style.height = "";
+lbLvl.textContent = "FIT";
+      } else {
+lb.classList.add("zoomed");
+lbImg.style.width  = Math.round(lbImg.naturalWidth  * LEVELS[zi]) + "px";
+lbImg.style.height = Math.round(lbImg.naturalHeight * LEVELS[zi]) + "px";
+lbLvl.textContent = Math.round(LEVELS[zi] * 100) + "%";
+/* keep the point you clicked roughly under the cursor */
+const ox = originX === undefined ? 0.5 : originX;
+const oy = originY === undefined ? 0.5 : originY;
+lbStage.scrollLeft = lbImg.offsetWidth  * ox - lbStage.clientWidth  / 2;
+lbStage.scrollTop  = lbImg.offsetHeight * oy - lbStage.clientHeight / 2;
+      }
+lbIn.disabled  = nextLevel() <= zi;
+lbOut.disabled = zi <= 0;
+    }
+function measureFit() {
+zi = 0; applyZoom();
+fitW = lbImg.getBoundingClientRect().width;
+const z = canZoom();
+lbZoom.classList.toggle("on", z);
+lbImg.classList.toggle("can-zoom", z);
+lbCap.querySelector(".lb-hint").textContent =
+z ? "Click the image to zoom in \u00b7 drag to pan \u00b7 Esc to close"
+  : "Click anywhere or press Esc to close";
+lbIn.disabled = !z;
+lbOut.disabled = true;
+    }
 
 function openLB(src, alt, cap) {
 lastFocus = document.activeElement;
+lbImg.style.width = ""; lbImg.style.height = "";
+lb.classList.remove("zoomed");
 lbImg.src = src;
 lbImg.alt = alt || "";
 lbCap.innerHTML = (cap || "") + '<span class="lb-hint">Click anywhere or press Esc to close</span>';
 lb.classList.add("open");
 document.body.style.overflow = "hidden";
 document.getElementById("lbClose").focus();
+if (lbImg.complete && lbImg.naturalWidth) measureFit();
+else lbImg.addEventListener("load", measureFit, { once: true });
     }
 function closeLB() {
-lb.classList.remove("open");
+lb.classList.remove("open", "zoomed");
 lbImg.src = "";
+lbImg.style.width = ""; lbImg.style.height = "";
+zi = 0;
 document.body.style.overflow = "";
 if (lastFocus) lastFocus.focus();
     }
+
+/* click the image to step in; wraps back to fit at the top */
+lbImg.addEventListener("click", function (e) {
+if (!canZoom()) return;
+const r = lbImg.getBoundingClientRect();
+const ox = (e.clientX - r.left) / r.width;
+const oy = (e.clientY - r.top) / r.height;
+zi = nextLevel();
+applyZoom(ox, oy);
+    });
+lbIn.addEventListener("click", function () {
+var nx = nextLevel();
+if (nx > zi) { zi = nx; applyZoom(); }
+    });
+lbOut.addEventListener("click", function () {
+if (zi > 0) { zi--; applyZoom(); }
+    });
+
+/* drag to pan while zoomed (touch already pans natively) */
+let drag = null;
+lbStage.addEventListener("pointerdown", function (e) {
+if (zi === 0 || e.pointerType === "touch") return;
+drag = { x: e.clientX, y: e.clientY, l: lbStage.scrollLeft, t: lbStage.scrollTop };
+lbStage.classList.add("dragging");
+lbStage.setPointerCapture(e.pointerId);
+    });
+lbStage.addEventListener("pointermove", function (e) {
+if (!drag) return;
+lbStage.scrollLeft = drag.l - (e.clientX - drag.x);
+lbStage.scrollTop  = drag.t - (e.clientY - drag.y);
+    });
+["pointerup", "pointercancel"].forEach(function (ev) {
+lbStage.addEventListener(ev, function () { drag = null; lbStage.classList.remove("dragging"); });
+    });
 
 document.querySelectorAll("img.zoomable").forEach(function (img) {
   img.addEventListener("click", function () {
@@ -1509,7 +1646,9 @@ document.querySelectorAll("[data-zoom-fig]").forEach(function (btn) {
   });
 });
 document.getElementById("lbClose").addEventListener("click", closeLB);
-lb.addEventListener("click", e => { if (e.target !== lbImg) closeLB(); });
+lb.addEventListener("click", function (e) {
+  if (e.target === lb || e.target === lbCap) closeLB();
+});
 document.addEventListener("keydown", e => { if (e.key === "Escape" && lb.classList.contains("open")) closeLB(); });
 
 /* ---- Active sidenav ---- */
