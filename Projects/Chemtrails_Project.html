@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chemtrails — Inayat</title>
+  <meta name="description" content="Chemtrails: a travel planning app bringing discovery, planning and memory-keeping into one mobile experience. UX/UI and full-stack React Native case study." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
   <style>
     /* ============================================================
        TOKENS
@@ -23,50 +24,99 @@
       --line:         rgba(26, 22, 18, 0.14);
       --line-soft:    rgba(26, 22, 18, 0.08);
       --red:          #c0392b;
-      --teal:         #2e7d6e;
-      --teal-soft:    rgba(46, 125, 110, 0.30);
-      --teal-wash:    rgba(46, 125, 110, 0.05);
+      /* --teal was #2e7d6e: 4.63 on the cream but only 4.35 on the tinted
+         card, so it failed AA on half the surfaces it lands on. Darkened
+         to #2b7466 (5.28 / 4.96). --teal-l keeps the lighter tone for
+         rules and squiggles, where contrast rules don't apply. */
+      --teal:         #2b7466;
+      --teal-l:       #2e7d6e;
+      --teal-soft:    rgba(43, 116, 102, 0.32);
+      --teal-wash:    rgba(43, 116, 102, 0.05);
       --tape:         rgba(232, 184, 75, 0.34);
       --tape-edge:    rgba(232, 184, 75, 0.5);
 
       --font-hand:   'Caveat', 'Segoe Print', cursive;
+      --font-text:   'Karla', system-ui, -apple-system, 'Segoe UI', sans-serif;
       --font-scrawl: 'Reenie Beanie', 'Caveat', cursive;
       --font-mono:   'Space Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
       --font-serif:  'EB Garamond', Georgia, serif;
 
       /* spacing scale */
-      --s-1: 4px;
-      --s-2: 8px;
-      --s-3: 12px;
-      --s-4: 16px;
-      --s-5: 24px;
-      --s-6: 32px;
-      --s-7: 48px;
-      --s-8: 72px;
+      --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
+      --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 72px;
 
-      --nav-h:      60px;
-      --bind-w:     32px;
-      --side-w:     212px;
+      --nav-h:       60px;
+      --bind-w:      32px;
+      --side-w:      212px;
       --content-max: 880px;
-      --gutter:     clamp(20px, 4vw, 56px);
+      --gutter:      clamp(20px, 4vw, 56px);
 
       --card-shadow:       3px 3px 0 rgba(26, 22, 18, 0.10);
       --card-shadow-hover: 6px 6px 0 rgba(26, 22, 18, 0.13);
       --radius: 2px;
-    }
 
+      /* ---- fluid type: floor, ramp, ceiling ---- */
+      --fs-body:   clamp(14.5px, calc(13.96px + 0.138vw), 17.5px);
+      --fs-lead:   clamp(16px,   calc(15.26px + 0.19vw),  20.5px);
+      --fs-ui:     clamp(14px,   calc(13.44px + 0.143vw), 17px);
+      --fs-cap:    clamp(12.5px, calc(12.1px + 0.104vw),  15px);
+      --fs-mono-s: clamp(8.5px,  calc(8.14px + 0.093vw),  10.5px);
+      --fs-mono-m: clamp(9.5px,  calc(9.14px + 0.093vw),  11.5px);
+      --fs-hero:   clamp(17px,   calc(14.4px + 0.67vw),   29px);
+      --fs-h1:     clamp(38px,   calc(28.6px + 2.4vw),    90px);
+      --fs-h2:     clamp(29px,   calc(23.3px + 1.46vw),   60px);
+      --fs-h3:     clamp(23px,   calc(19.9px + 0.79vw),   40px);
+      --fs-num:    clamp(28px,   calc(23.4px + 1.18vw),   54px);
+      --fs-quote:  clamp(18px,   calc(15.5px + 0.64vw),   32px);
+      --fs-scrawl: clamp(17px,   calc(15.6px + 0.36vw),   25px);
+      --ico:       clamp(18px,   calc(16.8px + 0.375vw),  24px);
+      /* image plate heights scale too — a 340px plate on a 4K screen is a stamp */
+      --plate:     clamp(300px,  calc(270.9px + 9.09vw),  620px);
+      --plate-3:   clamp(250px,  calc(225.5px + 7.67vw),  520px);
+      --plate-tall:clamp(400px,  calc(358.2px + 13.07vw), 860px);
+    }
+    /* ---- larger desktops: the column grows with the screen ---- */
+    @media (min-width: 1600px) {
+      :root { --side-w: 244px; --content-max: 1020px; --nav-h: 66px; }
+    }
+    @media (min-width: 1920px) {
+      :root { --side-w: 272px; --content-max: 1160px; --nav-h: 72px; --bind-w: 40px; }
+    }
+    /* ---- TV / 4K: a second, steeper ramp. Each floor is the ramp above's
+           ceiling, so the two meet without a step. ---- */
+    @media (min-width: 2560px) {
+      :root {
+        --side-w: 320px; --content-max: 1460px; --nav-h: 86px; --bind-w: 48px;
+        --fs-body:   clamp(17.5px, calc(9.2px + 0.324vw),  26px);
+        --fs-lead:   clamp(20.5px, calc(10.7px + 0.383vw), 30px);
+        --fs-ui:     clamp(17px,   calc(9.0px + 0.313vw),  25px);
+        --fs-cap:    clamp(15px,   calc(8.2px + 0.266vw),  22px);
+        --fs-mono-s: clamp(10.5px, calc(6.6px + 0.152vw),  14.5px);
+        --fs-mono-m: clamp(11.5px, calc(7.2px + 0.168vw),  16px);
+        --fs-hero:   clamp(29px,   calc(12.9px + 0.629vw), 46px);
+        --fs-h1:     clamp(90px,   calc(37.6px + 2.05vw),  144px);
+        --fs-h2:     clamp(60px,   calc(25.1px + 1.36vw),  96px);
+        --fs-h3:     clamp(40px,   calc(17.4px + 0.883vw), 63px);
+        --fs-num:    clamp(54px,   calc(22.6px + 1.23vw),  86px);
+        --fs-quote:  clamp(32px,   calc(13.9px + 0.707vw), 51px);
+        --fs-scrawl: clamp(25px,   calc(11.4px + 0.531vw), 39px);
+        --ico:       clamp(24px,   calc(12.4px + 0.453vw), 36px);
+      }
+    }
+    @media (min-width: 3400px) {
+      :root { --side-w: 400px; --content-max: 1840px; --nav-h: 98px; --bind-w: 60px; }
+    }
     /* ============================================================
        RESET + BASE
        ============================================================ */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
     html {
       scroll-behavior: smooth;
       -webkit-text-size-adjust: 100%;
     }
-
     body {
-      font-family: var(--font-hand);
+      font-family: var(--font-text);
+      font-size: var(--fs-body);
       background: var(--paper);
       color: var(--ink);
       line-height: 1.6;
@@ -74,16 +124,13 @@
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
-
     img { max-width: 100%; display: block; }
-
     a:focus-visible,
     button:focus-visible {
       outline: 2px solid var(--teal);
       outline-offset: 3px;
       border-radius: 2px;
     }
-
     /* ruled paper texture */
     body::before {
       content: '';
@@ -97,9 +144,8 @@
       pointer-events: none;
       z-index: 0;
     }
-
     /* ============================================================
-       SPIRAL BINDING  (pure CSS — resize-proof)
+       SPIRAL BINDING  (pure CSS — resize-proof, and now width-aware)
        ============================================================ */
     .spiral-binding {
       position: fixed;
@@ -115,12 +161,11 @@
       position: absolute;
       inset: 0;
       background-image:
-        radial-gradient(circle 6px at 16px 22px, var(--paper) 98%, transparent 100%),
-        radial-gradient(circle 8px at 16px 22px, var(--ink) 98%, transparent 100%);
-      background-size: 32px 44px;
+        radial-gradient(circle 6px at calc(var(--bind-w) / 2) 22px, var(--paper) 98%, transparent 100%),
+        radial-gradient(circle 8px at calc(var(--bind-w) / 2) 22px, var(--ink) 98%, transparent 100%);
+      background-size: var(--bind-w) 44px;
       background-repeat: repeat-y;
     }
-
     /* ============================================================
        TOP NAV
        ============================================================ */
@@ -144,7 +189,7 @@
     }
     .logo {
       font-family: var(--font-hand);
-      font-size: 22px;
+      font-size: clamp(22px, calc(19.8px + 0.57vw), 44px);
       font-weight: 700;
       color: var(--ink);
       text-decoration: none;
@@ -167,15 +212,11 @@
       align-items: center;
       gap: clamp(14px, 2.2vw, 30px);
       list-style: none;
-      overflow-x: auto;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
       padding: 4px 0;
     }
-    .nav-links::-webkit-scrollbar { display: none; }
     .nav-links a {
-      font-family: var(--font-hand);
-      font-size: 17px;
+      font-family: var(--font-text);
+      font-size: var(--fs-ui);
       color: var(--ink-faint);
       text-decoration: none;
       position: relative;
@@ -193,7 +234,17 @@
     }
     .nav-links a:hover { color: var(--ink); }
     .nav-links a:hover::after { width: 100%; }
-
+    /* mobile menu button — the links used to squeeze into a sideways
+       scroller on a phone, which nobody discovers */
+    .nav-toggle { display: none; background: none; border: 0; cursor: pointer; padding: 9px 4px; }
+    .nav-toggle span {
+      display: block; width: 23px; height: 2.5px;
+      background: var(--ink); border-radius: 2px; margin: 4.5px 0;
+      transition: transform 0.22s, opacity 0.18s;
+    }
+    .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
     /* ============================================================
        SIDE NAV
        ============================================================ */
@@ -214,25 +265,23 @@
       z-index: 100;
       scrollbar-width: thin;
     }
-
     .back-link {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       color: var(--teal);
       text-decoration: none;
-      font-family: var(--font-hand);
-      font-size: 16px;
-      font-weight: 600;
+      font-family: var(--font-text);
+      font-size: var(--fs-ui);
+      font-weight: 700;
       white-space: nowrap;
       transition: gap 0.2s;
       flex-shrink: 0;
     }
     .back-link:hover { gap: 11px; }
-
     .side-lbl {
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: var(--fs-mono-s);
       letter-spacing: 2.5px;
       text-transform: uppercase;
       color: var(--pencil);
@@ -241,14 +290,14 @@
     .side-list { display: flex; flex-direction: column; }
     .side-a {
       display: grid;
-      grid-template-columns: 20px 1fr;
+      grid-template-columns: 22px 1fr;
       align-items: center;
       gap: 8px;
-      padding: 7px 0 7px 10px;
+      padding: 8px 0 8px 10px;
       color: var(--pencil);
       text-decoration: none;
-      font-family: var(--font-hand);
-      font-size: 16px;
+      font-family: var(--font-text);
+      font-size: var(--fs-ui);
       line-height: 1.25;
       border-left: 2px solid transparent;
       transition: color 0.2s, border-color 0.2s;
@@ -257,19 +306,17 @@
     .side-a.active { color: var(--teal); border-left-color: var(--teal); font-weight: 700; }
     .side-num {
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: var(--fs-mono-s);
       color: var(--pencil);
       letter-spacing: 0.5px;
     }
     .side-a.active .side-num { color: var(--teal); }
-
     .side-doodle {
       margin-top: auto;
       padding-top: var(--s-5);
       opacity: 0.32;
       pointer-events: none;
     }
-
     /* ============================================================
        MAIN LAYOUT
        ============================================================ */
@@ -284,12 +331,10 @@
       position: relative;
       z-index: 1;
     }
-
     /* ============================================================
        HERO
        ============================================================ */
-    .hero { margin-bottom: clamp(56px, 8vw, 88px); }
-
+    .hero { margin-bottom: clamp(56px, 8vw, 110px); }
     .tags {
       display: flex;
       gap: var(--s-2);
@@ -298,7 +343,7 @@
     }
     .tag {
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: var(--fs-mono-s);
       letter-spacing: 1.6px;
       text-transform: uppercase;
       color: var(--teal);
@@ -307,10 +352,9 @@
       background: var(--teal-wash);
       line-height: 1.4;
     }
-
     .hero-h {
       font-family: var(--font-hand);
-      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-size: var(--fs-h1);
       font-weight: 700;
       line-height: 1.02;
       letter-spacing: -0.5px;
@@ -329,29 +373,27 @@
       overflow: visible;
       pointer-events: none;
     }
-
     .hero-sub {
       font-family: var(--font-mono);
-      font-size: 10px;
+      font-size: var(--fs-mono-m);
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--ink-faint);
+      color: var(--ink-light);
       margin-bottom: var(--s-3);
     }
     .hero-p {
-      font-family: var(--font-hand);
-      font-size: clamp(18px, 2vw, 21px);
+      font-family: var(--font-text);
+      font-size: var(--fs-hero);
       color: var(--ink-light);
-      line-height: 1.6;
-      max-width: 56ch;
+      line-height: 1.55;
+      max-width: 46ch;
       margin-bottom: var(--s-6);
     }
-
     /* HERO VIDEO */
     .hero-video {
       position: relative;
       width: 100%;
-      max-width: 760px;
+      max-width: min(100%, calc(var(--content-max) * 0.87));
       margin: 0 auto var(--s-6);
       border: 2px solid var(--ink);
       background: #111;
@@ -374,7 +416,6 @@
       aspect-ratio: 16 / 9;
       border: 0;
     }
-
     /* STATS */
     .stats {
       display: grid;
@@ -396,28 +437,27 @@
     .stat:last-child { border-right: 0; }
     .s-n {
       font-family: var(--font-hand);
-      font-size: clamp(2rem, 3.4vw, 2.5rem);
+      font-size: var(--fs-num);
       font-weight: 700;
       color: var(--teal);
       line-height: 1;
       margin-bottom: 4px;
     }
     .s-l {
-      font-family: var(--font-hand);
-      font-size: 16px;
+      font-family: var(--font-text);
+      font-size: var(--fs-cap);
       color: var(--ink-light);
-      line-height: 1.3;
+      line-height: 1.4;
     }
     .s-sub {
       font-family: var(--font-mono);
-      font-size: 8px;
+      font-size: var(--fs-mono-s);
       letter-spacing: 1px;
-      color: var(--pencil);
+      color: var(--ink-faint);
       text-transform: uppercase;
       margin-top: auto;
       padding-top: 6px;
     }
-
     /* META */
     .meta {
       display: grid;
@@ -428,28 +468,26 @@
     }
     .m-k {
       font-family: var(--font-mono);
-      font-size: 8px;
+      font-size: var(--fs-mono-s);
       letter-spacing: 1.8px;
       text-transform: uppercase;
       color: var(--teal);
       margin-bottom: 5px;
     }
     .m-v {
-      font-family: var(--font-hand);
-      font-size: 16px;
+      font-family: var(--font-text);
+      font-size: var(--fs-cap);
       color: var(--ink-light);
-      line-height: 1.45;
+      line-height: 1.5;
     }
-
     /* ============================================================
        SECTIONS
        ============================================================ */
     .sec {
-      margin-bottom: clamp(56px, 8vw, 88px);
+      margin-bottom: clamp(56px, 8vw, 110px);
       scroll-margin-top: calc(var(--nav-h) + 24px);
     }
     .sec:last-child { margin-bottom: 0; }
-
     .phase {
       display: inline-flex;
       align-items: center;
@@ -457,27 +495,27 @@
       margin-bottom: var(--s-3);
     }
     .p-dot {
-      width: 24px; height: 24px;
+      width: 26px; height: 26px;
       border-radius: 50%;
       border: 2px solid var(--ink);
       display: grid;
       place-items: center;
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: var(--fs-mono-m);
       font-weight: 700;
       line-height: 1;
+      flex: none;
     }
     .p-txt {
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: var(--fs-mono-m);
       letter-spacing: 2.5px;
       text-transform: uppercase;
-      color: var(--ink-faint);
+      color: var(--ink-light);
     }
-
     .sec-h {
       font-family: var(--font-hand);
-      font-size: clamp(1.85rem, 3.4vw, 2.4rem);
+      font-size: var(--fs-h2);
       font-weight: 700;
       line-height: 1.12;
       letter-spacing: -0.4px;
@@ -497,10 +535,10 @@
       margin-top: 4px;
     }
     .sec-lead {
-      font-family: var(--font-hand);
-      font-size: clamp(17px, 1.8vw, 19px);
+      font-family: var(--font-text);
+      font-size: var(--fs-lead);
       color: var(--ink-light);
-      line-height: 1.65;
+      line-height: 1.6;
       max-width: 62ch;
       margin-bottom: var(--s-5);
     }
@@ -511,7 +549,7 @@
     }
     .sub {
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: var(--fs-mono-m);
       letter-spacing: 2.5px;
       text-transform: uppercase;
       color: var(--teal);
@@ -519,16 +557,15 @@
     }
     .sub + .sub-p { margin-top: -4px; }
     .sub-p {
-      font-family: var(--font-hand);
-      font-size: 17px;
+      font-family: var(--font-text);
+      font-size: var(--fs-body);
       color: var(--ink-light);
-      line-height: 1.65;
-      max-width: 62ch;
+      line-height: 1.7;
+      max-width: 68ch;
       margin-bottom: var(--s-4);
     }
     .block { margin-bottom: var(--s-7); }
     .block:last-child { margin-bottom: 0; }
-
     /* ============================================================
        GRIDS
        ============================================================ */
@@ -539,7 +576,6 @@
     }
     .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-
     /* ============================================================
        CARDS
        ============================================================ */
@@ -558,43 +594,41 @@
     }
     .nc-n {
       font-family: var(--font-hand);
-      font-size: 2.3rem;
+      font-size: var(--fs-num);
       font-weight: 700;
       color: var(--teal);
       line-height: 1;
       margin-bottom: var(--s-2);
     }
-    .nc-n.sm { font-size: 1.5rem; }
+    .nc-n.sm { font-size: var(--fs-h3); }
+    .nc-n .ico { stroke: var(--teal); stroke-width: 2; display: inline-block; vertical-align: -0.12em; width: 0.72em; height: 0.72em; }
     .nc-t {
-      font-family: var(--font-hand);
-      font-size: 17px;
+      font-family: var(--font-text);
+      font-size: var(--fs-cap);
       font-weight: 700;
-      line-height: 1.25;
-      margin-bottom: 4px;
+      line-height: 1.3;
+      margin-bottom: 5px;
     }
     .nc-d, .ic-d {
-      font-family: var(--font-hand);
-      font-size: 15.5px;
+      font-family: var(--font-text);
+      font-size: var(--fs-cap);
       color: var(--ink-light);
-      line-height: 1.5;
+      line-height: 1.6;
     }
     .ic-ico {
-      font-size: 1.05rem;
       line-height: 1;
       margin-bottom: var(--s-3);
     }
     .ic-t {
-      font-family: var(--font-hand);
-      font-size: 17px;
+      font-family: var(--font-text);
+      font-size: var(--fs-cap);
       font-weight: 700;
-      line-height: 1.25;
-      margin-bottom: 4px;
+      line-height: 1.3;
+      margin-bottom: 5px;
     }
-
-
     /* ---- hand-drawn line icons ---- */
     .ico {
-      width: 18px; height: 18px;
+      width: var(--ico); height: var(--ico);
       fill: none;
       stroke: var(--ink-light);
       stroke-width: 1.5;
@@ -604,16 +638,21 @@
       transition: stroke 0.2s ease;
     }
     .fr:hover .ico { stroke: var(--teal); }
-    .ic .ico { width: 22px; height: 22px; stroke: var(--teal); }
+    .ic .ico { stroke: var(--teal); }
+    .ico--inline {
+      width: 1.05em; height: 1.05em;
+      display: inline-block;
+      vertical-align: -0.16em;
+      stroke-width: 1.8;
+    }
     .ic-aa {
       font-family: var(--font-serif);
-      font-size: 20px;
+      font-size: var(--ico);
       font-weight: 500;
       color: var(--teal);
       line-height: 1;
       display: block;
     }
-
     /* FINDING / FEATURE ROWS */
     .flist, .slist, .ilist {
       display: grid;
@@ -621,7 +660,7 @@
     }
     .fr {
       display: grid;
-      grid-template-columns: 32px 1fr;
+      grid-template-columns: 34px 1fr;
       gap: var(--s-3);
       align-items: start;
       padding: var(--s-3) var(--s-4);
@@ -631,33 +670,32 @@
     }
     .fr:hover { border-color: var(--teal-soft); transform: translateX(3px); }
     .fr-i {
-      width: 32px; height: 32px;
+      width: 34px; height: 34px;
       display: grid;
       place-items: center;
-      font-size: 0.82rem;
+      font-size: var(--fs-mono-m);
       font-family: var(--font-mono);
       color: var(--ink-light);
       border: 1px solid var(--line);
       background: var(--paper);
     }
     .fr-t {
-      font-family: var(--font-hand);
-      font-size: 17px;
+      font-family: var(--font-text);
+      font-size: var(--fs-cap);
       font-weight: 700;
-      line-height: 1.25;
-      margin-bottom: 2px;
+      line-height: 1.3;
+      margin-bottom: 3px;
     }
     .fr-d {
-      font-family: var(--font-hand);
-      font-size: 15.5px;
+      font-family: var(--font-text);
+      font-size: var(--fs-cap);
       color: var(--ink-light);
-      line-height: 1.5;
+      line-height: 1.6;
     }
-
     /* STEPS */
     .st {
       display: grid;
-      grid-template-columns: 28px 1fr;
+      grid-template-columns: 30px 1fr;
       gap: var(--s-3);
       padding: var(--s-3) var(--s-4);
       background: var(--paper-dark);
@@ -665,25 +703,24 @@
     }
     .st-n {
       font-family: var(--font-hand);
-      font-size: 1.35rem;
+      font-size: var(--fs-h3);
       font-weight: 700;
       color: var(--teal);
       line-height: 1.2;
     }
     .st-t {
-      font-family: var(--font-hand);
-      font-size: 17px;
+      font-family: var(--font-text);
+      font-size: var(--fs-cap);
       font-weight: 700;
-      line-height: 1.25;
-      margin-bottom: 2px;
+      line-height: 1.3;
+      margin-bottom: 3px;
     }
     .st-d {
-      font-family: var(--font-hand);
-      font-size: 15.5px;
+      font-family: var(--font-text);
+      font-size: var(--fs-cap);
       color: var(--ink-light);
-      line-height: 1.5;
+      line-height: 1.6;
     }
-
     /* PERSONA */
     .pcard {
       position: relative;
@@ -708,28 +745,29 @@
       transform: rotate(-1.5deg);
     }
     .pcard-av {
-      width: 42px; height: 42px;
+      width: 44px; height: 44px;
       border-radius: 50%;
       border: 2px solid var(--teal);
       display: grid;
       place-items: center;
       font-family: var(--font-hand);
-      font-size: 1.45rem;
+      font-size: 1.5rem;
       font-weight: 700;
       color: var(--teal);
       margin-bottom: var(--s-3);
       line-height: 1;
+      flex: none;
     }
     .pcard-name {
-      font-family: var(--font-hand);
-      font-size: 19px;
+      font-family: var(--font-text);
+      font-size: var(--fs-body);
       font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 3px;
+      line-height: 1.3;
+      margin-bottom: 4px;
     }
     .pcard-role {
       font-family: var(--font-mono);
-      font-size: 8px;
+      font-size: var(--fs-mono-s);
       letter-spacing: 1.8px;
       text-transform: uppercase;
       color: var(--teal);
@@ -737,7 +775,7 @@
     }
     .pcard-quote {
       font-family: var(--font-serif);
-      font-size: 1.05rem;
+      font-size: var(--fs-lead);
       font-style: italic;
       color: var(--ink-light);
       line-height: 1.5;
@@ -748,19 +786,19 @@
     }
     .pcard-sub {
       font-family: var(--font-mono);
-      font-size: 8px;
+      font-size: var(--fs-mono-s);
       letter-spacing: 1.8px;
       text-transform: uppercase;
       color: var(--teal);
       margin: var(--s-4) 0 var(--s-2);
     }
-    .pcard-list { display: grid; gap: 4px; }
+    .pcard-list { display: grid; gap: 5px; }
     .pcard-item {
-      font-family: var(--font-hand);
-      font-size: 15.5px;
+      font-family: var(--font-text);
+      font-size: var(--fs-cap);
       color: var(--ink-light);
-      line-height: 1.4;
-      padding-left: 15px;
+      line-height: 1.5;
+      padding-left: 16px;
       position: relative;
     }
     .pcard-item::before {
@@ -769,7 +807,6 @@
       left: 0; top: 0;
       color: var(--pencil);
     }
-
     /* DIRECTION CARDS */
     .dcard {
       background: var(--paper-dark);
@@ -796,27 +833,29 @@
     }
     .dcard-label {
       font-family: var(--font-mono);
-      font-size: 8px;
+      font-size: var(--fs-mono-s);
       letter-spacing: 1.8px;
       text-transform: uppercase;
-      color: var(--pencil);
+      color: var(--ink-faint);
       margin-bottom: var(--s-2);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
     .dcard.chosen .dcard-label { color: var(--teal); }
     .dcard-t {
-      font-family: var(--font-hand);
-      font-size: 19px;
+      font-family: var(--font-text);
+      font-size: var(--fs-body);
       font-weight: 700;
-      line-height: 1.2;
+      line-height: 1.35;
       margin-bottom: var(--s-2);
     }
     .dcard-d {
-      font-family: var(--font-hand);
-      font-size: 15.5px;
+      font-family: var(--font-text);
+      font-size: var(--fs-cap);
       color: var(--ink-light);
-      line-height: 1.55;
+      line-height: 1.65;
     }
-
     /* ============================================================
        IMAGE PLATES  (capped so screens never render oversized)
        ============================================================ */
@@ -827,7 +866,6 @@
     }
     .imgs.c2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .imgs.c3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-
     .iw {
       display: flex;
       flex-direction: column;
@@ -841,32 +879,30 @@
     .iw img {
       width: 100%;
       height: 100%;
-      max-height: var(--plate-h, 340px);
+      max-height: var(--plate-h, var(--plate));
       object-fit: contain;
       background: var(--paper-dark);
       padding: var(--s-3);
       flex: 1 1 auto;
       min-height: 0;
     }
-    .imgs.c3 .iw img { --plate-h: 280px; }
-
+    .imgs.c3 .iw img { --plate-h: var(--plate-3); }
     /* phone screenshots: narrow, centred plates instead of wide letterboxes */
     .imgs.tall {
-      grid-template-columns: repeat(2, minmax(0, 310px));
+      grid-template-columns: repeat(2, minmax(0, clamp(310px, calc(278px + 5vw), 620px)));
       justify-content: center;
       gap: var(--s-4);
     }
-    .imgs.tall .iw img { --plate-h: 440px; }
+    .imgs.tall .iw img { --plate-h: var(--plate-tall); }
     .icap {
-      padding: 8px 11px;
-      font-family: var(--font-hand);
-      font-size: 14.5px;
-      color: var(--ink-faint);
-      line-height: 1.35;
+      padding: 9px 11px;
+      font-family: var(--font-text);
+      font-size: var(--fs-cap);
+      color: var(--ink-light);
+      line-height: 1.45;
       border-top: 1px solid var(--line);
       background: var(--paper);
     }
-
     /* ============================================================
        BEFORE / AFTER ROWS
        ============================================================ */
@@ -887,18 +923,18 @@
     .it-b.aft { background: var(--teal-wash); border-color: var(--teal-soft); }
     .it-lbl {
       font-family: var(--font-mono);
-      font-size: 8px;
+      font-size: var(--fs-mono-s);
       letter-spacing: 1.8px;
       text-transform: uppercase;
-      color: var(--pencil);
-      margin-bottom: 5px;
+      color: var(--ink-faint);
+      margin-bottom: 6px;
     }
     .it-b.aft .it-lbl { color: var(--teal); }
     .it-txt {
-      font-family: var(--font-hand);
-      font-size: 15.5px;
+      font-family: var(--font-text);
+      font-size: var(--fs-cap);
       color: var(--ink-light);
-      line-height: 1.45;
+      line-height: 1.55;
     }
     .it-b.aft .it-txt { color: var(--ink); }
     .it-arr {
@@ -909,7 +945,6 @@
       font-weight: 700;
       line-height: 1;
     }
-
     /* ============================================================
        QUOTE / REFLECTION / TOOLS
        ============================================================ */
@@ -919,7 +954,7 @@
       background: var(--teal-wash);
       padding: var(--s-5) var(--s-5) var(--s-4);
       margin: var(--s-5) 0 0;
-      max-width: 68ch;
+      max-width: 66ch;
     }
     .quote::before {
       content: '';
@@ -933,20 +968,19 @@
     }
     .quote p {
       font-family: var(--font-serif);
-      font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+      font-size: var(--fs-quote);
       font-style: italic;
-      line-height: 1.6;
+      line-height: 1.55;
       color: var(--ink);
     }
     .quote-attr {
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: var(--fs-mono-m);
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: var(--ink-faint);
+      color: var(--ink-light);
       margin-top: var(--s-3);
     }
-
     .rc {
       background: var(--paper-dark);
       border: 1px solid var(--line);
@@ -955,20 +989,19 @@
       flex-direction: column;
     }
     .rc-t {
-      font-family: var(--font-hand);
-      font-size: 17px;
+      font-family: var(--font-text);
+      font-size: var(--fs-cap);
       font-weight: 700;
       color: var(--teal);
-      line-height: 1.25;
-      margin-bottom: 5px;
+      line-height: 1.3;
+      margin-bottom: 6px;
     }
     .rc-d {
-      font-family: var(--font-hand);
-      font-size: 15.5px;
+      font-family: var(--font-text);
+      font-size: var(--fs-cap);
       color: var(--ink-light);
-      line-height: 1.6;
+      line-height: 1.65;
     }
-
     .tools {
       display: flex;
       gap: var(--s-2);
@@ -976,7 +1009,7 @@
     }
     .tool {
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: var(--fs-mono-m);
       letter-spacing: 1px;
       text-transform: uppercase;
       padding: 6px 11px;
@@ -985,7 +1018,6 @@
       color: var(--ink-light);
       line-height: 1.2;
     }
-
     /* CLOSING NOTE */
     .closing {
       position: relative;
@@ -1006,15 +1038,15 @@
     }
     .closing p.q {
       font-family: var(--font-serif);
-      font-size: clamp(1.02rem, 1.6vw, 1.14rem);
+      font-size: var(--fs-quote);
       font-style: italic;
       color: var(--ink-light);
-      line-height: 1.68;
+      line-height: 1.6;
       max-width: 64ch;
     }
     .closing p.sig {
       font-family: var(--font-scrawl);
-      font-size: 20px;
+      font-size: var(--fs-scrawl);
       color: var(--red);
       margin-top: var(--s-3);
     }
@@ -1027,7 +1059,6 @@
       border-left: 1px solid var(--pencil-light);
       pointer-events: none;
     }
-
     /* HIGHLIGHTS */
     .hl-y {
       background: linear-gradient(120deg,
@@ -1035,7 +1066,6 @@
         rgba(232,184,75,0.42) 92%, rgba(232,184,75,0) 100%);
       padding: 0 2px;
     }
-
     /* SCROLL REVEAL */
     .rev {
       opacity: 0;
@@ -1043,7 +1073,42 @@
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
     .rev.in { opacity: 1; transform: none; }
-
+    /* ============================================================
+       ZOOM — every screen opens full size. These are phone screenshots
+       fitted into a plate; the UI inside them is unreadable at that size.
+       ============================================================ */
+    .zoomable { cursor: zoom-in; }
+    .lb { position: fixed; inset: 0; z-index: 500; background: rgba(20,17,13,.94);
+      display: none; align-items: center; justify-content: center; padding: 4vh 4vw 9vh; }
+    .lb.open { display: flex; }
+    .lb-stage { max-width: 100%; max-height: 87vh; overflow: auto; display: flex;
+      align-items: center; justify-content: center; -webkit-overflow-scrolling: touch; }
+    .lb.zoomed .lb-stage { align-items: flex-start; justify-content: flex-start; cursor: grab; }
+    .lb.zoomed .lb-stage.dragging { cursor: grabbing; }
+    .lb img { max-width: 100%; max-height: 87vh; object-fit: contain; display: block;
+      border: 2px solid var(--paper); background: var(--paper); }
+    .lb.zoomed img { max-width: none; max-height: none; }
+    .lb img.can-zoom { cursor: zoom-in; }
+    .lb-close { position: absolute; top: 14px; right: 18px; width: 44px; height: 44px;
+      background: var(--paper); border: 2px solid var(--ink); color: var(--ink); cursor: pointer;
+      font-family: var(--font-mono); font-size: 18px; line-height: 1; display: grid; place-items: center; }
+    .lb-close:hover { background: var(--ink); color: var(--paper); }
+    .lb-zoom { position: absolute; top: 14px; right: 72px; display: none; align-items: center; gap: 8px;
+      background: var(--paper); border: 2px solid var(--ink); height: 44px; padding: 0 6px; }
+    .lb-zoom.on { display: flex; }
+    .lb-zoom button { background: none; border: 0; cursor: pointer; color: var(--ink);
+      font-family: var(--font-mono); font-size: 17px; line-height: 1; width: 30px; height: 32px;
+      display: grid; place-items: center; }
+    .lb-zoom button:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+    .lb-zoom button:disabled { opacity: .3; cursor: default; }
+    .lb-lvl { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 1px;
+      color: var(--ink); min-width: 46px; text-align: center; }
+    .lb-cap { position: absolute; bottom: 0; left: 0; right: 0; text-align: center;
+      padding: 26px 6vw 18px; font-family: var(--font-text); font-size: var(--fs-cap);
+      color: rgba(255,255,255,.85); line-height: 1.5;
+      background: linear-gradient(to bottom, rgba(20,17,13,0), rgba(20,17,13,.95) 34%); }
+    .lb-hint { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 1.2px;
+      text-transform: uppercase; color: rgba(255,255,255,.5); display: block; margin-top: 6px; }
     /* FOOTER */
     footer {
       margin-left: var(--bind-w);
@@ -1051,22 +1116,19 @@
       padding: var(--s-5) var(--gutter);
       text-align: center;
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: var(--fs-mono-s);
       letter-spacing: 1.6px;
       text-transform: uppercase;
-      color: var(--pencil);
+      color: var(--ink-faint);
       line-height: 1.8;
     }
-
     /* ============================================================
        RESPONSIVE
        ============================================================ */
-
     /* laptop — narrow the rail */
     @media (max-width: 1180px) {
       :root { --side-w: 190px; }
     }
-
     /* tablet landscape — drop the rail */
     @media (max-width: 1024px) {
       .sidenav { display: none; }
@@ -1074,9 +1136,7 @@
       .g3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .g3 > *:last-child:nth-child(odd) { grid-column: 1 / -1; }
       .imgs.c3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .imgs.c3 .iw img { --plate-h: 320px; }
     }
-
     /* tablet portrait */
     @media (max-width: 820px) {
       :root { --nav-h: 56px; }
@@ -1086,33 +1146,40 @@
       .hero-video::before { left: 22px; }
       .imgs.tall { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
-
     /* mobile */
+    @media (max-width: 760px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: calc(100% + 2px);
+        left: 0; right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        background: var(--paper);
+        border-bottom: 2px solid var(--ink);
+        padding: 0.35rem var(--gutter) 0.9rem;
+        box-shadow: 0 8px 18px rgba(26,22,18,0.08);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { display: block; padding: 0.6rem 0; border-bottom: 1px solid var(--line-soft); }
+      .nav-links li:last-child a { border-bottom: 0; }
+    }
     @media (max-width: 680px) {
       .spiral-binding { display: none; }
       .topnav { left: 0; }
       .main { margin-left: 0; padding-top: calc(var(--nav-h) + var(--s-6)); }
       footer { margin-left: 0; }
-
-      .logo { font-size: 20px; }
-      .nav-links { gap: 16px; }
-      .nav-links a { font-size: 16px; }
-
       .g2, .g3, .imgs.c2, .imgs.c3 { grid-template-columns: minmax(0, 1fr); }
       .g3 > *:last-child:nth-child(odd) { grid-column: auto; }
-
       .imgs.tall { grid-template-columns: minmax(0, 300px); }
-      .iw img { --plate-h: 400px; }
-      .imgs.c3 .iw img { --plate-h: 400px; }
-      .imgs.tall .iw img { --plate-h: 440px; }
-
       .it { grid-template-columns: minmax(0, 1fr); gap: 6px; }
       .it-arr { transform: rotate(90deg); padding: 2px 0; }
-
       .sec-h::after { width: 100%; }
       .quote { padding: var(--s-5) var(--s-4) var(--s-4); }
+      .lb-zoom { right: 66px; }
     }
-
     /* small mobile */
     @media (max-width: 420px) {
       .stats { grid-template-columns: minmax(0, 1fr); }
@@ -1120,10 +1187,7 @@
       .stat:last-child { border-bottom: 0; }
       .fr { grid-template-columns: 1fr; }
       .fr-i { display: none; }
-      .iw img { --plate-h: 320px; }
-      .imgs.c3 .iw img { --plate-h: 320px; }
     }
-
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       *, *::before, *::after {
@@ -1135,7 +1199,6 @@
   </style>
 </head>
 <body>
-
   <!-- hand-drawn icon sprite (ink line icons, no emoji) -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <defs>
@@ -1160,25 +1223,28 @@
       <symbol id="i-atom" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.3"/><ellipse cx="12" cy="12" rx="9.6" ry="4.2"/><ellipse cx="12" cy="12" rx="9.6" ry="4.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9.6" ry="4.2" transform="rotate(120 12 12)"/></symbol>
       <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12.4 2.6c.4 3.2-2 4.4-3.6 6.6-1.6 2.2-2.6 3.8-2.6 6.2a5.9 5.9 0 0 0 11.8.3c0-2.6-1.4-4.2-2.6-5.6-.4 1.2-1.2 1.8-2 1.8 1.2-3-.2-6.6-1-9.3z"/></symbol>
       <symbol id="i-pen" viewBox="0 0 24 24"><path d="M3.4 20.6l1.2-4.2L16.2 4.8a2.2 2.2 0 0 1 3.1 3.1L7.6 19.4z"/><path d="M14.8 6.6l2.9 2.9"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m4.4 12.6 5 5.2L19.8 6.4"/></symbol>
+      <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 3.6v16.8"/><path d="m5.4 13.8 6.6 6.6 6.6-6.6"/></symbol>
     </defs>
   </svg>
-
   <div class="spiral-binding" aria-hidden="true"></div>
-
   <!-- ================= TOP NAV ================= -->
   <nav class="topnav">
     <div class="topnav-in">
       <a href="../index.html" class="logo">Inayat</a>
-      <ul class="nav-links">
+      <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
         <li><a href="../index.html">Home</a></li>
         <li><a href="../About.html">About</a></li>
         <li><a href="../Projects.html">Projects</a></li>
+        <li><a href="../Playground.html">Playground</a></li>
         <li><a href="../Resume.html">Résumé</a></li>
         <li><a href="../index.html#contact">Contact</a></li>
       </ul>
     </div>
   </nav>
-
   <!-- ================= SIDE NAV ================= -->
   <aside class="sidenav">
     <a href="../Projects.html" class="back-link">← Projects</a>
@@ -1209,11 +1275,9 @@
       </svg>
     </div>
   </aside>
-
   <!-- ================= MAIN ================= -->
   <main class="main">
     <div class="wrap">
-
       <!-- HERO -->
       <header class="hero">
         <div class="tags">
@@ -1221,7 +1285,6 @@
           <span class="tag">Mobile Development</span>
           <span class="tag">Full-Stack</span>
         </div>
-
         <h1 class="hero-h">
           Chemtrails<br/>
           <span class="squiggle-wrap">Travel Planning App
@@ -1230,13 +1293,10 @@
             </svg>
           </span>
         </h1>
-
         <p class="hero-sub">Case Study — Mobile App · Fall 2025</p>
-
         <p class="hero-p">
           Bringing <span class="hl-y">discovery, planning, and memory-keeping</span> into one cohesive mobile experience — so travellers never have to juggle six apps again.
         </p>
-
         <div class="hero-video">
           <iframe
             src="https://www.youtube.com/embed/TTxRGhsGydw?autoplay=1&mute=1&loop=1&playlist=TTxRGhsGydw&controls=0&modestbranding=1&rel=0"
@@ -1246,7 +1306,6 @@
             loading="lazy"
           ></iframe>
         </div>
-
         <div class="stats">
           <div class="stat">
             <div class="s-n">5</div>
@@ -1269,7 +1328,6 @@
             <div class="s-sub">Via research</div>
           </div>
         </div>
-
         <div class="meta">
           <div>
             <div class="m-k">Timeline</div>
@@ -1289,7 +1347,6 @@
           </div>
         </div>
       </header>
-
       <!-- 00 OVERVIEW -->
       <section id="overview" class="sec rev">
         <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
@@ -1298,7 +1355,6 @@
           Travel planning is fragmented. Users rely on separate apps to search places, save ideas, plan schedules, and document experiences — making the process overwhelming and disconnected.
         </p>
         <div class="rule"></div>
-
         <div class="block">
           <div class="g2">
             <div class="nc">
@@ -1323,7 +1379,6 @@
             </div>
           </div>
         </div>
-
         <div class="block">
           <div class="sub">Design Goals</div>
           <div class="flist">
@@ -1333,7 +1388,6 @@
             <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-lock"/></svg></div><div><div class="fr-t">Private, not social</div><div class="fr-d">A personal travel companion — not a platform for sharing. Every feature decision was filtered through this principle.</div></div></div>
           </div>
         </div>
-
         <div class="block">
           <div class="sub">Tools &amp; Methods</div>
           <div class="tools">
@@ -1348,7 +1402,6 @@
           </div>
         </div>
       </section>
-
       <!-- 01 RESEARCH -->
       <section id="research" class="sec rev">
         <div class="phase"><div class="p-dot">1</div><span class="p-txt">User Research</span></div>
@@ -1357,7 +1410,6 @@
           5 semi-structured interviews with frequent travellers aged 22–35, each using at least 3 separate apps to plan a single trip.
         </p>
         <div class="rule"></div>
-
         <div class="block">
           <div class="sub">Key Findings</div>
           <div class="flist">
@@ -1366,13 +1418,11 @@
             <div class="fr"><div class="fr-i">03</div><div><div class="fr-t">Camera rolls feel impersonal</div><div class="fr-d">3 of 5 wanted a way to document memories with context and feeling — not just photos without narrative.</div></div></div>
           </div>
         </div>
-
         <div class="quote">
           <p>"The problem isn't planning — it's that my planning is scattered across 6 apps, so I can never see the full picture."</p>
           <div class="quote-attr">— Research Participant</div>
         </div>
       </section>
-
       <!-- 02 PERSONAS -->
       <section id="personas" class="sec rev">
         <div class="phase"><div class="p-dot">2</div><span class="p-txt">User Personas</span></div>
@@ -1381,7 +1431,6 @@
           Through research, we identified three personas that shaped every design decision — from information hierarchy to which features to cut.
         </p>
         <div class="rule"></div>
-
         <div class="g3">
           <div class="pcard">
             <div class="pcard-av">E</div>
@@ -1436,7 +1485,6 @@
           </div>
         </div>
       </section>
-
       <!-- 03 ITERATIONS -->
       <section id="iterations" class="sec rev">
         <div class="phase"><div class="p-dot">3</div><span class="p-txt">Design Iterations</span></div>
@@ -1445,7 +1493,6 @@
           We went through three major design iterations, each driven by a specific insight from user testing.
         </p>
         <div class="rule"></div>
-
         <div class="block">
           <div class="ilist">
             <div class="it">
@@ -1460,7 +1507,6 @@
             </div>
           </div>
         </div>
-
         <div class="block">
           <div class="sub">What We Decided Not to Build</div>
           <div class="g2">
@@ -1470,23 +1516,21 @@
               <div class="dcard-d">We prototyped a social sharing feature but cut it after research clearly showed users wanted a private travel companion — not a social platform. Removing it sharpened our core value proposition.</div>
             </div>
             <div class="dcard chosen">
-              <div class="dcard-label">✓ Core Focus</div>
+              <div class="dcard-label"><svg class="ico ico--inline" aria-hidden="true"><use href="#i-check"/></svg>Core Focus</div>
               <div class="dcard-t">Private Travel Companion</div>
               <div class="dcard-d">All five features — Explore, Wishlist, Calendar, Journal, Profile — serve one user, privately. Every interaction is personal and intentional, not performative.</div>
             </div>
           </div>
         </div>
       </section>
-
       <!-- 04 CONCEPT -->
       <section id="concept" class="sec rev">
         <div class="phase"><div class="p-dot">4</div><span class="p-txt">Design Concept</span></div>
         <h2 class="sec-h">Calm · Exploratory · <span class="hl-y">Personal</span></h2>
         <p class="sec-lead">
-          Chemtrails is designed to feel like a travel companion, not a task manager. Content — places, images, memories — is always the primary focus.
+          Chemtrails is designed to feel like a travel companion, not a task manager. Content — places, images, memories — is always the primary focus. Click any screen to open it full size.
         </p>
         <div class="rule"></div>
-
         <div class="block">
           <div class="sub">Design Principles</div>
           <div class="flist">
@@ -1495,23 +1539,21 @@
             <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-bolt"/></svg></div><div><div class="fr-t">Low friction at every action</div><div class="fr-d">Saving a place, scheduling a visit, writing a journal entry — each should take under 30 seconds. Friction is removed, not hidden.</div></div></div>
           </div>
         </div>
-
         <div class="imgs c3">
           <div class="iw">
-            <img src="https://framerusercontent.com/images/pJ2YwFEGutHEWSxIjrMCGsefa8E.png" alt="Chemtrails explore screen" loading="lazy"/>
+            <img src="https://framerusercontent.com/images/pJ2YwFEGutHEWSxIjrMCGsefa8E.png" alt="Chemtrails explore screen" loading="lazy" class="zoomable" data-cap="Explore screen — real-time Google Places search with ratings, photos and directions."/>
             <div class="icap">Explore screen</div>
           </div>
           <div class="iw">
-            <img src="https://framerusercontent.com/images/q4R2OOhv0ZjtXvTos0ltK74pv4.png" alt="Chemtrails journal screen" loading="lazy"/>
+            <img src="https://framerusercontent.com/images/q4R2OOhv0ZjtXvTos0ltK74pv4.png" alt="Chemtrails journal screen" loading="lazy" class="zoomable" data-cap="Journal screen — trips documented as personal narratives with inline photos."/>
             <div class="icap">Journal screen</div>
           </div>
           <div class="iw">
-            <img src="https://framerusercontent.com/images/7f5FyKXoMmVvKQWMmbBRN9PKatA.png" alt="Chemtrails home dashboard" loading="lazy"/>
+            <img src="https://framerusercontent.com/images/7f5FyKXoMmVvKQWMmbBRN9PKatA.png" alt="Chemtrails home dashboard" loading="lazy" class="zoomable" data-cap="Home dashboard — one upcoming plan, one featured destination."/>
             <div class="icap">Home dashboard</div>
           </div>
         </div>
       </section>
-
       <!-- 05 SOLUTION -->
       <section id="solution" class="sec rev">
         <div class="phase"><div class="p-dot">5</div><span class="p-txt">Design Solution</span></div>
@@ -1520,43 +1562,38 @@
           Each feature addresses a specific research-identified pain point — together they replace the multi-app workflow entirely.
         </p>
         <div class="rule"></div>
-
         <div class="block">
           <div class="sub">Explore Destinations</div>
           <p class="sub-p">Real-time Google Places search with ratings, reviews, photos, and directions. Save any result to the wishlist in one tap — no navigation required.</p>
           <div class="imgs c2 tall">
-            <div class="iw"><img src="https://framerusercontent.com/images/pJ2YwFEGutHEWSxIjrMCGsefa8E.png" alt="Explore and discovery screen" loading="lazy"/><div class="icap">Explore — search and discovery</div></div>
-            <div class="iw"><img src="https://framerusercontent.com/images/UNvj77qOq4Gm527iPxRjcrroo.png" alt="Search results with place details" loading="lazy"/><div class="icap">Search results with place details</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/pJ2YwFEGutHEWSxIjrMCGsefa8E.png" alt="Explore and discovery screen" loading="lazy" class="zoomable" data-cap="Explore — search and discovery."/><div class="icap">Explore — search and discovery</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/UNvj77qOq4Gm527iPxRjcrroo.png" alt="Search results with place details" loading="lazy" class="zoomable" data-cap="Search results with place details — ratings, reviews, photos and directions."/><div class="icap">Search results with place details</div></div>
           </div>
         </div>
-
         <div class="block">
           <div class="sub">Wishlist &amp; Calendar Planning</div>
           <p class="sub-p">Saved places organised into custom folders and assigned visit dates via a built-in calendar — transforming inspiration into actionable plans.</p>
           <div class="imgs c2 tall">
-            <div class="iw"><img src="https://framerusercontent.com/images/j9D2ecOa5aW0QLDns1EAdr5m3OI.png" alt="Wishlist organised by folder" loading="lazy"/><div class="icap">Wishlist — organised by folder</div></div>
-            <div class="iw"><img src="https://framerusercontent.com/images/39qf446JNBKmnDctgNVNmyiI8I.png" alt="Calendar with assigned visit dates" loading="lazy"/><div class="icap">Calendar — tap to assign visit dates</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/j9D2ecOa5aW0QLDns1EAdr5m3OI.png" alt="Wishlist organised by folder" loading="lazy" class="zoomable" data-cap="Wishlist — saved places organised into named folders."/><div class="icap">Wishlist — organised by folder</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/39qf446JNBKmnDctgNVNmyiI8I.png" alt="Calendar with assigned visit dates" loading="lazy" class="zoomable" data-cap="Calendar — tap to assign a visit date to any saved place."/><div class="icap">Calendar — tap to assign visit dates</div></div>
           </div>
         </div>
-
         <div class="block">
           <div class="sub">Home Dashboard</div>
           <p class="sub-p">Personalised greetings, rotating travel quotes, one upcoming plan, and one featured destination — a clear starting point every time you open the app.</p>
           <div class="imgs c2 tall">
-            <div class="iw"><img src="https://framerusercontent.com/images/7f5FyKXoMmVvKQWMmbBRN9PKatA.png" alt="Home dashboard" loading="lazy"/><div class="icap">Home dashboard — focused entry point</div></div>
-            <div class="iw"><img src="https://framerusercontent.com/images/NJPr8oJlGXzqxhK577KEaPxFrls.png" alt="Home screen upcoming plan view" loading="lazy"/><div class="icap">Home screen — upcoming plan view</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/7f5FyKXoMmVvKQWMmbBRN9PKatA.png" alt="Home dashboard" loading="lazy" class="zoomable" data-cap="Home dashboard — a focused entry point rather than every trip at once."/><div class="icap">Home dashboard — focused entry point</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/NJPr8oJlGXzqxhK577KEaPxFrls.png" alt="Home screen upcoming plan view" loading="lazy" class="zoomable" data-cap="Home screen — the upcoming plan view."/><div class="icap">Home screen — upcoming plan view</div></div>
           </div>
         </div>
-
         <div class="block">
           <div class="sub">Travel Journal</div>
           <p class="sub-p">Create, edit, and delete journal entries with inline multi-photo uploads. Trips documented as personal narratives, not checklists.</p>
           <div class="imgs c2 tall">
-            <div class="iw"><img src="https://framerusercontent.com/images/q4R2OOhv0ZjtXvTos0ltK74pv4.png" alt="Journal entry list" loading="lazy"/><div class="icap">Journal — entry list view</div></div>
-            <div class="iw"><img src="https://framerusercontent.com/images/O6W5PwyyXIaw5xCf9dSK8C9Qbk.png" alt="Journal entry with inline photo upload" loading="lazy"/><div class="icap">Journal entry — inline photo upload</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/q4R2OOhv0ZjtXvTos0ltK74pv4.png" alt="Journal entry list" loading="lazy" class="zoomable" data-cap="Journal — the entry list view."/><div class="icap">Journal — entry list view</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/O6W5PwyyXIaw5xCf9dSK8C9Qbk.png" alt="Journal entry with inline photo upload" loading="lazy" class="zoomable" data-cap="Journal entry — inline photo upload, the change that took attachment from 40% to 90%."/><div class="icap">Journal entry — inline photo upload</div></div>
           </div>
         </div>
-
         <div class="block">
           <div class="sub">Key Features</div>
           <div class="flist">
@@ -1569,14 +1606,12 @@
           </div>
         </div>
       </section>
-
       <!-- 06 PROBLEMS -->
       <section id="problems" class="sec rev">
         <div class="phase"><div class="p-dot">6</div><span class="p-txt">Problems Solved</span></div>
         <h2 class="sec-h">Five Problems, Five Solutions</h2>
         <p class="sec-lead">Every design decision mapped directly back to a specific, research-validated pain point.</p>
         <div class="rule"></div>
-
         <div class="ilist">
           <div class="it">
             <div class="it-b bef"><div class="it-lbl">Problem</div><div class="it-txt">Planning scattered across Google Maps, Instagram, and Notes simultaneously</div></div>
@@ -1605,45 +1640,40 @@
           </div>
         </div>
       </section>
-
       <!-- 07 DESIGN SYSTEM -->
       <section id="designsystem" class="sec rev">
         <div class="phase"><div class="p-dot">7</div><span class="p-txt">Visual Design System</span></div>
         <h2 class="sec-h">Consistency at Every Screen</h2>
         <p class="sec-lead">A restrained design system that keeps content front and centre — colour, type, and interaction all serve the travel experience, not the interface.</p>
         <div class="rule"></div>
-
         <div class="block">
           <div class="imgs c3" style="margin-bottom:var(--s-3)">
-            <div class="iw"><img src="https://framerusercontent.com/images/4y7k8a34B8fQenNG3N4Cl2qoLyM.png" alt="UI components" loading="lazy"/><div class="icap">UI components</div></div>
-            <div class="iw"><img src="https://framerusercontent.com/images/oC5Di78dviuVfqaHa8zAFbUDiEU.png" alt="Interface design" loading="lazy"/><div class="icap">Interface design</div></div>
-            <div class="iw"><img src="https://framerusercontent.com/images/i8VLJGTqqu2XrBfkGv4kNTE7qg.png" alt="Design system overview" loading="lazy"/><div class="icap">Design system overview</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/4y7k8a34B8fQenNG3N4Cl2qoLyM.png" alt="UI components" loading="lazy" class="zoomable" data-cap="UI components."/><div class="icap">UI components</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/oC5Di78dviuVfqaHa8zAFbUDiEU.png" alt="Interface design" loading="lazy" class="zoomable" data-cap="Interface design."/><div class="icap">Interface design</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/i8VLJGTqqu2XrBfkGv4kNTE7qg.png" alt="Design system overview" loading="lazy" class="zoomable" data-cap="Design system overview."/><div class="icap">Design system overview</div></div>
           </div>
           <div class="imgs c3" style="margin-bottom:var(--s-3)">
-            <div class="iw"><img src="https://framerusercontent.com/images/A6vsauvu8zOwzLJBdiTiYxnqXY.png" alt="Visual design" loading="lazy"/><div class="icap">Visual design</div></div>
-            <div class="iw"><img src="https://framerusercontent.com/images/etGdSgENrQsVrsTa8YI50ZBm7A.png" alt="App screens" loading="lazy"/><div class="icap">App screens</div></div>
-            <div class="iw"><img src="https://framerusercontent.com/images/AMXPtX5gm3EruEXy0KWLwQI4Xg.png" alt="User interface" loading="lazy"/><div class="icap">User interface</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/A6vsauvu8zOwzLJBdiTiYxnqXY.png" alt="Visual design" loading="lazy" class="zoomable" data-cap="Visual design."/><div class="icap">Visual design</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/etGdSgENrQsVrsTa8YI50ZBm7A.png" alt="App screens" loading="lazy" class="zoomable" data-cap="App screens."/><div class="icap">App screens</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/AMXPtX5gm3EruEXy0KWLwQI4Xg.png" alt="User interface" loading="lazy" class="zoomable" data-cap="User interface."/><div class="icap">User interface</div></div>
           </div>
           <div class="imgs c2">
-            <div class="iw"><img src="https://framerusercontent.com/images/uKQo1vQ7gGpPv3aRfpXPWj5eZc.png" alt="Design concept" loading="lazy"/><div class="icap">Design concept</div></div>
-            <div class="iw"><img src="https://framerusercontent.com/images/CnkOHDCEVhGEzQzyDikNzIGYSw.png" alt="Design elements" loading="lazy"/><div class="icap">Design elements</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/uKQo1vQ7gGpPv3aRfpXPWj5eZc.png" alt="Design concept" loading="lazy" class="zoomable" data-cap="Design concept."/><div class="icap">Design concept</div></div>
+            <div class="iw"><img src="https://framerusercontent.com/images/CnkOHDCEVhGEzQzyDikNzIGYSw.png" alt="Design elements" loading="lazy" class="zoomable" data-cap="Design elements."/><div class="icap">Design elements</div></div>
           </div>
         </div>
-
         <div class="g3">
           <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-palette"/></svg></div><div class="ic-t">Colour System</div><div class="ic-d">Soft teal and sky blue for primary actions. Off-white neutrals for backgrounds. Accent used sparingly on save, add, and create CTAs — never decorative.</div></div>
           <div class="ic"><div class="ic-ico"><span class="ic-aa">Aa</span></div><div class="ic-t">Typography Hierarchy</div><div class="ic-d">Display for destination names and journal titles. Body for descriptions and reviews. Captions for dates, distances, and metadata — three levels only.</div></div>
           <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-tap"/></svg></div><div class="ic-t">Interaction Patterns</div><div class="ic-d">Tap-to-save from explore results. Inline photo upload in journal. Calendar tap-to-assign. Swipe-to-delete for entries and saved places.</div></div>
         </div>
       </section>
-
       <!-- 08 TECHNICAL -->
       <section id="tech" class="sec rev">
         <div class="phase"><div class="p-dot">8</div><span class="p-txt">Technical Overview</span></div>
         <h2 class="sec-h">Built End-to-End in React Native</h2>
         <p class="sec-lead">My first full mobile app built from scratch — navigation state, image uploads, API error handling, and calendar logic all required documentation-driven learning and iterative debugging.</p>
         <div class="rule"></div>
-
         <div class="block">
           <div class="g3">
             <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-atom"/></svg></div><div class="ic-t">Frontend — React Native</div><div class="ic-d">Multi-screen navigation via bottom tab navigator. Custom components for place cards, journal entries, and calendar views. Real-time state management across all screens.</div></div>
@@ -1651,7 +1681,6 @@
             <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-map"/></svg></div><div class="ic-t">APIs — Google Places</div><div class="ic-d">Real-time destination search and autocomplete. Place details: ratings, reviews, photos, directions. API error handling and graceful fallback states throughout.</div></div>
           </div>
         </div>
-
         <div class="block">
           <div class="sub">Challenges Overcome</div>
           <div class="slist">
@@ -1662,14 +1691,12 @@
           </div>
         </div>
       </section>
-
       <!-- 09 IMPACT -->
       <section id="impact" class="sec rev">
         <div class="phase"><div class="p-dot">9</div><span class="p-txt">Impact &amp; Results</span></div>
         <h2 class="sec-h">Measured Outcomes</h2>
         <p class="sec-lead">Validated through follow-up testing with participants from the original research cohort.</p>
         <div class="rule"></div>
-
         <div class="block">
           <div class="g2">
             <div class="nc">
@@ -1678,7 +1705,7 @@
               <div class="nc-d">Up from 40% after moving photo upload inline — the single highest-impact design change across all iterations.</div>
             </div>
             <div class="nc">
-              <div class="nc-n sm">↓ Overwhelm</div>
+              <div class="nc-n sm"><svg class="ico" aria-hidden="true"><use href="#i-down"/></svg>Overwhelm</div>
               <div class="nc-t">Dashboard clarity improved</div>
               <div class="nc-d">Limiting the home view to one upcoming plan eliminated the paralysis users felt when seeing all trips at once.</div>
             </div>
@@ -1694,20 +1721,17 @@
             </div>
           </div>
         </div>
-
         <div class="quote">
           <p>"I've always wanted something like this — where I can find a place, save it, plan when to go, and write about it after. I never thought one app could do all of that."</p>
           <div class="quote-attr">— Research Participant</div>
         </div>
       </section>
-
       <!-- 10 REFLECTION -->
       <section id="reflection" class="sec rev">
         <div class="phase"><div class="p-dot">10</div><span class="p-txt">Reflection</span></div>
         <h2 class="sec-h">What I Learned</h2>
         <p class="sec-lead">Building a full mobile product end-to-end — research through deployment — taught me things that neither design nor development alone could have.</p>
         <div class="rule"></div>
-
         <div class="block">
           <div class="g2">
             <div class="rc"><div class="rc-t">Cut ruthlessly</div><div class="rc-d">The social sharing feature prototyped well but contradicted what users actually wanted. Removing it was the right call. Every feature that doesn't serve the core use case weakens the product.</div></div>
@@ -1716,7 +1740,6 @@
             <div class="rc"><div class="rc-t">Inline beats separate screen</div><div class="rc-d">Moving photo upload inline was a tiny structural change with an outsized effect on adoption. Reducing friction at the exact moment of action is the highest-leverage design move there is.</div></div>
           </div>
         </div>
-
         <div class="block">
           <div class="sub">Future Iterations</div>
           <div class="flist">
@@ -1727,7 +1750,6 @@
             <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-export"/></svg></div><div><div class="fr-t">Export &amp; Share</div><div class="fr-d">Generate a shareable trip summary from journal entries and photos — private by default, shareable on demand.</div></div></div>
           </div>
         </div>
-
         <div class="closing">
           <p class="q">
             This project reminded me that the best design decisions often come from what you choose to <span class="hl-y">leave out</span>. A focused, private tool built around real human behaviour beats a feature-rich platform every time.
@@ -1736,13 +1758,153 @@
           <div class="corner-fold" aria-hidden="true"></div>
         </div>
       </section>
-
     </div>
   </main>
 
-  <footer>© 2025 Inayat Gulati &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; UX/UI · Frontend · Architecture</footer>
+  <!-- LIGHTBOX -->
+  <div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image">
+    <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+    <div class="lb-zoom" id="lbZoom">
+      <button id="lbOut" aria-label="Zoom out">−</button>
+      <span class="lb-lvl" id="lbLvl">FIT</span>
+      <button id="lbIn" aria-label="Zoom in">+</button>
+    </div>
+    <div class="lb-stage" id="lbStage"></div>
+    <div class="lb-cap" id="lbCap"></div>
+  </div>
 
+  <footer>© 2025 Inayat Gulati &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; UX/UI · Frontend · Architecture</footer>
   <script>
+    /* ---- mobile menu ---- */
+    (function () {
+      var t = document.getElementById('navToggle');
+      var n = document.getElementById('navLinks');
+      if (!t || !n) return;
+      t.addEventListener('click', function () {
+        var open = n.classList.toggle('open');
+        t.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      n.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          n.classList.remove('open');
+          t.setAttribute('aria-expanded', 'false');
+        });
+      });
+    })();
+
+    /* ============================================================
+       LIGHTBOX
+       Fit to screen first, then levels above it. A phone screenshot
+       fitted into a plate is a picture of an interface, not a readable
+       one — so zoom has to go past the fit.
+       ============================================================ */
+    var lb      = document.getElementById('lightbox');
+    var lbStage = document.getElementById('lbStage');
+    var lbCap   = document.getElementById('lbCap');
+    var lbZoom  = document.getElementById('lbZoom');
+    var lbLvl   = document.getElementById('lbLvl');
+    var lbIn    = document.getElementById('lbIn');
+    var lbOut   = document.getElementById('lbOut');
+    var lbClose = document.getElementById('lbClose');
+    var LEVELS  = [0, 1, 1.5, 2];   /* 0 = fit; the rest are multiples of the file's own size */
+    var lastFocus = null, natW = 0, natH = 0, fitW = 0, zi = 0, capText = '', node = null;
+
+    function widthAt(i) { return natW * LEVELS[i]; }
+    function canZoom()  { return widthAt(LEVELS.length - 1) > fitW * 1.05; }
+    /* skip any level that would not actually be bigger than the fit */
+    function nextLevel() {
+      for (var i = zi + 1; i < LEVELS.length; i++) if (widthAt(i) > fitW * 1.05) return i;
+      return 0;
+    }
+    function render(ox, oy) {
+      if (zi === 0) {
+        lb.classList.remove('zoomed');
+        lbLvl.textContent = 'FIT';
+        node.style.width = ''; node.style.height = '';
+      } else {
+        lb.classList.add('zoomed');
+        lbLvl.textContent = Math.round(LEVELS[zi] * 100) + '%';
+        node.style.width  = Math.round(natW * LEVELS[zi]) + 'px';
+        node.style.height = Math.round(natH * LEVELS[zi]) + 'px';
+        var x = ox === undefined ? 0.5 : ox, y = oy === undefined ? 0.5 : oy;
+        lbStage.scrollLeft = node.offsetWidth  * x - lbStage.clientWidth  / 2;
+        lbStage.scrollTop  = node.offsetHeight * y - lbStage.clientHeight / 2;
+      }
+      lbIn.disabled  = nextLevel() <= zi;
+      lbOut.disabled = zi <= 0;
+    }
+    function measure(cap) {
+      if (cap !== undefined) capText = cap;
+      zi = 0; render();
+      fitW = node.getBoundingClientRect().width;
+      var z = canZoom();
+      lbZoom.classList.toggle('on', z);
+      node.classList.toggle('can-zoom', z);
+      lbCap.innerHTML = (capText || '') + '<span class="lb-hint">' +
+        (z ? 'Click the image to zoom in · drag to pan · Esc to close'
+           : 'Click anywhere or press Esc to close') + '</span>';
+      lbIn.disabled = !z; lbOut.disabled = true;
+    }
+    function openImg(img) {
+      lastFocus = document.activeElement;
+      var el = new Image();
+      el.src = img.currentSrc || img.src;
+      el.alt = img.alt || '';
+      lbStage.innerHTML = ''; lbStage.appendChild(el);
+      node = el;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      lbClose.focus();
+      var go = function () { natW = el.naturalWidth; natH = el.naturalHeight; measure(img.dataset.cap || img.alt); };
+      if (el.complete && el.naturalWidth) go(); else el.addEventListener('load', go, { once: true });
+    }
+    function closeLB() {
+      lb.classList.remove('open', 'zoomed');
+      lbStage.innerHTML = '';
+      node = null; zi = 0;
+      document.body.style.overflow = '';
+      if (lastFocus) lastFocus.focus();
+    }
+    document.querySelectorAll('img.zoomable').forEach(function (img) {
+      img.addEventListener('click', function () { openImg(img); });
+    });
+    lbStage.addEventListener('click', function (e) {
+      if (!node || e.target !== node || !canZoom()) return;
+      var r = node.getBoundingClientRect();
+      zi = nextLevel();
+      render((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+    });
+    lbIn.addEventListener('click', function () { var n = nextLevel(); if (n > zi) { zi = n; render(); } });
+    lbOut.addEventListener('click', function () { if (zi > 0) { zi--; render(); } });
+    lbClose.addEventListener('click', closeLB);
+    lb.addEventListener('click', function (e) { if (e.target === lb || e.target === lbCap) closeLB(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && lb.classList.contains('open')) closeLB();
+    });
+    /* drag to pan while zoomed (touch pans natively) */
+    var drag = null;
+    lbStage.addEventListener('pointerdown', function (e) {
+      if (zi === 0 || e.pointerType === 'touch') return;
+      drag = { x: e.clientX, y: e.clientY, l: lbStage.scrollLeft, t: lbStage.scrollTop };
+      lbStage.classList.add('dragging');
+      lbStage.setPointerCapture(e.pointerId);
+    });
+    lbStage.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      lbStage.scrollLeft = drag.l - (e.clientX - drag.x);
+      lbStage.scrollTop  = drag.t - (e.clientY - drag.y);
+    });
+    ['pointerup', 'pointercancel'].forEach(function (ev) {
+      lbStage.addEventListener(ev, function () { drag = null; lbStage.classList.remove('dragging'); });
+    });
+    var rt;
+    window.addEventListener('resize', function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () {
+        if (lb.classList.contains('open') && node) measure();
+      }, 140);
+    });
+
     // scroll reveal
     (function () {
       var revs = document.querySelectorAll('.rev');
@@ -1757,7 +1919,6 @@
       }, { threshold: 0.05, rootMargin: '0px 0px -5% 0px' });
       revs.forEach(function (el) { ro.observe(el); });
     })();
-
     // active section in side nav
     (function () {
       var links = document.querySelectorAll('.side-a');
