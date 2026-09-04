@@ -1,1848 +1,1916 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pawth — Inayat</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --paper: #faf8f2;
-        --paper-dark: #f0ecdf;
-        --paper-worn: #e8e2d0;
-        --ink: #1a1612;
-        --ink-light: #3d3530;
-        --ink-faint: #8a7f72;
-        --pencil: #b8b0a0;
-        --pencil-light: #d4cfc4;
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pawth — Inayat</title>
+<meta name="description" content="Pawth: a pet social community I designed and built solo — community feed, pet-friendly maps, AI-powered event planning, and a full REST API with role-based access control." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<style>
+:root {
+--paper: #faf8f2;
+--paper-dark: #f0ecdf;
+--paper-worn: #e8e2d0;
+--ink: #1a1612;
+--ink-light: #3d3530;
+--ink-faint: #8a7f72;
+--pencil: #b8b0a0;
+--pencil-light: #d4cfc4;
 
-        /* Pawth accent — deep navy + amber (matching fraud detection palette) */
-        --pw-blue: #1e3a5f;
-        --pw-blue-l: #2e5491;
-        --pw-amber: #b87a0a;
-        --pw-amber-l: #d4940e;
-        --pw-green: #2e7d44;
-        --yellow: #e8b84b;
+/* Pawth accent — deep navy + amber.
+   --pw-amber was #b87a0a: 3.39:1 on the cream, 3.05:1 on the card — both
+   under AA. Darkened to #8f6208 (5.05 / 4.53). --pw-amber-l keeps the
+   original brightness for decoration only, where contrast doesn't apply. */
+--pw-blue: #1e3a5f;
+--pw-blue-l: #2e5491;
+--pw-amber: #8f6208;
+--pw-amber-l: #d4940e;
+--pw-green: #256b39;
+--yellow: #e8b84b;
 
-        --font-hand: 'Caveat', cursive;
-        --font-scrawl: 'Reenie Beanie', cursive;
-        --font-mono: 'Space Mono', monospace;
-        --font-serif: 'EB Garamond', serif;
+--font-hand: 'Caveat', cursive;
+--font-text: 'Karla', system-ui, -apple-system, 'Segoe UI', sans-serif;
+--font-scrawl: 'Reenie Beanie', cursive;
+--font-mono: 'Space Mono', monospace;
+--font-serif: 'EB Garamond', serif;
 
-        --nav-h: 58px;
-        --side-w: 196px;
-      }
+--nav-h: 58px;
+--side-w: 196px;
+--spiral: 32px;
+--main-max: 860px;
+--main-pad: 3.5rem;
+--nav-max: 1200px;
 
-      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-      html { scroll-behavior: smooth; }
-
-      body {
-        font-family: var(--font-hand);
-        background: var(--paper);
-        color: var(--ink);
-        line-height: 1.6;
-        overflow-x: hidden;
-        -webkit-font-smoothing: antialiased;
+/* ---- fluid type: floor, ramp, ceiling ---- */
+--fs-body:   clamp(14.5px, calc(13.96px + 0.138vw), 17.5px);
+--fs-lead:   clamp(16px,   calc(15.26px + 0.19vw),  20.5px);
+--fs-ui:     clamp(14px,   calc(13.44px + 0.143vw), 17px);
+--fs-cap:    clamp(12.5px, calc(12.1px + 0.104vw),  15px);
+--fs-mono-s: clamp(8.5px,  calc(8.14px + 0.093vw),  10.5px);
+--fs-mono-m: clamp(9.5px,  calc(9.14px + 0.093vw),  11.5px);
+--fs-hero:   clamp(17px,   calc(14.4px + 0.67vw),   29px);
+--fs-h1:     clamp(38px,   calc(28.6px + 2.4vw),    90px);
+--fs-h2:     clamp(29px,   calc(23.3px + 1.46vw),   60px);
+--fs-h3:     clamp(23px,   calc(19.9px + 0.79vw),   40px);
+--fs-num:    clamp(28px,   calc(23.4px + 1.18vw),   54px);
+--fs-quote:  clamp(18px,   calc(15.5px + 0.64vw),   32px);
+--fs-scrawl: clamp(17px,   calc(15.6px + 0.36vw),   25px);
+--ico:       clamp(18px,   calc(16.8px + 0.375vw),  24px);
       }
-
-      /* Ruled paper lines */
-      body::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background-image:
-          repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.11) 27px, rgba(180,170,155,0.11) 28px);
-        pointer-events: none;
-        z-index: 0;
+/* ---- larger desktops: the column grows with the screen ---- */
+@media (min-width: 1600px) {
+:root { --side-w: 228px; --main-max: 1000px; --main-pad: 3.75rem; --nav-h: 64px; --nav-max: 1440px; }
       }
-
-      /* Spiral binding */
-      .spiral-binding {
-        position: fixed;
-        left: 0; top: 0; bottom: 0;
-        width: 32px;
-        background: var(--paper-worn);
-        border-right: 2.5px solid var(--ink);
-        z-index: 200;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        padding-top: 24px;
-        pointer-events: none;
+@media (min-width: 1920px) {
+:root { --side-w: 254px; --main-max: 1130px; --main-pad: 4.25rem; --nav-h: 70px; --spiral: 40px; --nav-max: 1680px; }
       }
-      .spiral-hole {
-        width: 16px; height: 16px;
-        border-radius: 50%;
-        border: 2px solid var(--ink);
-        background: var(--paper);
-        margin-bottom: 28px;
-        flex-shrink: 0;
-        box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
+/* ---- TV / 4K: a second, steeper ramp. Each floor is the ramp above's
+       ceiling, so the two meet without a step. ---- */
+@media (min-width: 2560px) {
+:root {
+--side-w: 300px; --main-max: 1400px; --main-pad: 5rem; --nav-h: 84px; --spiral: 48px; --nav-max: 2200px;
+--fs-body:   clamp(17.5px, calc(9.2px + 0.324vw),  26px);
+--fs-lead:   clamp(20.5px, calc(10.7px + 0.383vw), 30px);
+--fs-ui:     clamp(17px,   calc(9.0px + 0.313vw),  25px);
+--fs-cap:    clamp(15px,   calc(8.2px + 0.266vw),  22px);
+--fs-mono-s: clamp(10.5px, calc(6.6px + 0.152vw),  14.5px);
+--fs-mono-m: clamp(11.5px, calc(7.2px + 0.168vw),  16px);
+--fs-hero:   clamp(29px,   calc(12.9px + 0.629vw), 46px);
+--fs-h1:     clamp(90px,   calc(37.6px + 2.05vw),  144px);
+--fs-h2:     clamp(60px,   calc(25.1px + 1.36vw),  96px);
+--fs-h3:     clamp(40px,   calc(17.4px + 0.883vw), 63px);
+--fs-num:    clamp(54px,   calc(22.6px + 1.23vw),  86px);
+--fs-quote:  clamp(32px,   calc(13.9px + 0.707vw), 51px);
+--fs-scrawl: clamp(25px,   calc(11.4px + 0.531vw), 39px);
+--ico:       clamp(24px,   calc(12.4px + 0.453vw), 36px);
+        }
       }
-
-      /* TOP NAV */
-      .topnav {
-        position: fixed;
-        top: 0; left: 32px; right: 0;
-        height: var(--nav-h);
-        z-index: 150;
-        background: var(--paper);
-        border-bottom: 2.5px solid var(--ink);
-        display: flex;
-        align-items: center;
-        padding: 0 2rem;
-      }
-      .topnav-in {
-        width: 100%;
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .logo {
-        font-family: var(--font-hand);
-        font-size: 22px;
-        font-weight: 700;
-        color: var(--ink);
-        text-decoration: none;
-        position: relative;
-      }
-      .logo::after {
-        content: '';
-        position: absolute;
-        bottom: -2px; left: 0; right: 0;
-        height: 3px;
-        background: var(--pw-blue);
-        border-radius: 2px;
-        transform: rotate(-0.8deg);
-      }
-      .nav-links {
-        display: flex;
-        gap: 2rem;
-        list-style: none;
-      }
-      .nav-links a {
-        font-family: var(--font-hand);
-        font-size: 16px;
-        color: var(--ink-faint);
-        text-decoration: none;
-        position: relative;
-        padding-bottom: 2px;
-        transition: color 0.2s;
-      }
-      .nav-links a::after {
-        content: '';
-        position: absolute;
-        bottom: 0; left: 0;
-        width: 0; height: 2px;
-        background: var(--ink);
-        transition: width 0.25s;
-      }
-      .nav-links a:hover { color: var(--ink); }
-      .nav-links a:hover::after { width: 100%; }
-
-      /* SIDENAV */
-      .sidenav {
-        position: fixed;
-        top: var(--nav-h);
-        left: 32px;
-        width: var(--side-w);
-        height: calc(100vh - var(--nav-h));
-        padding: 2rem 1rem 2rem 1.5rem;
-        border-right: 1.5px solid rgba(180,170,155,0.35);
-        background: var(--paper);
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        overflow-y: auto;
-        z-index: 100;
-      }
-      .sidenav::before {
-        content: '';
-        position: absolute;
-        left: 44px; top: 0; bottom: 0;
-        width: 1.5px;
-        background: rgba(30,58,95,0.12);
-        pointer-events: none;
-      }
-      .back-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        color: var(--pw-blue);
-        text-decoration: none;
-        font-family: var(--font-hand);
-        font-size: 15px;
-        font-weight: 600;
-        transition: gap 0.2s;
-        white-space: nowrap;
-      }
-      .back-link:hover { gap: 10px; }
-      .side-lbl {
-        font-family: var(--font-mono);
-        font-size: 9px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: var(--pencil);
-        margin-bottom: 0.5rem;
-      }
-      .side-list { display: flex; flex-direction: column; }
-      .side-a {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 0 6px 10px;
-        color: var(--pencil);
-        text-decoration: none;
-        font-family: var(--font-hand);
-        font-size: 14px;
-        border-left: 2px solid transparent;
-        transition: color 0.2s, border-color 0.2s;
-        white-space: nowrap;
-      }
-      .side-a:hover { color: var(--ink-light); border-left-color: var(--pencil); }
-      .side-a.active { color: var(--pw-blue); border-left-color: var(--pw-blue); font-weight: 700; }
-      .side-num {
-        font-family: var(--font-mono);
-        font-size: 8px;
-        color: var(--pencil);
-        min-width: 16px;
-      }
-      .side-a.active .side-num { color: var(--pw-blue); }
-
-      /* MAIN */
-      .main {
-        margin-left: calc(32px + var(--side-w));
-        padding: calc(var(--nav-h) + 3rem) 3.5rem 7rem 3rem;
-        max-width: calc(860px + var(--side-w));
-        position: relative;
-        z-index: 1;
+@media (min-width: 3400px) {
+:root { --side-w: 380px; --main-max: 1780px; --main-pad: 6rem; --nav-h: 96px; --spiral: 60px; --nav-max: 2900px; }
       }
 
-      /* TAGS */
-      .tags {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-        margin-bottom: 1.25rem;
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+font-family: var(--font-text);
+font-size: var(--fs-body);
+background: var(--paper);
+color: var(--ink);
+line-height: 1.6;
+overflow-x: hidden;
+-webkit-font-smoothing: antialiased;
       }
-      .tag {
-        font-family: var(--font-mono);
-        font-size: 9px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: var(--pw-blue);
-        padding: 3px 10px;
-        border: 1.5px solid rgba(30,58,95,0.3);
-        background: rgba(30,58,95,0.05);
-        transform: rotate(-0.3deg);
-        display: inline-block;
+/* Ruled paper lines */
+body::before {
+content: '';
+position: fixed;
+inset: 0;
+background-image:
+repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.11) 27px, rgba(180,170,155,0.11) 28px);
+pointer-events: none;
+z-index: 0;
       }
-      .tag:nth-child(2) {
-        transform: rotate(0.5deg);
-        color: var(--pw-amber);
-        border-color: rgba(184,122,10,0.3);
-        background: rgba(184,122,10,0.05);
+/* Spiral binding */
+.spiral-binding {
+position: fixed;
+left: 0; top: 0; bottom: 0;
+width: var(--spiral);
+background: var(--paper-worn);
+border-right: 2.5px solid var(--ink);
+z-index: 200;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: flex-start;
+padding-top: 24px;
+pointer-events: none;
       }
-      .tag:nth-child(3) {
-        transform: rotate(-0.2deg);
-        color: var(--ink-faint);
-        border-color: rgba(138,127,114,0.3);
-        background: rgba(138,127,114,0.05);
+.spiral-hole {
+width: 16px; height: 16px;
+border-radius: 50%;
+border: 2px solid var(--ink);
+background: var(--paper);
+margin-bottom: 28px;
+flex-shrink: 0;
+box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
       }
-      .tag:nth-child(4) {
-        transform: rotate(0.4deg);
-        color: var(--ink-faint);
-        border-color: rgba(138,127,114,0.3);
-        background: rgba(138,127,114,0.05);
+/* TOP NAV */
+.topnav {
+position: fixed;
+top: 0; left: var(--spiral); right: 0;
+height: var(--nav-h);
+z-index: 150;
+background: var(--paper);
+border-bottom: 2.5px solid var(--ink);
+display: flex;
+align-items: center;
+padding: 0 2rem;
       }
+.topnav-in {
+width: 100%;
+max-width: var(--nav-max);
+margin: 0 auto;
+display: flex;
+justify-content: space-between;
+align-items: center;
+      }
+.logo {
+font-family: var(--font-hand);
+font-size: clamp(22px, calc(19.8px + 0.57vw), 44px);
+font-weight: 700;
+color: var(--ink);
+text-decoration: none;
+position: relative;
+      }
+.logo::after {
+content: '';
+position: absolute;
+bottom: -2px; left: 0; right: 0;
+height: 3px;
+background: var(--pw-blue);
+border-radius: 2px;
+transform: rotate(-0.8deg);
+      }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+font-family: var(--font-text);
+font-size: var(--fs-ui);
+color: var(--ink-faint);
+text-decoration: none;
+position: relative;
+padding-bottom: 2px;
+transition: color 0.2s;
+      }
+.nav-links a::after {
+content: '';
+position: absolute;
+bottom: 0; left: 0;
+width: 0; height: 2px;
+background: var(--ink);
+transition: width 0.25s;
+      }
+.nav-links a:hover { color: var(--ink); }
+.nav-links a:hover::after { width: 100%; }
+/* mobile menu button — the old page hid the links below 600px and put
+   nothing back, so the page had no navigation at all on a phone */
+.nav-toggle { display: none; background: none; border: 0; cursor: pointer; padding: 9px 4px; }
+.nav-toggle span { display: block; width: 23px; height: 2.5px; background: var(--ink); border-radius: 2px; margin: 4.5px 0; transition: transform 0.22s, opacity 0.18s; }
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+/* SIDENAV */
+.sidenav {
+position: fixed;
+top: var(--nav-h);
+left: var(--spiral);
+width: var(--side-w);
+height: calc(100vh - var(--nav-h));
+padding: 2rem 1rem 2rem 1.5rem;
+border-right: 1.5px solid rgba(180,170,155,0.35);
+background: var(--paper);
+display: flex;
+flex-direction: column;
+gap: 1.5rem;
+overflow-y: auto;
+z-index: 100;
+      }
+.sidenav::before {
+content: '';
+position: absolute;
+left: 44px; top: 0; bottom: 0;
+width: 1.5px;
+background: rgba(30,58,95,0.12);
+pointer-events: none;
+      }
+.back-link {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+color: var(--pw-blue);
+text-decoration: none;
+font-family: var(--font-text);
+font-size: var(--fs-ui);
+font-weight: 700;
+transition: gap 0.2s;
+white-space: nowrap;
+      }
+.back-link:hover { gap: 10px; }
+.side-lbl {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-s);
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(--pencil);
+margin-bottom: 0.5rem;
+      }
+.side-list { display: flex; flex-direction: column; }
+.side-a {
+display: flex;
+align-items: center;
+gap: 8px;
+padding: 7px 0 7px 10px;
+color: var(--pencil);
+text-decoration: none;
+font-family: var(--font-text);
+font-size: var(--fs-ui);
+border-left: 2px solid transparent;
+transition: color 0.2s, border-color 0.2s;
+white-space: nowrap;
+      }
+.side-a:hover { color: var(--ink-light); border-left-color: var(--pencil); }
+.side-a.active { color: var(--pw-blue); border-left-color: var(--pw-blue); font-weight: 700; }
+.side-num {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-s);
+color: var(--pencil);
+min-width: 18px;
+      }
+.side-a.active .side-num { color: var(--pw-blue); }
+/* MAIN */
+.main {
+margin-left: calc(var(--spiral) + var(--side-w));
+padding: calc(var(--nav-h) + 3rem) var(--main-pad) 7rem 3rem;
+max-width: calc(var(--main-max) + var(--side-w));
+position: relative;
+z-index: 1;
+      }
+/* ---- hand-drawn line icons (these replaced the emoji) ---- */
+.ico {
+width: var(--ico); height: var(--ico);
+fill: none;
+stroke: var(--ink-light);
+stroke-width: 1.5;
+stroke-linecap: round;
+stroke-linejoin: round;
+display: block;
+transition: stroke 0.2s ease;
+      }
+.fr:hover .ico { stroke: var(--pw-blue); }
+.ic .ico { stroke: var(--pw-blue); }
+.ico--sm { width: calc(var(--ico) * 0.8); height: calc(var(--ico) * 0.8); }
+.ico--inline {
+width: 1.05em; height: 1.05em;
+display: inline-block;
+vertical-align: -0.16em;
+stroke-width: 1.7;
+      }
+/* TAGS */
+.tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.tag {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-s);
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--pw-blue);
+padding: 4px 10px;
+border: 1.5px solid rgba(30,58,95,0.3);
+background: rgba(30,58,95,0.05);
+transform: rotate(-0.3deg);
+display: inline-block;
+      }
+.tag:nth-child(2) {
+transform: rotate(0.5deg);
+color: var(--pw-amber);
+border-color: rgba(143,98,8,0.32);
+background: rgba(143,98,8,0.05);
+      }
+.tag:nth-child(3) {
+transform: rotate(-0.2deg);
+color: var(--ink-light);
+border-color: rgba(138,127,114,0.35);
+background: rgba(138,127,114,0.05);
+      }
+.tag:nth-child(4) {
+transform: rotate(0.4deg);
+color: var(--ink-light);
+border-color: rgba(138,127,114,0.35);
+background: rgba(138,127,114,0.05);
+      }
+.hero-h {
+font-family: var(--font-hand);
+font-size: var(--fs-h1);
+font-weight: 700;
+line-height: 1.05;
+margin-bottom: 0.5rem;
+letter-spacing: -1px;
+      }
+.hero-h .squiggle-wrap { position: relative; display: inline-block; }
+.hero-h .squiggle-wrap svg {
+position: absolute;
+bottom: -6px; left: -4px;
+width: calc(100% + 8px);
+pointer-events: none;
+      }
+.hero-sub {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-m);
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--ink-light);
+margin-bottom: 0.75rem;
+margin-top: 0.75rem;
+      }
+.hero-p {
+font-family: var(--font-text);
+font-size: var(--fs-hero);
+color: var(--ink-light);
+line-height: 1.55;
+max-width: 46ch;
+margin-bottom: 1.75rem;
+      }
+/* HERO VIDEO */
+.hero-video {
+border: 2px solid var(--ink);
+background: var(--paper-dark);
+position: relative;
+margin-bottom: 1.75rem;
+transform: rotate(-0.3deg);
+box-shadow: 5px 5px 0 rgba(26,22,18,0.12);
+      }
+.hero-video::before {
+content: '';
+position: absolute;
+top: -11px; left: 50%;
+transform: translateX(-50%) rotate(-0.5deg);
+width: 60px; height: 20px;
+background: rgba(232,184,75,0.42);
+border-top: 1px solid rgba(232,184,75,0.55);
+border-bottom: 1px solid rgba(232,184,75,0.55);
+z-index: 10;
+      }
+.hero-video video { width: 100%; display: block; border-radius: 0; }
+/* STATS */
+.stats {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+border: 2px solid var(--ink);
+margin-bottom: 1.5rem;
+transform: rotate(0.2deg);
+box-shadow: 4px 4px 0 rgba(26,22,18,0.1);
+background: var(--paper-dark);
+      }
+.stat { padding: 1.1rem 1rem; border-right: 1.5px solid rgba(26,22,18,0.2); }
+.stat:last-child { border-right: none; }
+.s-n {
+font-family: var(--font-hand);
+font-size: var(--fs-num);
+font-weight: 700;
+color: var(--pw-blue);
+line-height: 1;
+margin-bottom: 4px;
+      }
+.s-l { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.4; }
+.s-sub { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 1px; color: var(--ink-faint); margin-top: 3px; }
+/* META */
+.meta {
+display: flex;
+gap: 2rem;
+flex-wrap: wrap;
+padding-top: 1.25rem;
+border-top: 2px solid rgba(26,22,18,0.15);
+margin-bottom: 5rem;
+      }
+.m-k {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-s);
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--pw-blue);
+margin-bottom: 5px;
+      }
+.m-v { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.5; }
+/* SECTION */
+.sec { margin-bottom: 5rem; }
+.phase { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
+.p-dot {
+width: 24px; height: 24px;
+border-radius: 50%;
+border: 2px solid var(--ink);
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: var(--font-mono);
+font-size: var(--fs-mono-m);
+color: var(--ink);
+font-weight: 700;
+flex: none;
+      }
+.p-txt {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-m);
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(--ink-light);
+      }
+.sec-h {
+font-family: var(--font-hand);
+font-size: var(--fs-h2);
+font-weight: 700;
+line-height: 1.1;
+margin-bottom: 0.5rem;
+letter-spacing: -0.5px;
+display: inline-block;
+position: relative;
+      }
+.sec-h em { font-style: italic; color: var(--pw-blue); }
+.sec-h::after {
+content: '';
+display: block;
+height: 3px;
+background: var(--pw-blue);
+border-radius: 2px;
+transform: rotate(-0.5deg);
+margin-top: 3px;
+width: 80%;
+      }
+.sec-lead {
+font-family: var(--font-text);
+font-size: var(--fs-lead);
+color: var(--ink-light);
+line-height: 1.6;
+max-width: 62ch;
+margin-bottom: 1.5rem;
+margin-top: 0.5rem;
+      }
+.rule { height: 1.5px; background: rgba(26,22,18,0.12); margin-bottom: 1.5rem; }
+.sub {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-m);
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(--pw-blue);
+margin-bottom: 0.875rem;
+      }
+.p-body {
+font-family: var(--font-text);
+font-size: var(--fs-body);
+color: var(--ink-light);
+line-height: 1.7;
+max-width: 68ch;
+margin-bottom: 1.1rem;
+      }
+.p-body strong { color: var(--ink); font-weight: 700; }
+/* GRIDS */
+.g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+.g2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+/* NOTEBOOK CARD */
+.nc {
+background: var(--paper-dark);
+border: 2px solid var(--ink);
+padding: 1.1rem;
+position: relative;
+transition: transform 0.2s, box-shadow 0.2s;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
+      }
+.nc:hover { transform: translate(-2px,-2px); box-shadow: 5px 7px 0 rgba(26,22,18,0.16); }
+.nc-n {
+font-family: var(--font-hand);
+font-size: var(--fs-num);
+font-weight: 700;
+color: var(--pw-blue);
+line-height: 1;
+margin-bottom: 6px;
+      }
+.nc-n.word { font-size: var(--fs-h3); }
+.nc-t { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; margin-bottom: 4px; }
+.nc-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.55; }
+/* ICON CARD */
+.ic {
+background: var(--paper-dark);
+border: 2px solid var(--ink);
+padding: 1.1rem;
+position: relative;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
+      }
+.ic-ico { margin-bottom: 0.6rem; }
+.ic-t { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; margin-bottom: 4px; }
+.ic-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.6; }
+/* FINDING ROW */
+.flist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+.fr {
+display: flex;
+gap: 0.875rem;
+align-items: flex-start;
+padding: 0.875rem 1rem;
+background: var(--paper-dark);
+border: 1.5px solid rgba(26,22,18,0.15);
+transition: border-color 0.2s, transform 0.2s;
+      }
+.fr:hover { border-color: rgba(30,58,95,0.35); transform: translateX(2px); }
+.fr-i {
+width: 32px; height: 32px; min-width: 32px;
+border: 1.5px solid rgba(26,22,18,0.2);
+display: flex;
+align-items: center;
+justify-content: center;
+background: var(--paper);
+      }
+.fr--tight { padding: 0.65rem 0.875rem; }
+.fr--tight .fr-i { width: 28px; height: 28px; min-width: 28px; }
+.fr-t { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; margin-bottom: 3px; }
+.fr-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.6; }
+/* STEP LIST */
+.slist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+.st {
+display: flex;
+gap: 0.875rem;
+padding: 0.875rem 1rem;
+background: var(--paper-dark);
+border: 1.5px solid rgba(26,22,18,0.15);
+      }
+.st-n { font-family: var(--font-hand); font-size: var(--fs-h3); font-weight: 700; color: var(--pw-blue); min-width: 26px; line-height: 1.3; }
+.st-t { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; margin-bottom: 3px; }
+.st-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.55; }
+/* DIRECTION CARD */
+.dcard {
+background: var(--paper-dark);
+border: 2px solid var(--ink);
+padding: 1.25rem;
+position: relative;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
+      }
+.dcard.chosen {
+border-color: var(--pw-blue);
+background: rgba(30,58,95,0.04);
+border-bottom: 4px solid var(--pw-blue);
+      }
+.dcard.chosen::before {
+content: '';
+position: absolute;
+top: -11px; left: 20px;
+width: 40px; height: 20px;
+background: rgba(232,184,75,0.38);
+border-top: 1px solid rgba(232,184,75,0.5);
+border-bottom: 1px solid rgba(232,184,75,0.5);
+transform: rotate(1.5deg);
+      }
+.dcard-label {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-s); letter-spacing: 2px; text-transform: uppercase;
+font-weight: 700; margin-bottom: 0.5rem;
+display: inline-flex; align-items: center; gap: 6px;
+      }
+.dcard.chosen .dcard-label { color: var(--pw-blue); }
+.dcard:not(.chosen) .dcard-label { color: var(--ink-faint); }
+.dcard-t { font-family: var(--font-text); font-size: var(--fs-body); font-weight: 700; margin-bottom: 0.5rem; line-height: 1.5; }
+.dcard-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.65; }
+/* ITERATION */
+.ilist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+.it { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: center; gap: 8px; }
+.it-b { padding: 0.875rem 1rem; border: 1.5px solid rgba(26,22,18,0.15); }
+.it-b.bef { background: var(--paper-dark); }
+.it-b.aft { background: rgba(30,58,95,0.04); border-color: rgba(30,58,95,0.3); }
+.it-lbl {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-s); letter-spacing: 2px; text-transform: uppercase;
+font-weight: 700; margin-bottom: 4px;
+      }
+.it-b.bef .it-lbl { color: var(--ink-faint); }
+.it-b.aft .it-lbl { color: var(--pw-blue); }
+.it-txt { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.5; }
+.it-b.aft .it-txt { color: var(--ink); }
+.it-txt code { font-family: var(--font-mono); font-size: 0.92em; }
+.it-arr { text-align: center; color: var(--pw-blue); font-size: 1rem; font-weight: 700; }
+/* QUOTE */
+.quote {
+border-left: 3px solid var(--pw-blue);
+padding: 1rem 1.25rem;
+margin: 1.25rem 0;
+background: rgba(30,58,95,0.04);
+position: relative;
+transform: rotate(-0.3deg);
+max-width: 66ch;
+      }
+.quote::before {
+content: '';
+position: absolute;
+top: -11px; left: 20px;
+width: 36px; height: 20px;
+background: rgba(232,184,75,0.38);
+border-top: 1px solid rgba(232,184,75,0.5);
+border-bottom: 1px solid rgba(232,184,75,0.5);
+transform: rotate(1.5deg);
+      }
+.quote p { font-family: var(--font-serif); font-size: var(--fs-quote); font-style: italic; line-height: 1.55; color: var(--ink); }
+.quote-attr {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-m); letter-spacing: 1px;
+color: var(--ink-light); margin-top: 0.75rem; text-transform: uppercase;
+      }
+/* REFLECTION CARD */
+.rc { background: var(--paper-dark); border: 1.5px solid rgba(26,22,18,0.15); padding: 1.1rem; }
+.rc-t { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; color: var(--pw-blue); margin-bottom: 6px; }
+.rc-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.65; }
+/* IMAGES */
+.imgs { display: grid; gap: 12px; margin-bottom: 1.5rem; }
+.imgs.c2 { grid-template-columns: 1fr 1fr; }
+.imgs.c3 { grid-template-columns: repeat(3, 1fr); }
+.iw {
+border: 2px solid var(--ink);
+background: var(--paper-dark);
+position: relative;
+transition: transform 0.2s, box-shadow 0.2s;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
+      }
+.iw:hover { transform: translate(-2px,-2px); box-shadow: 5px 7px 0 rgba(26,22,18,0.16); }
+.iw img { width: 100%; display: block; }
+.icap {
+padding: 9px 11px;
+font-family: var(--font-text);
+font-size: var(--fs-cap); color: var(--ink-light);
+border-top: 1.5px solid rgba(26,22,18,0.12); line-height: 1.45;
+      }
+/* SKETCH GRID */
+.sketch-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 1.5rem; }
+@media (min-width: 1200px) { .sketch-grid { grid-template-columns: repeat(4, 1fr); } }
+.sketch-wrap {
+border: 2px solid var(--ink);
+background: var(--paper-dark);
+position: relative;
+transition: transform 0.2s, box-shadow 0.2s;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
+      }
+.sketch-wrap:hover { transform: translate(-2px,-2px); box-shadow: 5px 7px 0 rgba(26,22,18,0.16); }
+/* a fixed ratio so four hand-scanned sketches sit on one tidy row
+   instead of stepping up and down with whatever each scan happened to be */
+.sketch-wrap img { width: 100%; display: block; aspect-ratio: 3 / 4; object-fit: contain; background: #f8f5f0; }
+.sketch-cap {
+padding: 9px 11px;
+font-family: var(--font-text);
+font-size: var(--fs-cap); color: var(--ink-light);
+border-top: 1.5px solid rgba(26,22,18,0.12); line-height: 1.45;
+      }
+/* FEATURE CALLOUT */
+.feature-callout {
+background: rgba(30,58,95,0.04);
+border: 2px solid var(--pw-blue);
+border-bottom: 4px solid var(--pw-blue);
+padding: 1.5rem;
+display: flex;
+flex-direction: column;
+justify-content: center;
+position: relative;
+      }
+.feature-callout::before {
+content: '';
+position: absolute;
+top: -11px; left: 20px;
+width: 40px; height: 20px;
+background: rgba(232,184,75,0.38);
+border-top: 1px solid rgba(232,184,75,0.5);
+border-bottom: 1px solid rgba(232,184,75,0.5);
+transform: rotate(-1.5deg);
+      }
+.feature-callout .sub { margin-bottom: 0.4rem; }
+.feature-callout-h {
+font-family: var(--font-hand);
+font-size: var(--fs-h3);
+font-weight: 700;
+line-height: 1.2;
+margin-bottom: 0.5rem;
+      }
+.feature-callout-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.65; }
+/* API TABLE */
+.api-wrap { overflow-x: auto; margin-bottom: 1.5rem; }
+.api-table {
+width: 100%;
+min-width: 460px;
+border-collapse: collapse;
+border: 2px solid var(--ink);
+background: var(--paper-dark);
+      }
+.api-table th {
+text-align: left;
+padding: 0.6rem 0.875rem;
+font-family: var(--font-mono);
+font-size: var(--fs-mono-s);
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--pw-blue);
+font-weight: 700;
+border-bottom: 1.5px solid var(--ink);
+background: rgba(30,58,95,0.05);
+      }
+.api-table td {
+padding: 0.6rem 0.875rem;
+font-family: var(--font-text);
+font-size: var(--fs-cap);
+color: var(--ink-light);
+border-bottom: 1px solid rgba(26,22,18,0.08);
+vertical-align: top;
+line-height: 1.5;
+      }
+.api-table tr:hover td { background: rgba(30,58,95,0.03); }
+.method {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-s);
+padding: 3px 7px;
+font-weight: 700;
+white-space: nowrap;
+letter-spacing: 1px;
+display: inline-block;
+      }
+/* every method colour measured against its own tint over the card:
+   get 4.86, post 5.36, put 5.05, delete 4.71, patch 5.23 */
+.method.get   { background: rgba(37,107,57,0.1);  color: #256b39;         border: 1.5px solid rgba(37,107,57,0.32); }
+.method.post  { background: rgba(30,58,95,0.1);   color: var(--pw-blue-l); border: 1.5px solid rgba(30,58,95,0.32); }
+.method.put   { background: rgba(184,122,10,0.1); color: #7e5507;         border: 1.5px solid rgba(126,85,7,0.32); }
+.method.del   { background: rgba(192,57,43,0.1);  color: #b02f22;         border: 1.5px solid rgba(176,47,34,0.32); }
+.method.patch { background: rgba(100,78,130,0.1); color: #644e82;         border: 1.5px solid rgba(100,78,130,0.32); }
+.endpoint { font-family: var(--font-mono); font-size: var(--fs-mono-m); color: var(--ink); }
+/* TOOLS PILLS */
+.tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.tool {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-m); letter-spacing: 1px;
+padding: 4px 10px;
+background: var(--paper-dark);
+border: 1.5px solid rgba(26,22,18,0.2);
+color: var(--ink-light);
+text-transform: uppercase;
+      }
+/* ROLE BADGE */
+.role-badge {
+display: inline-flex;
+align-items: center;
+gap: 7px;
+padding: 5px 12px;
+border: 1.5px solid var(--pw-blue);
+background: rgba(30,58,95,0.06);
+font-family: var(--font-mono);
+font-size: var(--fs-mono-s);
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--pw-blue);
+font-weight: 700;
+margin-bottom: 0.75rem;
+      }
+.role-badge .ico { stroke: var(--pw-blue); width: 1.4em; height: 1.4em; }
+/* HIGHLIGHT */
+.hl-y {
+background: linear-gradient(120deg, rgba(232,184,75,0)0%, rgba(232,184,75,0.45)10%, rgba(232,184,75,0.45)90%, rgba(232,184,75,0)100%);
+padding: 0 2px;
+      }
+/* CORNER FOLD */
+.corner-fold {
+position: absolute;
+bottom: 0; right: 0;
+width: 24px; height: 24px;
+background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
+border-top: 1px solid var(--pencil);
+border-left: 1px solid var(--pencil);
+pointer-events: none;
+      }
+/* SCROLL REVEAL */
+.rev { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.rev.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .rev { opacity: 1; transform: none; transition: none; } }
+/* ============================================================
+   ZOOM — every screenshot and sketch opens full size.
+   ============================================================ */
+.zoomable { cursor: zoom-in; }
+.lb { position: fixed; inset: 0; z-index: 500; background: rgba(20,17,13,.94);
+display: none; align-items: center; justify-content: center; padding: 4vh 4vw 9vh; }
+.lb.open { display: flex; }
+.lb-stage { max-width: 100%; max-height: 87vh; overflow: auto; display: flex;
+align-items: center; justify-content: center; -webkit-overflow-scrolling: touch; }
+.lb.zoomed .lb-stage { align-items: flex-start; justify-content: flex-start; cursor: grab; }
+.lb.zoomed .lb-stage.dragging { cursor: grabbing; }
+.lb img { max-width: 100%; max-height: 87vh; object-fit: contain; display: block;
+border: 2px solid var(--paper); background: var(--paper); }
+.lb.zoomed img { max-width: none; max-height: none; }
+.lb img.can-zoom { cursor: zoom-in; }
+.lb-close { position: absolute; top: 14px; right: 18px; width: 44px; height: 44px;
+background: var(--paper); border: 2px solid var(--ink); color: var(--ink); cursor: pointer;
+font-family: var(--font-mono); font-size: 18px; line-height: 1; display: grid; place-items: center; }
+.lb-close:hover { background: var(--ink); color: var(--paper); }
+.lb-zoom { position: absolute; top: 14px; right: 72px; display: none; align-items: center; gap: 8px;
+background: var(--paper); border: 2px solid var(--ink); height: 44px; padding: 0 6px; }
+.lb-zoom.on { display: flex; }
+.lb-zoom button { background: none; border: 0; cursor: pointer; color: var(--ink);
+font-family: var(--font-mono); font-size: 17px; line-height: 1; width: 30px; height: 32px;
+display: grid; place-items: center; }
+.lb-zoom button:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+.lb-zoom button:disabled { opacity: .3; cursor: default; }
+.lb-lvl { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 1px;
+color: var(--ink); min-width: 46px; text-align: center; }
+.lb-cap { position: absolute; bottom: 0; left: 0; right: 0; text-align: center;
+padding: 26px 6vw 18px; font-family: var(--font-text); font-size: var(--fs-cap);
+color: rgba(255,255,255,.85); line-height: 1.5;
+background: linear-gradient(to bottom, rgba(20,17,13,0), rgba(20,17,13,.95) 34%); }
+.lb-hint { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 1.2px;
+text-transform: uppercase; color: rgba(255,255,255,.5); display: block; margin-top: 6px; }
+/* FOOTER */
+footer {
+border-top: 2.5px solid var(--ink);
+padding: 1.4rem 2rem;
+text-align: center;
+font-family: var(--font-mono);
+font-size: var(--fs-mono-s); letter-spacing: 2px; text-transform: uppercase;
+color: var(--ink-faint);
+margin-left: var(--spiral);
+      }
+/* RESPONSIVE */
+@media (max-width: 1180px) {
+:root { --side-w: 178px; --main-pad: 2.25rem; }
+.nav-links { gap: 1.4rem; }
+      }
+@media (max-width: 960px) {
+:root { --spiral: 0px; }
+.spiral-binding { display: none; }
+.sidenav { display: none; }
+.main { margin-left: 0; max-width: 100%; padding: calc(var(--nav-h) + 2.5rem) 2rem 5rem; }
+.stats { grid-template-columns: repeat(2, 1fr); }
+.g3 { grid-template-columns: repeat(2, 1fr); }
+      }
+@media (max-width: 760px) {
+.nav-toggle { display: block; }
+.nav-links {
+display: none;
+position: absolute;
+top: calc(100% + 2.5px);
+left: 0; right: 0;
+flex-direction: column;
+gap: 0;
+background: var(--paper);
+border-bottom: 2.5px solid var(--ink);
+padding: 0.35rem 2rem 0.9rem;
+box-shadow: 0 8px 18px rgba(26,22,18,0.08);
+        }
+.nav-links.open { display: flex; }
+.nav-links a { display: block; padding: 0.6rem 0; border-bottom: 1px solid rgba(26,22,18,0.08); }
+.nav-links li:last-child a { border-bottom: 0; }
+.g3, .g2 { grid-template-columns: 1fr; }
+.it { grid-template-columns: 1fr; }
+.it-arr { display: none; }
+.imgs.c2, .imgs.c3 { grid-template-columns: 1fr; }
+.main { padding: calc(var(--nav-h) + 2rem) 1.5rem 4rem; }
+      }
+@media (max-width: 600px) {
+.stats { grid-template-columns: 1fr; }
+.stat { border-right: 0; border-bottom: 1.5px solid rgba(26,22,18,0.2); }
+.stat:last-child { border-bottom: 0; }
+.sketch-grid { grid-template-columns: 1fr; }
+.main { padding: calc(var(--nav-h) + 1.75rem) 1.25rem 4rem; }
+.lb-zoom { right: 66px; }
+      }
+</style>
+</head>
+<body>
 
-      .hero-h {
-        font-family: var(--font-hand);
-        font-size: clamp(2.6rem, 5vw, 4.2rem);
-        font-weight: 700;
-        line-height: 1.05;
-        margin-bottom: 0.5rem;
-        letter-spacing: -1px;
-      }
-      .hero-h .squiggle-wrap {
-        position: relative;
-        display: inline-block;
-      }
-      .hero-h .squiggle-wrap svg {
-        position: absolute;
-        bottom: -6px; left: -4px;
-        width: calc(100% + 8px);
-        pointer-events: none;
-      }
-      .hero-sub {
-        font-family: var(--font-mono);
-        font-size: 10px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: var(--ink-faint);
-        margin-bottom: 0.75rem;
-        margin-top: 0.75rem;
-      }
-      .hero-p {
-        font-family: var(--font-hand);
-        font-size: 19px;
-        color: var(--ink-light);
-        line-height: 1.65;
-        max-width: 520px;
-        margin-bottom: 1.75rem;
-      }
+<!-- HAND-DRAWN ICON SPRITE — these replaced every emoji on the page -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<defs>
+<symbol id="i-paw" viewBox="0 0 24 24"><ellipse cx="6.6" cy="9.4" rx="2.5" ry="3.1" transform="rotate(-18 6.6 9.4)"/><ellipse cx="10.6" cy="5.9" rx="2.3" ry="3" transform="rotate(-7 10.6 5.9)"/><ellipse cx="15.4" cy="6.4" rx="2.3" ry="3" transform="rotate(9 15.4 6.4)"/><ellipse cx="19" cy="10.3" rx="2.3" ry="2.9" transform="rotate(21 19 10.3)"/><path d="M12.6 12.4c3 0 5.6 2.2 5.6 4.7 0 2.1-1.8 3.5-4 3.5-1 0-1.6-.3-2.6-.3s-1.6.3-2.6.3c-2.2 0-4-1.4-4-3.5 0-2.5 2.6-4.7 5.6-4.7z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m4.4 12.6 5 5.2L19.8 6.4"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21.4s7-5.9 7-11.2a7 7 0 0 0-14 0c0 5.3 7 11.2 7 11.2z"/><circle cx="12" cy="10.1" r="2.8"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M2.8 6.2 9 3.6v14.2l-6.2 2.6z"/><path d="M9 3.6l6 2.6v14.2L9 17.8"/><path d="M15 6.2l6.2-2.6v14.2L15 20.4"/></symbol>
+<symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M10 2.8 11.9 8 17 9.9 11.9 11.8 10 17 8.1 11.8 3 9.9 8.1 8z"/><path d="M17.6 14.2l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9z"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.5 2 4 14h7l-.5 8L20 10h-7z"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 2.8h7.4L18.6 8v13.2H6z"/><path d="M13.2 3v5.2h5.2"/><path d="M8.6 12.6h7.2M8.6 16.2h7.2M8.6 9h3"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.2" y="3.2" width="7.4" height="9.4" rx="1.2"/><rect x="13.4" y="3.2" width="7.4" height="5.6" rx="1.2"/><rect x="3.2" y="15.4" width="7.4" height="5.4" rx="1.2"/><rect x="13.4" y="11.6" width="7.4" height="9.2" rx="1.2"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9.2" cy="8" r="3.6"/><path d="M2.8 20.2c0-3.6 2.9-5.8 6.4-5.8s6.4 2.2 6.4 5.8"/><path d="M16.4 5.2a3.4 3.4 0 0 1 0 6.6"/><path d="M17.6 14.8c2.2.6 3.6 2.4 3.6 5.4"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.4 12s3.6-6.4 9.6-6.4S21.6 12 21.6 12s-3.6 6.4-9.6 6.4S2.4 12 2.4 12z"/><circle cx="12" cy="12" r="3.1"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.3 8.3 8 9.5 4.7-1.2 8-5 8-9.5V6z"/><path d="m8.8 11.8 2.2 2.3 4.2-4.4"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.4S3.4 15.2 3.4 9.3A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 8.6 2.3c0 5.9-8.6 11.1-8.6 11.1z"/></symbol>
+<symbol id="i-comment" viewBox="0 0 24 24"><path d="M20.6 12.6c0 4-3.9 7.2-8.6 7.2-1 0-2-.2-2.9-.4l-5 1.6 1.7-4.2a6.7 6.7 0 0 1-2.4-4.9c0-4 3.9-7.2 8.6-7.2s8.6 3.2 8.6 7.2z"/><path d="M8.6 12h.02M12 12h.02M15.4 12h.02"/></symbol>
+<symbol id="i-upload" viewBox="0 0 24 24"><path d="M3.4 15.6v3.4a1.8 1.8 0 0 0 1.8 1.8h13.6a1.8 1.8 0 0 0 1.8-1.8v-3.4"/><path d="M12 15.8V3.4"/><path d="m7.4 8 4.6-4.6L16.6 8"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M5.4 21.2V3.4"/><path d="M5.4 4.2c4.6-2 8.2 2 12.8 0v8.6c-4.6 2-8.2-2-12.8 0z"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M3.4 20.6h17.2"/><rect x="5" y="12.4" width="3.4" height="8.2"/><rect x="10.4" y="7.6" width="3.4" height="13"/><rect x="15.8" y="10" width="3.4" height="10.6"/></symbol>
+<symbol id="i-toggle" viewBox="0 0 24 24"><rect x="2.6" y="6.6" width="18.8" height="10.8" rx="5.4"/><circle cx="16" cy="12" r="3.2"/></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.4"/><circle cx="12" cy="12" r="8.4"/><path d="M12 2.4v3.2M12 18.4v3.2M2.4 12h3.2M18.4 12h3.2M5.2 5.2l2.3 2.3M16.5 16.5l2.3 2.3M18.8 5.2l-2.3 2.3M7.5 16.5l-2.3 2.3"/></symbol>
+<symbol id="i-code" viewBox="0 0 24 24"><path d="m8.4 8-4.6 4 4.6 4"/><path d="m15.6 8 4.6 4-4.6 4"/><path d="m13.4 4.4-2.8 15.2"/></symbol>
+<symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="3.4" width="18" height="7" rx="1.6"/><rect x="3" y="13.6" width="18" height="7" rx="1.6"/><path d="M6.6 6.9h.02M6.6 17.1h.02"/><path d="M10.4 6.9h5.6M10.4 17.1h5.6"/></symbol>
+<symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5.6" rx="8" ry="3"/><path d="M4 5.6v12.8c0 1.7 3.6 3 8 3s8-1.3 8-3V5.6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M18.2 16.4V10a6.2 6.2 0 0 0-12.4 0v6.4L4 18.6h16z"/><path d="M10.2 21.2a2.2 2.2 0 0 0 3.6 0"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.2" y="2.4" width="11.6" height="19.2" rx="2.4"/><path d="M10.4 5.2h3.2"/><path d="M12 18.4h.02"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.8" y="5" width="18.4" height="14" rx="2"/><path d="m3.4 6.4 8.6 6.4 8.6-6.4"/></symbol>
+<symbol id="i-plug" viewBox="0 0 24 24"><path d="M9.4 2.6v5M14.6 2.6v5"/><path d="M6.4 7.6h11.2v3.2a5.6 5.6 0 0 1-11.2 0z"/><path d="M12 16.4v5"/></symbol>
+<symbol id="i-filter" viewBox="0 0 24 24"><path d="M3.2 4.6h17.6l-6.8 8v6.2l-4 2v-8.2z"/></symbol>
+</defs>
+</svg>
 
-      /* HERO VIDEO */
-      .hero-video {
-        border: 2px solid var(--ink);
-        background: var(--paper-dark);
-        position: relative;
-        margin-bottom: 1.75rem;
-        transform: rotate(-0.3deg);
-        box-shadow: 5px 5px 0 rgba(26,22,18,0.12);
-      }
-      .hero-video::before {
-        content: '';
-        position: absolute;
-        top: -11px; left: 50%;
-        transform: translateX(-50%) rotate(-0.5deg);
-        width: 60px; height: 20px;
-        background: rgba(232,184,75,0.42);
-        border-top: 1px solid rgba(232,184,75,0.55);
-        border-bottom: 1px solid rgba(232,184,75,0.55);
-        z-index: 10;
-      }
-      .hero-video::after {
-        content: '';
-        position: absolute;
-        bottom: -5px; right: -5px;
-        width: 100%; height: 100%;
-        border: 1.5px solid rgba(26,22,18,0.15);
-        z-index: -1;
-      }
-      .hero-video video {
-        width: 100%;
-        display: block;
-        border-radius: 0;
-      }
+<!-- SPIRAL BINDING -->
+<div class="spiral-binding" aria-hidden="true" id="spiralBinding"></div>
 
-      /* STATS */
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        border: 2px solid var(--ink);
-        margin-bottom: 1.5rem;
-        transform: rotate(0.2deg);
-        box-shadow: 4px 4px 0 rgba(26,22,18,0.1);
-        background: var(--paper-dark);
-      }
-      .stat {
-        padding: 1.1rem 1rem;
-        border-right: 1.5px solid rgba(26,22,18,0.2);
-      }
-      .stat:last-child { border-right: none; }
-      .s-n {
-        font-family: var(--font-hand);
-        font-size: 2.4rem;
-        font-weight: 700;
-        color: var(--pw-blue);
-        line-height: 1;
-        margin-bottom: 4px;
-      }
-      .s-l {
-        font-family: var(--font-hand);
-        font-size: 14px;
-        color: var(--ink-light);
-        line-height: 1.35;
-      }
-      .s-sub {
-        font-family: var(--font-mono);
-        font-size: 8px;
-        letter-spacing: 1px;
-        color: var(--pencil);
-        margin-top: 2px;
-      }
+<!-- TOP NAV -->
+<nav class="topnav">
+<div class="topnav-in">
+<a href="../index.html" class="logo">Inayat</a>
+<button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+<span></span><span></span><span></span>
+</button>
+<ul class="nav-links" id="navLinks">
+<li><a href="../index.html">Home</a></li>
+<li><a href="../About.html">About</a></li>
+<li><a href="../Projects.html">Projects</a></li>
+<li><a href="../Playground.html">Playground</a></li>
+<li><a href="../Resume.html">Résumé</a></li>
+<li><a href="../index.html#contact">Contact</a></li>
+</ul>
+</div>
+</nav>
 
-      /* META */
-      .meta {
-        display: flex;
-        gap: 2rem;
-        flex-wrap: wrap;
-        padding-top: 1.25rem;
-        border-top: 2px solid rgba(26,22,18,0.15);
-        margin-bottom: 5rem;
-      }
-      .m-k {
-        font-family: var(--font-mono);
-        font-size: 8px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: var(--pw-blue);
-        margin-bottom: 4px;
-      }
-      .m-v {
-        font-family: var(--font-hand);
-        font-size: 15px;
-        color: var(--ink-light);
-        line-height: 1.5;
-      }
+<!-- SIDENAV -->
+<aside class="sidenav">
+<a href="../Projects.html" class="back-link">← Projects</a>
+<div>
+<div class="side-lbl">Case Study</div>
+<nav class="side-list">
+<a href="#overview" class="side-a active"><span class="side-num">00</span>Overview</a>
+<a href="#sketches" class="side-a"><span class="side-num">01</span>Sketches</a>
+<a href="#solution" class="side-a"><span class="side-num">02</span>Solution</a>
+<a href="#eventplanner" class="side-a"><span class="side-num">03</span>Event Planner</a>
+<a href="#architecture" class="side-a"><span class="side-num">04</span>Architecture</a>
+<a href="#api" class="side-a"><span class="side-num">05</span>API</a>
+<a href="#access" class="side-a"><span class="side-num">06</span>Access Control</a>
+<a href="#challenges" class="side-a"><span class="side-num">07</span>Challenges</a>
+<a href="#contribution" class="side-a"><span class="side-num">08</span>Design Decisions</a>
+<a href="#reflection" class="side-a"><span class="side-num">09</span>Reflection</a>
+</nav>
+</div>
+<!-- Pawth doodle — drawn paw, no emoji -->
+<div style="margin-top:auto; padding-top:1rem; opacity:0.3; pointer-events:none;">
+<svg viewBox="0 0 80 64" style="width:70px" fill="none" stroke="#1e3a5f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="21" cy="24" rx="5" ry="6.5" transform="rotate(-18 21 24)"/>
+<ellipse cx="33" cy="17" rx="4.8" ry="6.3" transform="rotate(-6 33 17)"/>
+<ellipse cx="46" cy="17.6" rx="4.8" ry="6.3" transform="rotate(8 46 17.6)"/>
+<ellipse cx="58" cy="24" rx="5" ry="6.3" transform="rotate(20 58 24)"/>
+<path d="M39.6 30c6.6 0 12.4 4.8 12.4 10.2 0 4.6-4 7.6-8.8 7.6-2.2 0-3.6-.7-5.8-.7s-3.6.7-5.8.7c-4.8 0-8.8-3-8.8-7.6C22.8 34.8 33 30 39.6 30z"
+stroke="#8f6208" fill="rgba(143,98,8,0.08)"/>
+<text x="22" y="61" font-family="Reenie Beanie, cursive" font-size="10" fill="#8a7f72" stroke="none">pawth</text>
+</svg>
+</div>
+</aside>
 
-      /* SECTION */
-      .sec { margin-bottom: 5rem; }
-      .phase {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 0.75rem;
-      }
-      .p-dot {
-        width: 22px; height: 22px;
-        border-radius: 50%;
-        border: 2px solid var(--ink);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: var(--font-mono);
-        font-size: 9px;
-        color: var(--ink);
-        font-weight: 700;
-      }
-      .p-txt {
-        font-family: var(--font-mono);
-        font-size: 9px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: var(--ink-faint);
-      }
-      .sec-h {
-        font-family: var(--font-hand);
-        font-size: 2.2rem;
-        font-weight: 700;
-        line-height: 1.1;
-        margin-bottom: 0.5rem;
-        letter-spacing: -0.5px;
-        display: inline-block;
-        position: relative;
-      }
-      .sec-h em {
-        font-style: italic;
-        color: var(--pw-blue);
-      }
-      .sec-h::after {
-        content: '';
-        display: block;
-        height: 3px;
-        background: var(--pw-blue);
-        border-radius: 2px;
-        transform: rotate(-0.5deg);
-        margin-top: 3px;
-        width: 80%;
-      }
-      .sec-lead {
-        font-family: var(--font-hand);
-        font-size: 18px;
-        color: var(--ink-light);
-        line-height: 1.75;
-        max-width: 560px;
-        margin-bottom: 1.5rem;
-        margin-top: 0.5rem;
-      }
-      .rule {
-        height: 1.5px;
-        background: rgba(26,22,18,0.12);
-        margin-bottom: 1.5rem;
-      }
-      .sub {
-        font-family: var(--font-mono);
-        font-size: 9px;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: var(--pw-blue);
-        margin-bottom: 0.875rem;
-      }
-
-      /* GRIDS */
-      .g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
-      .g2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 1.5rem; }
-
-      /* NOTEBOOK CARD */
-      .nc {
-        background: var(--paper-dark);
-        border: 2px solid var(--ink);
-        padding: 1.1rem;
-        position: relative;
-        transition: transform 0.2s;
-      }
-      .nc:hover { transform: translate(-2px,-2px); }
-      .nc::after {
-        content: '';
-        position: absolute;
-        bottom: -4px; right: -4px;
-        width: 100%; height: 100%;
-        border: 1.5px solid rgba(26,22,18,0.18);
-        z-index: -1;
-      }
-      .nc-n {
-        font-family: var(--font-hand);
-        font-size: 2.2rem;
-        font-weight: 700;
-        color: var(--pw-blue);
-        line-height: 1;
-        margin-bottom: 5px;
-      }
-      .nc-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 3px; }
-      .nc-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.5; }
-
-      /* ICON CARD */
-      .ic {
-        background: var(--paper-dark);
-        border: 2px solid var(--ink);
-        padding: 1.1rem;
-        position: relative;
-      }
-      .ic::after {
-        content: '';
-        position: absolute;
-        bottom: -4px; right: -4px;
-        width: 100%; height: 100%;
-        border: 1.5px solid rgba(26,22,18,0.18);
-        z-index: -1;
-      }
-      .ic-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 3px; }
-      .ic-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.55; }
-
-      /* FINDING ROW */
-      .flist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
-      .fr {
-        display: flex;
-        gap: 0.875rem;
-        align-items: flex-start;
-        padding: 0.875rem 1rem;
-        background: var(--paper-dark);
-        border: 1.5px solid rgba(26,22,18,0.15);
-        transition: border-color 0.2s, transform 0.2s;
-      }
-      .fr:hover { border-color: rgba(30,58,95,0.35); transform: translateX(2px); }
-      .fr-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
-      .fr-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.55; }
-
-      /* STEP LIST */
-      .slist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
-      .st {
-        display: flex;
-        gap: 0.875rem;
-        padding: 0.875rem 1rem;
-        background: var(--paper-dark);
-        border: 1.5px solid rgba(26,22,18,0.15);
-      }
-      .st-n { font-family: var(--font-hand); font-size: 1.3rem; font-weight: 700; color: var(--pw-blue); min-width: 20px; line-height: 1.4; }
-      .st-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
-      .st-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.5; }
-
-      /* DIRECTION CARD */
-      .dcard {
-        background: var(--paper-dark);
-        border: 2px solid var(--ink);
-        padding: 1.25rem;
-        position: relative;
-      }
-      .dcard::after {
-        content: '';
-        position: absolute;
-        bottom: -4px; right: -4px;
-        width: 100%; height: 100%;
-        border: 1.5px solid rgba(26,22,18,0.15);
-        z-index: -1;
-      }
-      .dcard.chosen {
-        border-color: var(--pw-blue);
-        background: rgba(30,58,95,0.04);
-        border-bottom: 4px solid var(--pw-blue);
-      }
-      .dcard.chosen::before {
-        content: '';
-        position: absolute;
-        top: -11px; left: 20px;
-        width: 40px; height: 20px;
-        background: rgba(232,184,75,0.38);
-        border-top: 1px solid rgba(232,184,75,0.5);
-        border-bottom: 1px solid rgba(232,184,75,0.5);
-        transform: rotate(1.5deg);
-      }
-      .dcard-label {
-        font-family: var(--font-mono);
-        font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
-        font-weight: 600; margin-bottom: 0.5rem;
-      }
-      .dcard.chosen .dcard-label { color: var(--pw-blue); }
-      .dcard:not(.chosen) .dcard-label { color: var(--pencil); }
-      .dcard-t { font-family: var(--font-hand); font-size: 16px; font-weight: 700; margin-bottom: 0.5rem; }
-      .dcard-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.6; }
-
-      /* ITERATION */
-      .ilist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
-      .it { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: center; gap: 8px; }
-      .it-b {
-        padding: 0.875rem 1rem;
-        border: 1.5px solid rgba(26,22,18,0.15);
-      }
-      .it-b.bef { background: var(--paper-dark); }
-      .it-b.aft { background: rgba(30,58,95,0.04); border-color: rgba(30,58,95,0.3); }
-      .it-lbl {
-        font-family: var(--font-mono);
-        font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
-        font-weight: 600; margin-bottom: 3px;
-      }
-      .it-b.bef .it-lbl { color: var(--pencil); }
-      .it-b.aft .it-lbl { color: var(--pw-blue); }
-      .it-txt { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.45; }
-      .it-b.aft .it-txt { color: var(--ink); }
-      .it-arr { text-align: center; color: var(--pw-blue); font-size: 1rem; font-weight: 700; }
-
-      /* QUOTE */
-      .quote {
-        border-left: 3px solid var(--pw-blue);
-        padding: 0.875rem 1.25rem;
-        margin: 1.25rem 0;
-        background: rgba(30,58,95,0.04);
-        position: relative;
-        transform: rotate(-0.3deg);
-      }
-      .quote::before {
-        content: '';
-        position: absolute;
-        top: -11px; left: 20px;
-        width: 36px; height: 20px;
-        background: rgba(232,184,75,0.38);
-        border-top: 1px solid rgba(232,184,75,0.5);
-        border-bottom: 1px solid rgba(232,184,75,0.5);
-        transform: rotate(1.5deg);
-      }
-      .quote p {
-        font-family: var(--font-serif);
-        font-size: 1.25rem; font-style: italic;
-        line-height: 1.65; color: var(--ink);
-      }
-      .quote-attr {
-        font-family: var(--font-mono);
-        font-size: 9px; letter-spacing: 1px;
-        color: var(--ink-faint); margin-top: 0.5rem; text-transform: uppercase;
-      }
-
-      /* REFLECTION CARD */
-      .rc { background: var(--paper-dark); border: 1.5px solid rgba(26,22,18,0.15); padding: 1.1rem; }
-      .rc-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; color: var(--pw-blue); margin-bottom: 5px; }
-      .rc-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.7; }
-
-      /* IMAGES */
-      .imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
-      .imgs.c2 { grid-template-columns: 1fr 1fr; }
-      .imgs.c3 { grid-template-columns: repeat(3, 1fr); }
-      .iw {
-        border: 2px solid var(--ink);
-        background: var(--paper-dark);
-        position: relative;
-        transition: transform 0.2s;
-      }
-      .iw:hover { transform: translate(-2px,-2px); }
-      .iw::after {
-        content: '';
-        position: absolute;
-        bottom: -4px; right: -4px;
-        width: 100%; height: 100%;
-        border: 1.5px solid rgba(26,22,18,0.15);
-        z-index: -1;
-      }
-      .iw img { width: 100%; display: block; }
-      .icap {
-        padding: 7px 10px;
-        font-family: var(--font-hand);
-        font-size: 13px; color: var(--ink-faint);
-        border-top: 1px solid rgba(26,22,18,0.12); line-height: 1.4;
-      }
-
-      /* SKETCH GRID */
-      .sketch-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        margin-bottom: 1.5rem;
-      }
-      .sketch-wrap {
-        border: 2px solid var(--ink);
-        background: var(--paper-dark);
-        position: relative;
-        transition: transform 0.2s;
-      }
-      .sketch-wrap:hover { transform: translate(-2px,-2px); }
-      .sketch-wrap::after {
-        content: '';
-        position: absolute;
-        bottom: -4px; right: -4px;
-        width: 100%; height: 100%;
-        border: 1.5px solid rgba(26,22,18,0.15);
-        z-index: -1;
-      }
-      .sketch-wrap img { width: 100%; display: block; background: #f8f5f0; }
-      .sketch-cap {
-        padding: 7px 10px;
-        font-family: var(--font-hand);
-        font-size: 13px; color: var(--ink-faint);
-        border-top: 1px solid rgba(26,22,18,0.12); line-height: 1.4;
-      }
-
-      /* FEATURE CALLOUT */
-      .feature-callout {
-        background: rgba(30,58,95,0.04);
-        border: 2px solid var(--pw-blue);
-        border-bottom: 4px solid var(--pw-blue);
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        position: relative;
-      }
-      .feature-callout::before {
-        content: '';
-        position: absolute;
-        top: -11px; left: 20px;
-        width: 40px; height: 20px;
-        background: rgba(232,184,75,0.38);
-        border-top: 1px solid rgba(232,184,75,0.5);
-        border-bottom: 1px solid rgba(232,184,75,0.5);
-        transform: rotate(-1.5deg);
-      }
-      .feature-callout .sub { margin-bottom: 0.4rem; }
-      .feature-callout-h {
-        font-family: var(--font-hand);
-        font-size: 1.4rem;
-        font-weight: 700;
-        line-height: 1.2;
-        margin-bottom: 0.5rem;
-      }
-      .feature-callout-d {
-        font-family: var(--font-hand);
-        font-size: 14px;
-        color: var(--ink-light);
-        line-height: 1.7;
-      }
-
-      /* API TABLE */
-      .api-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 1.5rem;
-        font-size: 0.76rem;
-        border: 2px solid var(--ink);
-        background: var(--paper-dark);
-      }
-      .api-table th {
-        text-align: left;
-        padding: 0.6rem 0.875rem;
-        font-family: var(--font-mono);
-        font-size: 8px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: var(--pw-blue);
-        font-weight: 700;
-        border-bottom: 1.5px solid var(--ink);
-        background: rgba(30,58,95,0.05);
-      }
-      .api-table td {
-        padding: 0.6rem 0.875rem;
-        font-family: var(--font-hand);
-        font-size: 14px;
-        color: var(--ink-light);
-        border-bottom: 1px solid rgba(26,22,18,0.08);
-        vertical-align: top;
-        line-height: 1.5;
-      }
-      .api-table tr:hover td { background: rgba(30,58,95,0.03); }
-      .method {
-        font-family: var(--font-mono);
-        font-size: 8px;
-        padding: 2px 6px;
-        font-weight: 700;
-        white-space: nowrap;
-        letter-spacing: 1px;
-      }
-      .method.get { background: rgba(46,125,68,0.1); color: #2e7d44; border: 1.5px solid rgba(46,125,68,0.3); }
-      .method.post { background: rgba(30,58,95,0.1); color: var(--pw-blue-l); border: 1.5px solid rgba(30,58,95,0.3); }
-      .method.put { background: rgba(184,122,10,0.1); color: var(--pw-amber); border: 1.5px solid rgba(184,122,10,0.3); }
-      .method.del { background: rgba(192,57,43,0.1); color: #c0392b; border: 1.5px solid rgba(192,57,43,0.3); }
-      .method.patch { background: rgba(100,78,130,0.1); color: #644e82; border: 1.5px solid rgba(100,78,130,0.3); }
-      .endpoint {
-        font-family: var(--font-mono);
-        font-size: 11px;
-        color: var(--ink);
-      }
-
-      /* TOOLS PILLS */
-      .tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
-      .tool {
-        font-family: var(--font-mono);
-        font-size: 9px; letter-spacing: 1px;
-        padding: 3px 10px;
-        background: var(--paper-dark);
-        border: 1.5px solid rgba(26,22,18,0.2);
-        color: var(--ink-light);
-        text-transform: uppercase;
-      }
-
-      /* ROLE BADGE */
-      .role-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 4px 12px;
-        border: 1.5px solid var(--pw-blue);
-        background: rgba(30,58,95,0.06);
-        font-family: var(--font-mono);
-        font-size: 8px;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: var(--pw-blue);
-        font-weight: 700;
-        margin-bottom: 0.75rem;
-      }
-
-      /* HIGHLIGHT */
-      .hl-y {
-        background: linear-gradient(120deg, rgba(232,184,75,0)0%, rgba(232,184,75,0.45)10%, rgba(232,184,75,0.45)90%, rgba(232,184,75,0)100%);
-        padding: 0 2px;
-      }
-
-      /* CORNER FOLD */
-      .corner-fold {
-        position: absolute;
-        bottom: 0; right: 0;
-        width: 24px; height: 24px;
-        background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
-        border-top: 1px solid var(--pencil);
-        border-left: 1px solid var(--pencil);
-        pointer-events: none;
-      }
-
-      /* SCROLL REVEAL */
-      .rev {
-        opacity: 0;
-        transform: translateY(16px);
-        transition: opacity 0.5s ease, transform 0.5s ease;
-      }
-      .rev.in { opacity: 1; transform: none; }
-
-      /* FOOTER */
-      footer {
-        border-top: 2.5px solid var(--ink);
-        padding: 1.25rem 2rem;
-        text-align: center;
-        font-family: var(--font-mono);
-        font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-        color: var(--pencil);
-        margin-left: 32px;
-      }
-
-      /* RESPONSIVE */
-      @media (max-width: 860px) {
-        .sidenav { display: none; }
-        .main { margin-left: 32px; padding: 5rem 1.5rem 5rem; }
-        .stats { grid-template-columns: repeat(2, 1fr); }
-        .g3, .g2, .sketch-grid { grid-template-columns: 1fr; }
-        .it { grid-template-columns: 1fr; }
-        .it-arr { display: none; }
-        .imgs.c2, .imgs.c3 { grid-template-columns: 1fr; }
-      }
-      @media (max-width: 600px) {
-        .spiral-binding { display: none; }
-        .topnav, footer { margin-left: 0; left: 0; }
-        .main { margin-left: 0; padding: 5rem 1.25rem 4rem; }
-        .nav-links { display: none; }
-        .hero-h { font-size: 2.2rem; }
-      }
-    </style>
-  </head>
-  <body>
-
-    <!-- SPIRAL BINDING -->
-    <div class="spiral-binding" aria-hidden="true" id="spiralBinding"></div>
-
-    <!-- TOP NAV -->
-    <nav class="topnav">
-      <div class="topnav-in">
-        <a href="../index.html" class="logo">Inayat</a>
-        <ul class="nav-links">
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="../About.html">About</a></li>
-          <li><a href="../Projects.html">Projects</a></li>
-          <li><a href="../Resume.html">Resume</a></li>
-          <li><a href="../index.html#contact">Contact</a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <!-- SIDENAV -->
-    <aside class="sidenav">
-      <a href="../Projects.html" class="back-link">← Projects</a>
-      <div>
-        <div class="side-lbl">Case Study</div>
-        <nav class="side-list">
-          <a href="#overview" class="side-a active"><span class="side-num">00</span>Overview</a>
-          <a href="#sketches" class="side-a"><span class="side-num">01</span>Sketches</a>
-          <a href="#solution" class="side-a"><span class="side-num">02</span>Solution</a>
-          <a href="#eventplanner" class="side-a"><span class="side-num">03</span>Event Planner</a>
-          <a href="#architecture" class="side-a"><span class="side-num">04</span>Architecture</a>
-          <a href="#api" class="side-a"><span class="side-num">05</span>API</a>
-          <a href="#access" class="side-a"><span class="side-num">06</span>Access Control</a>
-          <a href="#challenges" class="side-a"><span class="side-num">07</span>Challenges</a>
-          <a href="#contribution" class="side-a"><span class="side-num">08</span>Design Decisions</a>
-          <a href="#reflection" class="side-a"><span class="side-num">09</span>Reflection</a>
-        </nav>
-      </div>
-      <!-- Pawth doodle -->
-      <div style="margin-top:auto; padding-top:1rem; opacity:0.28; pointer-events:none;">
-        <svg viewBox="0 0 80 64" style="width:70px">
-          <circle cx="30" cy="26" r="14" stroke="#1e3a5f" stroke-width="1.5" fill="rgba(30,58,95,0.08)"/>
-          <circle cx="50" cy="26" r="14" stroke="#1e3a5f" stroke-width="1.5" fill="rgba(30,58,95,0.08)"/>
-          <path d="M22,36 C22,46 58,46 58,36" stroke="#b87a0a" stroke-width="1.5" fill="rgba(184,122,10,0.08)" stroke-linecap="round"/>
-          <text x="4" y="62" font-family="Reenie Beanie, cursive" font-size="9" fill="#8a7f72">pawth 🐾</text>
-        </svg>
-      </div>
-    </aside>
-
-    <main class="main">
-
-      <!-- HERO -->
-      <header style="margin-bottom: 4rem">
-        <div class="tags">
-          <span class="tag">Personal Project</span>
-          <span class="tag">UX/UI Design</span>
-          <span class="tag">Frontend</span>
-          <span class="tag">React</span>
-        </div>
-
-        <h1 class="hero-h">
+<main class="main">
+<!-- HERO -->
+<header style="margin-bottom: 4rem">
+<div class="tags">
+<span class="tag">Personal Project</span>
+<span class="tag">UX/UI Design</span>
+<span class="tag">Frontend</span>
+<span class="tag">React</span>
+</div>
+<h1 class="hero-h">
           Pawth —<br/>
-          <span class="squiggle-wrap" style="color: var(--pw-blue);">Pet Social Community
-            <svg viewBox="0 0 340 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2,8 C60,3 120,13 170,7 C220,2 280,11 338,7" stroke="#b87a0a" stroke-width="3" fill="none" stroke-linecap="round"/>
-            </svg>
-          </span>
-        </h1>
-
-        <p class="hero-sub">Personal Project — UX/UI Design &amp; Frontend · Spring 2026</p>
-
-        <p class="hero-p">
+<span class="squiggle-wrap" style="color: var(--pw-blue);">Pet Social Community
+<svg viewBox="0 0 340 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2,8 C60,3 120,13 170,7 C220,2 280,11 338,7" stroke="#d4940e" stroke-width="3" fill="none" stroke-linecap="round"/>
+</svg>
+</span>
+</h1>
+<p class="hero-sub">Personal Project — UX/UI Design &amp; Frontend · Spring 2026</p>
+<p class="hero-p">
           A social platform I designed and built <span class="hl-y">solo for pet owners</span> — combining a community feed, pet-friendly maps, AI-powered event planning, and expressive UI into one cohesive, fully responsive web app.
-        </p>
+</p>
+<div class="hero-video">
+<video src="../Images/Pawth-personal.mp4" autoplay muted loop playsinline></video>
+</div>
+<div class="stats">
+<div class="stat">
+<div class="s-n">3</div>
+<div class="s-l">User roles</div>
+<div class="s-sub">Visitor, Member, Admin</div>
+</div>
+<div class="stat">
+<div class="s-n">16+</div>
+<div class="s-l">REST endpoints</div>
+<div class="s-sub">Full CRUD + auth</div>
+</div>
+<div class="stat">
+<div class="s-n">7+</div>
+<div class="s-l">Pages designed</div>
+<div class="s-sub">Landing to Event Planner</div>
+</div>
+<div class="stat">
+<div class="s-n">AI</div>
+<div class="s-l">Event planning</div>
+<div class="s-sub">Claude API integration</div>
+</div>
+</div>
+<div class="meta">
+<div><div class="m-k">Timeline</div><div class="m-v">Spring 2026</div></div>
+<div><div class="m-k">My Role</div><div class="m-v">Solo Designer<br/>UX/UI Lead<br/>Frontend Dev</div></div>
+<div><div class="m-k">Type</div><div class="m-v">Personal Project</div></div>
+<div><div class="m-k">Stack</div><div class="m-v">React, Node.js, Express<br/>MongoDB, Google Maps API</div></div>
+<div><div class="m-k">Focus</div><div class="m-v">UX/UI Design<br/>Frontend Engineering</div></div>
+</div>
+</header>
 
-        <div class="hero-video">
-          <video
-            src="../Images/Pawth-personal.mp4"
-            autoplay muted loop playsinline
-          ></video>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="s-n">3</div>
-            <div class="s-l">User roles</div>
-            <div class="s-sub">Visitor, Member, Admin</div>
-          </div>
-          <div class="stat">
-            <div class="s-n">16+</div>
-            <div class="s-l">REST endpoints</div>
-            <div class="s-sub">Full CRUD + auth</div>
-          </div>
-          <div class="stat">
-            <div class="s-n">7+</div>
-            <div class="s-l">Pages designed</div>
-            <div class="s-sub">Landing to Event Planner</div>
-          </div>
-          <div class="stat">
-            <div class="s-n">AI</div>
-            <div class="s-l">Event planning</div>
-            <div class="s-sub">Claude API integration</div>
-          </div>
-        </div>
-
-        <div class="meta">
-          <div>
-            <div class="m-k">Timeline</div>
-            <div class="m-v">Spring 2026</div>
-          </div>
-          <div>
-            <div class="m-k">My Role</div>
-            <div class="m-v">Solo Designer<br/>UX/UI Lead<br/>Frontend Dev</div>
-          </div>
-          <div>
-            <div class="m-k">Type</div>
-            <div class="m-v">Personal Project</div>
-          </div>
-          <div>
-            <div class="m-k">Stack</div>
-            <div class="m-v">React, Node.js, Express<br/>MongoDB, Google Maps API</div>
-          </div>
-          <div>
-            <div class="m-k">Focus</div>
-            <div class="m-v">UX/UI Design<br/>Frontend Engineering</div>
-          </div>
-        </div>
-      </header>
-
-      <!-- 00 OVERVIEW -->
-      <section id="overview" class="sec rev">
-        <div class="phase">
-          <div class="p-dot">0</div>
-          <span class="p-txt">Overview</span>
-        </div>
-        <h2 class="sec-h">The Problem</h2>
-        <p class="sec-lead">
+<!-- 00 OVERVIEW -->
+<section id="overview" class="sec rev">
+<div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
+<h2 class="sec-h">The Problem</h2>
+<p class="sec-lead">
           Pet owners have no dedicated space to share moments, find community, and discover nearby pet-friendly places — they're scattered across general social platforms that weren't built for them.
-        </p>
-        <div class="rule"></div>
+</p>
+<div class="rule"></div>
+<div class="g2" style="margin-bottom: 2rem">
+<div class="nc">
+<div class="nc-n word">No hub</div>
+<div class="nc-t">Fragmented pet community</div>
+<div class="nc-d">Pet content exists across Instagram, Reddit, and Facebook groups — but none of these platforms are built around pet ownership as the core identity.</div>
+</div>
+<div class="nc">
+<div class="nc-n word">Isolated</div>
+<div class="nc-t">Social + maps disconnected</div>
+<div class="nc-d">Discovering pet-friendly locations and sharing community content required entirely separate apps with no link between the two experiences.</div>
+</div>
+<div class="nc">
+<div class="nc-n word">Generic</div>
+<div class="nc-t">No pet-owner context</div>
+<div class="nc-d">Existing platforms treat pet posts like any other content — no pet type filtering, no location-based discovery, no community-specific design language.</div>
+</div>
+<div class="nc">
+<div class="nc-n word">No planner</div>
+<div class="nc-t">Events scattered or nonexistent</div>
+<div class="nc-d">There was no way for pet owners to plan, discover, or RSVP to pet-specific social events — meetups, dog park hangouts, and adoption drives had no dedicated home.</div>
+</div>
+</div>
+<div class="sub">Design Goals</div>
+<div class="flist">
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-paw"/></svg></div>
+<div>
+<div class="fr-t">Design a pet community that actually feels like one</div>
+<div class="fr-d">A social feed where pet owners can create posts, like, comment, and save — with a visual identity and UX language specific to pet life, not just repurposed from generic social apps.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-pin"/></svg></div>
+<div>
+<div class="fr-t">Integrate location discovery</div>
+<div class="fr-d">Google Maps integration to find nearby pet-friendly places — connected to the same platform, not a separate app.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-sparkle"/></svg></div>
+<div>
+<div class="fr-t">Build an AI-powered event planner</div>
+<div class="fr-d">An event planning page I designed and added as a personal extension — letting users create, browse, and get AI-suggested event ideas tailored to their pet type and preferences.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-bolt"/></svg></div>
+<div>
+<div class="fr-t">Keep interactions instant and snappy</div>
+<div class="fr-d">Likes, comments, and saves update instantly without page reloads — React state management making every interaction feel native and responsive.</div>
+</div>
+</div>
+</div>
+<div class="sub">Tools &amp; Stack</div>
+<div class="tools">
+<span class="tool">React</span>
+<span class="tool">Node.js</span>
+<span class="tool">Express</span>
+<span class="tool">MongoDB</span>
+<span class="tool">Mongoose</span>
+<span class="tool">JWT Auth</span>
+<span class="tool">Google Maps API</span>
+<span class="tool">Figma</span>
+<span class="tool">REST API</span>
+<span class="tool">Claude AI API</span>
+</div>
+</section>
 
-        <div class="g2" style="margin-bottom: 2rem">
-          <div class="nc">
-            <div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">No hub</div>
-            <div class="nc-t">Fragmented pet community</div>
-            <div class="nc-d">Pet content exists across Instagram, Reddit, and Facebook groups — but none of these platforms are built around pet ownership as the core identity.</div>
-          </div>
-          <div class="nc">
-            <div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Isolated</div>
-            <div class="nc-t">Social + maps disconnected</div>
-            <div class="nc-d">Discovering pet-friendly locations and sharing community content required entirely separate apps with no link between the two experiences.</div>
-          </div>
-          <div class="nc">
-            <div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Generic</div>
-            <div class="nc-t">No pet-owner context</div>
-            <div class="nc-d">Existing platforms treat pet posts like any other content — no pet type filtering, no location-based discovery, no community-specific design language.</div>
-          </div>
-          <div class="nc">
-            <div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">No planner</div>
-            <div class="nc-t">Events scattered or nonexistent</div>
-            <div class="nc-d">There was no way for pet owners to plan, discover, or RSVP to pet-specific social events — meetups, dog park hangouts, and adoption drives had no dedicated home.</div>
-          </div>
-        </div>
-
-        <div class="sub">Design Goals</div>
-        <div class="flist">
-          <div class="fr">
-            <div>
-              <div class="fr-t">Design a pet community that actually feels like one</div>
-              <div class="fr-d">A social feed where pet owners can create posts, like, comment, and save — with a visual identity and UX language specific to pet life, not just repurposed from generic social apps.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">Integrate location discovery</div>
-              <div class="fr-d">Google Maps integration to find nearby pet-friendly places — connected to the same platform, not a separate app.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">Build an AI-powered event planner</div>
-              <div class="fr-d">An event planning page I designed and added as a personal extension — letting users create, browse, and get AI-suggested event ideas tailored to their pet type and preferences.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">Keep interactions instant and snappy</div>
-              <div class="fr-d">Likes, comments, and saves update instantly without page reloads — React state management making every interaction feel native and responsive.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="sub">Tools &amp; Stack</div>
-        <div class="tools">
-          <span class="tool">React</span>
-          <span class="tool">Node.js</span>
-          <span class="tool">Express</span>
-          <span class="tool">MongoDB</span>
-          <span class="tool">Mongoose</span>
-          <span class="tool">JWT Auth</span>
-          <span class="tool">Google Maps API</span>
-          <span class="tool">Figma</span>
-          <span class="tool">REST API</span>
-          <span class="tool">Claude AI API</span>
-        </div>
-      </section>
-
-      <!-- 01 SKETCHES -->
-      <section id="sketches" class="sec rev">
-        <div class="phase">
-          <div class="p-dot">1</div>
-          <span class="p-txt">Early Sketches</span>
-        </div>
-        <h2 class="sec-h">From Notebook<br/><em>to Browser</em></h2>
-        <p class="sec-lead">
-          Before a single line of code was written, the core pages and interactions were sketched by hand — mapping out navigation structure, content hierarchy, and feature relationships from first principles.
-        </p>
-        <div class="rule"></div>
-
-        <div class="sketch-grid" style="margin-bottom: 2rem">
-          <div class="sketch-wrap">
-            <img src="../Images/sketch1.jpg" alt="Homepage sketch — feed layout, bottom navigation, notification centre" />
-            <div class="sketch-cap">Homepage — feed layout, bottom nav, notification centre</div>
-          </div>
-          <div class="sketch-wrap">
-            <img src="../Images/sketch2.jpg" alt="Knowledge sharing page — pet type selector, article filter tags" />
-            <div class="sketch-cap">Knowledge sharing page — pet type selector &amp; filter tags</div>
-          </div>
-          <div class="sketch-wrap">
-            <img src="../Images/sketch4.jpg" alt="Map page — posts grid, saved collections tab" />
-            <div class="sketch-cap">Map page — posts grid, saved collections tab</div>
-          </div>
-          <div class="sketch-wrap">
-            <img src="../Images/sketch3.jpg" alt="Profile page — posts grid, saved collections tab" />
-            <div class="sketch-cap">Profile page — posts grid, saved collections tab</div>
-          </div>
-        </div>
-
-        <div class="sub">Sketch → Built</div>
-        <div class="ilist">
-          <div class="it">
-            <div class="it-b bef">
-              <div class="it-lbl">Sketched</div>
-              <div class="it-txt">Pinterest-style masonry feed with image cards, likes, saves, and comments inline</div>
-            </div>
-            <div class="it-arr">→</div>
-            <div class="it-b aft">
-              <div class="it-lbl">Built</div>
-              <div class="it-txt">Masonry grid dashboard with pet type filter tabs, search bar, and real-time interaction buttons on every card</div>
-            </div>
-          </div>
-          <div class="it">
-            <div class="it-b bef">
-              <div class="it-lbl">Sketched</div>
-              <div class="it-txt">Profile with "Your Posts" and "Saved" tabs — saved posts as a separate collections view</div>
-            </div>
-            <div class="it-arr">→</div>
-            <div class="it-b aft">
-              <div class="it-lbl">Built</div>
-              <div class="it-txt">Profile page with My Posts / Saved toggle, post and saved count stats, edit profile, and log out</div>
-            </div>
-          </div>
-          <div class="it">
-            <div class="it-b bef">
-              <div class="it-lbl">Sketched</div>
-              <div class="it-txt">Location finder for pet stores, vets, cafes, grooming — category filters in the bottom navigation</div>
-            </div>
-            <div class="it-arr">→</div>
-            <div class="it-b aft">
-              <div class="it-lbl">Built</div>
-              <div class="it-txt">Google Maps page with 8 category filters (Vet Clinics, Grooming, Shelters, Pet Cafés, Pet Stores, Dog Parks, Boarding, Training)</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 02 SOLUTION -->
-      <section id="solution" class="sec rev">
-        <div class="phase">
-          <div class="p-dot">2</div>
-          <span class="p-txt">Design Solution</span>
-        </div>
-        <h2 class="sec-h">Six Pages,<br/><em>One Unified Platform</em></h2>
-        <p class="sec-lead">
-          Every page addresses a specific gap in the pet owner experience — together they replace the fragmented multi-platform workflow entirely.
-        </p>
-        <div class="rule"></div>
-
-        <div class="sub">Landing Page</div>
-        <p style="font-family:var(--font-hand); font-size:15px; color:var(--ink-light); line-height:1.8; max-width:580px; margin-bottom:1rem">
+<!-- 01 SKETCHES -->
+<section id="sketches" class="sec rev">
+<div class="phase"><div class="p-dot">1</div><span class="p-txt">Early Sketches</span></div>
+<h2 class="sec-h">From Notebook<br/><em>to Browser</em></h2>
+<p class="sec-lead">
+          Before a single line of code was written, the core pages and interactions were sketched by hand — mapping out navigation structure, content hierarchy, and feature relationships from first principles. Click any sketch to read it full size.
+</p>
+<div class="rule"></div>
+<div class="sketch-grid" style="margin-bottom: 2rem">
+<div class="sketch-wrap">
+<img src="../Images/sketch1.jpg" alt="Homepage sketch — feed layout, bottom navigation, notification centre" class="zoomable" data-cap="Homepage sketch — feed layout, bottom navigation, notification centre." />
+<div class="sketch-cap">Homepage — feed layout, bottom nav, notification centre</div>
+</div>
+<div class="sketch-wrap">
+<img src="../Images/sketch2.jpg" alt="Knowledge sharing page — pet type selector, article filter tags" class="zoomable" data-cap="Knowledge sharing page sketch — pet type selector and article filter tags." />
+<div class="sketch-cap">Knowledge sharing page — pet type selector &amp; filter tags</div>
+</div>
+<div class="sketch-wrap">
+<img src="../Images/sketch4.jpg" alt="Map page sketch — location categories and results" class="zoomable" data-cap="Map page sketch — location categories in the bottom navigation." />
+<div class="sketch-cap">Map page — location categories &amp; results</div>
+</div>
+<div class="sketch-wrap">
+<img src="../Images/sketch3.jpg" alt="Profile page — posts grid, saved collections tab" class="zoomable" data-cap="Profile page sketch — posts grid and a separate saved collections tab." />
+<div class="sketch-cap">Profile page — posts grid, saved collections tab</div>
+</div>
+</div>
+<div class="sub">Sketch → Built</div>
+<div class="ilist">
+<div class="it">
+<div class="it-b bef">
+<div class="it-lbl">Sketched</div>
+<div class="it-txt">Pinterest-style masonry feed with image cards, likes, saves, and comments inline</div>
+</div>
+<div class="it-arr">→</div>
+<div class="it-b aft">
+<div class="it-lbl">Built</div>
+<div class="it-txt">Masonry grid dashboard with pet type filter tabs, search bar, and real-time interaction buttons on every card</div>
+</div>
+</div>
+<div class="it">
+<div class="it-b bef">
+<div class="it-lbl">Sketched</div>
+<div class="it-txt">Profile with "Your Posts" and "Saved" tabs — saved posts as a separate collections view</div>
+</div>
+<div class="it-arr">→</div>
+<div class="it-b aft">
+<div class="it-lbl">Built</div>
+<div class="it-txt">Profile page with My Posts / Saved toggle, post and saved count stats, edit profile, and log out</div>
+</div>
+</div>
+<div class="it">
+<div class="it-b bef">
+<div class="it-lbl">Sketched</div>
+<div class="it-txt">Location finder for pet stores, vets, cafes, grooming — category filters in the bottom navigation</div>
+</div>
+<div class="it-arr">→</div>
+<div class="it-b aft">
+<div class="it-lbl">Built</div>
+<div class="it-txt">Google Maps page with 8 category filters (Vet Clinics, Grooming, Shelters, Pet Cafés, Pet Stores, Dog Parks, Boarding, Training)</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 02 SOLUTION -->
+<section id="solution" class="sec rev">
+<div class="phase"><div class="p-dot">2</div><span class="p-txt">Design Solution</span></div>
+<h2 class="sec-h">Six Pages,<br/><em>One Unified Platform</em></h2>
+<p class="sec-lead">
+          Every page addresses a specific gap in the pet owner experience — together they replace the fragmented multi-platform workflow entirely. Every screenshot below opens full size.
+</p>
+<div class="rule"></div>
+<div class="sub">Landing Page</div>
+<p class="p-body">
           The public-facing entry point I designed and built — "Every pet has a story worth sharing." Visitors can browse the feed or join free. No ads, no algorithm games. Just pets.
-        </p>
-        <div class="imgs c2" style="margin-bottom:2rem">
-          <div class="iw">
-            <img src="../Images/Landingpage.png" alt="Pawth landing page mobile" />
-            <div class="icap">Landing page — mobile view</div>
-          </div>
-          <div class="iw">
-            <img src="../Images/Landingpagedesktop.png" alt="Pawth landing page desktop" />
-            <div class="icap">Landing page — desktop hero with animated pet emojis</div>
-          </div>
-        </div>
-
-        <div class="sub">Social Feed / Dashboard</div>
-        <p style="font-family:var(--font-hand); font-size:15px; color:var(--ink-light); line-height:1.8; max-width:580px; margin-bottom:1rem">
+</p>
+<div class="imgs c2" style="margin-bottom:2rem">
+<div class="iw">
+<img src="../Images/Landingpage.png" alt="Pawth landing page mobile" class="zoomable" data-cap="Landing page — mobile view." />
+<div class="icap">Landing page — mobile view</div>
+</div>
+<div class="iw">
+<img src="../Images/Landingpagedesktop.png" alt="Pawth landing page desktop" class="zoomable" data-cap="Landing page — desktop hero with animated pet illustrations." />
+<div class="icap">Landing page — desktop hero with animated pet illustrations</div>
+</div>
+</div>
+<div class="sub">Social Feed / Dashboard</div>
+<p class="p-body">
           Masonry grid of pet posts with search, pet type filters (All / Dog / Cat / Bird / Other), and inline likes, saves, and comment counts on every card. I built the entire dashboard and all interaction logic.
-        </p>
-        <div class="imgs" style="margin-bottom:2rem">
-          <div class="iw">
-            <img src="../Images/Dashboard.png" alt="Pawth feed masonry grid" />
-            <div class="icap">Feed — masonry grid, pet type filters, search bar, inline interactions</div>
-          </div>
-        </div>
-
-        <div class="sub">Pet-Friendly Maps</div>
-        <p style="font-family:var(--font-hand); font-size:15px; color:var(--ink-light); line-height:1.8; max-width:580px; margin-bottom:1rem">
+</p>
+<div class="imgs" style="margin-bottom:2rem">
+<div class="iw">
+<img src="../Images/Dashboard.png" alt="Pawth feed masonry grid" class="zoomable" data-cap="Feed — masonry grid, pet type filters, search bar, inline interactions." />
+<div class="icap">Feed — masonry grid, pet type filters, search bar, inline interactions</div>
+</div>
+</div>
+<div class="sub">Pet-Friendly Maps</div>
+<p class="p-body">
           Google Maps integration with 8 category filters and a live results list — click any marker to see the name, rating, and open/closed status.
-        </p>
-        <div class="imgs" style="margin-bottom:2rem">
-          <div class="iw">
-            <img src="../Images/map.png" alt="Pawth maps with vet clinic filter active" />
-            <div class="icap">Maps — Vet Clinics filter active, live results list, marker popup with ratings</div>
-          </div>
-        </div>
-
-        <div class="sub">Create Post — Gallery Upload</div>
-        <p style="font-family:var(--font-hand); font-size:15px; color:var(--ink-light); line-height:1.8; max-width:580px; margin-bottom:1rem">
+</p>
+<div class="imgs" style="margin-bottom:2rem">
+<div class="iw">
+<img src="../Images/map.png" alt="Pawth maps with vet clinic filter active" class="zoomable" data-cap="Maps — Vet Clinics filter active, live results list, marker popup with ratings." />
+<div class="icap">Maps — Vet Clinics filter active, live results list, marker popup with ratings</div>
+</div>
+</div>
+<div class="sub">Create Post — Gallery Upload</div>
+<p class="p-body">
           I added gallery upload as a new feature on top of the original URL-only input — users can now pick directly from their device. Two methods, one clean form.
-        </p>
-        <div class="g2" style="margin-bottom:2rem">
-          <div class="iw">
-            <img src="../Images/createpost.png" alt="Pawth create post with gallery upload" />
-            <div class="icap">Create post — Upload from Gallery or paste a URL, pet type, caption</div>
-          </div>
-          <div class="feature-callout">
-            <div class="sub">New Feature Added</div>
-            <div class="feature-callout-h">Upload from Gallery</div>
-            <div class="feature-callout-d">
+</p>
+<div class="g2" style="margin-bottom:2rem">
+<div class="iw">
+<img src="../Images/createpost.png" alt="Pawth create post with gallery upload" class="zoomable" data-cap="Create post — upload from gallery or paste a URL, pet type, caption." />
+<div class="icap">Create post — Upload from Gallery or paste a URL, pet type, caption</div>
+</div>
+<div class="feature-callout">
+<div class="sub">New Feature Added</div>
+<div class="feature-callout-h">Upload from Gallery</div>
+<div class="feature-callout-d">
               Originally, post creation only accepted a pasted URL. I extended it with a native file picker so users can upload directly from their device — a significantly lower-friction path to sharing a pet photo. The two methods sit side by side in one clean form: gallery or URL, your choice.
-            </div>
-            <div class="corner-fold"></div>
-          </div>
-        </div>
-
-        <div class="sub">Profile Page</div>
-        <p style="font-family:var(--font-hand); font-size:15px; color:var(--ink-light); line-height:1.8; max-width:580px; margin-bottom:1rem">
+</div>
+<div class="corner-fold"></div>
+</div>
+</div>
+<div class="sub">Profile Page</div>
+<p class="p-body">
           User identity, post and saved counts, My Posts / Saved tabs, Edit Profile, and Log Out — all in one view. Fully connected to the users API with real-time data and role badge display.
-        </p>
-        <div class="g2" style="margin-bottom:2rem">
-          <div class="iw">
-            <img src="../Images/profile.png" alt="Pawth profile page" />
-            <div class="icap">Profile — posts grid, saved tab, edit profile, Admin badge</div>
-          </div>
-          <div class="ic" style="display:flex; flex-direction:column; justify-content:center;">
-            <div class="sub" style="margin-bottom:0.75rem">Profile Features</div>
-            <div class="flist" style="margin-bottom:0">
-              <div class="fr" style="padding:0.6rem 0.875rem">
-                <div>
-                  <div class="fr-t">Username + display name + email</div>
-                  <div class="fr-d">Shows role badge (Admin / Member) below email.</div>
-                </div>
-              </div>
-              <div class="fr" style="padding:0.6rem 0.875rem">
-                <div>
-                  <div class="fr-t">Posts &amp; Saved counts</div>
-                  <div class="fr-d">Auto-calculated from real data — no manual input.</div>
-                </div>
-              </div>
-              <div class="fr" style="padding:0.6rem 0.875rem">
-                <div>
-                  <div class="fr-t">My Posts / Saved toggle</div>
-                  <div class="fr-d">Switch between your own posts and posts you've saved.</div>
-                </div>
-              </div>
-              <div class="fr" style="padding:0.6rem 0.875rem">
-                <div>
-                  <div class="fr-t">Edit Profile + Log Out</div>
-                  <div class="fr-d">Edit display name and profile picture, sign out.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+</p>
+<div class="g2" style="margin-bottom:2rem">
+<div class="iw">
+<img src="../Images/profile.png" alt="Pawth profile page" class="zoomable" data-cap="Profile — posts grid, saved tab, edit profile, Admin badge." />
+<div class="icap">Profile — posts grid, saved tab, edit profile, Admin badge</div>
+</div>
+<div class="ic" style="display:flex; flex-direction:column; justify-content:center;">
+<div class="sub" style="margin-bottom:0.75rem">Profile Features</div>
+<div class="flist" style="margin-bottom:0">
+<div class="fr fr--tight">
+<div class="fr-i"><svg class="ico ico--sm" aria-hidden="true"><use href="#i-user"/></svg></div>
+<div>
+<div class="fr-t">Username + display name + email</div>
+<div class="fr-d">Shows role badge (Admin / Member) below email.</div>
+</div>
+</div>
+<div class="fr fr--tight">
+<div class="fr-i"><svg class="ico ico--sm" aria-hidden="true"><use href="#i-chart"/></svg></div>
+<div>
+<div class="fr-t">Posts &amp; Saved counts</div>
+<div class="fr-d">Auto-calculated from real data — no manual input.</div>
+</div>
+</div>
+<div class="fr fr--tight">
+<div class="fr-i"><svg class="ico ico--sm" aria-hidden="true"><use href="#i-toggle"/></svg></div>
+<div>
+<div class="fr-t">My Posts / Saved toggle</div>
+<div class="fr-d">Switch between your own posts and posts you've saved.</div>
+</div>
+</div>
+<div class="fr fr--tight">
+<div class="fr-i"><svg class="ico ico--sm" aria-hidden="true"><use href="#i-gear"/></svg></div>
+<div>
+<div class="fr-t">Edit Profile + Log Out</div>
+<div class="fr-d">Edit display name and profile picture, sign out.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 
-      <!-- 03 EVENT PLANNER -->
-      <section id="eventplanner" class="sec rev">
-        <div class="phase">
-          <div class="p-dot">3</div>
-          <span class="p-txt">New Feature — Personal Addition</span>
-        </div>
-        <h2 class="sec-h">AI-Powered<br/><em>Event Planner</em></h2>
-        <p class="sec-lead">
+<!-- 03 EVENT PLANNER -->
+<section id="eventplanner" class="sec rev">
+<div class="phase"><div class="p-dot">3</div><span class="p-txt">New Feature — Personal Addition</span></div>
+<h2 class="sec-h">AI-Powered<br/><em>Event Planner</em></h2>
+<p class="sec-lead">
           The event planner is a feature I designed and built entirely on my own, beyond the original app scope. Pet owners can discover upcoming events, create their own, and get AI-generated event ideas tailored to their pet type, vibe, and preferences.
-        </p>
-        <div class="rule"></div>
-
-        <div class="feature-callout" style="margin-bottom:1.5rem">
-          <div class="sub">Why I Added This</div>
-          <div class="feature-callout-h">Community needs a calendar, not just a feed</div>
-          <div class="feature-callout-d">
+</p>
+<div class="rule"></div>
+<div class="feature-callout" style="margin-bottom:1.5rem">
+<div class="sub">Why I Added This</div>
+<div class="feature-callout-h">Community needs a calendar, not just a feed</div>
+<div class="feature-callout-d">
             After building the social feed and maps, I noticed a gap — pet owners couldn't plan or find pet-specific events. Dog park meetups, adoption drives, café socials, and training days were all missing a dedicated space. I designed the Event Planner to fill that gap.
-          </div>
-          <div class="corner-fold"></div>
-        </div>
+</div>
+<div class="corner-fold"></div>
+</div>
+<div class="sub">Feature Overview</div>
+<div class="flist" style="margin-bottom:2rem">
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-sparkle"/></svg></div>
+<div>
+<div class="fr-t">AI Event Idea Generator</div>
+<div class="fr-d">Users select their pet type, vibe tags, budget, group size, duration, and accessibility needs — then get AI-generated event suggestions. Prompt chips make it even faster.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-doc"/></svg></div>
+<div>
+<div class="fr-t">Event Creation Form</div>
+<div class="fr-d">Members can create their own events — title, pet type, date, time, location, and description — and publish them to the community board for others to discover and RSVP.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-grid"/></svg></div>
+<div>
+<div class="fr-t">Filterable Event Board</div>
+<div class="fr-d">Browse all upcoming community events filtered by pet type. Each card shows the event icon, title, date, time, location, and a short description — clean and scannable at a glance.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-users"/></svg></div>
+<div>
+<div class="fr-t">RSVP + Ownership System</div>
+<div class="fr-d">Members can RSVP to any event and see attendee counts in real-time. Event creators can delete their own events, keeping the board accurate and up to date.</div>
+</div>
+</div>
+</div>
+<div class="sub">Browse — Event Board</div>
+<div class="imgs" style="margin-bottom:2rem">
+<div class="iw">
+<img src="../Images/Events.png" alt="Pawth event board browse tab" class="zoomable" data-cap="Browse tab — pet type filters, event cards with RSVP." />
+<div class="icap">Browse tab — pet type filters, event cards with RSVP</div>
+</div>
+</div>
+<div class="sub">Quick Create &amp; AI Planner</div>
+<div class="imgs c2" style="margin-bottom:2rem">
+<div class="iw">
+<img src="../Images/Quick_create.png" alt="Quick Create event form" class="zoomable" data-cap="Quick Create tab — title, pet type, date, AI prompt chips for the description." />
+<div class="icap">Quick Create tab — title, pet type, date, AI prompt chips for description</div>
+</div>
+<div class="iw">
+<img src="../Images/Ai_plan1.png" alt="AI Planner form — event basics" class="zoomable" data-cap="AI Planner — event basics, date and time, location, vibe and accessibility." />
+<div class="icap">AI Planner — event basics, date &amp; time, location, vibe &amp; accessibility</div>
+</div>
+</div>
+<div class="imgs" style="margin-bottom:2rem">
+<div class="iw">
+<img src="../Images/Ai_plan2.png" alt="AI Planner — categories and trending" class="zoomable" data-cap="AI Planner — event categories, vibes, group size, budget, trending picks." />
+<div class="icap">AI Planner — event categories, vibes, group size, budget, trending picks</div>
+</div>
+</div>
+<div class="sub">UX Design Decisions</div>
+<div class="ilist" style="margin-bottom:2rem">
+<div class="it">
+<div class="it-b bef">
+<div class="it-lbl">Problem</div>
+<div class="it-txt">Blank form is intimidating — users don't know what kind of event to create or where to start with ideas</div>
+</div>
+<div class="it-arr">→</div>
+<div class="it-b aft">
+<div class="it-lbl">Solution</div>
+<div class="it-txt">AI idea generator with pet-type prompt chips gets users from zero to a concrete event concept in two taps — before they even open the creation form</div>
+</div>
+</div>
+<div class="it">
+<div class="it-b bef">
+<div class="it-lbl">Problem</div>
+<div class="it-txt">Event boards are hard to scan when everything is listed in a flat, undifferentiated list</div>
+</div>
+<div class="it-arr">→</div>
+<div class="it-b aft">
+<div class="it-lbl">Solution</div>
+<div class="it-txt">Pet type filter tabs and an icon header on each card make it instantly visual and easy to find what's relevant</div>
+</div>
+</div>
+<div class="it">
+<div class="it-b bef">
+<div class="it-lbl">Problem</div>
+<div class="it-txt">Two different user goals on the same page — discovering events vs. creating them — can create a confusing, cluttered layout</div>
+</div>
+<div class="it-arr">→</div>
+<div class="it-b aft">
+<div class="it-lbl">Solution</div>
+<div class="it-txt">Three distinct zones: AI generator → creation form → event board — a natural top-to-bottom flow matching how users think: inspire → create → browse</div>
+</div>
+</div>
+</div>
+<div class="sub">AI Integration</div>
+<div class="g2">
+<div class="ic">
+<div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-sparkle"/></svg></div>
+<div class="ic-t">Prompt construction</div>
+<div class="ic-d">User selections (pet type, vibe tags, budget, group size, duration, accessibility) are assembled into a structured prompt sent to the AI API — returning tailored event concepts.</div>
+</div>
+<div class="ic">
+<div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-bolt"/></svg></div>
+<div class="ic-t">Prompt chips for speed</div>
+<div class="ic-d">Each pet type has a set of pre-written starting prompts — one-tap shortcuts that get users to a useful AI response without having to manually configure every parameter first.</div>
+</div>
+</div>
+</section>
 
-        <div class="sub">Feature Overview</div>
-        <div class="flist" style="margin-bottom:2rem">
-          <div class="fr">
-            <div>
-              <div class="fr-t">AI Event Idea Generator</div>
-              <div class="fr-d">Users select their pet type, vibe tags, budget, group size, duration, and accessibility needs — then get AI-generated event suggestions. Prompt chips make it even faster.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">Event Creation Form</div>
-              <div class="fr-d">Members can create their own events — title, pet type, date, time, location, and description — and publish them to the community board for others to discover and RSVP.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">Filterable Event Board</div>
-              <div class="fr-d">Browse all upcoming community events filtered by pet type. Each card shows the event emoji, title, date, time, location, and a short description — clean and scannable at a glance.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">RSVP + Ownership System</div>
-              <div class="fr-d">Members can RSVP to any event and see attendee counts in real-time. Event creators can delete their own events, keeping the board accurate and up to date.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="sub">Browse — Event Board</div>
-        <div class="imgs" style="margin-bottom:2rem">
-          <div class="iw">
-            <img src="../Images/Events.png" alt="Pawth event board browse tab" />
-            <div class="icap">Browse tab — pet type filters, event cards with RSVP, emoji avatars</div>
-          </div>
-        </div>
-
-        <div class="sub">Quick Create &amp; AI Planner</div>
-        <div class="imgs c2" style="margin-bottom:2rem">
-          <div class="iw">
-            <img src="../Images/Quick_create.png" alt="Quick Create event form" />
-            <div class="icap">Quick Create tab — title, pet type, date, AI prompt chips for description</div>
-          </div>
-          <div class="iw">
-            <img src="../Images/Ai_plan1.png" alt="AI Planner form — event basics" />
-            <div class="icap">AI Planner — event basics, date &amp; time, location, vibe &amp; accessibility</div>
-          </div>
-        </div>
-        <div class="imgs" style="margin-bottom:2rem">
-          <div class="iw">
-            <img src="../Images/Ai_plan2.png" alt="AI Planner — categories and trending" />
-            <div class="icap">AI Planner — event categories, vibes, group size, budget, trending picks</div>
-          </div>
-        </div>
-
-        <div class="sub">UX Design Decisions</div>
-        <div class="ilist" style="margin-bottom:2rem">
-          <div class="it">
-            <div class="it-b bef">
-              <div class="it-lbl">Problem</div>
-              <div class="it-txt">Blank form is intimidating — users don't know what kind of event to create or where to start with ideas</div>
-            </div>
-            <div class="it-arr">→</div>
-            <div class="it-b aft">
-              <div class="it-lbl">Solution</div>
-              <div class="it-txt">AI idea generator with pet-type prompt chips gets users from zero to a concrete event concept in two taps — before they even open the creation form</div>
-            </div>
-          </div>
-          <div class="it">
-            <div class="it-b bef">
-              <div class="it-lbl">Problem</div>
-              <div class="it-txt">Event boards are hard to scan when everything is listed in a flat, undifferentiated list</div>
-            </div>
-            <div class="it-arr">→</div>
-            <div class="it-b aft">
-              <div class="it-lbl">Solution</div>
-              <div class="it-txt">Pet type filter tabs + emoji headers on each card make it instantly visual and easy to find what's relevant</div>
-            </div>
-          </div>
-          <div class="it">
-            <div class="it-b bef">
-              <div class="it-lbl">Problem</div>
-              <div class="it-txt">Two different user goals on the same page — discovering events vs. creating them — can create a confusing, cluttered layout</div>
-            </div>
-            <div class="it-arr">→</div>
-            <div class="it-b aft">
-              <div class="it-lbl">Solution</div>
-              <div class="it-txt">Three distinct zones: AI generator → creation form → event board — a natural top-to-bottom flow matching how users think: inspire → create → browse</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="sub">AI Integration</div>
-        <div class="g2">
-          <div class="ic">
-            <div class="ic-t">Prompt construction</div>
-            <div class="ic-d">User selections (pet type, vibe tags, budget, group size, duration, accessibility) are assembled into a structured prompt sent to the AI API — returning tailored event concepts.</div>
-          </div>
-          <div class="ic">
-            <div class="ic-t">Prompt chips for speed</div>
-            <div class="ic-d">Each pet type has a set of pre-written starting prompts — one-tap shortcuts that get users to a useful AI response without having to manually configure every parameter first.</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 04 ARCHITECTURE -->
-      <section id="architecture" class="sec rev">
-        <div class="phase">
-          <div class="p-dot">4</div>
-          <span class="p-txt">Technical Architecture</span>
-        </div>
-        <h2 class="sec-h">Full-Stack,<br/><em>End-to-End</em></h2>
-        <p class="sec-lead">
+<!-- 04 ARCHITECTURE -->
+<section id="architecture" class="sec rev">
+<div class="phase"><div class="p-dot">4</div><span class="p-txt">Technical Architecture</span></div>
+<h2 class="sec-h">Full-Stack,<br/><em>End-to-End</em></h2>
+<p class="sec-lead">
           React on the frontend, Express + Node.js on the backend, MongoDB for storage. Each layer has a defined responsibility — and data flows cleanly between them.
-        </p>
-        <div class="rule"></div>
-
-        <div class="g3" style="margin-bottom:2rem">
-          <div class="ic">
-            <div class="ic-t">Frontend — React</div>
-            <div class="ic-d">Component-based UI with React Router for navigation. State management handles real-time like/comment/save updates without refetching. Role-based route protection at the component level.</div>
-          </div>
-          <div class="ic">
-            <div class="ic-t">Backend — Node.js + Express</div>
-            <div class="ic-d">RESTful API server with Express routing. JWT middleware protects every authenticated route. Role-checking middleware enforces admin-only endpoints independently of the UI.</div>
-          </div>
-          <div class="ic">
-            <div class="ic-t">Database — MongoDB</div>
-            <div class="ic-d">Mongoose schemas for Users and Posts. Comments embedded in posts for read performance. Likes and saves stored as arrays for efficient UI state sync.</div>
-          </div>
-        </div>
-
-        <div class="sub">Schema Design Decisions</div>
-        <div class="flist">
-          <div class="fr">
-            <div>
-              <div class="fr-t">Comments embedded in posts</div>
-              <div class="fr-d">Rather than a separate comments collection, comments are stored inline on the post document — a single read fetches both post and all its comments, reducing query latency for the feed.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">Likes and saves as arrays</div>
-              <div class="fr-d">Storing likedBy and savedBy as username arrays makes it trivial to check if the current user has liked or saved a post — no join needed, just an .includes() check on the client.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">Role stored on the User</div>
-              <div class="fr-d">A single role field on the User document powers the entire RBAC system — clean, simple, and easy to check in both middleware and frontend route guards.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 05 API -->
-      <section id="api" class="sec rev">
-        <div class="phase">
-          <div class="p-dot">5</div>
-          <span class="p-txt">API Documentation</span>
-        </div>
-        <h2 class="sec-h">16+ Endpoints,<br/><em>Full CRUD</em></h2>
-        <p class="sec-lead">
+</p>
+<div class="rule"></div>
+<div class="g3" style="margin-bottom:2rem">
+<div class="ic">
+<div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-code"/></svg></div>
+<div class="ic-t">Frontend — React</div>
+<div class="ic-d">Component-based UI with React Router for navigation. State management handles real-time like/comment/save updates without refetching. Role-based route protection at the component level.</div>
+</div>
+<div class="ic">
+<div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-server"/></svg></div>
+<div class="ic-t">Backend — Node.js + Express</div>
+<div class="ic-d">RESTful API server with Express routing. JWT middleware protects every authenticated route. Role-checking middleware enforces admin-only endpoints independently of the UI.</div>
+</div>
+<div class="ic">
+<div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-database"/></svg></div>
+<div class="ic-t">Database — MongoDB</div>
+<div class="ic-d">Mongoose schemas for Users and Posts. Comments embedded in posts for read performance. Likes and saves stored as arrays for efficient UI state sync.</div>
+</div>
+</div>
+<div class="sub">Schema Design Decisions</div>
+<div class="flist">
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-comment"/></svg></div>
+<div>
+<div class="fr-t">Comments embedded in posts</div>
+<div class="fr-d">Rather than a separate comments collection, comments are stored inline on the post document — a single read fetches both post and all its comments, reducing query latency for the feed.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg></div>
+<div>
+<div class="fr-t">Likes and saves as arrays</div>
+<div class="fr-d">Storing likedBy and savedBy as username arrays makes it trivial to check if the current user has liked or saved a post — no join needed, just an <code style="font-family:var(--font-mono);font-size:0.92em">.includes()</code> check on the client.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-shield"/></svg></div>
+<div>
+<div class="fr-t">Role stored on the User</div>
+<div class="fr-d">A single role field on the User document powers the entire RBAC system — clean, simple, and easy to check in both middleware and frontend route guards.</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 05 API -->
+<section id="api" class="sec rev">
+<div class="phase"><div class="p-dot">5</div><span class="p-txt">API Documentation</span></div>
+<h2 class="sec-h">16+ Endpoints,<br/><em>Full CRUD</em></h2>
+<p class="sec-lead">
           A complete RESTful API — authentication, posts, users, and admin operations — all secured with JWT middleware and role-based access control.
-        </p>
-        <div class="rule"></div>
+</p>
+<div class="rule"></div>
+<div class="sub">Authentication</div>
+<div class="api-wrap">
+<table class="api-table">
+<thead><tr><th>Endpoint</th><th>Method</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td class="endpoint">/api/auth/register</td><td><span class="method post">POST</span></td><td>Register a new user account</td></tr>
+<tr><td class="endpoint">/api/auth/login</td><td><span class="method post">POST</span></td><td>Login and return JWT token</td></tr>
+<tr><td class="endpoint">/api/auth/forgot-password</td><td><span class="method post">POST</span></td><td>Generate password reset token</td></tr>
+<tr><td class="endpoint">/api/auth/reset-password</td><td><span class="method post">POST</span></td><td>Reset password using token</td></tr>
+</tbody>
+</table>
+</div>
+<div class="sub">Posts</div>
+<div class="api-wrap">
+<table class="api-table">
+<thead><tr><th>Endpoint</th><th>Method</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td class="endpoint">/api/posts</td><td><span class="method get">GET</span></td><td>Fetch all posts (feed)</td></tr>
+<tr><td class="endpoint">/api/posts/:id</td><td><span class="method get">GET</span></td><td>Get single post detail</td></tr>
+<tr><td class="endpoint">/api/posts</td><td><span class="method post">POST</span></td><td>Create new post (member)</td></tr>
+<tr><td class="endpoint">/api/posts/:id</td><td><span class="method put">PUT</span></td><td>Edit own post (member)</td></tr>
+<tr><td class="endpoint">/api/posts/:id</td><td><span class="method del">DELETE</span></td><td>Delete own post (member)</td></tr>
+<tr><td class="endpoint">/api/posts/:id/like</td><td><span class="method post">POST</span></td><td>Like / unlike a post</td></tr>
+<tr><td class="endpoint">/api/posts/:id/save</td><td><span class="method post">POST</span></td><td>Save / unsave a post</td></tr>
+<tr><td class="endpoint">/api/posts/:id/comment</td><td><span class="method post">POST</span></td><td>Add a comment to a post</td></tr>
+</tbody>
+</table>
+</div>
+<div class="sub">Users &amp; Admin</div>
+<div class="api-wrap">
+<table class="api-table">
+<thead><tr><th>Endpoint</th><th>Method</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td class="endpoint">/api/users/profile</td><td><span class="method get">GET</span></td><td>Get current user profile</td></tr>
+<tr><td class="endpoint">/api/users/profile</td><td><span class="method put">PUT</span></td><td>Update profile info</td></tr>
+<tr><td class="endpoint">/api/admin/users</td><td><span class="method get">GET</span></td><td>Get all users (admin only)</td></tr>
+<tr><td class="endpoint">/api/admin/users/:id/suspend</td><td><span class="method patch">PATCH</span></td><td>Suspend a user (admin only)</td></tr>
+<tr><td class="endpoint">/api/admin/users/:id</td><td><span class="method del">DELETE</span></td><td>Delete a user (admin only)</td></tr>
+<tr><td class="endpoint">/api/admin/posts</td><td><span class="method get">GET</span></td><td>Get all posts (admin only)</td></tr>
+<tr><td class="endpoint">/api/admin/posts/:id</td><td><span class="method del">DELETE</span></td><td>Delete any post (admin only)</td></tr>
+</tbody>
+</table>
+</div>
+</section>
 
-        <div class="sub">Authentication</div>
-        <table class="api-table" style="margin-bottom:1.5rem">
-          <thead>
-            <tr>
-              <th>Endpoint</th>
-              <th>Method</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="endpoint">/api/auth/register</td>
-              <td><span class="method post">POST</span></td>
-              <td>Register a new user account</td>
-            </tr>
-            <tr>
-              <td class="endpoint">/api/auth/login</td>
-              <td><span class="method post">POST</span></td>
-              <td>Login and return JWT token</td>
-            </tr>
-            <tr>
-              <td class="endpoint">/api/auth/forgot-password</td>
-              <td><span class="method post">POST</span></td>
-              <td>Generate password reset token</td>
-            </tr>
-            <tr>
-              <td class="endpoint">/api/auth/reset-password</td>
-              <td><span class="method post">POST</span></td>
-              <td>Reset password using token</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div class="sub">Posts</div>
-        <table class="api-table" style="margin-bottom:1.5rem">
-          <thead>
-            <tr>
-              <th>Endpoint</th>
-              <th>Method</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="endpoint">/api/posts</td>
-              <td><span class="method get">GET</span></td>
-              <td>Fetch all posts (feed)</td>
-            </tr>
-            <tr>
-              <td class="endpoint">/api/posts/:id</td>
-              <td><span class="method get">GET</span></td>
-              <td>Get single post detail</td>
-            </tr>
-            <tr>
-              <td class="endpoint">/api/posts</td>
-              <td><span class="method post">POST</span></td>
-              <td>Create new post (member)</td>
-            </tr>
-            <tr>
-              <td class="endpoint">/api/posts/:id</td>
-              <td><span class="method put">PUT</span></td>
-              <td>Edit own post (member)</td>
-            </tr>
-            <tr>
-              <td class="endpoint">/api/posts/:id</td>
-              <td><span class="method del">DELETE</span></td>
-              <td>Delete own post (member)</td>
-            </tr>
-            <tr>
-              <td class="endpoint">/api/posts/:id/like</td>
-              <td><span class="method post">POST</span></td>
-              <td>Like / unlike a post</td>
-            </tr>
-            <tr>
-              <td class="endpoint">/api/posts/:id/save</td>
-              <td><span class="method post">POST</span></td>
-              <td>Save / unsave a post</td>
-            </tr>
-            <tr>
-              <td class="endpoint">/api/posts/:id/comment</td>
-              <td><span class="method post">POST</span></td>
-              <td>Add a comment to a post</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div class="sub">Users &amp; Admin</div>
-        <table class="api-table">
-          <thead>
-            <tr>
-              <th>Endpoint</th>
-              <th>Method</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="endpoint">/api/users/profile</td>
-              <td><span class="method get">GET</span></td>
-              <td>Get current user profile</td>
-            </tr>
-            <tr>
-              <td class="endpoint">/api/users/profile</td>
-              <td><span class="method put">PUT</span></td>
-              <td>Update profile info</td>
-            </tr>
-            <tr>
-              <td class="endpoint">/api/admin/users</td>
-              <td><span class="method get">GET</span></td>
-              <td>Get all users (admin only)</td>
-            </tr>
-            <tr>
-              <td class="endpoint">/api/admin/users/:id/suspend</td>
-              <td><span class="method patch">PATCH</span></td>
-              <td>Suspend a user (admin only)</td>
-            </tr>
-            <tr>
-              <td class="endpoint">/api/admin/users/:id</td>
-              <td><span class="method del">DELETE</span></td>
-              <td>Delete a user (admin only)</td>
-            </tr>
-            <tr>
-              <td class="endpoint">/api/admin/posts</td>
-              <td><span class="method get">GET</span></td>
-              <td>Get all posts (admin only)</td>
-            </tr>
-            <tr>
-              <td class="endpoint">/api/admin/posts/:id</td>
-              <td><span class="method del">DELETE</span></td>
-              <td>Delete any post (admin only)</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <!-- 06 ACCESS CONTROL -->
-      <section id="access" class="sec rev">
-        <div class="phase">
-          <div class="p-dot">6</div>
-          <span class="p-txt">Access Control</span>
-        </div>
-        <h2 class="sec-h">Three Roles,<br/><em>Two Layers of Protection</em></h2>
-        <p class="sec-lead">
+<!-- 06 ACCESS CONTROL -->
+<section id="access" class="sec rev">
+<div class="phase"><div class="p-dot">6</div><span class="p-txt">Access Control</span></div>
+<h2 class="sec-h">Three Roles,<br/><em>Two Layers of Protection</em></h2>
+<p class="sec-lead">
           Role-based access control enforced at both the backend (JWT middleware) and the frontend (protected routes) — so no role ever sees or reaches what it shouldn't.
-        </p>
-        <div class="rule"></div>
+</p>
+<div class="rule"></div>
+<div class="g3" style="margin-bottom:2rem">
+<div class="ic">
+<div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-eye"/></svg></div>
+<div class="ic-t">Visitor</div>
+<div class="ic-d">Not authenticated. Can browse and read posts. Cannot like, comment, save, create content, or access profile and admin pages.</div>
+</div>
+<div class="ic">
+<div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-user"/></svg></div>
+<div class="ic-t">Member</div>
+<div class="ic-d">Authenticated with JWT. Can create posts, like, save, comment, edit their own content, and update their profile.</div>
+</div>
+<div class="ic">
+<div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-shield"/></svg></div>
+<div class="ic-t">Admin</div>
+<div class="ic-d">Elevated role. Can suspend and delete users, delete any post, and access the full admin dashboard — blocked from all other users.</div>
+</div>
+</div>
+<div class="ilist">
+<div class="it">
+<div class="it-b bef">
+<div class="it-lbl">Frontend Guard</div>
+<div class="it-txt"><code>if (user?.role !== "admin") return &lt;Navigate to="/not-authorized" /&gt;</code></div>
+</div>
+<div class="it-arr">+</div>
+<div class="it-b aft">
+<div class="it-lbl">Backend Guard</div>
+<div class="it-txt">JWT verified on every request → role checked in admin middleware before any admin route resolves</div>
+</div>
+</div>
+</div>
+<div class="quote">
+<p>"Designing and building Pawth solo made the connection between UX decisions and frontend code impossible to ignore — they're the same decision, made twice."</p>
+<div class="quote-attr">— Inayat, Project Reflection</div>
+</div>
+</section>
 
-        <div class="g3" style="margin-bottom:2rem">
-          <div class="ic">
-            <div class="ic-t">Visitor</div>
-            <div class="ic-d">Not authenticated. Can browse and read posts. Cannot like, comment, save, create content, or access profile and admin pages.</div>
-          </div>
-          <div class="ic">
-            <div class="ic-t">Member</div>
-            <div class="ic-d">Authenticated with JWT. Can create posts, like, save, comment, edit their own content, and update their profile.</div>
-          </div>
-          <div class="ic">
-            <div class="ic-t">Admin</div>
-            <div class="ic-d">Elevated role. Can suspend and delete users, delete any post, and access the full admin dashboard — blocked from all other users.</div>
-          </div>
-        </div>
-
-        <div class="ilist">
-          <div class="it">
-            <div class="it-b bef">
-              <div class="it-lbl">Frontend Guard</div>
-              <div class="it-txt">if (user?.role !== "admin") return &lt;Navigate to="/not-authorized" /&gt;</div>
-            </div>
-            <div class="it-arr">+</div>
-            <div class="it-b aft">
-              <div class="it-lbl">Backend Guard</div>
-              <div class="it-txt">JWT verified on every request → role checked in admin middleware before any admin route resolves</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="quote">
-          <p>"Designing and building Pawth solo made the connection between UX decisions and frontend code impossible to ignore — they're the same decision, made twice."</p>
-          <div class="quote-attr">— Inayat, Project Reflection</div>
-        </div>
-      </section>
-
-      <!-- 07 CHALLENGES -->
-      <section id="challenges" class="sec rev">
-        <div class="phase">
-          <div class="p-dot">7</div>
-          <span class="p-txt">Technical Challenges</span>
-        </div>
-        <h2 class="sec-h">Five Problems,<br/><em>Five Solutions</em></h2>
-        <p class="sec-lead">
+<!-- 07 CHALLENGES -->
+<section id="challenges" class="sec rev">
+<div class="phase"><div class="p-dot">7</div><span class="p-txt">Technical Challenges</span></div>
+<h2 class="sec-h">Five Problems,<br/><em>Five Solutions</em></h2>
+<p class="sec-lead">
           Every real-world app surfaces integration problems that docs don't warn you about. Here's what I ran into building solo — and how I solved each one.
-        </p>
-        <div class="rule"></div>
+</p>
+<div class="rule"></div>
+<div class="slist">
+<div class="st">
+<div class="st-n">01</div>
+<div>
+<div class="st-t">Authentication state lost on refresh</div>
+<div class="st-d">User login state was wiped on every page reload. Fixed by persisting the JWT to localStorage on login and rehydrating auth state on app load.</div>
+</div>
+</div>
+<div class="st">
+<div class="st-n">02</div>
+<div>
+<div class="st-t">RBAC enforced at both layers</div>
+<div class="st-d">Frontend route guards alone weren't enough — a savvy user could hit admin API endpoints directly. Backend role middleware was added to every admin route so the API enforces access independently of the UI.</div>
+</div>
+</div>
+<div class="st">
+<div class="st-n">03</div>
+<div>
+<div class="st-t">CORS blocking frontend–backend communication</div>
+<div class="st-d">The React dev server and Express backend ran on different ports, triggering CORS errors on every API call. Solved by enabling CORS on the backend specifically for the frontend origin.</div>
+</div>
+</div>
+<div class="st">
+<div class="st-n">04</div>
+<div>
+<div class="st-t">Likes and comments not updating instantly</div>
+<div class="st-d">The feed re-fetched on every interaction, causing a visible flicker. Fixed with optimistic React state updates — making interactions feel immediate.</div>
+</div>
+</div>
+<div class="st">
+<div class="st-n">05</div>
+<div>
+<div class="st-t">Google Maps dynamic markers and filtering</div>
+<div class="st-d">Getting markers to update when filter categories changed required careful state management between the React component and the Maps API instance — solved by re-rendering markers on every filter state change.</div>
+</div>
+</div>
+</div>
+</section>
 
-        <div class="slist">
-          <div class="st">
-            <div class="st-n">01</div>
-            <div>
-              <div class="st-t">Authentication state lost on refresh</div>
-              <div class="st-d">User login state was wiped on every page reload. Fixed by persisting the JWT to localStorage on login and rehydrating auth state on app load.</div>
-            </div>
-          </div>
-          <div class="st">
-            <div class="st-n">02</div>
-            <div>
-              <div class="st-t">RBAC enforced at both layers</div>
-              <div class="st-d">Frontend route guards alone weren't enough — a savvy user could hit admin API endpoints directly. Backend role middleware was added to every admin route so the API enforces access independently of the UI.</div>
-            </div>
-          </div>
-          <div class="st">
-            <div class="st-n">03</div>
-            <div>
-              <div class="st-t">CORS blocking frontend–backend communication</div>
-              <div class="st-d">The React dev server and Express backend ran on different ports, triggering CORS errors on every API call. Solved by enabling CORS on the backend specifically for the frontend origin.</div>
-            </div>
-          </div>
-          <div class="st">
-            <div class="st-n">04</div>
-            <div>
-              <div class="st-t">Likes and comments not updating instantly</div>
-              <div class="st-d">The feed re-fetched on every interaction, causing a visible flicker. Fixed with optimistic React state updates — making interactions feel immediate.</div>
-            </div>
-          </div>
-          <div class="st">
-            <div class="st-n">05</div>
-            <div>
-              <div class="st-t">Google Maps dynamic markers and filtering</div>
-              <div class="st-d">Getting markers to update when filter categories changed required careful state management between the React component and the Maps API instance — solved by re-rendering markers on every filter state change.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 08 DESIGN DECISIONS -->
-      <section id="contribution" class="sec rev">
-        <div class="phase">
-          <div class="p-dot">8</div>
-          <span class="p-txt">Design Decisions</span>
-        </div>
-        <h2 class="sec-h">What I Designed<br/><em>&amp; Why</em></h2>
-        <p class="sec-lead">
+<!-- 08 DESIGN DECISIONS -->
+<section id="contribution" class="sec rev">
+<div class="phase"><div class="p-dot">8</div><span class="p-txt">Design Decisions</span></div>
+<h2 class="sec-h">What I Designed<br/><em>&amp; Why</em></h2>
+<p class="sec-lead">
           Every page in Pawth was designed and built by me — from the visual identity and component system in Figma, to the React implementation and responsive layout.
-        </p>
-        <div class="rule"></div>
+</p>
+<div class="rule"></div>
+<div class="role-badge"><svg class="ico" aria-hidden="true"><use href="#i-paw"/></svg>Solo — UX/UI + Frontend</div>
+<div class="flist" style="margin-bottom:2rem">
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-flag"/></svg></div>
+<div>
+<div class="fr-t">Landing page — first impression matters</div>
+<div class="fr-d">Designed to immediately communicate the platform's purpose — "Every pet has a story worth sharing." Animated floating pet illustrations, two clear CTAs (Join / Browse), and category tag chips give visitors context and momentum before they sign up.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-grid"/></svg></div>
+<div>
+<div class="fr-t">Dashboard — masonry grid for visual density</div>
+<div class="fr-d">Chose a masonry grid over a standard card grid to handle variable image ratios naturally. Pet type filter tabs and a search bar let users narrow the feed without leaving the page. Inline likes, saves, and comment counts update optimistically — no flicker, no reload.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-sparkle"/></svg></div>
+<div>
+<div class="fr-t">Event Planner — AI-first, then form</div>
+<div class="fr-d">Designed a three-zone layout: AI generator → creation form → event board. This top-to-bottom flow mirrors how a user actually thinks: get inspired first, then create, then browse what others have made. Prompt chips make the AI generator one-tap fast.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-filter"/></svg></div>
+<div>
+<div class="fr-t">Maps — category filters over free text search</div>
+<div class="fr-d">Eight predefined category filters were chosen over a free text search — because pet owners already know what type of place they need, not its name. Dynamic marker rendering on every filter change keeps the map always in sync.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-upload"/></svg></div>
+<div>
+<div class="fr-t">Gallery upload — reducing friction on post creation</div>
+<div class="fr-d">The original post form only accepted a URL. Adding a native file picker eliminated that step entirely — users can share a photo straight from their camera roll. The two methods sit side by side in a single clean form.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-user"/></svg></div>
+<div>
+<div class="fr-t">Profile — clarity over density</div>
+<div class="fr-d">The profile page surfaces what matters most at a glance: display name, role badge, post and saved counts, and a clean My Posts / Saved toggle. Edit Profile and Log Out are accessible but not prominent — reducing cognitive load.</div>
+</div>
+</div>
+</div>
+<div class="sub">Full Scope</div>
+<div class="dcard chosen">
+<div class="dcard-label"><svg class="ico ico--inline" aria-hidden="true"><use href="#i-check"/></svg>Designed &amp; Built Solo</div>
+<div class="dcard-t">Visual Design · Landing · Dashboard · Event Planner · Maps · Gallery Upload · Profile · RBAC · Responsive Layout</div>
+<div class="dcard-d">The entire Pawth UX — from initial sketches and Figma wireframes through to the final React implementation — was designed and built by me. Every interaction, every layout decision, every component.</div>
+</div>
+</section>
 
-        <div class="role-badge">Solo — UX/UI + Frontend</div>
-
-        <div class="flist" style="margin-bottom:2rem">
-          <div class="fr">
-            <div>
-              <div class="fr-t">Landing page — first impression matters</div>
-              <div class="fr-d">Designed to immediately communicate the platform's purpose — "Every pet has a story worth sharing." Animated floating pet emojis, two clear CTAs (Join / Browse), and category tag chips give visitors context and momentum before they sign up.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">Dashboard — masonry grid for visual density</div>
-              <div class="fr-d">Chose a masonry grid over a standard card grid to handle variable image ratios naturally. Pet type filter tabs and a search bar let users narrow the feed without leaving the page. Inline likes, saves, and comment counts update optimistically — no flicker, no reload.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">Event Planner — AI-first, then form</div>
-              <div class="fr-d">Designed a three-zone layout: AI generator → creation form → event board. This top-to-bottom flow mirrors how a user actually thinks: get inspired first, then create, then browse what others have made. Prompt chips make the AI generator one-tap fast.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">Maps — category filters over free text search</div>
-              <div class="fr-d">Eight predefined category filters were chosen over a free text search — because pet owners already know what type of place they need, not its name. Dynamic marker rendering on every filter change keeps the map always in sync.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">Gallery upload — reducing friction on post creation</div>
-              <div class="fr-d">The original post form only accepted a URL. Adding a native file picker eliminated that step entirely — users can share a photo straight from their camera roll. The two methods sit side by side in a single clean form.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">Profile — clarity over density</div>
-              <div class="fr-d">The profile page surfaces what matters most at a glance: display name, role badge, post and saved counts, and a clean My Posts / Saved toggle. Edit Profile and Log Out are accessible but not prominent — reducing cognitive load.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="sub">Full Scope</div>
-        <div class="dcard chosen">
-          <div class="dcard-label">✓ Designed &amp; Built Solo</div>
-          <div class="dcard-t">Visual Design · Landing · Dashboard · Event Planner · Maps · Gallery Upload · Profile · RBAC · Responsive Layout</div>
-          <div class="dcard-d">The entire Pawth UX — from initial sketches and Figma wireframes through to the final React implementation — was designed and built by me. Every interaction, every layout decision, every component.</div>
-        </div>
-      </section>
-
-      <!-- 09 REFLECTION -->
-      <section id="reflection" class="sec rev">
-        <div class="phase">
-          <div class="p-dot">9</div>
-          <span class="p-txt">Reflection</span>
-        </div>
-        <h2 class="sec-h">What I Learned</h2>
-        <p class="sec-lead">
+<!-- 09 REFLECTION -->
+<section id="reflection" class="sec rev">
+<div class="phase"><div class="p-dot">9</div><span class="p-txt">Reflection</span></div>
+<h2 class="sec-h">What I Learned</h2>
+<p class="sec-lead">
           Building Pawth solo — from UX sketches through to a fully deployed React app — taught me that design and engineering aren't separate disciplines. Every visual decision has a technical consequence, and every technical choice shapes the user experience.
-        </p>
-        <div class="rule"></div>
-
-        <div class="g2" style="margin-bottom:2rem">
-          <div class="rc">
-            <div class="rc-t">Think in systems, not features</div>
-            <div class="rc-d">This project shifted my perspective from building isolated features to designing complete, scalable systems. Every schema decision affected the frontend; every UI decision created API requirements. The two can't be designed separately.</div>
-          </div>
-          <div class="rc">
-            <div class="rc-t">Security is architecture</div>
-            <div class="rc-d">Implementing RBAC taught me that access control isn't a feature — it's a first-principles design decision. Role must live on the user model, be verified on the server, and be reflected in the UI. All three layers are required.</div>
-          </div>
-          <div class="rc">
-            <div class="rc-t">State management is UX</div>
-            <div class="rc-d">The jump from refetching data to optimistic state updates transformed the feel of the app. A 200ms flicker on every like isn't a bug — it's a UX failure. Understanding this made me a better designer and developer simultaneously.</div>
-          </div>
-          <div class="rc">
-            <div class="rc-t">Integration breaks what isolation passes</div>
-            <div class="rc-d">CORS errors, auth state loss, and API mismatches only surface when frontend and backend connect. Building both sides gave me the debugging vocabulary to trace problems across the full stack without guessing which layer was at fault.</div>
-          </div>
-        </div>
-
-        <div class="sub">Future Iterations</div>
-        <div class="flist">
-          <div class="fr">
-            <div>
-              <div class="fr-t">Event Planner — Maps Integration</div>
-              <div class="fr-d">Connect the event planner to the Google Maps page — so when a user creates or browses an event, they can immediately see the venue pinned on the map with nearby pet-friendly spots.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">Complete Password Reset Flow</div>
-              <div class="fr-d">The token generation is built — connect a transactional email service (SendGrid or Resend) to complete the reset flow end-to-end.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">Pet Profiles</div>
-              <div class="fr-d">Let users create individual profiles for each of their pets — with breed, age, and a personal feed — deepening the community identity layer.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">Real-Time Notifications</div>
-              <div class="fr-d">WebSocket-based notifications for likes, comments, and event RSVPs — so users know when their content gets attention without refreshing.</div>
-            </div>
-          </div>
-          <div class="fr">
-            <div>
-              <div class="fr-t">Mobile App (React Native)</div>
-              <div class="fr-d">Port Pawth to a native mobile experience — the social + maps + event planning combination is a natural fit for on-the-go pet owners discovering places and meetups nearby.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Closing note -->
-        <div style="margin-top:3rem; padding:1.5rem; border:1.5px solid rgba(26,22,18,0.12); background:var(--paper-dark); position:relative; transform:rotate(-0.3deg)">
-          <div style="position:absolute; top:-11px; left:20px; width:40px; height:20px; background:rgba(30,58,95,0.22); border-top:1px solid rgba(30,58,95,0.35); border-bottom:1px solid rgba(30,58,95,0.35); transform:rotate(1.5deg)"></div>
-          <p style="font-family:var(--font-serif); font-size:1.1rem; font-style:italic; color:var(--ink-light); line-height:1.7">
+</p>
+<div class="rule"></div>
+<div class="g2" style="margin-bottom:2rem">
+<div class="rc">
+<div class="rc-t">Think in systems, not features</div>
+<div class="rc-d">This project shifted my perspective from building isolated features to designing complete, scalable systems. Every schema decision affected the frontend; every UI decision created API requirements. The two can't be designed separately.</div>
+</div>
+<div class="rc">
+<div class="rc-t">Security is architecture</div>
+<div class="rc-d">Implementing RBAC taught me that access control isn't a feature — it's a first-principles design decision. Role must live on the user model, be verified on the server, and be reflected in the UI. All three layers are required.</div>
+</div>
+<div class="rc">
+<div class="rc-t">State management is UX</div>
+<div class="rc-d">The jump from refetching data to optimistic state updates transformed the feel of the app. A 200ms flicker on every like isn't a bug — it's a UX failure. Understanding this made me a better designer and developer simultaneously.</div>
+</div>
+<div class="rc">
+<div class="rc-t">Integration breaks what isolation passes</div>
+<div class="rc-d">CORS errors, auth state loss, and API mismatches only surface when frontend and backend connect. Building both sides gave me the debugging vocabulary to trace problems across the full stack without guessing which layer was at fault.</div>
+</div>
+</div>
+<div class="sub">Future Iterations</div>
+<div class="flist">
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-map"/></svg></div>
+<div>
+<div class="fr-t">Event Planner — Maps Integration</div>
+<div class="fr-d">Connect the event planner to the Google Maps page — so when a user creates or browses an event, they can immediately see the venue pinned on the map with nearby pet-friendly spots.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg></div>
+<div>
+<div class="fr-t">Complete Password Reset Flow</div>
+<div class="fr-d">The token generation is built — connect a transactional email service (SendGrid or Resend) to complete the reset flow end-to-end.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-paw"/></svg></div>
+<div>
+<div class="fr-t">Pet Profiles</div>
+<div class="fr-d">Let users create individual profiles for each of their pets — with breed, age, and a personal feed — deepening the community identity layer.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-bell"/></svg></div>
+<div>
+<div class="fr-t">Real-Time Notifications</div>
+<div class="fr-d">WebSocket-based notifications for likes, comments, and event RSVPs — so users know when their content gets attention without refreshing.</div>
+</div>
+</div>
+<div class="fr">
+<div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg></div>
+<div>
+<div class="fr-t">Mobile App (React Native)</div>
+<div class="fr-d">Port Pawth to a native mobile experience — the social + maps + event planning combination is a natural fit for on-the-go pet owners discovering places and meetups nearby.</div>
+</div>
+</div>
+</div>
+<!-- Closing note -->
+<div style="margin-top:3rem; padding:1.5rem; border:1.5px solid rgba(26,22,18,0.12); background:var(--paper-dark); position:relative; transform:rotate(-0.3deg)">
+<div style="position:absolute; top:-11px; left:20px; width:40px; height:20px; background:rgba(30,58,95,0.22); border-top:1px solid rgba(30,58,95,0.35); border-bottom:1px solid rgba(30,58,95,0.35); transform:rotate(1.5deg)"></div>
+<p style="font-family:var(--font-serif); font-size:var(--fs-quote); font-style:italic; color:var(--ink-light); line-height:1.6">
             The biggest insight was that <span class="hl-y">design and code are the same decision made twice</span>. When you own both sides, every choice becomes intentional — and the product shows it.
-          </p>
-          <p style="font-family:var(--font-scrawl); font-size:18px; color:var(--pw-blue); margin-top:0.75rem; transform:rotate(-1deg); display:inline-block">— Inayat 🐾</p>
-          <div class="corner-fold"></div>
-        </div>
-      </section>
+</p>
+<p style="font-family:var(--font-scrawl); font-size:var(--fs-scrawl); color:var(--pw-blue); margin-top:0.75rem; transform:rotate(-1deg); display:inline-flex; align-items:center; gap:7px">
+            — Inayat
+<svg class="ico" aria-hidden="true" style="stroke:var(--pw-blue); width:1.15em; height:1.15em"><use href="#i-paw"/></svg>
+</p>
+<div class="corner-fold"></div>
+</div>
+</section>
+</main>
 
-    </main>
+<!-- LIGHTBOX -->
+<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image">
+<button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+<div class="lb-zoom" id="lbZoom">
+<button id="lbOut" aria-label="Zoom out">−</button>
+<span class="lb-lvl" id="lbLvl">FIT</span>
+<button id="lbIn" aria-label="Zoom in">+</button>
+</div>
+<div class="lb-stage" id="lbStage"></div>
+<div class="lb-cap" id="lbCap"></div>
+</div>
 
-    <footer>© 2025 Inayat &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; Personal Project · UX/UI Design · Frontend Development</footer>
+<footer>© 2025 Inayat &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; Personal Project · UX/UI Design · Frontend Development</footer>
 
-    <script>
-      // Spiral holes
-      const spiral = document.getElementById('spiralBinding');
-      const count = Math.floor(window.innerHeight / 44) + 2;
-      for (let i = 0; i < count; i++) {
-        const h = document.createElement('div');
-        h.className = 'spiral-hole';
-        spiral.appendChild(h);
-      }
+<script>
+/* ---- spiral binding, redrawn on resize so it never runs short ---- */
+const spiral = document.getElementById('spiralBinding');
+function drawSpiral() {
+  const count = Math.floor(window.innerHeight / 44) + 2;
+  if (spiral.childElementCount === count) return;
+  spiral.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const h = document.createElement('div');
+    h.className = 'spiral-hole';
+    spiral.appendChild(h);
+  }
+}
+drawSpiral();
 
-      // Scroll reveal
-      const ro = new IntersectionObserver(es => es.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add('in');
-      }), { threshold: 0.06 });
-      document.querySelectorAll('.rev').forEach(el => ro.observe(el));
+/* ---- mobile menu ---- */
+const navToggle = document.getElementById('navToggle');
+const navLinks  = document.getElementById('navLinks');
+navToggle.addEventListener('click', () => {
+  const open = navLinks.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  navToggle.setAttribute('aria-expanded', 'false');
+}));
 
-      // Active sidenav
-      const links = document.querySelectorAll('.side-a');
-      const secs  = document.querySelectorAll('.sec');
-      const so = new IntersectionObserver(es => {
-        es.forEach(e => {
-          if (e.isIntersecting) {
-            links.forEach(l => l.classList.remove('active'));
-            const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
-            if (a) a.classList.add('active');
-          }
-        });
-      }, { rootMargin: '-15% 0px -65% 0px' });
-      secs.forEach(s => so.observe(s));
-    </script>
-  </body>
+/* ============================================================
+   LIGHTBOX
+   Fit to screen first, then levels above it. A hand-drawn sketch
+   or a full app screenshot shrunk into a column is a picture of a
+   thing, not a readable one — so zoom has to go past the fit.
+   ============================================================ */
+const lb      = document.getElementById('lightbox');
+const lbStage = document.getElementById('lbStage');
+const lbCap   = document.getElementById('lbCap');
+const lbZoom  = document.getElementById('lbZoom');
+const lbLvl   = document.getElementById('lbLvl');
+const lbIn    = document.getElementById('lbIn');
+const lbOut   = document.getElementById('lbOut');
+const lbClose = document.getElementById('lbClose');
+const LEVELS  = [0, 1, 1.5, 2];   /* 0 = fit; the rest are multiples of the file's own size */
+let lastFocus = null, natW = 0, natH = 0, fitW = 0, zi = 0, capText = '', node = null;
+
+function widthAt(i) { return natW * LEVELS[i]; }
+function canZoom()  { return widthAt(LEVELS.length - 1) > fitW * 1.05; }
+/* skip any level that would not actually be bigger than the fit */
+function nextLevel() {
+  for (let i = zi + 1; i < LEVELS.length; i++) if (widthAt(i) > fitW * 1.05) return i;
+  return 0;
+}
+function render(ox, oy) {
+  if (zi === 0) {
+    lb.classList.remove('zoomed');
+    lbLvl.textContent = 'FIT';
+    node.style.width = ''; node.style.height = '';
+  } else {
+    lb.classList.add('zoomed');
+    lbLvl.textContent = Math.round(LEVELS[zi] * 100) + '%';
+    node.style.width  = Math.round(natW * LEVELS[zi]) + 'px';
+    node.style.height = Math.round(natH * LEVELS[zi]) + 'px';
+    const x = ox === undefined ? 0.5 : ox, y = oy === undefined ? 0.5 : oy;
+    lbStage.scrollLeft = node.offsetWidth  * x - lbStage.clientWidth  / 2;
+    lbStage.scrollTop  = node.offsetHeight * y - lbStage.clientHeight / 2;
+  }
+  lbIn.disabled  = nextLevel() <= zi;
+  lbOut.disabled = zi <= 0;
+}
+function measure(cap) {
+  if (cap !== undefined) capText = cap;
+  zi = 0; render();
+  fitW = node.getBoundingClientRect().width;
+  const z = canZoom();
+  lbZoom.classList.toggle('on', z);
+  node.classList.toggle('can-zoom', z);
+  lbCap.innerHTML = (capText || '') + '<span class="lb-hint">' +
+    (z ? 'Click the image to zoom in · drag to pan · Esc to close'
+       : 'Click anywhere or press Esc to close') + '</span>';
+  lbIn.disabled = !z; lbOut.disabled = true;
+}
+function openImg(img) {
+  lastFocus = document.activeElement;
+  const el = new Image();
+  el.src = img.currentSrc || img.src;
+  el.alt = img.alt || '';
+  lbStage.innerHTML = ''; lbStage.appendChild(el);
+  node = el;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  lbClose.focus();
+  const go = () => { natW = el.naturalWidth; natH = el.naturalHeight; measure(img.dataset.cap || img.alt); };
+  if (el.complete && el.naturalWidth) go(); else el.addEventListener('load', go, { once: true });
+}
+function closeLB() {
+  lb.classList.remove('open', 'zoomed');
+  lbStage.innerHTML = '';
+  node = null; zi = 0;
+  document.body.style.overflow = '';
+  if (lastFocus) lastFocus.focus();
+}
+document.querySelectorAll('img.zoomable').forEach(img => {
+  img.addEventListener('click', () => openImg(img));
+});
+lbStage.addEventListener('click', e => {
+  if (!node || e.target !== node || !canZoom()) return;
+  const r = node.getBoundingClientRect();
+  zi = nextLevel();
+  render((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+});
+lbIn.addEventListener('click', () => { const n = nextLevel(); if (n > zi) { zi = n; render(); } });
+lbOut.addEventListener('click', () => { if (zi > 0) { zi--; render(); } });
+lbClose.addEventListener('click', closeLB);
+lb.addEventListener('click', e => { if (e.target === lb || e.target === lbCap) closeLB(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('open')) closeLB(); });
+/* drag to pan while zoomed (touch pans natively) */
+let drag = null;
+lbStage.addEventListener('pointerdown', e => {
+  if (zi === 0 || e.pointerType === 'touch') return;
+  drag = { x: e.clientX, y: e.clientY, l: lbStage.scrollLeft, t: lbStage.scrollTop };
+  lbStage.classList.add('dragging');
+  lbStage.setPointerCapture(e.pointerId);
+});
+lbStage.addEventListener('pointermove', e => {
+  if (!drag) return;
+  lbStage.scrollLeft = drag.l - (e.clientX - drag.x);
+  lbStage.scrollTop  = drag.t - (e.clientY - drag.y);
+});
+['pointerup', 'pointercancel'].forEach(ev =>
+  lbStage.addEventListener(ev, () => { drag = null; lbStage.classList.remove('dragging'); }));
+
+/* ---- scroll reveal + active sidenav ---- */
+const ro = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) e.target.classList.add('in');
+}), { threshold: 0.06 });
+document.querySelectorAll('.rev').forEach(el => ro.observe(el));
+const links = document.querySelectorAll('.side-a');
+const so = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
+      if (a) a.classList.add('active');
+    }
+  });
+}, { rootMargin: '-15% 0px -65% 0px' });
+document.querySelectorAll('.sec').forEach(s => so.observe(s));
+
+/* keep the binding and any open lightbox correct through a resize */
+let rt;
+window.addEventListener('resize', () => {
+  clearTimeout(rt);
+  rt = setTimeout(() => {
+    drawSpiral();
+    if (lb.classList.contains('open') && node) measure();
+  }, 140);
+});
+</script>
+</body>
 </html>
