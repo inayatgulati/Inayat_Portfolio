@@ -1,1335 +1,1518 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fitness Tracking App — Inayat</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --paper: #faf8f2;
-      --paper-dark: #f0ecdf;
-      --paper-worn: #e8e2d0;
-      --ink: #1a1612;
-      --ink-light: #3d3530;
-      --ink-faint: #8a7f72;
-      --pencil: #b8b0a0;
-      --pencil-light: #d4cfc4;
-      --red: #c0392b;
-      /* Fitness accent — energetic orange + health green */
-      --fit-orange: #bf5a1a;
-      --fit-orange-l: #d97432;
-      --fit-green: #3a7d44;
-      --fit-green-l: #4a9e56;
-      --fit-blue: #2c5f8a;
-      --yellow: #e8b84b;
-      --teal: #2e7d6e; /* kept for shared components */
-      --font-hand: 'Caveat', cursive;
-      --font-scrawl: 'Reenie Beanie', cursive;
-      --font-mono: 'Space Mono', monospace;
-      --font-serif: 'EB Garamond', serif;
-      --nav-h: 58px;
-      --side-w: 196px;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fitness Tracking App — Inayat</title>
+<meta name="description" content="A fitness tracking app designed around motivation rather than data. Research-led mobile UX case study — 12 participants, SUS 87.5, three rounds of usability testing." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<style>
+:root {
+--paper: #faf8f2;
+--paper-dark: #f0ecdf;
+--paper-worn: #e8e2d0;
+--ink: #1a1612;
+--ink-light: #3d3530;
+--ink-faint: #8a7f72;
+--pencil: #b8b0a0;
+--pencil-light: #d4cfc4;
+--red: #b02f22;
+
+/* Fitness accent — energetic orange + health green.
+   --fit-orange was #bf5a1a (4.21 on cream, 3.79 on the card) and
+   --fit-green was #3a7d44 (3.67 on its own pill tint). Both failed AA
+   on surfaces they actually land on, so both are darkened here; the
+   -l variants keep the original brightness for decoration only. */
+--fit-orange: #a94e12;
+--fit-orange-l: #d97432;
+--fit-green: #31693a;
+--fit-green-l: #4a9e56;
+--fit-blue: #2c5f8a;
+--yellow: #e8b84b;
+--teal: #2e7d6e; /* kept for shared components */
+
+--font-hand: 'Caveat', cursive;
+--font-text: 'Karla', system-ui, -apple-system, 'Segoe UI', sans-serif;
+--font-scrawl: 'Reenie Beanie', cursive;
+--font-mono: 'Space Mono', monospace;
+--font-serif: 'EB Garamond', serif;
+
+--nav-h: 58px;
+--side-w: 196px;
+--spiral: 32px;
+--main-max: 860px;
+--main-pad: 3.5rem;
+--nav-max: 1200px;
+
+/* ---- fluid type: floor, ramp, ceiling ---- */
+--fs-body:   clamp(14.5px, calc(13.96px + 0.138vw), 17.5px);
+--fs-lead:   clamp(16px,   calc(15.26px + 0.19vw),  20.5px);
+--fs-ui:     clamp(14px,   calc(13.44px + 0.143vw), 17px);
+--fs-cap:    clamp(12.5px, calc(12.1px + 0.104vw),  15px);
+--fs-mono-s: clamp(8.5px,  calc(8.14px + 0.093vw),  10.5px);
+--fs-mono-m: clamp(9.5px,  calc(9.14px + 0.093vw),  11.5px);
+--fs-hero:   clamp(17px,   calc(14.4px + 0.67vw),   29px);
+--fs-h1:     clamp(38px,   calc(28.6px + 2.4vw),    90px);
+--fs-h2:     clamp(29px,   calc(23.3px + 1.46vw),   60px);
+--fs-h3:     clamp(23px,   calc(19.9px + 0.79vw),   40px);
+--fs-num:    clamp(28px,   calc(23.4px + 1.18vw),   54px);
+--fs-quote:  clamp(18px,   calc(15.5px + 0.64vw),   32px);
+--fs-scrawl: clamp(17px,   calc(15.6px + 0.36vw),   25px);
+--ico:       clamp(18px,   calc(16.8px + 0.375vw),  24px);
+/* the hero phone scales with the page instead of sitting at 260px forever */
+--phone-w:   clamp(230px,  calc(194.3px + 11.16vw), 480px);
+    }
+/* ---- larger desktops: the column grows with the screen ---- */
+@media (min-width: 1600px) {
+:root { --side-w: 228px; --main-max: 1000px; --main-pad: 3.75rem; --nav-h: 64px; --nav-max: 1440px; }
+    }
+@media (min-width: 1920px) {
+:root { --side-w: 254px; --main-max: 1130px; --main-pad: 4.25rem; --nav-h: 70px; --spiral: 40px; --nav-max: 1680px; }
+    }
+/* ---- TV / 4K: a second, steeper ramp. Each floor is the ramp above's
+       ceiling, so the two meet without a step. ---- */
+@media (min-width: 2560px) {
+:root {
+--side-w: 300px; --main-max: 1400px; --main-pad: 5rem; --nav-h: 84px; --spiral: 48px; --nav-max: 2200px;
+--fs-body:   clamp(17.5px, calc(9.2px + 0.324vw),  26px);
+--fs-lead:   clamp(20.5px, calc(10.7px + 0.383vw), 30px);
+--fs-ui:     clamp(17px,   calc(9.0px + 0.313vw),  25px);
+--fs-cap:    clamp(15px,   calc(8.2px + 0.266vw),  22px);
+--fs-mono-s: clamp(10.5px, calc(6.6px + 0.152vw),  14.5px);
+--fs-mono-m: clamp(11.5px, calc(7.2px + 0.168vw),  16px);
+--fs-hero:   clamp(29px,   calc(12.9px + 0.629vw), 46px);
+--fs-h1:     clamp(90px,   calc(37.6px + 2.05vw),  144px);
+--fs-h2:     clamp(60px,   calc(25.1px + 1.36vw),  96px);
+--fs-h3:     clamp(40px,   calc(17.4px + 0.883vw), 63px);
+--fs-num:    clamp(54px,   calc(22.6px + 1.23vw),  86px);
+--fs-quote:  clamp(32px,   calc(13.9px + 0.707vw), 51px);
+--fs-scrawl: clamp(25px,   calc(11.4px + 0.531vw), 39px);
+--ico:       clamp(24px,   calc(12.4px + 0.453vw), 36px);
+--phone-w:   clamp(480px,  calc(216px + 10.3vw),   700px);
+      }
+    }
+@media (min-width: 3400px) {
+:root { --side-w: 380px; --main-max: 1780px; --main-pad: 6rem; --nav-h: 96px; --spiral: 60px; --nav-max: 2900px; }
     }
 
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
-    body {
-      font-family: var(--font-hand);
-      background: var(--paper);
-      color: var(--ink);
-      line-height: 1.6;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* Ruled paper */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.11) 27px, rgba(180,170,155,0.11) 28px);
-      pointer-events: none;
-      z-index: 0;
+body {
+font-family: var(--font-text);
+font-size: var(--fs-body);
+background: var(--paper);
+color: var(--ink);
+line-height: 1.6;
+overflow-x: hidden;
+-webkit-font-smoothing: antialiased;
     }
 
-    /* Spiral binding */
-    .spiral-binding {
-      position: fixed;
-      left: 0; top: 0; bottom: 0;
-      width: 32px;
-      background: var(--paper-worn);
-      border-right: 2.5px solid var(--ink);
-      z-index: 200;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding-top: 24px;
-      pointer-events: none;
-    }
-    .spiral-hole {
-      width: 16px; height: 16px;
-      border-radius: 50%;
-      border: 2px solid var(--ink);
-      background: var(--paper);
-      margin-bottom: 28px;
-      flex-shrink: 0;
-      box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
+/* Ruled paper */
+body::before {
+content: '';
+position: fixed;
+inset: 0;
+background-image:
+repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.11) 27px, rgba(180,170,155,0.11) 28px);
+pointer-events: none;
+z-index: 0;
     }
 
-    /* NAV */
-    .topnav {
-      position: fixed;
-      top: 0; left: 32px; right: 0;
-      height: var(--nav-h);
-      z-index: 150;
-      background: var(--paper);
-      border-bottom: 2.5px solid var(--ink);
-      display: flex;
-      align-items: center;
-      padding: 0 2rem;
+/* Spiral binding */
+.spiral-binding {
+position: fixed;
+left: 0; top: 0; bottom: 0;
+width: var(--spiral);
+background: var(--paper-worn);
+border-right: 2.5px solid var(--ink);
+z-index: 200;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: flex-start;
+padding-top: 24px;
+pointer-events: none;
     }
-    .topnav-in {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo {
-      font-family: var(--font-hand);
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--ink);
-      text-decoration: none;
-      position: relative;
-    }
-    .logo::after {
-      content: '';
-      position: absolute;
-      bottom: -2px; left: 0; right: 0;
-      height: 3px;
-      background: var(--fit-orange);
-      border-radius: 2px;
-      transform: rotate(-0.8deg);
-    }
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
-    .nav-links a {
-      font-family: var(--font-hand);
-      font-size: 16px;
-      color: var(--ink-faint);
-      text-decoration: none;
-      position: relative;
-      padding-bottom: 2px;
-      transition: color 0.2s;
-    }
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0;
-      width: 0; height: 2px;
-      background: var(--ink);
-      transition: width 0.25s;
-    }
-    .nav-links a:hover { color: var(--ink); }
-    .nav-links a:hover::after { width: 100%; }
-
-    /* SIDENAV */
-    .sidenav {
-      position: fixed;
-      top: var(--nav-h);
-      left: 32px;
-      width: var(--side-w);
-      height: calc(100vh - var(--nav-h));
-      padding: 2rem 1rem 2rem 1.5rem;
-      border-right: 1.5px solid rgba(180,170,155,0.35);
-      background: var(--paper);
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      overflow-y: auto;
-      z-index: 100;
-    }
-    /* Orange margin line */
-    .sidenav::before {
-      content: '';
-      position: absolute;
-      left: 44px; top: 0; bottom: 0;
-      width: 1.5px;
-      background: rgba(191,90,26,0.14);
-      pointer-events: none;
+.spiral-hole {
+width: 16px; height: 16px;
+border-radius: 50%;
+border: 2px solid var(--ink);
+background: var(--paper);
+margin-bottom: 28px;
+flex-shrink: 0;
+box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
     }
 
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--fit-orange);
-      text-decoration: none;
-      font-family: var(--font-hand);
-      font-size: 15px;
-      font-weight: 600;
-      transition: gap 0.2s;
-      white-space: nowrap;
+/* NAV */
+.topnav {
+position: fixed;
+top: 0; left: var(--spiral); right: 0;
+height: var(--nav-h);
+z-index: 150;
+background: var(--paper);
+border-bottom: 2.5px solid var(--ink);
+display: flex;
+align-items: center;
+padding: 0 2rem;
     }
-    .back-link:hover { gap: 10px; }
+.topnav-in {
+width: 100%;
+max-width: var(--nav-max);
+margin: 0 auto;
+display: flex;
+justify-content: space-between;
+align-items: center;
+    }
+.logo {
+font-family: var(--font-hand);
+font-size: clamp(22px, calc(19.8px + 0.57vw), 44px);
+font-weight: 700;
+color: var(--ink);
+text-decoration: none;
+position: relative;
+    }
+.logo::after {
+content: '';
+position: absolute;
+bottom: -2px; left: 0; right: 0;
+height: 3px;
+background: var(--fit-orange);
+border-radius: 2px;
+transform: rotate(-0.8deg);
+    }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+font-family: var(--font-text);
+font-size: var(--fs-ui);
+color: var(--ink-faint);
+text-decoration: none;
+position: relative;
+padding-bottom: 2px;
+transition: color 0.2s;
+    }
+.nav-links a::after {
+content: '';
+position: absolute;
+bottom: 0; left: 0;
+width: 0; height: 2px;
+background: var(--ink);
+transition: width 0.25s;
+    }
+.nav-links a:hover { color: var(--ink); }
+.nav-links a:hover::after { width: 100%; }
+/* mobile menu button — the old page hid the links below 600px and put
+   nothing back, so the page had no navigation at all on a phone */
+.nav-toggle { display: none; background: none; border: 0; cursor: pointer; padding: 9px 4px; }
+.nav-toggle span { display: block; width: 23px; height: 2.5px; background: var(--ink); border-radius: 2px; margin: 4.5px 0; transition: transform 0.22s, opacity 0.18s; }
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-    .side-lbl {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--pencil);
-      margin-bottom: 0.5rem;
+/* SIDENAV */
+.sidenav {
+position: fixed;
+top: var(--nav-h);
+left: var(--spiral);
+width: var(--side-w);
+height: calc(100vh - var(--nav-h));
+padding: 2rem 1rem 2rem 1.5rem;
+border-right: 1.5px solid rgba(180,170,155,0.35);
+background: var(--paper);
+display: flex;
+flex-direction: column;
+gap: 1.5rem;
+overflow-y: auto;
+z-index: 100;
     }
-    .side-list { display: flex; flex-direction: column; }
-    .side-a {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 0 6px 10px;
-      color: var(--pencil);
-      text-decoration: none;
-      font-family: var(--font-hand);
-      font-size: 15px;
-      border-left: 2px solid transparent;
-      transition: color 0.2s, border-color 0.2s;
-      white-space: nowrap;
+/* Orange margin line */
+.sidenav::before {
+content: '';
+position: absolute;
+left: 44px; top: 0; bottom: 0;
+width: 1.5px;
+background: rgba(169,78,18,0.14);
+pointer-events: none;
     }
-    .side-a:hover { color: var(--ink-light); border-left-color: var(--pencil); }
-    .side-a.active { color: var(--fit-orange); border-left-color: var(--fit-orange); font-weight: 700; }
-    .side-num {
-      font-family: var(--font-mono);
-      font-size: 8px;
-      color: var(--pencil);
-      min-width: 16px;
+.back-link {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+color: var(--fit-orange);
+text-decoration: none;
+font-family: var(--font-text);
+font-size: var(--fs-ui);
+font-weight: 700;
+transition: gap 0.2s;
+white-space: nowrap;
     }
-    .side-a.active .side-num { color: var(--fit-orange); }
+.back-link:hover { gap: 10px; }
+.side-lbl {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-s);
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(--pencil);
+margin-bottom: 0.5rem;
+    }
+.side-list { display: flex; flex-direction: column; }
+.side-a {
+display: flex;
+align-items: center;
+gap: 8px;
+padding: 7px 0 7px 10px;
+color: var(--pencil);
+text-decoration: none;
+font-family: var(--font-text);
+font-size: var(--fs-ui);
+border-left: 2px solid transparent;
+transition: color 0.2s, border-color 0.2s;
+white-space: nowrap;
+    }
+.side-a:hover { color: var(--ink-light); border-left-color: var(--pencil); }
+.side-a.active { color: var(--fit-orange); border-left-color: var(--fit-orange); font-weight: 700; }
+.side-num {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-s);
+color: var(--pencil);
+min-width: 18px;
+    }
+.side-a.active .side-num { color: var(--fit-orange); }
 
-    /* MAIN */
-    .main {
-      margin-left: calc(32px + var(--side-w));
-      padding: calc(var(--nav-h) + 3rem) 3.5rem 7rem 3rem;
-      max-width: calc(860px + var(--side-w));
-      position: relative;
-      z-index: 1;
-    }
-
-    /* HERO */
-    .tags {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-bottom: 1.25rem;
-    }
-    .tag {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--fit-orange);
-      padding: 3px 10px;
-      border: 1.5px solid rgba(191,90,26,0.3);
-      background: rgba(191,90,26,0.05);
-      transform: rotate(-0.3deg);
-      display: inline-block;
-    }
-    .tag:nth-child(2) { transform: rotate(0.5deg); color: var(--fit-green); border-color: rgba(58,125,68,0.3); background: rgba(58,125,68,0.05); }
-    .tag:nth-child(3) { transform: rotate(-0.2deg); color: var(--fit-blue); border-color: rgba(44,95,138,0.3); background: rgba(44,95,138,0.05); }
-
-    .hero-h {
-      font-family: var(--font-hand);
-      font-size: clamp(2.6rem, 5vw, 4.2rem);
-      font-weight: 700;
-      line-height: 1.05;
-      margin-bottom: 0.5rem;
-      letter-spacing: -1px;
-    }
-    .hero-h .squiggle-wrap {
-      position: relative;
-      display: inline-block;
-    }
-    .hero-h .squiggle-wrap svg {
-      position: absolute;
-      bottom: -6px; left: -4px;
-      width: calc(100% + 8px);
-      pointer-events: none;
-    }
-    .hero-sub {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      margin-bottom: 0.75rem;
-    }
-    .hero-p {
-      font-family: var(--font-hand);
-      font-size: 19px;
-      color: var(--ink-light);
-      line-height: 1.65;
-      max-width: 520px;
-      margin-bottom: 1.75rem;
-    }
-
-    /* HERO VIDEO — phone silhouette */
-    .hero-video {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 1.5rem;
-    }
-    .phone-wrap {
-      position: relative;
-      width: 260px;
-    }
-    .phone-outer {
-      border: 3px solid var(--ink);
-      border-radius: 36px;
-      overflow: hidden;
-      background: #111;
-      box-shadow: 6px 6px 0 rgba(26,22,18,0.14);
-      transform: rotate(-0.5deg);
-      position: relative;
-    }
-    /* Tape on phone */
-    .phone-outer::before {
-      content: '';
-      position: absolute;
-      top: -11px; left: 50%;
-      transform: translateX(-50%) rotate(-0.5deg);
-      width: 50px; height: 20px;
-      background: rgba(232,184,75,0.42);
-      border-top: 1px solid rgba(232,184,75,0.55);
-      border-bottom: 1px solid rgba(232,184,75,0.55);
-      z-index: 10;
-    }
-    .phone-outer video {
-      width: 100%;
-      display: block;
-      height: 520px;
-      object-fit: cover;
-    }
-    /* Hand-drawn label */
-    .phone-lbl {
-      text-align: center;
-      margin-top: 0.6rem;
-      font-family: var(--font-scrawl);
-      font-size: 15px;
-      color: var(--ink-faint);
-      transform: rotate(-1deg);
-      display: block;
+/* MAIN */
+.main {
+margin-left: calc(var(--spiral) + var(--side-w));
+padding: calc(var(--nav-h) + 3rem) var(--main-pad) 7rem 3rem;
+max-width: calc(var(--main-max) + var(--side-w));
+position: relative;
+z-index: 1;
     }
 
-    /* STATS */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      border: 2px solid var(--ink);
-      margin-bottom: 1.5rem;
-      transform: rotate(0.2deg);
-      box-shadow: 4px 4px 0 rgba(26,22,18,0.1);
-      background: var(--paper-dark);
+/* ---- hand-drawn line icons (these replaced every emoji) ---- */
+.ico {
+width: var(--ico); height: var(--ico);
+fill: none;
+stroke: var(--ink-light);
+stroke-width: 1.5;
+stroke-linecap: round;
+stroke-linejoin: round;
+display: block;
+transition: stroke 0.2s ease;
     }
-    .stat {
-      padding: 1.1rem 1rem;
-      border-right: 1.5px solid rgba(26,22,18,0.2);
-      position: relative;
-    }
-    .stat:last-child { border-right: none; }
-    .s-n {
-      font-family: var(--font-hand);
-      font-size: 2.4rem;
-      font-weight: 700;
-      color: var(--fit-orange);
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-    .s-l {
-      font-family: var(--font-hand);
-      font-size: 14px;
-      color: var(--ink-light);
-      line-height: 1.35;
-    }
-    .s-sub {
-      font-family: var(--font-mono);
-      font-size: 8px;
-      letter-spacing: 1px;
-      color: var(--pencil);
-      margin-top: 2px;
+.fr:hover .ico { stroke: var(--fit-orange); }
+.ic .ico { stroke: var(--fit-orange); }
+.ico--inline {
+width: 1.05em; height: 1.05em;
+display: inline-block;
+vertical-align: -0.16em;
+stroke-width: 1.9;
     }
 
-    /* META */
-    .meta {
-      display: flex;
-      gap: 2rem;
-      flex-wrap: wrap;
-      padding-top: 1.25rem;
-      border-top: 2px solid rgba(26,22,18,0.15);
-      margin-bottom: 5rem;
+/* HERO */
+.tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.tag {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-s);
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--fit-orange);
+padding: 4px 10px;
+border: 1.5px solid rgba(169,78,18,0.32);
+background: rgba(169,78,18,0.05);
+transform: rotate(-0.3deg);
+display: inline-block;
     }
-    .m-k {
-      font-family: var(--font-mono);
-      font-size: 8px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--fit-orange);
-      margin-bottom: 4px;
+.tag:nth-child(2) { transform: rotate(0.5deg); color: var(--fit-green); border-color: rgba(49,105,58,0.32); background: rgba(49,105,58,0.05); }
+.tag:nth-child(3) { transform: rotate(-0.2deg); color: var(--fit-blue); border-color: rgba(44,95,138,0.32); background: rgba(44,95,138,0.05); }
+
+.hero-h {
+font-family: var(--font-hand);
+font-size: var(--fs-h1);
+font-weight: 700;
+line-height: 1.05;
+margin-bottom: 0.5rem;
+letter-spacing: -1px;
     }
-    .m-v {
-      font-family: var(--font-hand);
-      font-size: 15px;
-      color: var(--ink-light);
-      line-height: 1.5;
+.hero-h .squiggle-wrap { position: relative; display: inline-block; }
+.hero-h .squiggle-wrap svg {
+position: absolute;
+bottom: -6px; left: -4px;
+width: calc(100% + 8px);
+pointer-events: none;
+    }
+.hero-sub {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-m);
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--ink-light);
+margin-bottom: 0.75rem;
+    }
+.hero-p {
+font-family: var(--font-text);
+font-size: var(--fs-hero);
+color: var(--ink-light);
+line-height: 1.55;
+max-width: 46ch;
+margin-bottom: 1.75rem;
     }
 
-    /* SECTION */
-    .sec { margin-bottom: 5rem; }
+/* HERO VIDEO — phone silhouette */
+.hero-video { display: flex; justify-content: center; margin-bottom: 1.5rem; }
+.phone-wrap { position: relative; width: var(--phone-w); }
+.phone-outer {
+border: 3px solid var(--ink);
+border-radius: calc(var(--phone-w) * 0.138);
+overflow: hidden;
+background: #111;
+box-shadow: 6px 6px 0 rgba(26,22,18,0.14);
+transform: rotate(-0.5deg);
+position: relative;
+    }
+/* Tape on phone */
+.phone-outer::before {
+content: '';
+position: absolute;
+top: -11px; left: 50%;
+transform: translateX(-50%) rotate(-0.5deg);
+width: 50px; height: 20px;
+background: rgba(232,184,75,0.42);
+border-top: 1px solid rgba(232,184,75,0.55);
+border-bottom: 1px solid rgba(232,184,75,0.55);
+z-index: 10;
+    }
+/* 9:19.5 keeps the frame a phone at every size — a fixed 520px height
+   turned into a letterbox as soon as the frame got wider */
+.phone-outer video {
+width: 100%;
+display: block;
+aspect-ratio: 9 / 19.5;
+object-fit: cover;
+    }
+.phone-lbl {
+text-align: center;
+margin-top: 0.6rem;
+font-family: var(--font-scrawl);
+font-size: var(--fs-scrawl);
+color: var(--ink-light);
+transform: rotate(-1deg);
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
+    }
+.phone-lbl .ico { stroke: var(--ink-light); width: 1em; height: 1em; }
 
-    .phase {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 0.75rem;
+/* STATS */
+.stats {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+border: 2px solid var(--ink);
+margin-bottom: 1.5rem;
+transform: rotate(0.2deg);
+box-shadow: 4px 4px 0 rgba(26,22,18,0.1);
+background: var(--paper-dark);
     }
-    .p-dot {
-      width: 22px; height: 22px;
-      border-radius: 50%;
-      border: 2px solid var(--ink);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--ink);
-      font-weight: 700;
+.stat { padding: 1.1rem 1rem; border-right: 1.5px solid rgba(26,22,18,0.2); position: relative; }
+.stat:last-child { border-right: none; }
+.s-n {
+font-family: var(--font-hand);
+font-size: var(--fs-num);
+font-weight: 700;
+color: var(--fit-orange);
+line-height: 1;
+margin-bottom: 4px;
     }
-    .p-txt {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-    }
-    .sec-h {
-      font-family: var(--font-hand);
-      font-size: 2.2rem;
-      font-weight: 700;
-      line-height: 1.1;
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.5px;
-      display: inline-block;
-      position: relative;
-    }
-    .sec-h::after {
-      content: '';
-      display: block;
-      height: 3px;
-      background: var(--fit-orange);
-      border-radius: 2px;
-      transform: rotate(-0.5deg);
-      margin-top: 3px;
-      width: 80%;
-    }
-    .sec-lead {
-      font-family: var(--font-hand);
-      font-size: 18px;
-      color: var(--ink-light);
-      line-height: 1.75;
-      max-width: 560px;
-      margin-bottom: 1.5rem;
-      margin-top: 0.5rem;
-    }
-    .rule {
-      height: 1.5px;
-      background: rgba(26,22,18,0.12);
-      margin-bottom: 1.5rem;
-    }
-    .sub {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--fit-orange);
-      margin-bottom: 0.875rem;
-    }
+.s-l { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.4; }
+.s-sub { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 1px; color: var(--ink-faint); margin-top: 3px; }
 
-    /* GRIDS */
-    .g3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 1.5rem;
+/* META */
+.meta {
+display: flex;
+gap: 2rem;
+flex-wrap: wrap;
+padding-top: 1.25rem;
+border-top: 2px solid rgba(26,22,18,0.15);
+margin-bottom: 5rem;
     }
-    .g2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-bottom: 1.5rem;
+.m-k {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-s);
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--fit-orange);
+margin-bottom: 5px;
     }
+.m-v { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.5; }
 
-    /* NOTEBOOK CARD */
-    .nc {
-      background: var(--paper-dark);
-      border: 2px solid var(--ink);
-      padding: 1.1rem;
-      position: relative;
-      transition: transform 0.2s;
+/* SECTION */
+.sec { margin-bottom: 5rem; }
+.phase { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
+.p-dot {
+width: 24px; height: 24px;
+border-radius: 50%;
+border: 2px solid var(--ink);
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: var(--font-mono);
+font-size: var(--fs-mono-m);
+color: var(--ink);
+font-weight: 700;
+flex: none;
     }
-    .nc:hover { transform: translate(-2px,-2px); }
-    .nc::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; right: -4px;
-      width: 100%; height: 100%;
-      border: 1.5px solid rgba(26,22,18,0.18);
-      z-index: -1;
+.p-txt {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-m);
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(--ink-light);
     }
-    .nc-n {
-      font-family: var(--font-hand);
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: var(--fit-orange);
-      line-height: 1;
-      margin-bottom: 5px;
+.sec-h {
+font-family: var(--font-hand);
+font-size: var(--fs-h2);
+font-weight: 700;
+line-height: 1.1;
+margin-bottom: 0.5rem;
+letter-spacing: -0.5px;
+display: inline-block;
+position: relative;
     }
-    .nc-t {
-      font-family: var(--font-hand);
-      font-size: 15px;
-      font-weight: 700;
-      margin-bottom: 3px;
+.sec-h::after {
+content: '';
+display: block;
+height: 3px;
+background: var(--fit-orange);
+border-radius: 2px;
+transform: rotate(-0.5deg);
+margin-top: 3px;
+width: 80%;
     }
-    .nc-d {
-      font-family: var(--font-hand);
-      font-size: 14px;
-      color: var(--ink-light);
-      line-height: 1.5;
+.sec-lead {
+font-family: var(--font-text);
+font-size: var(--fs-lead);
+color: var(--ink-light);
+line-height: 1.6;
+max-width: 62ch;
+margin-bottom: 1.5rem;
+margin-top: 0.5rem;
     }
+.rule { height: 1.5px; background: rgba(26,22,18,0.12); margin-bottom: 1.5rem; }
+.sub {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-m);
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(--fit-orange);
+margin-bottom: 0.875rem;
+    }
+.p-body {
+font-family: var(--font-text);
+font-size: var(--fs-body);
+color: var(--ink-light);
+line-height: 1.7;
+max-width: 68ch;
+margin-bottom: 1.1rem;
+    }
+.p-body strong { color: var(--ink); font-weight: 700; }
 
-    /* ICON CARD */
-    .ic {
-      background: var(--paper-dark);
-      border: 2px solid var(--ink);
-      padding: 1.1rem;
-      position: relative;
-    }
-    .ic::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; right: -4px;
-      width: 100%; height: 100%;
-      border: 1.5px solid rgba(26,22,18,0.18);
-      z-index: -1;
-    }
-    .ic-ico { font-size: 1rem; margin-bottom: 0.5rem; }
-    .ic-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 3px; }
-    .ic-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.55; }
+/* GRIDS */
+.g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+.g2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 1.5rem; }
 
-    /* FINDING ROW */
-    .flist {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 1.5rem;
+/* NOTEBOOK CARD */
+.nc {
+background: var(--paper-dark);
+border: 2px solid var(--ink);
+padding: 1.1rem;
+position: relative;
+transition: transform 0.2s, box-shadow 0.2s;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
     }
-    .fr {
-      display: flex;
-      gap: 0.875rem;
-      align-items: flex-start;
-      padding: 0.875rem 1rem;
-      background: var(--paper-dark);
-      border: 1.5px solid rgba(26,22,18,0.15);
-      transition: border-color 0.2s, transform 0.2s;
+.nc:hover { transform: translate(-2px,-2px); box-shadow: 5px 7px 0 rgba(26,22,18,0.16); }
+.nc-n {
+font-family: var(--font-hand);
+font-size: var(--fs-num);
+font-weight: 700;
+color: var(--fit-orange);
+line-height: 1;
+margin-bottom: 6px;
     }
-    .fr:hover { border-color: rgba(191,90,26,0.4); transform: translateX(2px); }
-    .fr-i {
-      width: 30px; height: 30px; min-width: 30px;
-      border: 1.5px solid rgba(26,22,18,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.82rem;
-      background: var(--paper);
-    }
-    .fr-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
-    .fr-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.55; }
+.nc-n.word { font-size: var(--fs-h3); }
+.nc-t { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; margin-bottom: 4px; }
+.nc-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.55; }
 
-    /* STEP LIST */
-    .slist {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 1.5rem;
+/* ICON CARD */
+.ic {
+background: var(--paper-dark);
+border: 2px solid var(--ink);
+padding: 1.1rem;
+position: relative;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
     }
-    .st {
-      display: flex;
-      gap: 0.875rem;
-      padding: 0.875rem 1rem;
-      background: var(--paper-dark);
-      border: 1.5px solid rgba(26,22,18,0.15);
-    }
-    .st-n { font-family: var(--font-hand); font-size: 1.3rem; font-weight: 700; color: var(--fit-orange); min-width: 20px; line-height: 1.4; }
-    .st-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
-    .st-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.5; }
+.ic-ico { margin-bottom: 0.6rem; }
+.ic-t { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; margin-bottom: 4px; }
+.ic-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.6; }
 
-    /* PERSONA CARD */
-    .pc {
-      background: var(--paper-dark);
-      border: 2px solid var(--ink);
-      padding: 1.25rem;
-      border-bottom: 4px solid var(--fit-orange);
-      position: relative;
-      transition: transform 0.2s;
+/* FINDING ROW */
+.flist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+.fr {
+display: flex;
+gap: 0.875rem;
+align-items: flex-start;
+padding: 0.875rem 1rem;
+background: var(--paper-dark);
+border: 1.5px solid rgba(26,22,18,0.15);
+transition: border-color 0.2s, transform 0.2s;
     }
-    .pc:hover { transform: translate(-2px,-2px); }
-    .pc::after {
-      content: '';
-      position: absolute;
-      bottom: -6px; right: -5px;
-      width: 100%; height: 100%;
-      border: 1.5px solid rgba(26,22,18,0.15);
-      z-index: -1;
+.fr:hover { border-color: rgba(169,78,18,0.4); transform: translateX(2px); }
+.fr-i {
+width: 32px; height: 32px; min-width: 32px;
+border: 1.5px solid rgba(26,22,18,0.2);
+display: flex;
+align-items: center;
+justify-content: center;
+background: var(--paper);
     }
-    /* tape on persona cards */
-    .pc::before {
-      content: '';
-      position: absolute;
-      top: -11px; left: 20px;
-      width: 40px; height: 20px;
-      background: rgba(232,184,75,0.38);
-      border-top: 1px solid rgba(232,184,75,0.5);
-      border-bottom: 1px solid rgba(232,184,75,0.5);
-      transform: rotate(-1.5deg);
-    }
-    .pc-av {
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      border: 2px solid var(--fit-orange);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-hand);
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--fit-orange);
-      margin-bottom: 0.75rem;
-    }
-    .pc-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-    .pc-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.5; }
+.fr-t { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; margin-bottom: 3px; }
+.fr-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.6; }
 
-    /* COMPETITOR CARD */
-    .cc {
-      background: var(--paper-dark);
-      border: 2px solid var(--ink);
-      padding: 1.1rem;
-      position: relative;
+/* STEP LIST */
+.slist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+.st {
+display: flex;
+gap: 0.875rem;
+padding: 0.875rem 1rem;
+background: var(--paper-dark);
+border: 1.5px solid rgba(26,22,18,0.15);
     }
-    .cc::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; right: -4px;
-      width: 100%; height: 100%;
-      border: 1.5px solid rgba(26,22,18,0.15);
-      z-index: -1;
-    }
-    .cc-n { font-family: var(--font-hand); font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-    /* pills */
-    .pill {
-      display: inline-block;
-      font-family: var(--font-mono);
-      font-size: 8px;
-      letter-spacing: 1px;
-      font-weight: 700;
-      padding: 2px 8px;
-      margin-bottom: 5px;
-      text-transform: uppercase;
-      transform: rotate(-0.4deg);
-    }
-    .pg {
-      background: rgba(58,125,68,0.12);
-      color: var(--fit-green);
-      border: 1.5px solid rgba(58,125,68,0.25);
-    }
-    .pr {
-      background: rgba(192,57,43,0.08);
-      color: var(--red);
-      border: 1.5px solid rgba(192,57,43,0.2);
-    }
-    .cc-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.55; margin-top: 4px; }
+.st-n { font-family: var(--font-hand); font-size: var(--fs-h3); font-weight: 700; color: var(--fit-orange); min-width: 26px; line-height: 1.3; }
+.st-t { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; margin-bottom: 3px; }
+.st-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.55; }
 
-    /* RESULT CARD */
-    .res {
-      background: var(--paper-dark);
-      border: 2px solid var(--ink);
-      padding: 1.1rem;
-      display: flex;
-      align-items: flex-start;
-      gap: 0.875rem;
-      position: relative;
-      transition: transform 0.2s;
+/* PERSONA CARD */
+.pc {
+background: var(--paper-dark);
+border: 2px solid var(--ink);
+padding: 1.25rem;
+border-bottom: 4px solid var(--fit-orange);
+position: relative;
+transition: transform 0.2s, box-shadow 0.2s;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
     }
-    .res:hover { transform: translate(-2px,-2px); }
-    .res::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; right: -4px;
-      width: 100%; height: 100%;
-      border: 1.5px solid rgba(26,22,18,0.18);
-      z-index: -1;
+.pc:hover { transform: translate(-2px,-2px); box-shadow: 5px 7px 0 rgba(26,22,18,0.16); }
+.pc::before {
+content: '';
+position: absolute;
+top: -11px; left: 20px;
+width: 40px; height: 20px;
+background: rgba(232,184,75,0.38);
+border-top: 1px solid rgba(232,184,75,0.5);
+border-bottom: 1px solid rgba(232,184,75,0.5);
+transform: rotate(-1.5deg);
     }
-    .res-n { font-family: var(--font-hand); font-size: 2.4rem; font-weight: 700; color: var(--fit-orange); line-height: 1; min-width: 60px; }
-    .res-l { font-family: var(--font-hand); font-size: 15px; color: var(--ink-light); line-height: 1.5; margin-top: 2px; }
-    .res-ctx { font-family: var(--font-mono); font-size: 8px; letter-spacing: 1px; color: var(--pencil); margin-top: 3px; }
+.pc-av {
+width: 42px; height: 42px;
+border-radius: 50%;
+border: 2px solid var(--fit-orange);
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: var(--font-hand);
+font-size: 1.5rem;
+font-weight: 700;
+color: var(--fit-orange);
+margin-bottom: 0.75rem;
+flex: none;
+    }
+.pc-t { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; margin-bottom: 5px; }
+.pc-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.55; }
 
-    /* ITERATION */
-    .ilist {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 1.5rem;
+/* COMPETITOR CARD */
+.cc {
+background: var(--paper-dark);
+border: 2px solid var(--ink);
+padding: 1.1rem;
+position: relative;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
     }
-    .it {
-      display: grid;
-      grid-template-columns: 1fr 28px 1fr;
-      align-items: center;
-      gap: 8px;
+.cc-n { font-family: var(--font-text); font-size: var(--fs-body); font-weight: 700; margin-bottom: 9px; }
+/* pills */
+.pill {
+display: inline-flex;
+align-items: center;
+gap: 5px;
+font-family: var(--font-mono);
+font-size: var(--fs-mono-s);
+letter-spacing: 1px;
+font-weight: 700;
+padding: 3px 8px;
+margin-bottom: 5px;
+text-transform: uppercase;
+transform: rotate(-0.4deg);
     }
-    .it-b {
-      padding: 0.875rem 1rem;
-      border: 1.5px solid rgba(26,22,18,0.15);
-    }
-    .it-b.bef { background: var(--paper-dark); }
-    .it-b.aft { background: rgba(191,90,26,0.04); border-color: rgba(191,90,26,0.3); }
-    .it-lbl {
-      font-family: var(--font-mono);
-      font-size: 8px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 3px;
-    }
-    .it-b.bef .it-lbl { color: var(--pencil); }
-    .it-b.aft .it-lbl { color: var(--fit-orange); }
-    .it-txt { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.45; }
-    .it-b.aft .it-txt { color: var(--ink); }
-    .it-arr { text-align: center; color: var(--fit-orange); font-size: 1rem; font-weight: 700; }
+.pill .ico { width: 1.1em; height: 1.1em; stroke-width: 2.4; }
+.pg { background: rgba(49,105,58,0.12); color: var(--fit-green); border: 1.5px solid rgba(49,105,58,0.28); }
+.pg .ico { stroke: var(--fit-green); }
+.pr { background: rgba(176,47,34,0.09); color: var(--red); border: 1.5px solid rgba(176,47,34,0.24); }
+.pr .ico { stroke: var(--red); }
+.cc-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.6; margin-top: 5px; }
 
-    /* REFLECTION */
-    .rc {
-      background: var(--paper-dark);
-      border: 1.5px solid rgba(26,22,18,0.15);
-      padding: 1.1rem;
+/* RESULT CARD */
+.res {
+background: var(--paper-dark);
+border: 2px solid var(--ink);
+padding: 1.1rem;
+display: flex;
+align-items: flex-start;
+gap: 0.875rem;
+position: relative;
+transition: transform 0.2s, box-shadow 0.2s;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
     }
-    .rc-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; color: var(--fit-orange); margin-bottom: 5px; }
-    .rc-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.7; }
+.res:hover { transform: translate(-2px,-2px); box-shadow: 5px 7px 0 rgba(26,22,18,0.16); }
+.res-n {
+font-family: var(--font-hand);
+font-size: var(--fs-num);
+font-weight: 700;
+color: var(--fit-orange);
+line-height: 1;
+min-width: 4ch;
+    }
+.res-l { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; color: var(--ink); line-height: 1.45; margin-top: 2px; }
+.res-ctx { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.55; margin-top: 4px; }
 
-    /* QUOTE */
-    .quote {
-      border-left: 3px solid var(--fit-orange);
-      padding: 0.875rem 1.25rem;
-      margin: 1.25rem 0;
-      background: rgba(191,90,26,0.04);
-      position: relative;
-      transform: rotate(-0.3deg);
+/* ITERATION */
+.ilist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+.it { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: center; gap: 8px; }
+.it-b { padding: 0.875rem 1rem; border: 1.5px solid rgba(26,22,18,0.15); }
+.it-b.bef { background: var(--paper-dark); }
+.it-b.aft { background: rgba(169,78,18,0.04); border-color: rgba(169,78,18,0.3); }
+.it-lbl {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-s);
+letter-spacing: 2px;
+text-transform: uppercase;
+font-weight: 700;
+margin-bottom: 4px;
     }
-    .quote::before {
-      content: '';
-      position: absolute;
-      top: -11px; left: 20px;
-      width: 36px; height: 20px;
-      background: rgba(232,184,75,0.38);
-      border-top: 1px solid rgba(232,184,75,0.5);
-      border-bottom: 1px solid rgba(232,184,75,0.5);
-      transform: rotate(1.5deg);
-    }
-    .quote p {
-      font-family: var(--font-serif);
-      font-size: 1.25rem;
-      font-style: italic;
-      line-height: 1.65;
-      color: var(--ink);
-    }
-    .quote-attr {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 1px;
-      color: var(--ink-faint);
-      margin-top: 0.5rem;
-      text-transform: uppercase;
-    }
+.it-b.bef .it-lbl { color: var(--ink-faint); }
+.it-b.aft .it-lbl { color: var(--fit-orange); }
+.it-txt { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.5; }
+.it-b.aft .it-txt { color: var(--ink); }
+.it-arr { text-align: center; color: var(--fit-orange); font-size: 1rem; font-weight: 700; }
 
-    /* IMAGES */
-    .imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
-    .imgs.c1 { grid-template-columns: 1fr; }
-    .imgs.c2 { grid-template-columns: 1fr 1fr; }
-    .imgs.c3 { grid-template-columns: repeat(3, 1fr); }
-    .iw {
-      border: 2px solid var(--ink);
-      background: var(--paper-dark);
-      position: relative;
-      transition: transform 0.2s;
+/* REFLECTION */
+.rc { background: var(--paper-dark); border: 1.5px solid rgba(26,22,18,0.15); padding: 1.1rem; }
+.rc-t { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; color: var(--fit-orange); margin-bottom: 6px; }
+.rc-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.65; }
+
+/* QUOTE */
+.quote {
+border-left: 3px solid var(--fit-orange);
+padding: 1rem 1.25rem;
+margin: 1.25rem 0;
+background: rgba(169,78,18,0.04);
+position: relative;
+transform: rotate(-0.3deg);
+max-width: 66ch;
     }
-    .iw:hover { transform: translate(-2px,-2px); }
-    .iw::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; right: -4px;
-      width: 100%; height: 100%;
-      border: 1.5px solid rgba(26,22,18,0.15);
-      z-index: -1;
+.quote::before {
+content: '';
+position: absolute;
+top: -11px; left: 20px;
+width: 36px; height: 20px;
+background: rgba(232,184,75,0.38);
+border-top: 1px solid rgba(232,184,75,0.5);
+border-bottom: 1px solid rgba(232,184,75,0.5);
+transform: rotate(1.5deg);
     }
-    .iw img { width: 100%; display: block; }
-    .iw video { width: 100%; display: block; }
-    .icap {
-      padding: 7px 10px;
-      font-family: var(--font-hand);
-      font-size: 13px;
-      color: var(--ink-faint);
-      border-top: 1px solid rgba(26,22,18,0.12);
-      line-height: 1.4;
+.quote p { font-family: var(--font-serif); font-size: var(--fs-quote); font-style: italic; line-height: 1.55; color: var(--ink); }
+.quote-attr {
+font-family: var(--font-mono);
+font-size: var(--fs-mono-m);
+letter-spacing: 1px;
+color: var(--ink-light);
+margin-top: 0.75rem;
+text-transform: uppercase;
     }
 
-    /* VIDEO GRID */
-    .vid-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-bottom: 1.5rem;
+/* IMAGES */
+.imgs { display: grid; gap: 12px; margin-bottom: 1.5rem; }
+.imgs.c1 { grid-template-columns: 1fr; }
+.imgs.c2 { grid-template-columns: 1fr 1fr; }
+.imgs.c3 { grid-template-columns: repeat(3, 1fr); }
+.iw {
+border: 2px solid var(--ink);
+background: var(--paper-dark);
+position: relative;
+transition: transform 0.2s, box-shadow 0.2s;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
     }
-    .vid-wrap {
-      border: 2px solid var(--ink);
-      background: var(--paper-dark);
-      position: relative;
-      overflow: hidden;
-    }
-    .vid-wrap::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; right: -4px;
-      width: 100%; height: 100%;
-      border: 1.5px solid rgba(26,22,18,0.15);
-      z-index: -1;
-    }
-    .vid-wrap video { width: 100%; display: block; }
-
-    /* CORNER FOLD */
-    .corner-fold {
-      position: absolute;
-      bottom: 0; right: 0;
-      width: 24px; height: 24px;
-      background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
-      border-top: 1px solid var(--pencil);
-      border-left: 1px solid var(--pencil);
-      pointer-events: none;
+.iw:hover { transform: translate(-2px,-2px); box-shadow: 5px 7px 0 rgba(26,22,18,0.16); }
+.iw img { width: 100%; display: block; }
+.iw video { width: 100%; display: block; }
+.icap {
+padding: 9px 11px;
+font-family: var(--font-text);
+font-size: var(--fs-cap);
+color: var(--ink-light);
+border-top: 1.5px solid rgba(26,22,18,0.12);
+line-height: 1.45;
     }
 
-    /* HIGHLIGHT */
-    .hl-y {
-      background: linear-gradient(120deg, rgba(232,184,75,0)0%, rgba(232,184,75,0.45)10%, rgba(232,184,75,0.45)90%, rgba(232,184,75,0)100%);
-      padding: 0 2px;
+/* VIDEO GRID */
+.vid-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 1.5rem; }
+@media (min-width: 1600px) { .vid-grid { grid-template-columns: repeat(4, 1fr); } }
+.vid-wrap {
+border: 2px solid var(--ink);
+background: var(--paper-dark);
+position: relative;
+overflow: hidden;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
     }
-    .hl-o {
-      background: linear-gradient(120deg, rgba(191,90,26,0)0%, rgba(191,90,26,0.14)10%, rgba(191,90,26,0.14)90%, rgba(191,90,26,0)100%);
-      padding: 0 2px;
+.vid-wrap video { width: 100%; display: block; }
+
+/* CORNER FOLD */
+.corner-fold {
+position: absolute;
+bottom: 0; right: 0;
+width: 24px; height: 24px;
+background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
+border-top: 1px solid var(--pencil);
+border-left: 1px solid var(--pencil);
+pointer-events: none;
     }
 
-    /* SCROLL REVEAL */
-    .rev {
-      opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
+/* HIGHLIGHT */
+.hl-y {
+background: linear-gradient(120deg, rgba(232,184,75,0)0%, rgba(232,184,75,0.45)10%, rgba(232,184,75,0.45)90%, rgba(232,184,75,0)100%);
+padding: 0 2px;
     }
-    .rev.in { opacity: 1; transform: none; }
-
-    /* FOOTER */
-    footer {
-      border-top: 2.5px solid var(--ink);
-      padding: 1.25rem 2rem;
-      text-align: center;
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--pencil);
-      margin-left: 32px;
+.hl-o {
+background: linear-gradient(120deg, rgba(169,78,18,0)0%, rgba(169,78,18,0.14)10%, rgba(169,78,18,0.14)90%, rgba(169,78,18,0)100%);
+padding: 0 2px;
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 860px) {
-      .sidenav { display: none; }
-      .main { margin-left: 32px; padding: 5rem 1.5rem 5rem; }
-      .stats { grid-template-columns: repeat(2, 1fr); }
-      .g3, .g2 { grid-template-columns: 1fr; }
-      .it { grid-template-columns: 1fr; }
-      .it-arr { display: none; }
-      .imgs.c2, .imgs.c3 { grid-template-columns: 1fr; }
-      .vid-grid { grid-template-columns: 1fr; }
+/* SCROLL REVEAL */
+.rev { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.rev.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .rev { opacity: 1; transform: none; transition: none; } }
+
+/* ============================================================
+   ZOOM — every research artefact and design-system sheet opens
+   full size. Affinity maps and component sheets are unreadable
+   at a third of a column.
+   ============================================================ */
+.zoomable { cursor: zoom-in; }
+.lb { position: fixed; inset: 0; z-index: 500; background: rgba(20,17,13,.94);
+display: none; align-items: center; justify-content: center; padding: 4vh 4vw 9vh; }
+.lb.open { display: flex; }
+.lb-stage { max-width: 100%; max-height: 87vh; overflow: auto; display: flex;
+align-items: center; justify-content: center; -webkit-overflow-scrolling: touch; }
+.lb.zoomed .lb-stage { align-items: flex-start; justify-content: flex-start; cursor: grab; }
+.lb.zoomed .lb-stage.dragging { cursor: grabbing; }
+.lb img { max-width: 100%; max-height: 87vh; object-fit: contain; display: block;
+border: 2px solid var(--paper); background: var(--paper); }
+.lb.zoomed img { max-width: none; max-height: none; }
+.lb img.can-zoom { cursor: zoom-in; }
+.lb-close { position: absolute; top: 14px; right: 18px; width: 44px; height: 44px;
+background: var(--paper); border: 2px solid var(--ink); color: var(--ink); cursor: pointer;
+font-family: var(--font-mono); font-size: 18px; line-height: 1; display: grid; place-items: center; }
+.lb-close:hover { background: var(--ink); color: var(--paper); }
+.lb-zoom { position: absolute; top: 14px; right: 72px; display: none; align-items: center; gap: 8px;
+background: var(--paper); border: 2px solid var(--ink); height: 44px; padding: 0 6px; }
+.lb-zoom.on { display: flex; }
+.lb-zoom button { background: none; border: 0; cursor: pointer; color: var(--ink);
+font-family: var(--font-mono); font-size: 17px; line-height: 1; width: 30px; height: 32px;
+display: grid; place-items: center; }
+.lb-zoom button:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+.lb-zoom button:disabled { opacity: .3; cursor: default; }
+.lb-lvl { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 1px;
+color: var(--ink); min-width: 46px; text-align: center; }
+.lb-cap { position: absolute; bottom: 0; left: 0; right: 0; text-align: center;
+padding: 26px 6vw 18px; font-family: var(--font-text); font-size: var(--fs-cap);
+color: rgba(255,255,255,.85); line-height: 1.5;
+background: linear-gradient(to bottom, rgba(20,17,13,0), rgba(20,17,13,.95) 34%); }
+.lb-hint { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 1.2px;
+text-transform: uppercase; color: rgba(255,255,255,.5); display: block; margin-top: 6px; }
+
+/* FOOTER */
+footer {
+border-top: 2.5px solid var(--ink);
+padding: 1.4rem 2rem;
+text-align: center;
+font-family: var(--font-mono);
+font-size: var(--fs-mono-s);
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--ink-faint);
+margin-left: var(--spiral);
     }
-    @media (max-width: 600px) {
-      .spiral-binding { display: none; }
-      .topnav, footer { margin-left: 0; left: 0; }
-      .main { margin-left: 0; padding: 5rem 1.25rem 4rem; }
-      .nav-links { display: none; }
-      .hero-h { font-size: 2.2rem; }
+
+/* RESPONSIVE */
+@media (max-width: 1180px) {
+:root { --side-w: 178px; --main-pad: 2.25rem; }
+.nav-links { gap: 1.4rem; }
     }
-  </style>
+@media (max-width: 960px) {
+:root { --spiral: 0px; }
+.spiral-binding { display: none; }
+.sidenav { display: none; }
+.main { margin-left: 0; max-width: 100%; padding: calc(var(--nav-h) + 2.5rem) 2rem 5rem; }
+.stats { grid-template-columns: repeat(2, 1fr); }
+.g3 { grid-template-columns: repeat(2, 1fr); }
+.imgs.c3 { grid-template-columns: repeat(2, 1fr); }
+    }
+@media (max-width: 760px) {
+.nav-toggle { display: block; }
+.nav-links {
+display: none;
+position: absolute;
+top: calc(100% + 2.5px);
+left: 0; right: 0;
+flex-direction: column;
+gap: 0;
+background: var(--paper);
+border-bottom: 2.5px solid var(--ink);
+padding: 0.35rem 2rem 0.9rem;
+box-shadow: 0 8px 18px rgba(26,22,18,0.08);
+      }
+.nav-links.open { display: flex; }
+.nav-links a { display: block; padding: 0.6rem 0; border-bottom: 1px solid rgba(26,22,18,0.08); }
+.nav-links li:last-child a { border-bottom: 0; }
+.g3, .g2 { grid-template-columns: 1fr; }
+.it { grid-template-columns: 1fr; }
+.it-arr { display: none; }
+.imgs.c2, .imgs.c3 { grid-template-columns: 1fr; }
+.vid-grid { grid-template-columns: 1fr 1fr; }
+.main { padding: calc(var(--nav-h) + 2rem) 1.5rem 4rem; }
+    }
+@media (max-width: 600px) {
+.stats { grid-template-columns: 1fr; }
+.stat { border-right: 0; border-bottom: 1.5px solid rgba(26,22,18,0.2); }
+.stat:last-child { border-bottom: 0; }
+.vid-grid { grid-template-columns: 1fr; }
+.main { padding: calc(var(--nav-h) + 1.75rem) 1.25rem 4rem; }
+.lb-zoom { right: 66px; }
+    }
+</style>
 </head>
 <body>
 
-  <!-- SPIRAL BINDING -->
-  <div class="spiral-binding" aria-hidden="true" id="spiralBinding"></div>
+<!-- HAND-DRAWN ICON SPRITE — these replaced every emoji on the page -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<defs>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 3.4h10v5.4a5 5 0 0 1-10 0z"/><path d="M7 5.2H4.4v1.6a3.4 3.4 0 0 0 2.9 3.3"/><path d="M17 5.2h2.6v1.6a3.4 3.4 0 0 1-2.9 3.3"/><path d="M12 13.8v3.4"/><path d="M8.4 20.6h7.2l-.8-3.4H9.2z"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="4.8"/><circle cx="12" cy="12" r="1.3"/></symbol>
+<symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.4"/><path d="M3.2 20.4c.4-3.6 2.8-5.6 5.8-5.6s5.4 2 5.8 5.6"/><path d="M15.8 5.2a3.4 3.4 0 0 1 .3 6.6"/><path d="M17.2 15.2c2.2.5 3.4 2.4 3.6 5.2"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="M10.4 2.8 12.4 8.4l5.6 2-5.6 2-2 5.6-2-5.6-5.6-2 5.6-2z"/><path d="M18.4 14.6l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9z"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M3.2 20.6h17.6"/><rect x="5" y="12.4" width="3.4" height="8.2"/><rect x="10.4" y="7.6" width="3.4" height="13"/><rect x="15.8" y="10" width="3.4" height="10.6"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.6 2.4 4.8 13.8h6.1l-1.3 7.8 9-11.6h-6z"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.4 12s3.6-6.4 9.6-6.4S21.6 12 21.6 12s-3.6 6.4-9.6 6.4S2.4 12 2.4 12z"/><circle cx="12" cy="12" r="3.1"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13.6a4.2 4.2 0 0 0 6.2.4l2.6-2.6a4.3 4.3 0 0 0-6-6.1l-1.5 1.4"/><path d="M14 10.4a4.2 4.2 0 0 0-6.2-.4l-2.6 2.6a4.3 4.3 0 0 0 6 6.1l1.5-1.4"/></symbol>
+<symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3.2c5 0 9 3.6 9 8 0 2.6-2 4.2-4.4 4.2h-1.7c-1.2 0-2.1.9-2.1 2 0 .5.2.9.5 1.3.3.4.5.8.5 1.2 0 1.1-.9 1.9-2 1.9-5 0-8.8-4-8.8-9.1S7 3.2 12 3.2z"/><path d="M7.6 11.4h.02M10.4 7.8h.02M14.6 8.2h.02M17.4 11.8h.02"/></symbol>
+<symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="3.6" width="18" height="16.8" rx="1.8"/><path d="M3.2 9h17.6"/><path d="M9.6 9.2v11.2"/></symbol>
+<symbol id="i-access" viewBox="0 0 24 24"><circle cx="12" cy="4.4" r="1.9"/><path d="M4.6 8.4c2.4.9 4.8 1.4 7.4 1.4s5-.5 7.4-1.4"/><path d="M12 9.8v4.4"/><path d="m12 14.2-3.2 6.4M12 14.2l3.2 6.4"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.2" y="2.4" width="11.6" height="19.2" rx="2.4"/><path d="M10.4 5.2h3.2"/><path d="M12 18.4h.02"/></symbol>
+<symbol id="i-medal" viewBox="0 0 24 24"><circle cx="12" cy="14.6" r="6"/><path d="m8.4 9.2-3-6.2h4l2.6 4.6M15.6 9.2l3-6.2h-4l-2.6 4.6"/><path d="m10.6 14.4 1 1.2 2-2.4"/></symbol>
+<symbol id="i-rise" viewBox="0 0 24 24"><path d="M3.2 20.6h17.6"/><path d="m4.6 16.4 5-5.4 3.6 3.4 6.2-7.2"/><path d="M15.4 7h4.2v4.2"/></symbol>
+<symbol id="i-comment" viewBox="0 0 24 24"><path d="M20.6 12.6c0 4-3.9 7.2-8.6 7.2-1 0-2-.2-2.9-.4l-5 1.6 1.7-4.2a6.7 6.7 0 0 1-2.4-4.9c0-4 3.9-7.2 8.6-7.2s8.6 3.2 8.6 7.2z"/><path d="M8.6 12h.02M12 12h.02M15.4 12h.02"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m4.4 12.6 5 5.2L19.8 6.4"/></symbol>
+<symbol id="i-cross" viewBox="0 0 24 24"><path d="M5.6 5.6 18.4 18.4M18.4 5.6 5.6 18.4"/></symbol>
+<symbol id="i-pen" viewBox="0 0 24 24"><path d="M3.4 20.6l1.2-4.2L16.2 4.8a2.2 2.2 0 0 1 3.1 3.1L7.6 19.4z"/><path d="M14.8 6.6l2.9 2.9"/></symbol>
+<symbol id="i-up" viewBox="0 0 24 24"><path d="M12 20.4V3.6"/><path d="m5.4 10.2 6.6-6.6 6.6 6.6"/></symbol>
+</defs>
+</svg>
 
-  <!-- NAV -->
-  <nav class="topnav">
-    <div class="topnav-in">
-      <a href="../index.html" class="logo">Inayat</a>
-      <ul class="nav-links">
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="../About.html">About</a></li>
-        <li><a href="../Projects.html">Projects</a></li>
-        <li><a href="../Resume.html">Résumé</a></li>
-        <li><a href="../index.html#contact">Contact</a></li>
-      </ul>
-    </div>
-  </nav>
+<!-- SPIRAL BINDING -->
+<div class="spiral-binding" aria-hidden="true" id="spiralBinding"></div>
 
-  <!-- SIDENAV -->
-  <aside class="sidenav">
-    <a href="../Projects.html" class="back-link">← Projects</a>
-    <div>
-      <div class="side-lbl">Case Study</div>
-      <nav class="side-list">
-        <a href="#overview"   class="side-a active"><span class="side-num">00</span>Overview</a>
-        <a href="#discovery"  class="side-a"><span class="side-num">01</span>Discovery</a>
-        <a href="#definition" class="side-a"><span class="side-num">02</span>Definition</a>
-        <a href="#ideation"   class="side-a"><span class="side-num">03</span>Ideation</a>
-        <a href="#execution"  class="side-a"><span class="side-num">04</span>Execution</a>
-        <a href="#testing"    class="side-a"><span class="side-num">05</span>Testing</a>
-        <a href="#reflection" class="side-a"><span class="side-num">06</span>Reflection</a>
-      </nav>
-    </div>
-    <!-- Fitness doodle -->
-    <div style="margin-top:auto; padding-top:1rem; opacity:0.3; pointer-events:none;">
-      <svg viewBox="0 0 80 64" style="width:70px">
-        <!-- dumbbell -->
-        <rect x="32" y="18" width="16" height="5" rx="1" stroke="#1a1612" stroke-width="1.2" fill="none"/>
-        <rect x="20" y="14" width="10" height="13" rx="2" stroke="#1a1612" stroke-width="1.2" fill="none"/>
-        <rect x="50" y="14" width="10" height="13" rx="2" stroke="#1a1612" stroke-width="1.2" fill="none"/>
-        <!-- streak flame -->
-        <path d="M42,38 C42,34 46,31 44,27 C47,30 49,33 47,38 C49,36 50,34 49,31 C52,34 52,40 48,43 C46,44 43,44 41,43 C38,41 38,38 42,38 Z" stroke="#bf5a1a" stroke-width="1" fill="rgba(191,90,26,0.15)"/>
-        <text x="8" y="58" font-family="Reenie Beanie, cursive" font-size="9" fill="#c0392b">💪 fitness</text>
-      </svg>
-    </div>
-  </aside>
+<!-- NAV -->
+<nav class="topnav">
+<div class="topnav-in">
+<a href="../index.html" class="logo">Inayat</a>
+<button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+<span></span><span></span><span></span>
+</button>
+<ul class="nav-links" id="navLinks">
+<li><a href="../index.html">Home</a></li>
+<li><a href="../About.html">About</a></li>
+<li><a href="../Projects.html">Projects</a></li>
+<li><a href="../Playground.html">Playground</a></li>
+<li><a href="../Resume.html">Résumé</a></li>
+<li><a href="../index.html#contact">Contact</a></li>
+</ul>
+</div>
+</nav>
 
-  <!-- MAIN -->
-  <main class="main">
+<!-- SIDENAV -->
+<aside class="sidenav">
+<a href="../Projects.html" class="back-link">← Projects</a>
+<div>
+<div class="side-lbl">Case Study</div>
+<nav class="side-list">
+<a href="#overview"   class="side-a active"><span class="side-num">00</span>Overview</a>
+<a href="#discovery"  class="side-a"><span class="side-num">01</span>Discovery</a>
+<a href="#definition" class="side-a"><span class="side-num">02</span>Definition</a>
+<a href="#ideation"   class="side-a"><span class="side-num">03</span>Ideation</a>
+<a href="#execution"  class="side-a"><span class="side-num">04</span>Execution</a>
+<a href="#testing"    class="side-a"><span class="side-num">05</span>Testing</a>
+<a href="#reflection" class="side-a"><span class="side-num">06</span>Reflection</a>
+</nav>
+</div>
+<!-- Fitness doodle — drawn dumbbell + streak flame, no emoji -->
+<div style="margin-top:auto; padding-top:1rem; opacity:0.32; pointer-events:none;">
+<svg viewBox="0 0 80 64" style="width:70px">
+<rect x="32" y="18" width="16" height="5" rx="1" stroke="#1a1612" stroke-width="1.2" fill="none"/>
+<rect x="20" y="14" width="10" height="13" rx="2" stroke="#1a1612" stroke-width="1.2" fill="none"/>
+<rect x="50" y="14" width="10" height="13" rx="2" stroke="#1a1612" stroke-width="1.2" fill="none"/>
+<path d="M42,38 C42,34 46,31 44,27 C47,30 49,33 47,38 C49,36 50,34 49,31 C52,34 52,40 48,43 C46,44 43,44 41,43 C38,41 38,38 42,38 Z" stroke="#a94e12" stroke-width="1" fill="rgba(169,78,18,0.15)"/>
+<text x="18" y="58" font-family="Reenie Beanie, cursive" font-size="10" fill="#8a7f72">fitness</text>
+</svg>
+</div>
+</aside>
 
-    <!-- HERO -->
-    <header id="top" style="margin-bottom:4rem">
-      <div class="tags">
-        <span class="tag">Interface Design</span>
-        <span class="tag">Mobile UX</span>
-        <span class="tag">Research Lead</span>
-      </div>
+<!-- MAIN -->
+<main class="main">
 
-      <h1 class="hero-h">
+<!-- HERO -->
+<header id="top" style="margin-bottom:4rem">
+<div class="tags">
+<span class="tag">Interface Design</span>
+<span class="tag">Mobile UX</span>
+<span class="tag">Research Lead</span>
+</div>
+
+<h1 class="hero-h">
         Fitness Tracking<br/>
-        <span class="squiggle-wrap" style="color: var(--fit-orange);">App
-          <svg viewBox="0 0 120 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2,8 C18,3 38,13 58,7 C78,2 98,11 118,7" stroke="#3a7d44" stroke-width="3" fill="none" stroke-linecap="round"/>
-          </svg>
-        </span>
-      </h1>
+<span class="squiggle-wrap" style="color: var(--fit-orange);">App
+<svg viewBox="0 0 120 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2,8 C18,3 38,13 58,7 C78,2 98,11 118,7" stroke="#4a9e56" stroke-width="3" fill="none" stroke-linecap="round"/>
+</svg>
+</span>
+</h1>
 
-      <p class="hero-sub" style="margin-top:0.75rem">Case Study — Mobile App · Jul–Aug 2024 · 4 weeks</p>
+<p class="hero-sub" style="margin-top:0.75rem">Case Study — Mobile App · Jul–Aug 2024 · 4 weeks</p>
 
-      <p class="hero-p">
+<p class="hero-p">
         Helping busy people stay consistent — through <span class="hl-y">smart motivation design</span>, frictionless flows, and genuine community accountability.
-      </p>
+</p>
 
-      <!-- HERO VIDEO — phone shape -->
-      <div class="hero-video">
-        <div class="phone-wrap">
-          <div class="phone-outer">
-            <video autoplay muted loop playsinline>
-              <source src="https://framerusercontent.com/assets/764JYSKnJXhvcyl4ZkHNJrB1c.mp4" type="video/mp4"/>
-            </video>
-          </div>
-          <span class="phone-lbl">prototype walkthrough ↑</span>
-        </div>
-      </div>
+<!-- HERO VIDEO — phone shape -->
+<div class="hero-video">
+<div class="phone-wrap">
+<div class="phone-outer">
+<video autoplay muted loop playsinline>
+<source src="https://framerusercontent.com/assets/764JYSKnJXhvcyl4ZkHNJrB1c.mp4" type="video/mp4"/>
+</video>
+</div>
+<span class="phone-lbl">prototype walkthrough <svg class="ico" aria-hidden="true"><use href="#i-up"/></svg></span>
+</div>
+</div>
 
-      <div class="stats">
-        <div class="stat">
-          <div class="s-n">87.5</div>
-          <div class="s-l">SUS Score</div>
-          <div class="s-sub">Industry avg: 68</div>
-        </div>
-        <div class="stat">
-          <div class="s-n">94%</div>
-          <div class="s-l">Task Completion</div>
-          <div class="s-sub">Benchmark: 80%</div>
-        </div>
-        <div class="stat">
-          <div class="s-n">40%</div>
-          <div class="s-l">Faster First Workout</div>
-          <div class="s-sub">vs. competitor apps</div>
-        </div>
-        <div class="stat">
-          <div class="s-n">83</div>
-          <div class="s-l">Net Promoter Score</div>
-          <div class="s-sub">11 of 12 rated 9–10</div>
-        </div>
-      </div>
+<div class="stats">
+<div class="stat">
+<div class="s-n">87.5</div>
+<div class="s-l">SUS Score</div>
+<div class="s-sub">Industry avg: 68</div>
+</div>
+<div class="stat">
+<div class="s-n">94%</div>
+<div class="s-l">Task Completion</div>
+<div class="s-sub">Benchmark: 80%</div>
+</div>
+<div class="stat">
+<div class="s-n">40%</div>
+<div class="s-l">Faster First Workout</div>
+<div class="s-sub">vs. competitor apps</div>
+</div>
+<div class="stat">
+<div class="s-n">83</div>
+<div class="s-l">Net Promoter Score</div>
+<div class="s-sub">11 of 12 rated 9–10</div>
+</div>
+</div>
 
-      <div class="meta">
-        <div>
-          <div class="m-k">Duration</div>
-          <div class="m-v">Jul – Aug 2024<br/>4 weeks</div>
-        </div>
-        <div>
-          <div class="m-k">My Role</div>
-          <div class="m-v">UX/UI Designer<br/>Research Lead</div>
-        </div>
-        <div>
-          <div class="m-k">Team</div>
-          <div class="m-v">3 UX Designers<br/>Collaborative</div>
-        </div>
-        <div>
-          <div class="m-k">My Screens</div>
-          <div class="m-v">Home Dashboard<br/>Workout Tracking</div>
-        </div>
-      </div>
-    </header>
+<div class="meta">
+<div><div class="m-k">Duration</div><div class="m-v">Jul – Aug 2024<br/>4 weeks</div></div>
+<div><div class="m-k">My Role</div><div class="m-v">UX/UI Designer<br/>Research Lead</div></div>
+<div><div class="m-k">Team</div><div class="m-v">3 UX Designers<br/>Collaborative</div></div>
+<div><div class="m-k">My Screens</div><div class="m-v">Home Dashboard<br/>Workout Tracking</div></div>
+</div>
+</header>
 
-    <!-- 00 OVERVIEW -->
-    <section id="overview" class="sec rev">
-      <div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
-      <h2 class="sec-h">The Problem With Fitness Apps Today</h2>
-      <p class="sec-lead">Users don't fail because they lack motivation. They fail because apps are designed for data, not for people.</p>
-      <div class="rule"></div>
+<!-- 00 OVERVIEW -->
+<section id="overview" class="sec rev">
+<div class="phase"><div class="p-dot">0</div><span class="p-txt">Overview</span></div>
+<h2 class="sec-h">The Problem With Fitness Apps Today</h2>
+<p class="sec-lead">Users don't fail because they lack motivation. They fail because apps are designed for data, not for people.</p>
+<div class="rule"></div>
 
-      <div class="g3">
-        <div class="nc">
-          <div class="nc-n">85%</div>
-          <div class="nc-t">Drop off within 3 weeks</div>
-          <div class="nc-d">No visible progress, no rewards, no reason to return</div>
-        </div>
-        <div class="nc">
-          <div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Too complex</div>
-          <div class="nc-t">Customisation paradox</div>
-          <div class="nc-d">Either overwhelming or too generic — neither served real users</div>
-        </div>
-        <div class="nc">
-          <div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Surface-level</div>
-          <div class="nc-t">Community wasn't real</div>
-          <div class="nc-d">Social features existed as afterthoughts, not accountability tools</div>
-        </div>
-      </div>
+<div class="g3">
+<div class="nc">
+<div class="nc-n">85%</div>
+<div class="nc-t">Drop off within 3 weeks</div>
+<div class="nc-d">No visible progress, no rewards, no reason to return</div>
+</div>
+<div class="nc">
+<div class="nc-n word">Too complex</div>
+<div class="nc-t">Customisation paradox</div>
+<div class="nc-d">Either overwhelming or too generic — neither served real users</div>
+</div>
+<div class="nc">
+<div class="nc-n word">Surface-level</div>
+<div class="nc-t">Community wasn't real</div>
+<div class="nc-d">Social features existed as afterthoughts, not accountability tools</div>
+</div>
+</div>
 
-      <div class="quote">
-        <p>"Users didn't need more data. They needed to feel like the app was on their side."</p>
-      </div>
+<div class="quote">
+<p>"Users didn't need more data. They needed to feel like the app was on their side."</p>
+</div>
 
-      <p style="font-family:var(--font-hand); font-size:17px; color:var(--ink-light); line-height:1.75; max-width:580px; margin-top:1rem">
+<p class="p-body" style="margin-top:1rem">
         Through iterative user testing with 12 participants, we developed a solution that increased user motivation by 92% and improved workout consistency through clear visual feedback and social accountability.
-      </p>
-    </section>
+</p>
+</section>
 
-    <!-- 01 DISCOVERY -->
-    <section id="discovery" class="sec rev">
-      <div class="phase"><div class="p-dot">1</div><span class="p-txt">Phase One — Discovery</span></div>
-      <h2 class="sec-h">Research &amp; Problem Identification</h2>
-      <p class="sec-lead">I led research analysis and synthesis across 12 participants — to understand not just what broke, but why people gave up.</p>
-      <div class="rule"></div>
+<!-- 01 DISCOVERY -->
+<section id="discovery" class="sec rev">
+<div class="phase"><div class="p-dot">1</div><span class="p-txt">Phase One — Discovery</span></div>
+<h2 class="sec-h">Research &amp; Problem Identification</h2>
+<p class="sec-lead">I led research analysis and synthesis across 12 participants — to understand not just what broke, but why people gave up.</p>
+<div class="rule"></div>
 
-      <div class="sub">Research Methods</div>
-      <div class="slist">
-        <div class="st"><div class="st-n">01</div><div><div class="st-t">In-depth user interviews</div><div class="st-d">12 participants × 45–60 min. Covered habits, failure points, and emotional responses to fitness tracking.</div></div></div>
-        <div class="st"><div class="st-n">02</div><div><div class="st-t">Survey distribution</div><div class="st-d">50+ fitness app users surveyed to validate interview patterns at scale.</div></div></div>
-        <div class="st"><div class="st-n">03</div><div><div class="st-t">Competitive analysis</div><div class="st-d">Evaluated Stronglifts, Samsung Health, and Fitbod for strengths and critical gaps.</div></div></div>
-        <div class="st"><div class="st-n">04</div><div><div class="st-t">Affinity mapping</div><div class="st-d">Synthesised qualitative data into clusters identifying the three core pain points driving churn.</div></div></div>
-      </div>
+<div class="sub">Research Methods</div>
+<div class="slist">
+<div class="st"><div class="st-n">01</div><div><div class="st-t">In-depth user interviews</div><div class="st-d">12 participants × 45–60 min. Covered habits, failure points, and emotional responses to fitness tracking.</div></div></div>
+<div class="st"><div class="st-n">02</div><div><div class="st-t">Survey distribution</div><div class="st-d">50+ fitness app users surveyed to validate interview patterns at scale.</div></div></div>
+<div class="st"><div class="st-n">03</div><div><div class="st-t">Competitive analysis</div><div class="st-d">Evaluated Stronglifts, Samsung Health, and Fitbod for strengths and critical gaps.</div></div></div>
+<div class="st"><div class="st-n">04</div><div><div class="st-t">Affinity mapping</div><div class="st-d">Synthesised qualitative data into clusters identifying the three core pain points driving churn.</div></div></div>
+</div>
 
-      <div class="sub">Participant Breakdown</div>
-      <div class="g3" style="margin-bottom:2rem">
-        <div class="nc">
-          <div class="nc-n">3</div>
-          <div class="nc-t">Fitness Coaches</div>
-          <div class="nc-d">Rarely use apps — lack of motivation and minimal engagement</div>
-        </div>
-        <div class="nc">
-          <div class="nc-n">2</div>
-          <div class="nc-t">Gym Members</div>
-          <div class="nc-d">Used apps for routines but disliked confusing interfaces</div>
-        </div>
-        <div class="nc">
-          <div class="nc-n">2</div>
-          <div class="nc-t">Mental Health Coaches</div>
-          <div class="nc-d">Apps lacked consistency, encouragement, and habit support</div>
-        </div>
-      </div>
+<div class="sub">Participant Breakdown</div>
+<div class="g3" style="margin-bottom:2rem">
+<div class="nc">
+<div class="nc-n">3</div>
+<div class="nc-t">Fitness Coaches</div>
+<div class="nc-d">Rarely use apps — lack of motivation and minimal engagement</div>
+</div>
+<div class="nc">
+<div class="nc-n">2</div>
+<div class="nc-t">Gym Members</div>
+<div class="nc-d">Used apps for routines but disliked confusing interfaces</div>
+</div>
+<div class="nc">
+<div class="nc-n">2</div>
+<div class="nc-t">Mental Health Coaches</div>
+<div class="nc-d">Apps lacked consistency, encouragement, and habit support</div>
+</div>
+</div>
 
-      <div class="sub">Competitive Analysis</div>
-      <div class="g3" style="margin-bottom:2rem">
-        <div class="cc">
-          <div class="cc-n">Stronglifts</div>
-          <span class="pill pg">✓ Progression tracking</span><br/><span class="pill pr">✗ Gap</span>
-          <div class="cc-d">No emotional feedback — pure data, zero celebration of effort</div>
-        </div>
-        <div class="cc">
-          <div class="cc-n">Samsung Health</div>
-          <span class="pill pg">✓ Broad coverage</span><br/><span class="pill pr">✗ Gap</span>
-          <div class="cc-d">Poor onboarding — users lost before completing first workout</div>
-        </div>
-        <div class="cc">
-          <div class="cc-n">Fitbod</div>
-          <span class="pill pg">✓ Smart algorithm</span><br/><span class="pill pr">✗ Gap</span>
-          <div class="cc-d">Social features are an afterthought — no genuine community layer</div>
-        </div>
-      </div>
+<div class="sub">Competitive Analysis</div>
+<div class="g3" style="margin-bottom:2rem">
+<div class="cc">
+<div class="cc-n">Stronglifts</div>
+<span class="pill pg"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Progression tracking</span><br/>
+<span class="pill pr"><svg class="ico" aria-hidden="true"><use href="#i-cross"/></svg>Gap</span>
+<div class="cc-d">No emotional feedback — pure data, zero celebration of effort</div>
+</div>
+<div class="cc">
+<div class="cc-n">Samsung Health</div>
+<span class="pill pg"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Broad coverage</span><br/>
+<span class="pill pr"><svg class="ico" aria-hidden="true"><use href="#i-cross"/></svg>Gap</span>
+<div class="cc-d">Poor onboarding — users lost before completing first workout</div>
+</div>
+<div class="cc">
+<div class="cc-n">Fitbod</div>
+<span class="pill pg"><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Smart algorithm</span><br/>
+<span class="pill pr"><svg class="ico" aria-hidden="true"><use href="#i-cross"/></svg>Gap</span>
+<div class="cc-d">Social features are an afterthought — no genuine community layer</div>
+</div>
+</div>
 
-      <div class="sub">Research Images</div>
-      <div class="imgs c2">
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/XjvwmxPaRX0m7Fq1jwOodRmt5dw.png" alt="Competitive audit"/>
-          <div class="icap">Competitive audit — data density without emotional design</div>
-        </div>
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/NtzWWwZaSZXixPptuH9BhNlvhM.png" alt="Social features audit"/>
-          <div class="icap">Social features audit — where community became surface-level</div>
-        </div>
-      </div>
-    </section>
+<div class="sub">Research Images</div>
+<div class="imgs c2">
+<div class="iw">
+<img src="https://framerusercontent.com/images/XjvwmxPaRX0m7Fq1jwOodRmt5dw.png" alt="Competitive audit" class="zoomable" data-cap="Competitive audit — data density without emotional design."/>
+<div class="icap">Competitive audit — data density without emotional design</div>
+</div>
+<div class="iw">
+<img src="https://framerusercontent.com/images/NtzWWwZaSZXixPptuH9BhNlvhM.png" alt="Social features audit" class="zoomable" data-cap="Social features audit — where community became surface-level."/>
+<div class="icap">Social features audit — where community became surface-level</div>
+</div>
+</div>
+</section>
 
-    <!-- 02 DEFINITION -->
-    <section id="definition" class="sec rev">
-      <div class="phase"><div class="p-dot">2</div><span class="p-txt">Phase Two — Definition</span></div>
-      <h2 class="sec-h">Personas &amp; Design Objectives</h2>
-      <p class="sec-lead">Translating research chaos into design clarity. I created the personas and led the team in converting pain points into testable objectives.</p>
-      <div class="rule"></div>
+<!-- 02 DEFINITION -->
+<section id="definition" class="sec rev">
+<div class="phase"><div class="p-dot">2</div><span class="p-txt">Phase Two — Definition</span></div>
+<h2 class="sec-h">Personas &amp; Design Objectives</h2>
+<p class="sec-lead">Translating research chaos into design clarity. I created the personas and led the team in converting pain points into testable objectives.</p>
+<div class="rule"></div>
 
-      <div class="sub">User Personas</div>
-      <div class="g3" style="margin-bottom:2rem">
-        <div class="pc">
-          <div class="pc-av">B</div>
-          <div class="pc-t">The Motivated Beginner</div>
-          <div class="pc-d">Needs guidance and early wins to build belief that consistency is possible.</div>
-        </div>
-        <div class="pc">
-          <div class="pc-av">E</div>
-          <div class="pc-t">The Inconsistent Enthusiast</div>
-          <div class="pc-d">Has the knowledge, not the routine. Needs external accountability to close the gap.</div>
-        </div>
-        <div class="pc">
-          <div class="pc-av">S</div>
-          <div class="pc-t">The Social Achiever</div>
-          <div class="pc-d">Motivated by others. Wants to share progress and feel part of something bigger.</div>
-        </div>
-      </div>
+<div class="sub">User Personas</div>
+<div class="g3" style="margin-bottom:2rem">
+<div class="pc">
+<div class="pc-av">B</div>
+<div class="pc-t">The Motivated Beginner</div>
+<div class="pc-d">Needs guidance and early wins to build belief that consistency is possible.</div>
+</div>
+<div class="pc">
+<div class="pc-av">E</div>
+<div class="pc-t">The Inconsistent Enthusiast</div>
+<div class="pc-d">Has the knowledge, not the routine. Needs external accountability to close the gap.</div>
+</div>
+<div class="pc">
+<div class="pc-av">S</div>
+<div class="pc-t">The Social Achiever</div>
+<div class="pc-d">Motivated by others. Wants to share progress and feel part of something bigger.</div>
+</div>
+</div>
 
-      <div class="sub">Design Objectives</div>
-      <div class="flist" style="margin-bottom:2rem">
-        <div class="fr"><div class="fr-i">🏆</div><div><div class="fr-t">Build intrinsic motivation</div><div class="fr-d">Badges, streaks, and milestone celebrations providing immediate positive feedback and long-term achievement tracking.</div></div></div>
-        <div class="fr"><div class="fr-i">🎯</div><div><div class="fr-t">Simplify customisation</div><div class="fr-d">Intelligent workout builder that adapts to goals, experience, and equipment without overwhelming choices.</div></div></div>
-        <div class="fr"><div class="fr-i">👥</div><div><div class="fr-t">Foster authentic community</div><div class="fr-d">Social features encouraging meaningful interaction and mutual support — not superficial engagement metrics.</div></div></div>
-        <div class="fr"><div class="fr-i">✦</div><div><div class="fr-t">Prioritise immediate clarity</div><div class="fr-d">All navigation, feedback, and data visualisation must be immediately understandable without tutorials.</div></div></div>
-      </div>
+<div class="sub">Design Objectives</div>
+<div class="flist" style="margin-bottom:2rem">
+<div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-trophy"/></svg></div><div><div class="fr-t">Build intrinsic motivation</div><div class="fr-d">Badges, streaks, and milestone celebrations providing immediate positive feedback and long-term achievement tracking.</div></div></div>
+<div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-target"/></svg></div><div><div class="fr-t">Simplify customisation</div><div class="fr-d">Intelligent workout builder that adapts to goals, experience, and equipment without overwhelming choices.</div></div></div>
+<div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-people"/></svg></div><div><div class="fr-t">Foster authentic community</div><div class="fr-d">Social features encouraging meaningful interaction and mutual support — not superficial engagement metrics.</div></div></div>
+<div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-spark"/></svg></div><div><div class="fr-t">Prioritise immediate clarity</div><div class="fr-d">All navigation, feedback, and data visualisation must be immediately understandable without tutorials.</div></div></div>
+</div>
 
-      <div class="sub">Definition Phase Images</div>
-      <div class="imgs c3">
-        <div class="iw"><img src="https://framerusercontent.com/images/tVIWbHMUClKEnK7ORyBAVab79mY.png" alt="Dashboard concept"/><div class="icap">Early dashboard concept</div></div>
-        <div class="iw"><img src="https://framerusercontent.com/images/gkkeFgblfMAY4RI1M7fLWlEn8.png" alt="Interview synthesis"/><div class="icap">Interview synthesis clusters</div></div>
-        <div class="iw"><img src="https://framerusercontent.com/images/sD3yV02ShFDo9x6gynYEhhs4.png" alt="Affinity mapping"/><div class="icap">Affinity mapping output</div></div>
-      </div>
-    </section>
+<div class="sub">Definition Phase Images</div>
+<div class="imgs c3">
+<div class="iw"><img src="https://framerusercontent.com/images/tVIWbHMUClKEnK7ORyBAVab79mY.png" alt="Dashboard concept" class="zoomable" data-cap="Early dashboard concept."/><div class="icap">Early dashboard concept</div></div>
+<div class="iw"><img src="https://framerusercontent.com/images/gkkeFgblfMAY4RI1M7fLWlEn8.png" alt="Interview synthesis" class="zoomable" data-cap="Interview synthesis clusters."/><div class="icap">Interview synthesis clusters</div></div>
+<div class="iw"><img src="https://framerusercontent.com/images/sD3yV02ShFDo9x6gynYEhhs4.png" alt="Affinity mapping" class="zoomable" data-cap="Affinity mapping output — the three core pain points driving churn."/><div class="icap">Affinity mapping output</div></div>
+</div>
+</section>
+<!-- 03 IDEATION -->
+<section id="ideation" class="sec rev">
+<div class="phase"><div class="p-dot">3</div><span class="p-txt">Phase Three — Ideation</span></div>
+<h2 class="sec-h">Wireframing &amp; User Flow Design</h2>
+<p class="sec-lead">I led the ideation phase — translating objectives into interface concepts through sketching, flow mapping, and low-fidelity prototyping.</p>
+<div class="rule"></div>
 
-    <!-- 03 IDEATION -->
-    <section id="ideation" class="sec rev">
-      <div class="phase"><div class="p-dot">3</div><span class="p-txt">Phase Three — Ideation</span></div>
-      <h2 class="sec-h">Wireframing &amp; User Flow Design</h2>
-      <p class="sec-lead">I led the ideation phase — translating objectives into interface concepts through sketching, flow mapping, and low-fidelity prototyping.</p>
-      <div class="rule"></div>
+<div class="sub">Key Design Decisions</div>
+<div class="flist" style="margin-bottom:2rem">
+<div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-chart"/></svg></div><div><div class="fr-t">Dashboard-first approach</div><div class="fr-d">Home screen leads with streak counter, today's workout, and recent achievements — immediate motivation before anything else.</div></div></div>
+<div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-bolt"/></svg></div><div><div class="fr-t">One-tap quick start</div><div class="fr-d">Every extra tap is a chance to abandon the session. Reducing friction between intention and action was critical.</div></div></div>
+<div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-eye"/></svg></div><div><div class="fr-t">Progress visibility everywhere</div><div class="fr-d">Charts, badges, streaks placed throughout — not siloed to a dedicated analytics screen.</div></div></div>
+<div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-link"/></svg></div><div><div class="fr-t">Contextual social integration</div><div class="fr-d">Community embedded within workout flows — accountability as default, not optional.</div></div></div>
+</div>
 
-      <div class="sub">Key Design Decisions</div>
-      <div class="flist" style="margin-bottom:2rem">
-        <div class="fr"><div class="fr-i">📊</div><div><div class="fr-t">Dashboard-first approach</div><div class="fr-d">Home screen leads with streak counter, today's workout, and recent achievements — immediate motivation before anything else.</div></div></div>
-        <div class="fr"><div class="fr-i">⚡</div><div><div class="fr-t">One-tap quick start</div><div class="fr-d">Every extra tap is a chance to abandon the session. Reducing friction between intention and action was critical.</div></div></div>
-        <div class="fr"><div class="fr-i">👁</div><div><div class="fr-t">Progress visibility everywhere</div><div class="fr-d">Charts, badges, streaks placed throughout — not siloed to a dedicated analytics screen.</div></div></div>
-        <div class="fr"><div class="fr-i">🔗</div><div><div class="fr-t">Contextual social integration</div><div class="fr-d">Community embedded within workout flows — accountability as default, not optional.</div></div></div>
-      </div>
+<div class="sub">High-Fidelity Wireframes</div>
+<div class="imgs c1">
+<div class="iw">
+<img src="https://framerusercontent.com/images/Q3qAYj3Duf1t8pX7KOH9M2DSzY.png" alt="Wireframes" class="zoomable" data-cap="High-fidelity dashboard wireframes — exploring widget-based reward and community modules."/>
+<div class="icap">High-fidelity dashboard wireframes — exploring widget-based reward and community modules. Click to enlarge.</div>
+</div>
+</div>
+</section>
 
-      <div class="sub">High-Fidelity Wireframes</div>
-      <div class="imgs c1">
-        <div class="iw">
-          <img src="https://framerusercontent.com/images/Q3qAYj3Duf1t8pX7KOH9M2DSzY.png" alt="Wireframes"/>
-          <div class="icap">High-fidelity dashboard wireframes — exploring widget-based reward and community modules</div>
-        </div>
-      </div>
-    </section>
+<!-- 04 EXECUTION -->
+<section id="execution" class="sec rev">
+<div class="phase"><div class="p-dot">4</div><span class="p-txt">Phase Four — Execution</span></div>
+<h2 class="sec-h">High-Fidelity Design System</h2>
+<p class="sec-lead">My screens: Home Dashboard and Workout Tracking — the two most critical touchpoints. Every decision traces back to a research finding.</p>
+<div class="rule"></div>
 
-    <!-- 04 EXECUTION -->
-    <section id="execution" class="sec rev">
-      <div class="phase"><div class="p-dot">4</div><span class="p-txt">Phase Four — Execution</span></div>
-      <h2 class="sec-h">High-Fidelity Design System</h2>
-      <p class="sec-lead">My screens: Home Dashboard and Workout Tracking — the two most critical touchpoints. Every decision traces back to a research finding.</p>
-      <div class="rule"></div>
+<div class="sub">Design Principles</div>
+<div class="g2" style="margin-bottom:2rem">
+<div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-palette"/></svg></div><div class="ic-t">Motivational visual language</div><div class="ic-d">Energetic colours, celebratory animations, bold typography — an uplifting experience, not just a tracker.</div></div>
+<div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-layout"/></svg></div><div class="ic-t">Clear information hierarchy</div><div class="ic-d">Streak counter, today's workout, recent achievements prioritised at top — critical context before anything else.</div></div>
+<div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-access"/></svg></div><div class="ic-t">Accessible colour system</div><div class="ic-d">All colour combinations meet WCAG AA standards while maintaining visual energy.</div></div>
+<div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg></div><div class="ic-t">Responsive components</div><div class="ic-d">Flexible layouts that adapt across devices — fitness happens everywhere.</div></div>
+</div>
 
-      <div class="sub">Design Principles</div>
-      <div class="g2" style="margin-bottom:2rem">
-        <div class="ic"><div class="ic-ico">🎨</div><div class="ic-t">Motivational visual language</div><div class="ic-d">Energetic colours, celebratory animations, bold typography — an uplifting experience, not just a tracker.</div></div>
-        <div class="ic"><div class="ic-ico">📐</div><div class="ic-t">Clear information hierarchy</div><div class="ic-d">Streak counter, today's workout, recent achievements prioritised at top — critical context before anything else.</div></div>
-        <div class="ic"><div class="ic-ico">♿</div><div class="ic-t">Accessible colour system</div><div class="ic-d">All colour combinations meet WCAG AA standards while maintaining visual energy.</div></div>
-        <div class="ic"><div class="ic-ico">📱</div><div class="ic-t">Responsive components</div><div class="ic-d">Flexible layouts that adapt across devices — fitness happens everywhere.</div></div>
-      </div>
+<div class="sub">Core Features</div>
+<div class="flist" style="margin-bottom:2rem">
+<div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-bolt"/></svg></div><div><div class="fr-t">Quick Start &amp; Routine Management</div><div class="fr-d">One-tap access to pre-configured workouts. Visual routine library with preview cards showing exercises, duration, and difficulty.</div></div></div>
+<div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-medal"/></svg></div><div><div class="fr-t">Achievement &amp; Milestone System</div><div class="fr-d">Dynamic badge display with real-time confetti after workouts. Achievement gallery creates aspirational goals beyond today's session.</div></div></div>
+<div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg></div><div><div class="fr-t">Intuitive Navigation Architecture</div><div class="fr-d">Bottom tab navigation with quick access to Dashboard, Workouts, Community, and Profile. Persistent streak counter in header.</div></div></div>
+<div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-rise"/></svg></div><div><div class="fr-t">Live Workout Tracking</div><div class="fr-d">Large tap-friendly buttons for gym conditions. Real-time reps/sets/weight. Progress bars show completion without adding pressure.</div></div></div>
+<div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-comment"/></svg></div><div><div class="fr-t">Integrated Social Feed</div><div class="fr-d">In-context reactions and comments for quick encouragement. Share button posts workouts to community or external platforms.</div></div></div>
+</div>
 
-      <div class="sub">Core Features</div>
-      <div class="flist" style="margin-bottom:2rem">
-        <div class="fr"><div class="fr-i">⚡</div><div><div class="fr-t">Quick Start &amp; Routine Management</div><div class="fr-d">One-tap access to pre-configured workouts. Visual routine library with preview cards showing exercises, duration, and difficulty.</div></div></div>
-        <div class="fr"><div class="fr-i">🏅</div><div><div class="fr-t">Achievement &amp; Milestone System</div><div class="fr-d">Dynamic badge display with real-time confetti after workouts. Achievement gallery creates aspirational goals beyond today's session.</div></div></div>
-        <div class="fr"><div class="fr-i">📱</div><div><div class="fr-t">Intuitive Navigation Architecture</div><div class="fr-d">Bottom tab navigation with quick access to Dashboard, Workouts, Community, and Profile. Persistent streak counter in header.</div></div></div>
-        <div class="fr"><div class="fr-i">📈</div><div><div class="fr-t">Live Workout Tracking</div><div class="fr-d">Large tap-friendly buttons for gym conditions. Real-time reps/sets/weight. Progress bars show completion without adding pressure.</div></div></div>
-        <div class="fr"><div class="fr-i">💬</div><div><div class="fr-t">Integrated Social Feed</div><div class="fr-d">In-context reactions and comments for quick encouragement. Share button posts workouts to community or external platforms.</div></div></div>
-      </div>
+<div class="sub">Design System Screens</div>
+<div class="imgs c3" style="margin-bottom:1.5rem">
+<div class="iw"><img src="https://framerusercontent.com/images/04hvFwwwxQvsxY6lvGQewRfhCB0.svg" alt="Reward system" class="zoomable" data-cap="Reward system interface."/><div class="icap">Reward system interface</div></div>
+<div class="iw"><img src="https://framerusercontent.com/images/KviYGKiNsYkSs73ml3NRA3dHnQ.svg" alt="Activity tracking" class="zoomable" data-cap="Activity tracking components."/><div class="icap">Activity tracking components</div></div>
+<div class="iw"><img src="https://framerusercontent.com/images/Ot9AnsrPfXKidr7bK7K2jqALQ64.svg" alt="Workout customisation" class="zoomable" data-cap="Workout customisation."/><div class="icap">Workout customisation</div></div>
+</div>
+<div class="imgs c2" style="margin-bottom:1.5rem">
+<div class="iw"><img src="https://framerusercontent.com/images/JQo0ybxuJNYHI8V0kHorLj84sc0.svg" alt="Badge system" class="zoomable" data-cap="Badge achievement system."/><div class="icap">Badge achievement system</div></div>
+<div class="iw"><img src="https://framerusercontent.com/images/IVacl2HhFJzzUVvMXRYWDf31Psw.svg" alt="Navigation components" class="zoomable" data-cap="Navigation components."/><div class="icap">Navigation components</div></div>
+</div>
 
-      <div class="sub">Design System Screens</div>
-      <div class="imgs c3" style="margin-bottom:1.5rem">
-        <div class="iw"><img src="https://framerusercontent.com/images/04hvFwwwxQvsxY6lvGQewRfhCB0.svg" alt="Reward system"/><div class="icap">Reward system interface</div></div>
-        <div class="iw"><img src="https://framerusercontent.com/images/KviYGKiNsYkSs73ml3NRA3dHnQ.svg" alt="Activity tracking"/><div class="icap">Activity tracking components</div></div>
-        <div class="iw"><img src="https://framerusercontent.com/images/Ot9AnsrPfXKidr7bK7K2jqALQ64.svg" alt="Workout customisation"/><div class="icap">Workout customisation</div></div>
-      </div>
-      <div class="imgs c2" style="margin-bottom:1.5rem">
-        <div class="iw"><img src="https://framerusercontent.com/images/JQo0ybxuJNYHI8V0kHorLj84sc0.svg" alt="Badge system"/><div class="icap">Badge achievement system</div></div>
-        <div class="iw"><img src="https://framerusercontent.com/images/IVacl2HhFJzzUVvMXRYWDf31Psw.svg" alt="Navigation components"/><div class="icap">Navigation components</div></div>
-      </div>
+<div class="sub">Interactive Prototypes</div>
+<div class="vid-grid">
+<div class="vid-wrap"><video autoplay muted loop playsinline><source src="https://framerusercontent.com/assets/o5ntV6RDpUsuExMRxAJEFmje0Rg.mp4" type="video/mp4"/></video></div>
+<div class="vid-wrap"><video autoplay muted loop playsinline><source src="https://framerusercontent.com/assets/3fA0XWnb7lJefyo7FhfXeyMA8.mp4" type="video/mp4"/></video></div>
+<div class="vid-wrap"><video autoplay muted loop playsinline><source src="https://framerusercontent.com/assets/CVr0hFuumUpr8jTqkKVbXOwGzmo.mp4" type="video/mp4"/></video></div>
+<div class="vid-wrap"><video autoplay muted loop playsinline><source src="https://framerusercontent.com/assets/IkAV8WWWEa9QqMpI1GAsn60XAk.mp4" type="video/mp4"/></video></div>
+</div>
+</section>
 
-      <div class="sub">Interactive Prototypes</div>
-      <div class="vid-grid">
-        <div class="vid-wrap"><video autoplay muted loop playsinline><source src="https://framerusercontent.com/assets/o5ntV6RDpUsuExMRxAJEFmje0Rg.mp4" type="video/mp4"/></video></div>
-        <div class="vid-wrap"><video autoplay muted loop playsinline><source src="https://framerusercontent.com/assets/3fA0XWnb7lJefyo7FhfXeyMA8.mp4" type="video/mp4"/></video></div>
-        <div class="vid-wrap"><video autoplay muted loop playsinline><source src="https://framerusercontent.com/assets/CVr0hFuumUpr8jTqkKVbXOwGzmo.mp4" type="video/mp4"/></video></div>
-        <div class="vid-wrap"><video autoplay muted loop playsinline><source src="https://framerusercontent.com/assets/IkAV8WWWEa9QqMpI1GAsn60XAk.mp4" type="video/mp4"/></video></div>
-      </div>
-    </section>
+<!-- 05 TESTING -->
+<section id="testing" class="sec rev">
+<div class="phase"><div class="p-dot">5</div><span class="p-txt">Phase Five — Testing</span></div>
+<h2 class="sec-h">Validation &amp; Iteration</h2>
+<p class="sec-lead">I led usability testing with all 12 original participants — task-based scenarios, SUS scoring, qualitative interviews, and A/B tests across three rounds.</p>
+<div class="rule"></div>
 
-    <!-- 05 TESTING -->
-    <section id="testing" class="sec rev">
-      <div class="phase"><div class="p-dot">5</div><span class="p-txt">Phase Five — Testing</span></div>
-      <h2 class="sec-h">Validation &amp; Iteration</h2>
-      <p class="sec-lead">I led usability testing with all 12 original participants — task-based scenarios, SUS scoring, qualitative interviews, and A/B tests across three rounds.</p>
-      <div class="rule"></div>
+<div class="sub">Quantitative Results</div>
+<div class="g2" style="margin-bottom:2rem">
+<div class="res">
+<div class="res-n">87.5</div>
+<div><div class="res-l">System Usability Scale</div><div class="res-ctx">Industry average is 68 — "Excellent" classification</div></div>
+</div>
+<div class="res">
+<div class="res-n">94%</div>
+<div><div class="res-l">Task completion rate</div><div class="res-ctx">Across 5 core tasks — benchmark was 80%</div></div>
+</div>
+<div class="res">
+<div class="res-n">40%</div>
+<div><div class="res-l">Faster first workout</div><div class="res-ctx">Compared to competitive apps tested in same sessions</div></div>
+</div>
+<div class="res">
+<div class="res-n">9.2</div>
+<div><div class="res-l">Satisfaction score / 10</div><div class="res-ctx">NPS of 83 — 11 of 12 participants rated 9 or 10</div></div>
+</div>
+</div>
 
-      <div class="sub">Quantitative Results</div>
-      <div class="g2" style="margin-bottom:2rem">
-        <div class="res">
-          <div class="res-n">87.5</div>
-          <div><div class="res-l">System Usability Scale</div><div class="res-ctx">Industry average is 68 — "Excellent" classification</div></div>
-        </div>
-        <div class="res">
-          <div class="res-n">94%</div>
-          <div><div class="res-l">Task completion rate</div><div class="res-ctx">Across 5 core tasks — benchmark was 80%</div></div>
-        </div>
-        <div class="res">
-          <div class="res-n">40%</div>
-          <div><div class="res-l">Faster first workout</div><div class="res-ctx">Compared to competitive apps tested in same sessions</div></div>
-        </div>
-        <div class="res">
-          <div class="res-n">9.2</div>
-          <div><div class="res-l">Satisfaction score / 10</div><div class="res-ctx">NPS of 83 — 11 of 12 participants rated 9 or 10</div></div>
-        </div>
-      </div>
+<div class="sub">What Changed &amp; Why</div>
+<div class="ilist">
+<div class="it">
+<div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Routine library buried inside the Workouts tab</div></div>
+<div class="it-arr">→</div>
+<div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">"My Routines" promoted to dashboard top + floating action button added</div></div>
+</div>
+<div class="it">
+<div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Standard-sized like/comment buttons on social feed</div></div>
+<div class="it-arr">→</div>
+<div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Buttons increased 40% in size + haptic feedback for tangibility</div></div>
+</div>
+<div class="it">
+<div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Routine cards showed only name and exercise count</div></div>
+<div class="it-arr">→</div>
+<div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Cards now show difficulty level, time estimate, and equipment required</div></div>
+</div>
+</div>
 
-      <div class="sub">What Changed &amp; Why</div>
-      <div class="ilist">
-        <div class="it">
-          <div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Routine library buried inside the Workouts tab</div></div>
-          <div class="it-arr">→</div>
-          <div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">"My Routines" promoted to dashboard top + floating action button added</div></div>
-        </div>
-        <div class="it">
-          <div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Standard-sized like/comment buttons on social feed</div></div>
-          <div class="it-arr">→</div>
-          <div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Buttons increased 40% in size + haptic feedback for tangibility</div></div>
-        </div>
-        <div class="it">
-          <div class="it-b bef"><div class="it-lbl">Before</div><div class="it-txt">Routine cards showed only name and exercise count</div></div>
-          <div class="it-arr">→</div>
-          <div class="it-b aft"><div class="it-lbl">After</div><div class="it-txt">Cards now show difficulty level, time estimate, and equipment required</div></div>
-        </div>
-      </div>
+<div class="quote">
+<p>"100% of participants said the badge and streak system would motivate them to stay consistent — described as 'surprisingly satisfying'."</p>
+<div class="quote-attr">— Usability testing · Round 3</div>
+</div>
+</section>
 
-      <div class="quote">
-        <p>"100% of participants said the badge and streak system would motivate them to stay consistent — described as 'surprisingly satisfying'."</p>
-        <div class="quote-attr">— Usability testing · Round 3</div>
-      </div>
-    </section>
+<!-- 06 REFLECTION -->
+<section id="reflection" class="sec rev">
+<div class="phase"><div class="p-dot">6</div><span class="p-txt">Reflection</span></div>
+<h2 class="sec-h">What I Learned</h2>
+<p class="sec-lead">The thinking shifts that will shape how I approach every project going forward.</p>
+<div class="rule"></div>
 
-    <!-- 06 REFLECTION -->
-    <section id="reflection" class="sec rev">
-      <div class="phase"><div class="p-dot">6</div><span class="p-txt">Reflection</span></div>
-      <h2 class="sec-h">What I Learned</h2>
-      <p class="sec-lead">The thinking shifts that will shape how I approach every project going forward.</p>
-      <div class="rule"></div>
+<div class="g2" style="margin-bottom:2rem">
+<div class="rc"><div class="rc-t">Behavioural design works</div><div class="rc-d">Positive reinforcement through immediate feedback creates habit loops that sustain engagement far better than data alone. The 92% motivation increase was the direct result of designing for the emotional side of consistency.</div></div>
+<div class="rc"><div class="rc-t">Assumptions don't survive testing</div><div class="rc-d">Users needed more prominent social CTAs than I initially designed. What seemed obvious in ideation was invisible in practice — the designer's mental model and the user's are rarely the same thing.</div></div>
+<div class="rc"><div class="rc-t">Simplicity vs. power is a tension, not a tradeoff</div><div class="rc-d">Balancing quick-start simplicity for beginners with customisation depth for advanced users required careful information architecture and progressive disclosure.</div></div>
+<div class="rc"><div class="rc-t">What I'd do differently</div><div class="rc-d">Run longer-term testing (2–4 weeks) to validate whether motivation holds beyond initial excitement. Explore AI-powered workout suggestions earlier — several participants asked for intelligent recommendations based on their patterns.</div></div>
+</div>
 
-      <div class="g2" style="margin-bottom:2rem">
-        <div class="rc"><div class="rc-t">Behavioural design works</div><div class="rc-d">Positive reinforcement through immediate feedback creates habit loops that sustain engagement far better than data alone. The 92% motivation increase was the direct result of designing for the emotional side of consistency.</div></div>
-        <div class="rc"><div class="rc-t">Assumptions don't survive testing</div><div class="rc-d">Users needed more prominent social CTAs than I initially designed. What seemed obvious in ideation was invisible in practice — the designer's mental model and the user's are rarely the same thing.</div></div>
-        <div class="rc"><div class="rc-t">Simplicity vs. power is a tension, not a tradeoff</div><div class="rc-d">Balancing quick-start simplicity for beginners with customisation depth for advanced users required careful information architecture and progressive disclosure.</div></div>
-        <div class="rc"><div class="rc-t">What I'd do differently</div><div class="rc-d">Run longer-term testing (2–4 weeks) to validate whether motivation holds beyond initial excitement. Explore AI-powered workout suggestions earlier — several participants asked for intelligent recommendations based on their patterns.</div></div>
-      </div>
-
-      <!-- Closing scrawl -->
-      <div style="margin-top:3rem; padding:1.5rem; border:1.5px solid rgba(26,22,18,0.12); background:var(--paper-dark); position:relative; transform:rotate(-0.3deg)">
-        <div style="position:absolute; top:-11px; left:20px; width:40px; height:20px; background:rgba(191,90,26,0.28); border-top:1px solid rgba(191,90,26,0.4); border-bottom:1px solid rgba(191,90,26,0.4); transform:rotate(1.5deg)"></div>
-        <p style="font-family:var(--font-serif); font-size:1.1rem; font-style:italic; color:var(--ink-light); line-height:1.7">
+<!-- Closing scrawl -->
+<div style="margin-top:3rem; padding:1.5rem; border:1.5px solid rgba(26,22,18,0.12); background:var(--paper-dark); position:relative; transform:rotate(-0.3deg)">
+<div style="position:absolute; top:-11px; left:20px; width:40px; height:20px; background:rgba(169,78,18,0.28); border-top:1px solid rgba(169,78,18,0.4); border-bottom:1px solid rgba(169,78,18,0.4); transform:rotate(1.5deg)"></div>
+<p style="font-family:var(--font-serif); font-size:var(--fs-quote); font-style:italic; color:var(--ink-light); line-height:1.6">
           The biggest insight wasn't about fitness at all — it was that people want to feel <span class="hl-y">seen by their tools</span>. An app that notices your effort and says something back will always outlast one that just counts reps.
-        </p>
-        <p style="font-family:var(--font-scrawl); font-size:18px; color:var(--fit-orange); margin-top:0.75rem; transform:rotate(-1deg); display:inline-block">— Inayat ✏️</p>
-        <div class="corner-fold"></div>
-      </div>
-    </section>
+</p>
+<p style="font-family:var(--font-scrawl); font-size:var(--fs-scrawl); color:var(--fit-orange); margin-top:0.75rem; transform:rotate(-1deg); display:inline-flex; align-items:center; gap:7px">
+          — Inayat
+<svg class="ico" aria-hidden="true" style="stroke:var(--fit-orange); width:1.05em; height:1.05em"><use href="#i-pen"/></svg>
+</p>
+<div class="corner-fold"></div>
+</div>
+</section>
 
-  </main>
+</main>
 
-  <footer>© 2025 Inayat Gulati &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; UX/UI · Research · Mobile</footer>
+<!-- LIGHTBOX -->
+<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image">
+<button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+<div class="lb-zoom" id="lbZoom">
+<button id="lbOut" aria-label="Zoom out">−</button>
+<span class="lb-lvl" id="lbLvl">FIT</span>
+<button id="lbIn" aria-label="Zoom in">+</button>
+</div>
+<div class="lb-stage" id="lbStage"></div>
+<div class="lb-cap" id="lbCap"></div>
+</div>
 
-  <script>
-    // Spiral holes
-    const spiral = document.getElementById('spiralBinding');
-    const count = Math.floor(window.innerHeight / 44) + 2;
-    for (let i = 0; i < count; i++) {
-      const h = document.createElement('div');
-      h.className = 'spiral-hole';
-      spiral.appendChild(h);
+<footer>© 2025 Inayat Gulati &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; UX/UI · Research · Mobile</footer>
+
+<script>
+/* ---- spiral binding, redrawn on resize so it never runs short ---- */
+const spiral = document.getElementById('spiralBinding');
+function drawSpiral() {
+  const count = Math.floor(window.innerHeight / 44) + 2;
+  if (spiral.childElementCount === count) return;
+  spiral.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const h = document.createElement('div');
+    h.className = 'spiral-hole';
+    spiral.appendChild(h);
+  }
+}
+drawSpiral();
+
+/* ---- mobile menu ---- */
+const navToggle = document.getElementById('navToggle');
+const navLinks  = document.getElementById('navLinks');
+navToggle.addEventListener('click', () => {
+  const open = navLinks.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  navToggle.setAttribute('aria-expanded', 'false');
+}));
+
+/* ============================================================
+   LIGHTBOX
+   Fit to screen first, then levels above it. An affinity map or a
+   component sheet shrunk into a third of a column is a picture of
+   research, not readable research.
+   ============================================================ */
+const lb      = document.getElementById('lightbox');
+const lbStage = document.getElementById('lbStage');
+const lbCap   = document.getElementById('lbCap');
+const lbZoom  = document.getElementById('lbZoom');
+const lbLvl   = document.getElementById('lbLvl');
+const lbIn    = document.getElementById('lbIn');
+const lbOut   = document.getElementById('lbOut');
+const lbClose = document.getElementById('lbClose');
+const LEVELS  = [0, 1, 1.5, 2];   /* 0 = fit; the rest are multiples of the file's own size */
+let lastFocus = null, natW = 0, natH = 0, fitW = 0, zi = 0, capText = '', node = null;
+
+function widthAt(i) { return natW * LEVELS[i]; }
+function canZoom()  { return widthAt(LEVELS.length - 1) > fitW * 1.05; }
+/* skip any level that would not actually be bigger than the fit */
+function nextLevel() {
+  for (let i = zi + 1; i < LEVELS.length; i++) if (widthAt(i) > fitW * 1.05) return i;
+  return 0;
+}
+function render(ox, oy) {
+  if (zi === 0) {
+    lb.classList.remove('zoomed');
+    lbLvl.textContent = 'FIT';
+    node.style.width = ''; node.style.height = '';
+  } else {
+    lb.classList.add('zoomed');
+    lbLvl.textContent = Math.round(LEVELS[zi] * 100) + '%';
+    node.style.width  = Math.round(natW * LEVELS[zi]) + 'px';
+    node.style.height = Math.round(natH * LEVELS[zi]) + 'px';
+    const x = ox === undefined ? 0.5 : ox, y = oy === undefined ? 0.5 : oy;
+    lbStage.scrollLeft = node.offsetWidth  * x - lbStage.clientWidth  / 2;
+    lbStage.scrollTop  = node.offsetHeight * y - lbStage.clientHeight / 2;
+  }
+  lbIn.disabled  = nextLevel() <= zi;
+  lbOut.disabled = zi <= 0;
+}
+function measure(cap) {
+  if (cap !== undefined) capText = cap;
+  zi = 0; render();
+  fitW = node.getBoundingClientRect().width;
+  const z = canZoom();
+  lbZoom.classList.toggle('on', z);
+  node.classList.toggle('can-zoom', z);
+  lbCap.innerHTML = (capText || '') + '<span class="lb-hint">' +
+    (z ? 'Click the image to zoom in · drag to pan · Esc to close'
+       : 'Click anywhere or press Esc to close') + '</span>';
+  lbIn.disabled = !z; lbOut.disabled = true;
+}
+function openImg(img) {
+  lastFocus = document.activeElement;
+  const el = new Image();
+  el.src = img.currentSrc || img.src;
+  el.alt = img.alt || '';
+  lbStage.innerHTML = ''; lbStage.appendChild(el);
+  node = el;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  lbClose.focus();
+  const go = () => {
+    /* an SVG with no intrinsic size reports 0 — fall back to the fitted box */
+    natW = el.naturalWidth  || node.getBoundingClientRect().width  || 1200;
+    natH = el.naturalHeight || node.getBoundingClientRect().height || 800;
+    measure(img.dataset.cap || img.alt);
+  };
+  if (el.complete && el.naturalWidth) go(); else el.addEventListener('load', go, { once: true });
+}
+function closeLB() {
+  lb.classList.remove('open', 'zoomed');
+  lbStage.innerHTML = '';
+  node = null; zi = 0;
+  document.body.style.overflow = '';
+  if (lastFocus) lastFocus.focus();
+}
+document.querySelectorAll('img.zoomable').forEach(img => {
+  img.addEventListener('click', () => openImg(img));
+});
+lbStage.addEventListener('click', e => {
+  if (!node || e.target !== node || !canZoom()) return;
+  const r = node.getBoundingClientRect();
+  zi = nextLevel();
+  render((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+});
+lbIn.addEventListener('click', () => { const n = nextLevel(); if (n > zi) { zi = n; render(); } });
+lbOut.addEventListener('click', () => { if (zi > 0) { zi--; render(); } });
+lbClose.addEventListener('click', closeLB);
+lb.addEventListener('click', e => { if (e.target === lb || e.target === lbCap) closeLB(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('open')) closeLB(); });
+/* drag to pan while zoomed (touch pans natively) */
+let drag = null;
+lbStage.addEventListener('pointerdown', e => {
+  if (zi === 0 || e.pointerType === 'touch') return;
+  drag = { x: e.clientX, y: e.clientY, l: lbStage.scrollLeft, t: lbStage.scrollTop };
+  lbStage.classList.add('dragging');
+  lbStage.setPointerCapture(e.pointerId);
+});
+lbStage.addEventListener('pointermove', e => {
+  if (!drag) return;
+  lbStage.scrollLeft = drag.l - (e.clientX - drag.x);
+  lbStage.scrollTop  = drag.t - (e.clientY - drag.y);
+});
+['pointerup', 'pointercancel'].forEach(ev =>
+  lbStage.addEventListener(ev, () => { drag = null; lbStage.classList.remove('dragging'); }));
+
+/* ---- scroll reveal + active sidenav ---- */
+const ro = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) e.target.classList.add('in');
+}), { threshold: 0.06 });
+document.querySelectorAll('.rev').forEach(el => ro.observe(el));
+const links = document.querySelectorAll('.side-a');
+const so = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
+      if (a) a.classList.add('active');
     }
+  });
+}, { rootMargin: '-15% 0px -65% 0px' });
+document.querySelectorAll('.sec').forEach(s => so.observe(s));
 
-    // Scroll reveal
-    const ro = new IntersectionObserver(es => es.forEach(e => {
-      if (e.isIntersecting) e.target.classList.add('in');
-    }), { threshold: 0.06 });
-    document.querySelectorAll('.rev').forEach(el => ro.observe(el));
-
-    // Active sidenav
-    const links = document.querySelectorAll('.side-a');
-    const secs  = document.querySelectorAll('.sec');
-    const so = new IntersectionObserver(es => {
-      es.forEach(e => {
-        if (e.isIntersecting) {
-          links.forEach(l => l.classList.remove('active'));
-          const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
-          if (a) a.classList.add('active');
-        }
-      });
-    }, { rootMargin: '-15% 0px -65% 0px' });
-    secs.forEach(s => so.observe(s));
-  </script>
+/* keep the binding and any open lightbox correct through a resize */
+let rt;
+window.addEventListener('resize', () => {
+  clearTimeout(rt);
+  rt = setTimeout(() => {
+    drawSpiral();
+    if (lb.classList.contains('open') && node) measure();
+  }, 140);
+});
+</script>
 </body>
 </html>
