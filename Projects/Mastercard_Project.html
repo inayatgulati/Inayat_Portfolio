@@ -4,12 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Mastercard SharePoint Redesign — Inayat</title>
+<meta name="description" content="Redesigning Mastercard Vancouver's internal SharePoint from a static archive into a navigable, employee-first workplace guide. Enterprise UX case study." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap"
-rel="stylesheet"
-/>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
 <style>
 :root {
 --paper: #faf8f2;
@@ -22,28 +20,84 @@ rel="stylesheet"
 --pencil-light: #d4cfc4;
 --red: #c0392b;
 
-/* Mastercard accent — deep red/orange + gold */
+/* Mastercard accent — deep red + gold.
+   --mc-gold was #c9860a, which measures 2.87:1 on the cream and 2.58:1
+   on the tinted card. Darkened to #8f6208 (5.05 / 4.53) so it can carry
+   text; --mc-gold-l keeps the original brightness for decoration only,
+   where contrast rules don't apply. */
 --mc-red: #b5261e;
 --mc-red-l: #d4372d;
---mc-gold: #c9860a;
---mc-gold-l: #e0a020;
---mc-orange: #bf5a1a; /* shared warm accent for nav elements */
+--mc-gold: #8f6208;
+--mc-gold-l: #c9860a;
+--mc-orange: #a94e12;
 --yellow: #e8b84b;
 
 --font-hand: 'Caveat', cursive;
+--font-text: 'Karla', system-ui, -apple-system, 'Segoe UI', sans-serif;
 --font-scrawl: 'Reenie Beanie', cursive;
 --font-mono: 'Space Mono', monospace;
 --font-serif: 'EB Garamond', serif;
 
 --nav-h: 58px;
 --side-w: 196px;
+--spiral: 32px;
+--main-max: 860px;
+--main-pad: 3.5rem;
+--nav-max: 1200px;
+
+/* ---- fluid type: floor, ramp, ceiling ---- */
+--fs-body:   clamp(14.5px, calc(13.96px + 0.138vw), 17.5px);
+--fs-lead:   clamp(16px,   calc(15.26px + 0.19vw),  20.5px);
+--fs-ui:     clamp(14px,   calc(13.44px + 0.143vw), 17px);
+--fs-cap:    clamp(12.5px, calc(12.1px + 0.104vw),  15px);
+--fs-mono-s: clamp(8.5px,  calc(8.14px + 0.093vw),  10.5px);
+--fs-mono-m: clamp(9.5px,  calc(9.14px + 0.093vw),  11.5px);
+--fs-hero:   clamp(17px,   calc(14.4px + 0.67vw),   29px);
+--fs-h1:     clamp(38px,   calc(28.6px + 2.4vw),    90px);
+--fs-h2:     clamp(29px,   calc(23.3px + 1.46vw),   60px);
+--fs-h3:     clamp(23px,   calc(19.9px + 0.79vw),   40px);
+--fs-num:    clamp(28px,   calc(23.4px + 1.18vw),   54px);
+--fs-quote:  clamp(18px,   calc(15.5px + 0.64vw),   32px);
+--fs-scrawl: clamp(17px,   calc(15.6px + 0.36vw),   25px);
+      }
+/* ---- larger desktops: the column grows with the screen ---- */
+@media (min-width: 1600px) {
+:root { --side-w: 228px; --main-max: 1000px; --main-pad: 3.75rem; --nav-h: 64px; --nav-max: 1440px; }
+      }
+@media (min-width: 1920px) {
+:root { --side-w: 254px; --main-max: 1130px; --main-pad: 4.25rem; --nav-h: 70px; --spiral: 40px; --nav-max: 1680px; }
+      }
+/* ---- TV / 4K: a second, steeper ramp. Each floor is the ramp above's
+       ceiling, so the two meet without a step. Viewing distance, not pixel
+       count, is what makes 17px unreadable on a 65-inch panel. ---- */
+@media (min-width: 2560px) {
+:root {
+--side-w: 300px; --main-max: 1400px; --main-pad: 5rem; --nav-h: 84px; --spiral: 48px; --nav-max: 2200px;
+--fs-body:   clamp(17.5px, calc(9.2px + 0.324vw),  26px);
+--fs-lead:   clamp(20.5px, calc(10.7px + 0.383vw), 30px);
+--fs-ui:     clamp(17px,   calc(9.0px + 0.313vw),  25px);
+--fs-cap:    clamp(15px,   calc(8.2px + 0.266vw),  22px);
+--fs-mono-s: clamp(10.5px, calc(6.6px + 0.152vw),  14.5px);
+--fs-mono-m: clamp(11.5px, calc(7.2px + 0.168vw),  16px);
+--fs-hero:   clamp(29px,   calc(12.9px + 0.629vw), 46px);
+--fs-h1:     clamp(90px,   calc(37.6px + 2.05vw),  144px);
+--fs-h2:     clamp(60px,   calc(25.1px + 1.36vw),  96px);
+--fs-h3:     clamp(40px,   calc(17.4px + 0.883vw), 63px);
+--fs-num:    clamp(54px,   calc(22.6px + 1.23vw),  86px);
+--fs-quote:  clamp(32px,   calc(13.9px + 0.707vw), 51px);
+--fs-scrawl: clamp(25px,   calc(11.4px + 0.531vw), 39px);
+        }
+      }
+@media (min-width: 3400px) {
+:root { --side-w: 380px; --main-max: 1780px; --main-pad: 6rem; --nav-h: 96px; --spiral: 60px; --nav-max: 2900px; }
       }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
 body {
-font-family: var(--font-hand);
+font-family: var(--font-text);
+font-size: var(--fs-body);
 background: var(--paper);
 color: var(--ink);
 line-height: 1.6;
@@ -66,7 +120,7 @@ z-index: 0;
 .spiral-binding {
 position: fixed;
 left: 0; top: 0; bottom: 0;
-width: 32px;
+width: var(--spiral);
 background: var(--paper-worn);
 border-right: 2.5px solid var(--ink);
 z-index: 200;
@@ -90,7 +144,7 @@ box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
 /* TOP NAV */
 .topnav {
 position: fixed;
-top: 0; left: 32px; right: 0;
+top: 0; left: var(--spiral); right: 0;
 height: var(--nav-h);
 z-index: 150;
 background: var(--paper);
@@ -101,7 +155,7 @@ padding: 0 2rem;
       }
 .topnav-in {
 width: 100%;
-max-width: 1200px;
+max-width: var(--nav-max);
 margin: 0 auto;
 display: flex;
 justify-content: space-between;
@@ -109,7 +163,7 @@ align-items: center;
       }
 .logo {
 font-family: var(--font-hand);
-font-size: 22px;
+font-size: clamp(22px, calc(19.8px + 0.57vw), 44px);
 font-weight: 700;
 color: var(--ink);
 text-decoration: none;
@@ -130,8 +184,8 @@ gap: 2rem;
 list-style: none;
       }
 .nav-links a {
-font-family: var(--font-hand);
-font-size: 16px;
+font-family: var(--font-text);
+font-size: var(--fs-ui);
 color: var(--ink-faint);
 text-decoration: none;
 position: relative;
@@ -148,12 +202,19 @@ transition: width 0.25s;
       }
 .nav-links a:hover { color: var(--ink); }
 .nav-links a:hover::after { width: 100%; }
+/* mobile menu button — the old page hid the links below 600px and put
+   nothing back, so the page had no navigation at all on a phone */
+.nav-toggle { display: none; background: none; border: 0; cursor: pointer; padding: 9px 4px; }
+.nav-toggle span { display: block; width: 23px; height: 2.5px; background: var(--ink); border-radius: 2px; margin: 4.5px 0; transition: transform 0.22s, opacity 0.18s; }
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 /* SIDENAV */
 .sidenav {
 position: fixed;
 top: var(--nav-h);
-left: 32px;
+left: var(--spiral);
 width: var(--side-w);
 height: calc(100vh - var(--nav-h));
 padding: 2rem 1rem 2rem 1.5rem;
@@ -179,16 +240,16 @@ align-items: center;
 gap: 6px;
 color: var(--mc-red);
 text-decoration: none;
-font-family: var(--font-hand);
-font-size: 15px;
-font-weight: 600;
+font-family: var(--font-text);
+font-size: var(--fs-ui);
+font-weight: 700;
 transition: gap 0.2s;
 white-space: nowrap;
       }
 .back-link:hover { gap: 10px; }
 .side-lbl {
 font-family: var(--font-mono);
-font-size: 9px;
+font-size: var(--fs-mono-s);
 letter-spacing: 3px;
 text-transform: uppercase;
 color: var(--pencil);
@@ -199,11 +260,11 @@ margin-bottom: 0.5rem;
 display: flex;
 align-items: center;
 gap: 8px;
-padding: 6px 0 6px 10px;
+padding: 7px 0 7px 10px;
 color: var(--pencil);
 text-decoration: none;
-font-family: var(--font-hand);
-font-size: 15px;
+font-family: var(--font-text);
+font-size: var(--fs-ui);
 border-left: 2px solid transparent;
 transition: color 0.2s, border-color 0.2s;
 white-space: nowrap;
@@ -212,17 +273,17 @@ white-space: nowrap;
 .side-a.active { color: var(--mc-red); border-left-color: var(--mc-red); font-weight: 700; }
 .side-num {
 font-family: var(--font-mono);
-font-size: 8px;
+font-size: var(--fs-mono-s);
 color: var(--pencil);
-min-width: 16px;
+min-width: 18px;
       }
 .side-a.active .side-num { color: var(--mc-red); }
 
 /* MAIN */
 .main {
-margin-left: calc(32px + var(--side-w));
-padding: calc(var(--nav-h) + 3rem) 3.5rem 7rem 3rem;
-max-width: calc(860px + var(--side-w));
+margin-left: calc(var(--spiral) + var(--side-w));
+padding: calc(var(--nav-h) + 3rem) var(--main-pad) 7rem 3rem;
+max-width: calc(var(--main-max) + var(--side-w));
 position: relative;
 z-index: 1;
       }
@@ -236,11 +297,11 @@ margin-bottom: 1.25rem;
       }
 .tag {
 font-family: var(--font-mono);
-font-size: 9px;
+font-size: var(--fs-mono-s);
 letter-spacing: 2px;
 text-transform: uppercase;
 color: var(--mc-red);
-padding: 3px 10px;
+padding: 4px 10px;
 border: 1.5px solid rgba(181,38,30,0.3);
 background: rgba(181,38,30,0.05);
 transform: rotate(-0.3deg);
@@ -249,19 +310,19 @@ display: inline-block;
 .tag:nth-child(2) {
 transform: rotate(0.5deg);
 color: var(--mc-gold);
-border-color: rgba(201,134,10,0.3);
-background: rgba(201,134,10,0.05);
+border-color: rgba(143,98,8,0.32);
+background: rgba(143,98,8,0.05);
       }
 .tag:nth-child(3) {
 transform: rotate(-0.2deg);
-color: var(--ink-faint);
-border-color: rgba(138,127,114,0.3);
+color: var(--ink-light);
+border-color: rgba(138,127,114,0.35);
 background: rgba(138,127,114,0.05);
       }
 
 .hero-h {
 font-family: var(--font-hand);
-font-size: clamp(2.6rem, 5vw, 4.2rem);
+font-size: var(--fs-h1);
 font-weight: 700;
 line-height: 1.05;
 margin-bottom: 0.5rem;
@@ -279,19 +340,19 @@ pointer-events: none;
       }
 .hero-sub {
 font-family: var(--font-mono);
-font-size: 10px;
+font-size: var(--fs-mono-m);
 letter-spacing: 2px;
 text-transform: uppercase;
-color: var(--ink-faint);
+color: var(--ink-light);
 margin-bottom: 0.75rem;
 margin-top: 0.75rem;
       }
 .hero-p {
-font-family: var(--font-hand);
-font-size: 19px;
+font-family: var(--font-text);
+font-size: var(--fs-hero);
 color: var(--ink-light);
-line-height: 1.65;
-max-width: 520px;
+line-height: 1.55;
+max-width: 46ch;
 margin-bottom: 1.75rem;
       }
 
@@ -319,18 +380,11 @@ z-index: 10;
 width: 100%;
 display: block;
       }
-.hero-img::after {
-content: '';
-position: absolute;
-bottom: -5px; right: -5px;
-width: 100%; height: 100%;
-border: 1.5px solid rgba(26,22,18,0.15);
-z-index: -1;
-      }
 
 /* ---- hand-drawn line icons (replaces emoji) ---- */
 .ico {
-width: 18px; height: 18px;
+width: clamp(18px, calc(16.5px + 0.104vw), 26px);
+height: clamp(18px, calc(16.5px + 0.104vw), 26px);
 fill: none;
 stroke: var(--ink-light);
 stroke-width: 1.5;
@@ -340,8 +394,8 @@ display: block;
 transition: stroke 0.2s ease;
       }
 .fr:hover .ico { stroke: var(--mc-red); }
-.ic .ico { width: 22px; height: 22px; stroke: var(--mc-red); }
-.nda-icon .ico { width: 20px; height: 20px; stroke: var(--mc-red); }
+.ic .ico { width: clamp(22px, calc(20.2px + 0.125vw), 32px); height: clamp(22px, calc(20.2px + 0.125vw), 32px); stroke: var(--mc-red); }
+.nda-icon .ico { stroke: var(--mc-red); }
 
 /* NDA BANNER */
 .nda {
@@ -365,17 +419,17 @@ border-top: 1px solid rgba(232,184,75,0.5);
 border-bottom: 1px solid rgba(232,184,75,0.5);
 transform: rotate(1.5deg);
       }
-.nda-icon { margin-top: 2px; }
+.nda-icon { margin-top: 2px; flex: none; }
 .nda-t {
-font-family: var(--font-hand);
-font-size: 15px;
+font-family: var(--font-text);
+font-size: var(--fs-cap);
 font-weight: 700;
-margin-bottom: 3px;
+margin-bottom: 4px;
 color: var(--mc-red);
       }
 .nda-d {
-font-family: var(--font-hand);
-font-size: 14px;
+font-family: var(--font-text);
+font-size: var(--fs-cap);
 color: var(--ink-light);
 line-height: 1.6;
       }
@@ -398,24 +452,24 @@ position: relative;
 .stat:last-child { border-right: none; }
 .s-n {
 font-family: var(--font-hand);
-font-size: 2.4rem;
+font-size: var(--fs-num);
 font-weight: 700;
 color: var(--mc-red);
 line-height: 1;
 margin-bottom: 4px;
       }
 .s-l {
-font-family: var(--font-hand);
-font-size: 14px;
+font-family: var(--font-text);
+font-size: var(--fs-cap);
 color: var(--ink-light);
-line-height: 1.35;
+line-height: 1.4;
       }
 .s-sub {
 font-family: var(--font-mono);
-font-size: 8px;
+font-size: var(--fs-mono-s);
 letter-spacing: 1px;
-color: var(--pencil);
-margin-top: 2px;
+color: var(--ink-faint);
+margin-top: 3px;
       }
 
 /* META */
@@ -429,15 +483,15 @@ margin-bottom: 5rem;
       }
 .m-k {
 font-family: var(--font-mono);
-font-size: 8px;
+font-size: var(--fs-mono-s);
 letter-spacing: 2px;
 text-transform: uppercase;
 color: var(--mc-red);
-margin-bottom: 4px;
+margin-bottom: 5px;
       }
 .m-v {
-font-family: var(--font-hand);
-font-size: 15px;
+font-family: var(--font-text);
+font-size: var(--fs-cap);
 color: var(--ink-light);
 line-height: 1.5;
       }
@@ -451,27 +505,28 @@ gap: 8px;
 margin-bottom: 0.75rem;
       }
 .p-dot {
-width: 22px; height: 22px;
+width: 24px; height: 24px;
 border-radius: 50%;
 border: 2px solid var(--ink);
 display: flex;
 align-items: center;
 justify-content: center;
 font-family: var(--font-mono);
-font-size: 9px;
+font-size: var(--fs-mono-m);
 color: var(--ink);
 font-weight: 700;
+flex: none;
       }
 .p-txt {
 font-family: var(--font-mono);
-font-size: 9px;
+font-size: var(--fs-mono-m);
 letter-spacing: 3px;
 text-transform: uppercase;
-color: var(--ink-faint);
+color: var(--ink-light);
       }
 .sec-h {
 font-family: var(--font-hand);
-font-size: 2.2rem;
+font-size: var(--fs-h2);
 font-weight: 700;
 line-height: 1.1;
 margin-bottom: 0.5rem;
@@ -490,11 +545,11 @@ margin-top: 3px;
 width: 80%;
       }
 .sec-lead {
-font-family: var(--font-hand);
-font-size: 18px;
+font-family: var(--font-text);
+font-size: var(--fs-lead);
 color: var(--ink-light);
-line-height: 1.75;
-max-width: 560px;
+line-height: 1.6;
+max-width: 62ch;
 margin-bottom: 1.5rem;
 margin-top: 0.5rem;
       }
@@ -505,12 +560,21 @@ margin-bottom: 1.5rem;
       }
 .sub {
 font-family: var(--font-mono);
-font-size: 9px;
+font-size: var(--fs-mono-m);
 letter-spacing: 3px;
 text-transform: uppercase;
 color: var(--mc-red);
 margin-bottom: 0.875rem;
       }
+.p-body {
+font-family: var(--font-text);
+font-size: var(--fs-body);
+color: var(--ink-light);
+line-height: 1.7;
+max-width: 68ch;
+margin-bottom: 1.1rem;
+      }
+.p-body strong { color: var(--ink); font-weight: 700; }
 
 /* GRIDS */
 .g3 {
@@ -532,36 +596,30 @@ background: var(--paper-dark);
 border: 2px solid var(--ink);
 padding: 1.1rem;
 position: relative;
-transition: transform 0.2s;
+transition: transform 0.2s, box-shadow 0.2s;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
       }
-.nc:hover { transform: translate(-2px,-2px); }
-.nc::after {
-content: '';
-position: absolute;
-bottom: -4px; right: -4px;
-width: 100%; height: 100%;
-border: 1.5px solid rgba(26,22,18,0.18);
-z-index: -1;
-      }
+.nc:hover { transform: translate(-2px,-2px); box-shadow: 5px 7px 0 rgba(26,22,18,0.16); }
 .nc-n {
 font-family: var(--font-hand);
-font-size: 2.2rem;
+font-size: var(--fs-num);
 font-weight: 700;
 color: var(--mc-red);
 line-height: 1;
-margin-bottom: 5px;
+margin-bottom: 6px;
       }
+.nc-n.word { font-size: var(--fs-h3); }
 .nc-t {
-font-family: var(--font-hand);
-font-size: 15px;
+font-family: var(--font-text);
+font-size: var(--fs-cap);
 font-weight: 700;
-margin-bottom: 3px;
+margin-bottom: 4px;
       }
 .nc-d {
-font-family: var(--font-hand);
-font-size: 14px;
+font-family: var(--font-text);
+font-size: var(--fs-cap);
 color: var(--ink-light);
-line-height: 1.5;
+line-height: 1.55;
       }
 
 /* FINDING ROW */
@@ -582,25 +640,24 @@ transition: border-color 0.2s, transform 0.2s;
       }
 .fr:hover { border-color: rgba(181,38,30,0.4); transform: translateX(2px); }
 .fr-i {
-width: 30px; height: 30px; min-width: 30px;
+width: 32px; height: 32px; min-width: 32px;
 border: 1.5px solid rgba(26,22,18,0.2);
 display: flex;
 align-items: center;
 justify-content: center;
-font-size: 0.82rem;
 background: var(--paper);
       }
 .fr-t {
-font-family: var(--font-hand);
-font-size: 15px;
+font-family: var(--font-text);
+font-size: var(--fs-cap);
 font-weight: 700;
-margin-bottom: 2px;
+margin-bottom: 3px;
       }
 .fr-d {
-font-family: var(--font-hand);
-font-size: 14px;
+font-family: var(--font-text);
+font-size: var(--fs-cap);
 color: var(--ink-light);
-line-height: 1.55;
+line-height: 1.6;
       }
 
 /* STEP LIST */
@@ -619,23 +676,23 @@ border: 1.5px solid rgba(26,22,18,0.15);
       }
 .st-n {
 font-family: var(--font-hand);
-font-size: 1.3rem;
+font-size: var(--fs-h3);
 font-weight: 700;
 color: var(--mc-red);
-min-width: 20px;
-line-height: 1.4;
+min-width: 26px;
+line-height: 1.3;
       }
 .st-t {
-font-family: var(--font-hand);
-font-size: 15px;
+font-family: var(--font-text);
+font-size: var(--fs-cap);
 font-weight: 700;
-margin-bottom: 2px;
+margin-bottom: 3px;
       }
 .st-d {
-font-family: var(--font-hand);
-font-size: 13px;
+font-family: var(--font-text);
+font-size: var(--fs-cap);
 color: var(--ink-light);
-line-height: 1.5;
+line-height: 1.55;
       }
 
 /* ICON CARD */
@@ -644,62 +701,49 @@ background: var(--paper-dark);
 border: 2px solid var(--ink);
 padding: 1.1rem;
 position: relative;
-      }
-.ic::after {
-content: '';
-position: absolute;
-bottom: -4px; right: -4px;
-width: 100%; height: 100%;
-border: 1.5px solid rgba(26,22,18,0.18);
-z-index: -1;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
       }
 .ic-ico { margin-bottom: 0.6rem; }
-.ic-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; margin-bottom: 3px; }
-.ic-d { font-family: var(--font-hand); font-size: 13px; color: var(--ink-light); line-height: 1.55; }
+.ic-t { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; margin-bottom: 4px; }
+.ic-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.6; }
 
 /* BEFORE/AFTER */
 .ba-grid {
 display: grid;
 grid-template-columns: 1fr 1fr;
-gap: 10px;
+gap: 12px;
 margin-bottom: 1.5rem;
       }
 .ba-wrap {
 border: 2px solid var(--ink);
 background: var(--paper-dark);
 position: relative;
-transition: transform 0.2s;
+transition: transform 0.2s, box-shadow 0.2s;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
       }
-.ba-wrap:hover { transform: translate(-2px,-2px); }
-.ba-wrap::after {
-content: '';
-position: absolute;
-bottom: -4px; right: -4px;
-width: 100%; height: 100%;
-border: 1.5px solid rgba(26,22,18,0.15);
-z-index: -1;
-      }
+.ba-wrap:hover { transform: translate(-2px,-2px); box-shadow: 5px 7px 0 rgba(26,22,18,0.16); }
 .ba-wrap img { width: 100%; display: block; }
 .ba-label {
-padding: 8px 12px;
+padding: 9px 12px;
 font-family: var(--font-mono);
-font-size: 8px;
+font-size: var(--fs-mono-s);
 letter-spacing: 2px;
 font-weight: 700;
 border-top: 1.5px solid rgba(26,22,18,0.15);
 text-transform: uppercase;
       }
-.ba-wrap.before .ba-label { color: var(--pencil); }
+.ba-wrap.before .ba-label { color: var(--ink-faint); }
 .ba-wrap.after  .ba-label { color: var(--mc-red); }
 
 /* QUOTE */
 .quote {
 border-left: 3px solid var(--mc-red);
-padding: 0.875rem 1.25rem;
+padding: 1rem 1.25rem;
 margin: 1.25rem 0;
 background: rgba(181,38,30,0.04);
 position: relative;
 transform: rotate(-0.3deg);
+max-width: 66ch;
       }
 .quote::before {
 content: '';
@@ -713,23 +757,23 @@ transform: rotate(1.5deg);
       }
 .quote p {
 font-family: var(--font-serif);
-font-size: 1.25rem;
+font-size: var(--fs-quote);
 font-style: italic;
-line-height: 1.65;
+line-height: 1.55;
 color: var(--ink);
       }
 .quote-attr {
 font-family: var(--font-mono);
-font-size: 9px;
+font-size: var(--fs-mono-m);
 letter-spacing: 1px;
-color: var(--ink-faint);
+color: var(--ink-light);
 margin-top: 0.75rem;
 text-transform: uppercase;
       }
 .quote-attr span {
 color: var(--mc-red);
 display: block;
-margin-top: 2px;
+margin-top: 3px;
 font-weight: 700;
       }
 
@@ -742,39 +786,37 @@ display: flex;
 align-items: flex-start;
 gap: 0.875rem;
 position: relative;
-transition: transform 0.2s;
+transition: transform 0.2s, box-shadow 0.2s;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
       }
-.res:hover { transform: translate(-2px,-2px); }
-.res::after {
-content: '';
-position: absolute;
-bottom: -4px; right: -4px;
-width: 100%; height: 100%;
-border: 1.5px solid rgba(26,22,18,0.18);
-z-index: -1;
-      }
+.res:hover { transform: translate(-2px,-2px); box-shadow: 5px 7px 0 rgba(26,22,18,0.16); }
 .res-n {
 font-family: var(--font-hand);
-font-size: 2.4rem;
+font-size: var(--fs-num);
 font-weight: 700;
 color: var(--mc-red);
 line-height: 1;
-min-width: 60px;
+min-width: 4ch;
       }
-.res-n .ico { width: 34px; height: 34px; stroke: var(--mc-red); stroke-width: 1.8; }
+.res-n .ico {
+width: clamp(32px, calc(29.4px + 0.18vw), 46px);
+height: clamp(32px, calc(29.4px + 0.18vw), 46px);
+stroke: var(--mc-red); stroke-width: 1.8;
+      }
 .res-l {
-font-family: var(--font-hand);
-font-size: 15px;
-color: var(--ink-light);
-line-height: 1.5;
+font-family: var(--font-text);
+font-size: var(--fs-cap);
+font-weight: 700;
+color: var(--ink);
+line-height: 1.45;
 margin-top: 2px;
       }
 .res-ctx {
-font-family: var(--font-mono);
-font-size: 8px;
-letter-spacing: 1px;
-color: var(--pencil);
-margin-top: 3px;
+font-family: var(--font-text);
+font-size: var(--fs-cap);
+color: var(--ink-light);
+line-height: 1.55;
+margin-top: 4px;
       }
 
 /* REFLECTION CARD */
@@ -784,46 +826,39 @@ border: 1.5px solid rgba(26,22,18,0.15);
 padding: 1.1rem;
       }
 .rc-t {
-font-family: var(--font-hand);
-font-size: 15px;
+font-family: var(--font-text);
+font-size: var(--fs-cap);
 font-weight: 700;
 color: var(--mc-red);
-margin-bottom: 5px;
+margin-bottom: 6px;
       }
 .rc-d {
-font-family: var(--font-hand);
-font-size: 14px;
+font-family: var(--font-text);
+font-size: var(--fs-cap);
 color: var(--ink-light);
-line-height: 1.7;
+line-height: 1.65;
       }
 
 /* IMAGES */
-.imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
+.imgs { display: grid; gap: 12px; margin-bottom: 1.5rem; }
 .imgs.c1 { grid-template-columns: 1fr; }
 .imgs.c2 { grid-template-columns: 1fr 1fr; }
 .iw {
 border: 2px solid var(--ink);
 background: var(--paper-dark);
 position: relative;
-transition: transform 0.2s;
+transition: transform 0.2s, box-shadow 0.2s;
+box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
       }
-.iw:hover { transform: translate(-2px,-2px); }
-.iw::after {
-content: '';
-position: absolute;
-bottom: -4px; right: -4px;
-width: 100%; height: 100%;
-border: 1.5px solid rgba(26,22,18,0.15);
-z-index: -1;
-      }
+.iw:hover { transform: translate(-2px,-2px); box-shadow: 5px 7px 0 rgba(26,22,18,0.16); }
 .iw img { width: 100%; display: block; }
 .icap {
-padding: 7px 10px;
-font-family: var(--font-hand);
-font-size: 13px;
-color: var(--ink-faint);
-border-top: 1px solid rgba(26,22,18,0.12);
-line-height: 1.4;
+padding: 9px 11px;
+font-family: var(--font-text);
+font-size: var(--fs-cap);
+color: var(--ink-light);
+border-top: 1.5px solid rgba(26,22,18,0.12);
+line-height: 1.45;
       }
 
 /* TOOLS PILLS */
@@ -835,9 +870,9 @@ margin-bottom: 1.5rem;
       }
 .tool {
 font-family: var(--font-mono);
-font-size: 9px;
+font-size: var(--fs-mono-m);
 letter-spacing: 1px;
-padding: 3px 10px;
+padding: 4px 10px;
 background: var(--paper-dark);
 border: 1.5px solid rgba(26,22,18,0.2);
 color: var(--ink-light);
@@ -868,35 +903,99 @@ transform: translateY(16px);
 transition: opacity 0.5s ease, transform 0.5s ease;
       }
 .rev.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .rev { opacity: 1; transform: none; transition: none; } }
+
+/* ============================================================
+   ZOOM — every image opens full size. These are dense SharePoint
+   screens; at column width the labels inside them are unreadable.
+   ============================================================ */
+.zoomable { cursor: zoom-in; }
+.lb { position: fixed; inset: 0; z-index: 500; background: rgba(20,17,13,.94);
+display: none; align-items: center; justify-content: center; padding: 4vh 4vw 9vh; }
+.lb.open { display: flex; }
+.lb-stage { max-width: 100%; max-height: 87vh; overflow: auto; display: flex;
+align-items: center; justify-content: center; -webkit-overflow-scrolling: touch; }
+.lb.zoomed .lb-stage { align-items: flex-start; justify-content: flex-start; cursor: grab; }
+.lb.zoomed .lb-stage.dragging { cursor: grabbing; }
+.lb img { max-width: 100%; max-height: 87vh; object-fit: contain; display: block;
+border: 2px solid var(--paper); background: var(--paper); }
+.lb.zoomed img { max-width: none; max-height: none; }
+.lb img.can-zoom { cursor: zoom-in; }
+.lb-close { position: absolute; top: 14px; right: 18px; width: 44px; height: 44px;
+background: var(--paper); border: 2px solid var(--ink); color: var(--ink); cursor: pointer;
+font-family: var(--font-mono); font-size: 18px; line-height: 1; display: grid; place-items: center; }
+.lb-close:hover { background: var(--ink); color: var(--paper); }
+.lb-zoom { position: absolute; top: 14px; right: 72px; display: none; align-items: center; gap: 8px;
+background: var(--paper); border: 2px solid var(--ink); height: 44px; padding: 0 6px; }
+.lb-zoom.on { display: flex; }
+.lb-zoom button { background: none; border: 0; cursor: pointer; color: var(--ink);
+font-family: var(--font-mono); font-size: 17px; line-height: 1; width: 30px; height: 32px;
+display: grid; place-items: center; }
+.lb-zoom button:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+.lb-zoom button:disabled { opacity: .3; cursor: default; }
+.lb-lvl { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 1px;
+color: var(--ink); min-width: 46px; text-align: center; }
+.lb-cap { position: absolute; bottom: 0; left: 0; right: 0; text-align: center;
+padding: 26px 6vw 18px; font-family: var(--font-text); font-size: var(--fs-cap);
+color: rgba(255,255,255,.85); line-height: 1.5;
+background: linear-gradient(to bottom, rgba(20,17,13,0), rgba(20,17,13,.95) 34%); }
+.lb-hint { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 1.2px;
+text-transform: uppercase; color: rgba(255,255,255,.5); display: block; margin-top: 6px; }
 
 /* FOOTER */
 footer {
 border-top: 2.5px solid var(--ink);
-padding: 1.25rem 2rem;
+padding: 1.4rem 2rem;
 text-align: center;
 font-family: var(--font-mono);
-font-size: 9px;
+font-size: var(--fs-mono-s);
 letter-spacing: 2px;
 text-transform: uppercase;
-color: var(--pencil);
-margin-left: 32px;
+color: var(--ink-faint);
+margin-left: var(--spiral);
       }
 
 /* RESPONSIVE */
-@media (max-width: 860px) {
+@media (max-width: 1180px) {
+:root { --side-w: 178px; --main-pad: 2.25rem; }
+.nav-links { gap: 1.4rem; }
+      }
+@media (max-width: 960px) {
+:root { --spiral: 0px; }
+.spiral-binding { display: none; }
 .sidenav { display: none; }
-.main { margin-left: 32px; padding: 5rem 1.5rem 5rem; }
+.main { margin-left: 0; max-width: 100%; padding: calc(var(--nav-h) + 2.5rem) 2rem 5rem; }
 .stats { grid-template-columns: repeat(2, 1fr); }
+.g3 { grid-template-columns: repeat(2, 1fr); }
+      }
+@media (max-width: 760px) {
+.nav-toggle { display: block; }
+.nav-links {
+display: none;
+position: absolute;
+top: calc(100% + 2.5px);
+left: 0; right: 0;
+flex-direction: column;
+gap: 0;
+background: var(--paper);
+border-bottom: 2.5px solid var(--ink);
+padding: 0.35rem 2rem 0.9rem;
+box-shadow: 0 8px 18px rgba(26,22,18,0.08);
+        }
+.nav-links.open { display: flex; }
+.nav-links a { display: block; padding: 0.6rem 0; border-bottom: 1px solid rgba(26,22,18,0.08); }
+.nav-links li:last-child a { border-bottom: 0; }
 .g3, .g2 { grid-template-columns: 1fr; }
 .ba-grid { grid-template-columns: 1fr; }
 .imgs.c2 { grid-template-columns: 1fr; }
+.main { padding: calc(var(--nav-h) + 2rem) 1.5rem 4rem; }
       }
 @media (max-width: 600px) {
-.spiral-binding { display: none; }
-.topnav, footer { margin-left: 0; left: 0; }
-.main { margin-left: 0; padding: 5rem 1.25rem 4rem; }
-.nav-links { display: none; }
-.hero-h { font-size: 2.2rem; }
+.stats { grid-template-columns: 1fr; }
+.stat { border-right: 0; border-bottom: 1.5px solid rgba(26,22,18,0.2); }
+.stat:last-child { border-bottom: 0; }
+.main { padding: calc(var(--nav-h) + 1.75rem) 1.25rem 4rem; }
+.lb-zoom { right: 66px; }
       }
 </style>
 </head>
@@ -931,10 +1030,14 @@ margin-left: 32px;
 <nav class="topnav">
 <div class="topnav-in">
 <a href="../index.html" class="logo">Inayat</a>
-<ul class="nav-links">
+<button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+<span></span><span></span><span></span>
+</button>
+<ul class="nav-links" id="navLinks">
 <li><a href="../index.html">Home</a></li>
 <li><a href="../About.html">About</a></li>
 <li><a href="../Projects.html">Projects</a></li>
+<li><a href="../Playground.html">Playground</a></li>
 <li><a href="../Resume.html">Résumé</a></li>
 <li><a href="../index.html#contact">Contact</a></li>
 </ul>
@@ -960,9 +1063,8 @@ margin-left: 32px;
 <!-- Mastercard doodle -->
 <div style="margin-top:auto; padding-top:1rem; opacity:0.28; pointer-events:none;">
 <svg viewBox="0 0 80 64" style="width:70px">
-<!-- Two overlapping circles (MC logo nod) -->
 <circle cx="28" cy="32" r="16" stroke="#b5261e" stroke-width="1.5" fill="rgba(181,38,30,0.08)"/>
-<circle cx="44" cy="32" r="16" stroke="#c9860a" stroke-width="1.5" fill="rgba(201,134,10,0.08)"/>
+<circle cx="44" cy="32" r="16" stroke="#8f6208" stroke-width="1.5" fill="rgba(143,98,8,0.08)"/>
 <text x="6" y="58" font-family="Reenie Beanie, cursive" font-size="9" fill="#8a7f72">enterprise ux</text>
 </svg>
 </div>
@@ -998,6 +1100,8 @@ margin-left: 32px;
 <img
 src="https://framerusercontent.com/images/3bPjYIUexggbXzSEECfMd4rdc.png"
 alt="Mastercard SharePoint Project"
+class="zoomable"
+data-cap="The redesigned Workplace Experience SharePoint — Mastercard Vancouver Tech Hub."
 />
 </div>
 
@@ -1063,10 +1167,10 @@ alt="Mastercard SharePoint Project"
 <h2 class="sec-h">The Project</h2>
 <p class="sec-lead">During my UX/UI internship at Mastercard's Vancouver Tech Hub, I worked within the Workplace Experience Department under the VP of Workplace Experience.</p>
 <div class="rule"></div>
-<p style="font-family:var(--font-hand); font-size:17px; color:var(--ink-light); line-height:1.75; max-width:600px; margin-bottom:1.25rem">
+<p class="p-body">
           My main focus was redesigning the internal SharePoint — transforming it from a static information repository into a comprehensive user guide system. The redesign served the Vancouver office primarily, while incorporating feedback from global teams.
 </p>
-<p style="font-family:var(--font-hand); font-size:17px; color:var(--ink-light); line-height:1.75; max-width:600px; margin-bottom:1.5rem">
+<p class="p-body">
           The platform consolidated everything from office policies, catering services, and facility booking forms to travel information and event resources — so every employee could navigate workplace processes without friction.
 </p>
 <div class="sub">Tools &amp; Methods</div>
@@ -1091,17 +1195,17 @@ alt="Mastercard SharePoint Project"
 
 <div class="g3" style="margin-bottom:2rem">
 <div class="nc">
-<div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Bottlenecks</div>
+<div class="nc-n word">Bottlenecks</div>
 <div class="nc-t">Communication friction</div>
 <div class="nc-d">Repeated support emails for resources that should have been self-serve</div>
 </div>
 <div class="nc">
-<div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Lost</div>
+<div class="nc-n word">Lost</div>
 <div class="nc-t">Visiting employees</div>
 <div class="nc-d">Staff from other global offices couldn't locate essential Vancouver-specific resources</div>
 </div>
 <div class="nc">
-<div class="nc-n" style="font-size:1.3rem; margin-bottom:7px">Low</div>
+<div class="nc-n word">Low</div>
 <div class="nc-t">Platform engagement</div>
 <div class="nc-d">The structure didn't reflect how people naturally interact with information daily</div>
 </div>
@@ -1237,16 +1341,16 @@ alt="Mastercard SharePoint Project"
 <section id="beforeafter" class="sec rev">
 <div class="phase"><div class="p-dot">4</div><span class="p-txt">Before &amp; After</span></div>
 <h2 class="sec-h">The Transformation</h2>
-<p class="sec-lead">From a static archive to a structured, employee-first guide. Note: high-fidelity screens are under NDA — these images show the approved shareable versions.</p>
+<p class="sec-lead">From a static archive to a structured, employee-first guide. Note: high-fidelity screens are under NDA — these images show the approved shareable versions. Click either to open it full size.</p>
 <div class="rule"></div>
 
 <div class="ba-grid">
 <div class="ba-wrap before">
-<img src="https://framerusercontent.com/images/qj7ErSWHQh5zEzWE7SbjDasz0Y.png" alt="Before redesign"/>
+<img src="https://framerusercontent.com/images/qj7ErSWHQh5zEzWE7SbjDasz0Y.png" alt="The SharePoint before the redesign" class="zoomable" data-cap="Before — an information archive. Content was grouped by the department that owned it, so a common task could sit anywhere."/>
 <div class="ba-label">Before — information archive</div>
 </div>
 <div class="ba-wrap after">
-<img src="https://framerusercontent.com/images/W9B3XG2Jn7wEsMGo1v6ZJHOoyBU.png" alt="After redesign"/>
+<img src="https://framerusercontent.com/images/W9B3XG2Jn7wEsMGo1v6ZJHOoyBU.png" alt="The SharePoint after the redesign" class="zoomable" data-cap="After — a user-centric guide. The same content, regrouped around what an employee is trying to do, with a persistent side navigation."/>
 <div class="ba-label">After — user-centric guide</div>
 </div>
 </div>
@@ -1285,8 +1389,8 @@ alt="Mastercard SharePoint Project"
 
 <div class="imgs c1">
 <div class="iw">
-<img src="https://framerusercontent.com/images/EGEmZLYRoCQC3N8DK6Hj1DJqmz4.png" alt="Collaboration process"/>
-<div class="icap">Collaboration and implementation process — cross-regional feedback and design sync workflow</div>
+<img src="https://framerusercontent.com/images/EGEmZLYRoCQC3N8DK6Hj1DJqmz4.png" alt="Collaboration process" class="zoomable" data-cap="Collaboration and implementation process — cross-regional feedback and design sync workflow."/>
+<div class="icap">Collaboration and implementation process — cross-regional feedback and design sync workflow. Click to enlarge.</div>
 </div>
 </div>
 </section>
@@ -1339,8 +1443,8 @@ alt="Mastercard SharePoint Project"
 
 <div class="imgs c1">
 <div class="iw">
-<img src="https://framerusercontent.com/images/QjUZtqCzDzdT4yAp2bXwGgS6Q4s.png" alt="Project insights"/>
-<div class="icap">Project insights and final deliverables overview</div>
+<img src="https://framerusercontent.com/images/QjUZtqCzDzdT4yAp2bXwGgS6Q4s.png" alt="Project insights" class="zoomable" data-cap="Project insights and final deliverables overview."/>
+<div class="icap">Project insights and final deliverables overview. Click to enlarge.</div>
 </div>
 </div>
 </section>
@@ -1374,47 +1478,186 @@ alt="Mastercard SharePoint Project"
 <!-- Closing scrawl -->
 <div style="margin-top:3rem; padding:1.5rem; border:1.5px solid rgba(26,22,18,0.12); background:var(--paper-dark); position:relative; transform:rotate(-0.3deg)">
 <div style="position:absolute; top:-11px; left:20px; width:40px; height:20px; background:rgba(181,38,30,0.28); border-top:1px solid rgba(181,38,30,0.4); border-bottom:1px solid rgba(181,38,30,0.4); transform:rotate(1.5deg)"></div>
-<p style="font-family:var(--font-serif); font-size:1.1rem; font-style:italic; color:var(--ink-light); line-height:1.7">
+<p style="font-family:var(--font-serif); font-size:var(--fs-quote); font-style:italic; color:var(--ink-light); line-height:1.6">
             The biggest insight wasn't about SharePoint at all — it was that people want to feel <span class="hl-y">seen by their tools</span>. A platform that respects how employees actually work will always outlast one that was built for the org chart.
 </p>
-<p style="font-family:var(--font-scrawl); font-size:18px; color:var(--mc-red); margin-top:0.75rem; transform:rotate(-1deg); display:inline-block">— Inayat</p>
+<p style="font-family:var(--font-scrawl); font-size:var(--fs-scrawl); color:var(--mc-red); margin-top:0.75rem; transform:rotate(-1deg); display:inline-block">— Inayat</p>
 <div class="corner-fold"></div>
 </div>
 </section>
 
 </main>
 
+<!-- LIGHTBOX -->
+<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image">
+<button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+<div class="lb-zoom" id="lbZoom">
+<button id="lbOut" aria-label="Zoom out">−</button>
+<span class="lb-lvl" id="lbLvl">FIT</span>
+<button id="lbIn" aria-label="Zoom in">+</button>
+</div>
+<div class="lb-stage" id="lbStage"></div>
+<div class="lb-cap" id="lbCap"></div>
+</div>
+
 <footer>© 2025 Inayat &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; Enterprise UX · SharePoint · Internship</footer>
 
 <script>
-// Spiral holes
+/* ---- spiral binding, redrawn on resize so it never runs short ---- */
 const spiral = document.getElementById('spiralBinding');
-const count = Math.floor(window.innerHeight / 44) + 2;
-for (let i = 0; i < count; i++) {
-const h = document.createElement('div');
-h.className = 'spiral-hole';
-spiral.appendChild(h);
-      }
+function drawSpiral() {
+  const count = Math.floor(window.innerHeight / 44) + 2;
+  if (spiral.childElementCount === count) return;
+  spiral.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const h = document.createElement('div');
+    h.className = 'spiral-hole';
+    spiral.appendChild(h);
+  }
+}
+drawSpiral();
 
-// Scroll reveal
+/* ---- mobile menu ---- */
+const navToggle = document.getElementById('navToggle');
+const navLinks  = document.getElementById('navLinks');
+navToggle.addEventListener('click', () => {
+  const open = navLinks.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  navToggle.setAttribute('aria-expanded', 'false');
+}));
+
+/* ============================================================
+   LIGHTBOX
+   Fit to screen first, then levels above it. A SharePoint screen
+   shrunk to the column width is a picture of an interface, not a
+   readable one, so zoom has to go past the fit.
+   ============================================================ */
+const lb      = document.getElementById('lightbox');
+const lbStage = document.getElementById('lbStage');
+const lbCap   = document.getElementById('lbCap');
+const lbZoom  = document.getElementById('lbZoom');
+const lbLvl   = document.getElementById('lbLvl');
+const lbIn    = document.getElementById('lbIn');
+const lbOut   = document.getElementById('lbOut');
+const lbClose = document.getElementById('lbClose');
+const LEVELS  = [0, 1, 1.5, 2];   /* 0 = fit; the rest are multiples of the file's own size */
+let lastFocus = null, natW = 0, natH = 0, fitW = 0, zi = 0, capText = '', node = null;
+
+function widthAt(i) { return natW * LEVELS[i]; }
+function canZoom()  { return widthAt(LEVELS.length - 1) > fitW * 1.05; }
+/* skip any level that would not actually be bigger than the fit */
+function nextLevel() {
+  for (let i = zi + 1; i < LEVELS.length; i++) if (widthAt(i) > fitW * 1.05) return i;
+  return 0;
+}
+function render(ox, oy) {
+  if (zi === 0) {
+    lb.classList.remove('zoomed');
+    lbLvl.textContent = 'FIT';
+    node.style.width = ''; node.style.height = '';
+  } else {
+    lb.classList.add('zoomed');
+    lbLvl.textContent = Math.round(LEVELS[zi] * 100) + '%';
+    node.style.width  = Math.round(natW * LEVELS[zi]) + 'px';
+    node.style.height = Math.round(natH * LEVELS[zi]) + 'px';
+    const x = ox === undefined ? 0.5 : ox, y = oy === undefined ? 0.5 : oy;
+    lbStage.scrollLeft = node.offsetWidth  * x - lbStage.clientWidth  / 2;
+    lbStage.scrollTop  = node.offsetHeight * y - lbStage.clientHeight / 2;
+  }
+  lbIn.disabled  = nextLevel() <= zi;
+  lbOut.disabled = zi <= 0;
+}
+function measure(cap) {
+  if (cap !== undefined) capText = cap;
+  zi = 0; render();
+  fitW = node.getBoundingClientRect().width;
+  const z = canZoom();
+  lbZoom.classList.toggle('on', z);
+  node.classList.toggle('can-zoom', z);
+  lbCap.innerHTML = (capText || '') + '<span class="lb-hint">' +
+    (z ? 'Click the image to zoom in · drag to pan · Esc to close'
+       : 'Click anywhere or press Esc to close') + '</span>';
+  lbIn.disabled = !z; lbOut.disabled = true;
+}
+function openImg(img) {
+  lastFocus = document.activeElement;
+  const el = new Image();
+  el.src = img.currentSrc || img.src;
+  el.alt = img.alt || '';
+  lbStage.innerHTML = ''; lbStage.appendChild(el);
+  node = el;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  lbClose.focus();
+  const go = () => { natW = el.naturalWidth; natH = el.naturalHeight; measure(img.dataset.cap || img.alt); };
+  if (el.complete && el.naturalWidth) go(); else el.addEventListener('load', go, { once: true });
+}
+function closeLB() {
+  lb.classList.remove('open', 'zoomed');
+  lbStage.innerHTML = '';
+  node = null; zi = 0;
+  document.body.style.overflow = '';
+  if (lastFocus) lastFocus.focus();
+}
+document.querySelectorAll('img.zoomable').forEach(img => {
+  img.addEventListener('click', () => openImg(img));
+});
+lbStage.addEventListener('click', e => {
+  if (!node || e.target !== node || !canZoom()) return;
+  const r = node.getBoundingClientRect();
+  zi = nextLevel();
+  render((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+});
+lbIn.addEventListener('click', () => { const n = nextLevel(); if (n > zi) { zi = n; render(); } });
+lbOut.addEventListener('click', () => { if (zi > 0) { zi--; render(); } });
+lbClose.addEventListener('click', closeLB);
+lb.addEventListener('click', e => { if (e.target === lb || e.target === lbCap) closeLB(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('open')) closeLB(); });
+/* drag to pan while zoomed (touch pans natively) */
+let drag = null;
+lbStage.addEventListener('pointerdown', e => {
+  if (zi === 0 || e.pointerType === 'touch') return;
+  drag = { x: e.clientX, y: e.clientY, l: lbStage.scrollLeft, t: lbStage.scrollTop };
+  lbStage.classList.add('dragging');
+  lbStage.setPointerCapture(e.pointerId);
+});
+lbStage.addEventListener('pointermove', e => {
+  if (!drag) return;
+  lbStage.scrollLeft = drag.l - (e.clientX - drag.x);
+  lbStage.scrollTop  = drag.t - (e.clientY - drag.y);
+});
+['pointerup', 'pointercancel'].forEach(ev =>
+  lbStage.addEventListener(ev, () => { drag = null; lbStage.classList.remove('dragging'); }));
+
+/* ---- scroll reveal + active sidenav ---- */
 const ro = new IntersectionObserver(es => es.forEach(e => {
-if (e.isIntersecting) e.target.classList.add('in');
-      }), { threshold: 0.06 });
+  if (e.isIntersecting) e.target.classList.add('in');
+}), { threshold: 0.06 });
 document.querySelectorAll('.rev').forEach(el => ro.observe(el));
-
-// Active sidenav
 const links = document.querySelectorAll('.side-a');
-const secs  = document.querySelectorAll('.sec');
 const so = new IntersectionObserver(es => {
-es.forEach(e => {
-if (e.isIntersecting) {
-links.forEach(l => l.classList.remove('active'));
-const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
-if (a) a.classList.add('active');
-          }
-        });
-      }, { rootMargin: '-15% 0px -65% 0px' });
-secs.forEach(s => so.observe(s));
+  es.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const a = document.querySelector(`.side-a[href="#${e.target.id}"]`);
+      if (a) a.classList.add('active');
+    }
+  });
+}, { rootMargin: '-15% 0px -65% 0px' });
+document.querySelectorAll('.sec').forEach(s => so.observe(s));
+
+/* keep the binding and any open lightbox correct through a resize */
+let rt;
+window.addEventListener('resize', () => {
+  clearTimeout(rt);
+  rt = setTimeout(() => {
+    drawSpiral();
+    if (lb.classList.contains('open') && node) measure();
+  }, 140);
+});
 </script>
 </body>
 </html>
