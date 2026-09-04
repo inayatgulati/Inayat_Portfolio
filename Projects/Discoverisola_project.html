@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Discover Isola — Inayat</title>
+  <meta name="description" content="Discover Isola: an interactive exhibition locator and microsite for Milan's Isola Design District at Fuorisalone — bridging print and digital through one visual language." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Kalam:wght@300;400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Reenie+Beanie&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
   <style>
     :root {
       --paper: #faf8f2;
@@ -20,25 +22,89 @@
       --blue: #2c5f8a;
       --teal: #2e7d6e;
       --teal-l: #3a9e8c;
-      /* Isola accent colours — pink/purple/lime from the project's palette, softened for paper */
+      /* Isola accent colours — pink/purple/lime from the project's palette,
+         softened for paper. --isola-lime was #5a8a1e: 3.89 on the cream and
+         3.49 on the card, both under AA, so it is darkened for text use;
+         --isola-lime-l keeps the true project lime for the swatch strip. */
       --isola-pink: #b5416b;
       --isola-purple: #6b4fa8;
-      --isola-lime: #5a8a1e;
+      --isola-lime: #4d7519;
+      --isola-lime-l: #a3c430;
       --yellow: #e8b84b;
       --green: #3a7d44;
+
       --font-hand: 'Caveat', cursive;
+      --font-text: 'Karla', system-ui, -apple-system, 'Segoe UI', sans-serif;
       --font-scrawl: 'Reenie Beanie', cursive;
       --font-mono: 'Space Mono', monospace;
       --font-serif: 'EB Garamond', serif;
+
       --nav-h: 58px;
       --side-w: 196px;
+      --spiral: 32px;
+      --main-max: 860px;
+      --main-pad: 3.5rem;
+      --nav-max: 1200px;
+
+      /* ---- fluid type: floor, ramp, ceiling ---- */
+      --fs-body:   clamp(14.5px, calc(13.96px + 0.138vw), 17.5px);
+      --fs-lead:   clamp(16px,   calc(15.26px + 0.19vw),  20.5px);
+      --fs-ui:     clamp(14px,   calc(13.44px + 0.143vw), 17px);
+      --fs-cap:    clamp(12.5px, calc(12.1px + 0.104vw),  15px);
+      --fs-mono-s: clamp(8.5px,  calc(8.14px + 0.093vw),  10.5px);
+      --fs-mono-m: clamp(9.5px,  calc(9.14px + 0.093vw),  11.5px);
+      --fs-hero:   clamp(17px,   calc(14.4px + 0.67vw),   29px);
+      --fs-h1:     clamp(38px,   calc(28.6px + 2.4vw),    90px);
+      --fs-h2:     clamp(29px,   calc(23.3px + 1.46vw),   60px);
+      --fs-h3:     clamp(23px,   calc(19.9px + 0.79vw),   40px);
+      --fs-num:    clamp(28px,   calc(23.4px + 1.18vw),   54px);
+      --fs-quote:  clamp(18px,   calc(15.5px + 0.64vw),   32px);
+      --fs-scrawl: clamp(17px,   calc(15.6px + 0.36vw),   25px);
+      --ico:       clamp(18px,   calc(16.8px + 0.375vw),  24px);
+      /* the hero reel and the swatch strip scale with the page */
+      --reel-h:    clamp(240px,  calc(203px + 11.6vw),    700px);
+      --swatch-h:  clamp(52px,   calc(46.7px + 1.66vw),   112px);
+    }
+    /* ---- larger desktops: the column grows with the screen ---- */
+    @media (min-width: 1600px) {
+      :root { --side-w: 228px; --main-max: 1000px; --main-pad: 3.75rem; --nav-h: 64px; --nav-max: 1440px; }
+    }
+    @media (min-width: 1920px) {
+      :root { --side-w: 254px; --main-max: 1130px; --main-pad: 4.25rem; --nav-h: 70px; --spiral: 40px; --nav-max: 1680px; }
+    }
+    /* ---- TV / 4K: a second, steeper ramp. Each floor is the ramp above's
+           ceiling, so the two meet without a step. ---- */
+    @media (min-width: 2560px) {
+      :root {
+        --side-w: 300px; --main-max: 1400px; --main-pad: 5rem; --nav-h: 84px; --spiral: 48px; --nav-max: 2200px;
+        --fs-body:   clamp(17.5px, calc(9.2px + 0.324vw),  26px);
+        --fs-lead:   clamp(20.5px, calc(10.7px + 0.383vw), 30px);
+        --fs-ui:     clamp(17px,   calc(9.0px + 0.313vw),  25px);
+        --fs-cap:    clamp(15px,   calc(8.2px + 0.266vw),  22px);
+        --fs-mono-s: clamp(10.5px, calc(6.6px + 0.152vw),  14.5px);
+        --fs-mono-m: clamp(11.5px, calc(7.2px + 0.168vw),  16px);
+        --fs-hero:   clamp(29px,   calc(12.9px + 0.629vw), 46px);
+        --fs-h1:     clamp(90px,   calc(37.6px + 2.05vw),  144px);
+        --fs-h2:     clamp(60px,   calc(25.1px + 1.36vw),  96px);
+        --fs-h3:     clamp(40px,   calc(17.4px + 0.883vw), 63px);
+        --fs-num:    clamp(54px,   calc(22.6px + 1.23vw),  86px);
+        --fs-quote:  clamp(32px,   calc(13.9px + 0.707vw), 51px);
+        --fs-scrawl: clamp(25px,   calc(11.4px + 0.531vw), 39px);
+        --ico:       clamp(24px,   calc(12.4px + 0.453vw), 36px);
+        --reel-h:    clamp(700px,  calc(292px + 15.9vw),   1120px);
+        --swatch-h:  clamp(112px,  calc(46.6px + 2.55vw),  180px);
+      }
+    }
+    @media (min-width: 3400px) {
+      :root { --side-w: 380px; --main-max: 1780px; --main-pad: 6rem; --nav-h: 96px; --spiral: 60px; --nav-max: 2900px; }
     }
 
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: var(--font-hand);
+      font-family: var(--font-text);
+      font-size: var(--fs-body);
       background: var(--paper);
       color: var(--ink);
       line-height: 1.6;
@@ -61,7 +127,7 @@
     .spiral-binding {
       position: fixed;
       left: 0; top: 0; bottom: 0;
-      width: 32px;
+      width: var(--spiral);
       background: var(--paper-worn);
       border-right: 2.5px solid var(--ink);
       z-index: 200;
@@ -86,7 +152,7 @@
     /* NAV */
     .topnav {
       position: fixed;
-      top: 0; left: 32px; right: 0;
+      top: 0; left: var(--spiral); right: 0;
       height: var(--nav-h);
       z-index: 150;
       background: var(--paper);
@@ -97,7 +163,7 @@
     }
     .topnav-in {
       width: 100%;
-      max-width: 1200px;
+      max-width: var(--nav-max);
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
@@ -105,7 +171,7 @@
     }
     .logo {
       font-family: var(--font-hand);
-      font-size: 22px;
+      font-size: clamp(22px, calc(19.8px + 0.57vw), 44px);
       font-weight: 700;
       color: var(--ink);
       text-decoration: none;
@@ -120,14 +186,10 @@
       border-radius: 2px;
       transform: rotate(-0.8deg);
     }
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
     .nav-links a {
-      font-family: var(--font-hand);
-      font-size: 16px;
+      font-family: var(--font-text);
+      font-size: var(--fs-ui);
       color: var(--ink-faint);
       text-decoration: none;
       position: relative;
@@ -144,12 +206,19 @@
     }
     .nav-links a:hover { color: var(--ink); }
     .nav-links a:hover::after { width: 100%; }
+    /* mobile menu button — the old page hid the links below 600px and put
+       nothing back, so the page had no navigation at all on a phone */
+    .nav-toggle { display: none; background: none; border: 0; cursor: pointer; padding: 9px 4px; }
+    .nav-toggle span { display: block; width: 23px; height: 2.5px; background: var(--ink); border-radius: 2px; margin: 4.5px 0; transition: transform 0.22s, opacity 0.18s; }
+    .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
     /* SIDENAV */
     .sidenav {
       position: fixed;
       top: var(--nav-h);
-      left: 32px;
+      left: var(--spiral);
       width: var(--side-w);
       height: calc(100vh - var(--nav-h));
       padding: 2rem 1rem 2rem 1.5rem;
@@ -169,24 +238,22 @@
       background: rgba(181,65,107,0.12);
       pointer-events: none;
     }
-
     .back-link {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       color: var(--isola-purple);
       text-decoration: none;
-      font-family: var(--font-hand);
-      font-size: 15px;
-      font-weight: 600;
+      font-family: var(--font-text);
+      font-size: var(--fs-ui);
+      font-weight: 700;
       transition: gap 0.2s;
       white-space: nowrap;
     }
     .back-link:hover { gap: 10px; }
-
     .side-lbl {
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: var(--fs-mono-s);
       letter-spacing: 3px;
       text-transform: uppercase;
       color: var(--pencil);
@@ -198,11 +265,11 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 0 6px 10px;
+      padding: 7px 0 7px 10px;
       color: var(--pencil);
       text-decoration: none;
-      font-family: var(--font-hand);
-      font-size: 15px;
+      font-family: var(--font-text);
+      font-size: var(--fs-ui);
       border-left: 2px solid transparent;
       transition: color 0.2s, border-color 0.2s;
       white-space: nowrap;
@@ -211,64 +278,82 @@
     .side-a.active { color: var(--isola-purple); border-left-color: var(--isola-purple); font-weight: 700; }
     .side-num {
       font-family: var(--font-mono);
-      font-size: 8px;
+      font-size: var(--fs-mono-s);
       color: var(--pencil);
-      min-width: 16px;
+      min-width: 18px;
     }
     .side-a.active .side-num { color: var(--isola-purple); }
-
-    /* Doodle map at bottom of sidenav */
     .side-doodle {
       margin-top: auto;
       padding-top: 1rem;
-      opacity: 0.3;
+      opacity: 0.32;
       pointer-events: none;
     }
 
     /* MAIN */
     .main {
-      margin-left: calc(32px + var(--side-w));
-      padding: calc(var(--nav-h) + 3rem) 3.5rem 7rem 3rem;
-      max-width: calc(860px + var(--side-w));
+      margin-left: calc(var(--spiral) + var(--side-w));
+      padding: calc(var(--nav-h) + 3rem) var(--main-pad) 7rem 3rem;
+      max-width: calc(var(--main-max) + var(--side-w));
       position: relative;
       z-index: 1;
     }
 
-    /* HERO */
-    .tags {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-bottom: 1.25rem;
+    /* ---- hand-drawn line icons (these replaced every emoji) ---- */
+    .ico {
+      width: var(--ico); height: var(--ico);
+      fill: none;
+      stroke: var(--ink-light);
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      display: block;
+      transition: stroke 0.2s ease;
     }
+    .fr:hover .ico { stroke: var(--isola-purple); }
+    .ic .ico { stroke: var(--isola-purple); }
+    .ico--inline {
+      width: 1.05em; height: 1.05em;
+      display: inline-block;
+      vertical-align: -0.16em;
+      stroke-width: 1.8;
+    }
+    .ic-aa {
+      font-family: var(--font-serif);
+      font-size: var(--ico);
+      font-weight: 500;
+      color: var(--isola-purple);
+      line-height: 1;
+      display: block;
+    }
+
+    /* HERO */
+    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
     .tag {
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: var(--fs-mono-s);
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--isola-purple);
-      padding: 3px 10px;
-      border: 1.5px solid rgba(107,79,168,0.3);
+      padding: 4px 10px;
+      border: 1.5px solid rgba(107,79,168,0.32);
       background: rgba(107,79,168,0.05);
       transform: rotate(-0.3deg);
       display: inline-block;
     }
-    .tag:nth-child(2) { transform: rotate(0.5deg); color: var(--isola-pink); border-color: rgba(181,65,107,0.3); background: rgba(181,65,107,0.05); }
-    .tag:nth-child(3) { transform: rotate(-0.2deg); color: var(--isola-lime); border-color: rgba(90,138,30,0.3); background: rgba(90,138,30,0.05); }
+    .tag:nth-child(2) { transform: rotate(0.5deg); color: var(--isola-pink); border-color: rgba(181,65,107,0.32); background: rgba(181,65,107,0.05); }
+    .tag:nth-child(3) { transform: rotate(-0.2deg); color: var(--isola-lime); border-color: rgba(77,117,25,0.32); background: rgba(77,117,25,0.05); }
 
     .hero-h {
       font-family: var(--font-hand);
-      font-size: clamp(2.6rem, 5vw, 4.2rem);
+      font-size: var(--fs-h1);
       font-weight: 700;
       line-height: 1.05;
       margin-bottom: 0.5rem;
       letter-spacing: -1px;
       position: relative;
     }
-    .hero-h .squiggle-wrap {
-      position: relative;
-      display: inline-block;
-    }
+    .hero-h .squiggle-wrap { position: relative; display: inline-block; }
     .hero-h .squiggle-wrap svg {
       position: absolute;
       bottom: -6px; left: -4px;
@@ -277,18 +362,18 @@
     }
     .hero-sub {
       font-family: var(--font-mono);
-      font-size: 10px;
+      font-size: var(--fs-mono-m);
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--ink-faint);
+      color: var(--ink-light);
       margin-bottom: 0.75rem;
     }
     .hero-p {
-      font-family: var(--font-hand);
-      font-size: 19px;
+      font-family: var(--font-text);
+      font-size: var(--fs-hero);
       color: var(--ink-light);
-      line-height: 1.65;
-      max-width: 520px;
+      line-height: 1.55;
+      max-width: 46ch;
       margin-bottom: 1.75rem;
     }
 
@@ -318,7 +403,7 @@
     .hero-video video {
       width: 100%;
       display: block;
-      max-height: 460px;
+      max-height: var(--reel-h);
       object-fit: cover;
     }
 
@@ -332,33 +417,18 @@
       box-shadow: 4px 4px 0 rgba(26,22,18,0.1);
       background: var(--paper-dark);
     }
-    .stat {
-      padding: 1.1rem 1rem;
-      border-right: 1.5px solid rgba(26,22,18,0.2);
-      position: relative;
-    }
+    .stat { padding: 1.1rem 1rem; border-right: 1.5px solid rgba(26,22,18,0.2); position: relative; }
     .stat:last-child { border-right: none; }
     .s-n {
       font-family: var(--font-hand);
-      font-size: 2.4rem;
+      font-size: var(--fs-num);
       font-weight: 700;
       color: var(--isola-purple);
       line-height: 1;
       margin-bottom: 4px;
     }
-    .s-l {
-      font-family: var(--font-hand);
-      font-size: 14px;
-      color: var(--ink-light);
-      line-height: 1.35;
-    }
-    .s-sub {
-      font-family: var(--font-mono);
-      font-size: 8px;
-      letter-spacing: 1px;
-      color: var(--pencil);
-      margin-top: 2px;
-    }
+    .s-l { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.4; }
+    .s-sub { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 1px; color: var(--ink-faint); margin-top: 3px; }
 
     /* META */
     .meta {
@@ -371,51 +441,41 @@
     }
     .m-k {
       font-family: var(--font-mono);
-      font-size: 8px;
+      font-size: var(--fs-mono-s);
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--isola-purple);
       font-weight: 400;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
     }
-    .m-v {
-      font-family: var(--font-hand);
-      font-size: 15px;
-      color: var(--ink-light);
-      line-height: 1.5;
-    }
+    .m-v { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.5; }
 
     /* SECTION */
     .sec { margin-bottom: 5rem; }
-
-    .phase {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 0.75rem;
-    }
+    .phase { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
     .p-dot {
-      width: 22px; height: 22px;
+      width: 24px; height: 24px;
       border-radius: 50%;
       border: 2px solid var(--ink);
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: var(--fs-mono-m);
       color: var(--ink);
       font-weight: 700;
+      flex: none;
     }
     .p-txt {
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: var(--fs-mono-m);
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: var(--ink-faint);
+      color: var(--ink-light);
     }
     .sec-h {
       font-family: var(--font-hand);
-      font-size: 2.2rem;
+      font-size: var(--fs-h2);
       font-weight: 700;
       line-height: 1.1;
       margin-bottom: 0.5rem;
@@ -434,22 +494,18 @@
       width: 80%;
     }
     .sec-lead {
-      font-family: var(--font-hand);
-      font-size: 18px;
+      font-family: var(--font-text);
+      font-size: var(--fs-lead);
       color: var(--ink-light);
-      line-height: 1.75;
-      max-width: 560px;
+      line-height: 1.6;
+      max-width: 62ch;
       margin-bottom: 1.5rem;
       margin-top: 0.5rem;
     }
-    .rule {
-      height: 1.5px;
-      background: rgba(26,22,18,0.12);
-      margin-bottom: 1.5rem;
-    }
+    .rule { height: 1.5px; background: rgba(26,22,18,0.12); margin-bottom: 1.5rem; }
     .sub {
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: var(--fs-mono-m);
       letter-spacing: 3px;
       text-transform: uppercase;
       color: var(--isola-purple);
@@ -457,18 +513,8 @@
     }
 
     /* GRIDS */
-    .g3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 1.5rem;
-    }
-    .g2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-bottom: 1.5rem;
-    }
+    .g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+    .g2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 1.5rem; }
 
     /* NOTEBOOK CARD */
     .nc {
@@ -476,37 +522,21 @@
       border: 2px solid var(--ink);
       padding: 1.1rem;
       position: relative;
-      transition: transform 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
     }
-    .nc:hover { transform: translate(-2px,-2px); }
-    .nc::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; right: -4px;
-      width: 100%; height: 100%;
-      border: 1.5px solid rgba(26,22,18,0.18);
-      z-index: -1;
-    }
+    .nc:hover { transform: translate(-2px,-2px); box-shadow: 5px 7px 0 rgba(26,22,18,0.16); }
     .nc-n {
       font-family: var(--font-hand);
-      font-size: 2.2rem;
+      font-size: var(--fs-num);
       font-weight: 700;
       color: var(--isola-purple);
       line-height: 1;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
-    .nc-t {
-      font-family: var(--font-hand);
-      font-size: 15px;
-      font-weight: 700;
-      margin-bottom: 3px;
-    }
-    .nc-d {
-      font-family: var(--font-hand);
-      font-size: 14px;
-      color: var(--ink-light);
-      line-height: 1.5;
-    }
+    .nc-n.word { font-size: var(--fs-h3); }
+    .nc-t { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; margin-bottom: 4px; }
+    .nc-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.55; }
 
     /* ICON CARD */
     .ic {
@@ -514,36 +544,14 @@
       border: 2px solid var(--ink);
       padding: 1.1rem;
       position: relative;
+      box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
     }
-    .ic::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; right: -4px;
-      width: 100%; height: 100%;
-      border: 1.5px solid rgba(26,22,18,0.18);
-      z-index: -1;
-    }
-    .ic-ico { font-size: 1rem; margin-bottom: 0.5rem; }
-    .ic-t {
-      font-family: var(--font-hand);
-      font-size: 15px;
-      font-weight: 700;
-      margin-bottom: 3px;
-    }
-    .ic-d {
-      font-family: var(--font-hand);
-      font-size: 13px;
-      color: var(--ink-light);
-      line-height: 1.55;
-    }
+    .ic-ico { margin-bottom: 0.6rem; }
+    .ic-t { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; margin-bottom: 4px; }
+    .ic-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.6; }
 
     /* FINDING ROW */
-    .flist {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 1.5rem;
-    }
+    .flist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
     .fr {
       display: flex;
       gap: 0.875rem;
@@ -553,39 +561,20 @@
       border: 1.5px solid rgba(26,22,18,0.15);
       transition: border-color 0.2s, transform 0.2s;
     }
-    .fr:hover {
-      border-color: rgba(107,79,168,0.4);
-      transform: translateX(2px);
-    }
+    .fr:hover { border-color: rgba(107,79,168,0.4); transform: translateX(2px); }
     .fr-i {
-      width: 30px; height: 30px; min-width: 30px;
+      width: 32px; height: 32px; min-width: 32px;
       border: 1.5px solid rgba(26,22,18,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.82rem;
       background: var(--paper);
     }
-    .fr-t {
-      font-family: var(--font-hand);
-      font-size: 15px;
-      font-weight: 700;
-      margin-bottom: 2px;
-    }
-    .fr-d {
-      font-family: var(--font-hand);
-      font-size: 14px;
-      color: var(--ink-light);
-      line-height: 1.55;
-    }
+    .fr-t { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; margin-bottom: 3px; }
+    .fr-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.6; }
 
     /* STEP LIST */
-    .slist {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 1.5rem;
-    }
+    .slist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
     .st {
       display: flex;
       gap: 0.875rem;
@@ -595,65 +584,44 @@
     }
     .st-n {
       font-family: var(--font-hand);
-      font-size: 1.3rem;
+      font-size: var(--fs-h3);
       font-weight: 700;
       color: var(--isola-purple);
-      min-width: 20px;
-      line-height: 1.4;
+      min-width: 26px;
+      line-height: 1.3;
     }
-    .st-t {
-      font-family: var(--font-hand);
-      font-size: 15px;
-      font-weight: 700;
-      margin-bottom: 2px;
-    }
-    .st-d {
-      font-family: var(--font-hand);
-      font-size: 13px;
-      color: var(--ink-light);
-      line-height: 1.5;
-    }
+    .st-t { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; margin-bottom: 3px; }
+    .st-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.55; }
 
     /* ITERATION */
-    .ilist {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 1.5rem;
-    }
-    .it {
-      display: grid;
-      grid-template-columns: 1fr 28px 1fr;
-      align-items: center;
-      gap: 8px;
-    }
-    .it-b {
-      padding: 0.875rem 1rem;
-      border: 1.5px solid rgba(26,22,18,0.15);
-    }
+    .ilist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+    .it { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: center; gap: 8px; }
+    .it-b { padding: 0.875rem 1rem; border: 1.5px solid rgba(26,22,18,0.15); }
     .it-b.bef { background: var(--paper-dark); }
     .it-b.aft { background: rgba(107,79,168,0.04); border-color: rgba(107,79,168,0.3); }
     .it-lbl {
       font-family: var(--font-mono);
-      font-size: 8px;
+      font-size: var(--fs-mono-s);
       letter-spacing: 2px;
       text-transform: uppercase;
-      margin-bottom: 3px;
+      font-weight: 700;
+      margin-bottom: 4px;
     }
-    .it-b.bef .it-lbl { color: var(--pencil); }
+    .it-b.bef .it-lbl { color: var(--ink-faint); }
     .it-b.aft .it-lbl { color: var(--isola-purple); }
-    .it-txt { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.45; }
+    .it-txt { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.5; }
     .it-b.aft .it-txt { color: var(--ink); }
     .it-arr { text-align: center; color: var(--isola-purple); font-size: 1rem; font-weight: 700; }
 
     /* QUOTE */
     .quote {
       border-left: 3px solid var(--isola-pink);
-      padding: 0.875rem 1.25rem;
+      padding: 1rem 1.25rem;
       margin: 1.25rem 0;
       background: rgba(181,65,107,0.04);
       position: relative;
       transform: rotate(-0.3deg);
+      max-width: 66ch;
     }
     .quote::before {
       content: '';
@@ -665,33 +633,23 @@
       border-bottom: 1px solid rgba(232,184,75,0.5);
       transform: rotate(1.5deg);
     }
-    .quote p {
-      font-family: var(--font-serif);
-      font-size: 1.25rem;
-      font-style: italic;
-      line-height: 1.65;
-      color: var(--ink);
-    }
+    .quote p { font-family: var(--font-serif); font-size: var(--fs-quote); font-style: italic; line-height: 1.55; color: var(--ink); }
     .quote-attr {
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: var(--fs-mono-m);
       letter-spacing: 1px;
-      color: var(--ink-faint);
-      margin-top: 0.5rem;
+      color: var(--ink-light);
+      margin-top: 0.75rem;
       text-transform: uppercase;
     }
 
     /* REFLECTION */
-    .rc {
-      background: var(--paper-dark);
-      border: 1.5px solid rgba(26,22,18,0.15);
-      padding: 1.1rem;
-    }
-    .rc-t { font-family: var(--font-hand); font-size: 15px; font-weight: 700; color: var(--isola-purple); margin-bottom: 5px; }
-    .rc-d { font-family: var(--font-hand); font-size: 14px; color: var(--ink-light); line-height: 1.7; }
+    .rc { background: var(--paper-dark); border: 1.5px solid rgba(26,22,18,0.15); padding: 1.1rem; }
+    .rc-t { font-family: var(--font-text); font-size: var(--fs-cap); font-weight: 700; color: var(--isola-purple); margin-bottom: 6px; }
+    .rc-d { font-family: var(--font-text); font-size: var(--fs-cap); color: var(--ink-light); line-height: 1.65; }
 
     /* IMAGES */
-    .imgs { display: grid; gap: 10px; margin-bottom: 1.5rem; }
+    .imgs { display: grid; gap: 12px; margin-bottom: 1.5rem; }
     .imgs.c1 { grid-template-columns: 1fr; }
     .imgs.c2 { grid-template-columns: 1fr 1fr; }
     .imgs.c3 { grid-template-columns: repeat(3, 1fr); }
@@ -699,40 +657,28 @@
       border: 2px solid var(--ink);
       background: var(--paper-dark);
       position: relative;
-      transition: transform 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 3px 4px 0 rgba(26,22,18,0.10);
     }
-    .iw:hover { transform: translate(-2px,-2px); }
-    .iw::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; right: -4px;
-      width: 100%; height: 100%;
-      border: 1.5px solid rgba(26,22,18,0.15);
-      z-index: -1;
-    }
+    .iw:hover { transform: translate(-2px,-2px); box-shadow: 5px 7px 0 rgba(26,22,18,0.16); }
     .iw img { width: 100%; display: block; }
     .icap {
-      padding: 7px 10px;
-      font-family: var(--font-hand);
-      font-size: 13px;
-      color: var(--ink-faint);
-      border-top: 1px solid rgba(26,22,18,0.12);
-      line-height: 1.4;
+      padding: 9px 11px;
+      font-family: var(--font-text);
+      font-size: var(--fs-cap);
+      color: var(--ink-light);
+      border-top: 1.5px solid rgba(26,22,18,0.12);
+      line-height: 1.45;
     }
 
     /* TOOLS */
-    .tools {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 1.5rem;
-    }
+    .tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
     .tool {
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: var(--fs-mono-m);
       letter-spacing: 1px;
       text-transform: uppercase;
-      padding: 4px 10px;
+      padding: 5px 10px;
       border: 1.5px solid var(--ink);
       background: var(--paper);
       color: var(--ink-light);
@@ -764,19 +710,23 @@
     }
     .swatch {
       flex: 1;
-      height: 56px;
+      height: var(--swatch-h);
       display: flex;
       align-items: flex-end;
-      padding: 5px 7px;
+      padding: 6px 8px;
     }
+    /* the label was rgba white under mix-blend-mode: difference, which made
+       it unreadable on the mid-tone swatches. Now each swatch states its own
+       readable ink. */
     .swatch-lbl {
       font-family: var(--font-mono);
-      font-size: 8px;
+      font-size: var(--fs-mono-s);
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.75);
-      mix-blend-mode: difference;
+      color: #fff;
+      font-weight: 700;
     }
+    .swatch-lbl.on-light { color: var(--ink); }
 
     /* CORNER FOLD */
     .corner-fold {
@@ -790,46 +740,133 @@
     }
 
     /* SCROLL REVEAL */
-    .rev {
-      opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
+    .rev { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
     .rev.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) { .rev { opacity: 1; transform: none; transition: none; } }
+
+    /* ============================================================
+       ZOOM — the design-system boards and the map interface open
+       full size. A component library at column width is a picture
+       of a system, not a readable one.
+       ============================================================ */
+    .zoomable { cursor: zoom-in; }
+    .lb { position: fixed; inset: 0; z-index: 500; background: rgba(20,17,13,.94);
+      display: none; align-items: center; justify-content: center; padding: 4vh 4vw 9vh; }
+    .lb.open { display: flex; }
+    .lb-stage { max-width: 100%; max-height: 87vh; overflow: auto; display: flex;
+      align-items: center; justify-content: center; -webkit-overflow-scrolling: touch; }
+    .lb.zoomed .lb-stage { align-items: flex-start; justify-content: flex-start; cursor: grab; }
+    .lb.zoomed .lb-stage.dragging { cursor: grabbing; }
+    .lb img { max-width: 100%; max-height: 87vh; object-fit: contain; display: block;
+      border: 2px solid var(--paper); background: var(--paper); }
+    .lb.zoomed img { max-width: none; max-height: none; }
+    .lb img.can-zoom { cursor: zoom-in; }
+    .lb-close { position: absolute; top: 14px; right: 18px; width: 44px; height: 44px;
+      background: var(--paper); border: 2px solid var(--ink); color: var(--ink); cursor: pointer;
+      font-family: var(--font-mono); font-size: 18px; line-height: 1; display: grid; place-items: center; }
+    .lb-close:hover { background: var(--ink); color: var(--paper); }
+    .lb-zoom { position: absolute; top: 14px; right: 72px; display: none; align-items: center; gap: 8px;
+      background: var(--paper); border: 2px solid var(--ink); height: 44px; padding: 0 6px; }
+    .lb-zoom.on { display: flex; }
+    .lb-zoom button { background: none; border: 0; cursor: pointer; color: var(--ink);
+      font-family: var(--font-mono); font-size: 17px; line-height: 1; width: 30px; height: 32px;
+      display: grid; place-items: center; }
+    .lb-zoom button:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+    .lb-zoom button:disabled { opacity: .3; cursor: default; }
+    .lb-lvl { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 1px;
+      color: var(--ink); min-width: 46px; text-align: center; }
+    .lb-cap { position: absolute; bottom: 0; left: 0; right: 0; text-align: center;
+      padding: 26px 6vw 18px; font-family: var(--font-text); font-size: var(--fs-cap);
+      color: rgba(255,255,255,.85); line-height: 1.5;
+      background: linear-gradient(to bottom, rgba(20,17,13,0), rgba(20,17,13,.95) 34%); }
+    .lb-hint { font-family: var(--font-mono); font-size: var(--fs-mono-s); letter-spacing: 1.2px;
+      text-transform: uppercase; color: rgba(255,255,255,.5); display: block; margin-top: 6px; }
 
     /* FOOTER */
     footer {
       border-top: 2.5px solid var(--ink);
-      padding: 1.25rem 2rem;
+      padding: 1.4rem 2rem;
       text-align: center;
       font-family: var(--font-mono);
-      font-size: 9px;
+      font-size: var(--fs-mono-s);
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--pencil);
-      margin-left: 32px;
+      color: var(--ink-faint);
+      margin-left: var(--spiral);
     }
 
     /* RESPONSIVE */
-    @media (max-width: 860px) {
+    @media (max-width: 1180px) {
+      :root { --side-w: 178px; --main-pad: 2.25rem; }
+      .nav-links { gap: 1.4rem; }
+    }
+    @media (max-width: 960px) {
+      :root { --spiral: 0px; }
+      .spiral-binding { display: none; }
       .sidenav { display: none; }
-      .main { margin-left: 32px; padding: 5rem 1.5rem 5rem; }
+      .main { margin-left: 0; max-width: 100%; padding: calc(var(--nav-h) + 2.5rem) 2rem 5rem; }
       .stats { grid-template-columns: repeat(2, 1fr); }
+      .g3 { grid-template-columns: repeat(2, 1fr); }
+      .imgs.c3 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 760px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: calc(100% + 2.5px);
+        left: 0; right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: var(--paper);
+        border-bottom: 2.5px solid var(--ink);
+        padding: 0.35rem 2rem 0.9rem;
+        box-shadow: 0 8px 18px rgba(26,22,18,0.08);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { display: block; padding: 0.6rem 0; border-bottom: 1px solid rgba(26,22,18,0.08); }
+      .nav-links li:last-child a { border-bottom: 0; }
       .g3, .g2 { grid-template-columns: 1fr; }
       .it { grid-template-columns: 1fr; }
       .it-arr { display: none; }
       .imgs.c2, .imgs.c3 { grid-template-columns: 1fr; }
+      .main { padding: calc(var(--nav-h) + 2rem) 1.5rem 4rem; }
     }
     @media (max-width: 600px) {
-      .spiral-binding { display: none; }
-      .topnav, footer { margin-left: 0; left: 0; }
-      .main { margin-left: 0; padding: 5rem 1.25rem 4rem; }
-      .nav-links { display: none; }
-      .hero-h { font-size: 2.2rem; }
+      .stats { grid-template-columns: 1fr; }
+      .stat { border-right: 0; border-bottom: 1.5px solid rgba(26,22,18,0.2); }
+      .stat:last-child { border-bottom: 0; }
+      .main { padding: calc(var(--nav-h) + 1.75rem) 1.25rem 4rem; }
+      /* five swatches at 320px is 60px each — stack into two rows instead */
+      .palette-strip { flex-wrap: wrap; }
+      .swatch { flex: 1 1 33%; }
+      .lb-zoom { right: 66px; }
     }
   </style>
 </head>
 <body>
+
+  <!-- HAND-DRAWN ICON SPRITE — these replaced every emoji on the page -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-map" viewBox="0 0 24 24"><path d="M2.6 6.4 9 3.6l6.2 2.8 6.2-2.7v14l-6.2 2.7L9 17.6l-6.4 2.8z"/><path d="M9 3.6v14M15.2 6.4v14.4"/></symbol>
+      <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3.2c5 0 9 3.6 9 8 0 2.6-2 4.2-4.4 4.2h-1.7c-1.2 0-2.1.9-2.1 2 0 .5.2.9.5 1.3.3.4.5.8.5 1.2 0 1.1-.9 1.9-2 1.9-5 0-8.8-4-8.8-9.1S7 3.2 12 3.2z"/><path d="M7.6 11.4h.02M10.4 7.8h.02M14.6 8.2h.02M17.4 11.8h.02"/></symbol>
+      <symbol id="i-film" viewBox="0 0 24 24"><rect x="2.8" y="4.2" width="18.4" height="15.6" rx="1.8"/><path d="M7.4 4.4v15.2M16.6 4.4v15.2"/><path d="M3 12h18"/><path d="M4.8 8.1h.9M4.8 15.9h.9M18.3 8.1h.9M18.3 15.9h.9"/></symbol>
+      <symbol id="i-ruler" viewBox="0 0 24 24"><rect x="1.6" y="8.4" width="20.8" height="7.2" rx="1.4" transform="rotate(-14 12 12)"/><path d="M6.2 9.6v2.6M9.8 8.6v3.6M13.4 7.8v2.6M17 6.9v3.6"/></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.2"/><path d="M12 7.8h.02"/></symbol>
+      <symbol id="i-bars" viewBox="0 0 24 24"><rect x="3" y="4.4" width="18" height="3.6" rx="0.6"/><rect x="3" y="10.2" width="12.4" height="3.6" rx="0.6"/><rect x="3" y="16" width="16" height="3.6" rx="0.6"/></symbol>
+      <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="1.4"/><path d="M12 3.4v17.2M3.4 12h17.2"/></symbol>
+      <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13.6a4.2 4.2 0 0 0 6.2.4l2.6-2.6a4.3 4.3 0 0 0-6-6.1l-1.5 1.4"/><path d="M14 10.4a4.2 4.2 0 0 0-6.2-.4l-2.6 2.6a4.3 4.3 0 0 0 6 6.1l1.5-1.4"/></symbol>
+      <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 2.4 14.2 9.8 21.6 12l-7.4 2.2L12 21.6 9.8 14.2 2.4 12l7.4-2.2z"/></symbol>
+      <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M10 2.8 11.9 8 17 9.9 11.9 11.8 10 17 8.1 11.8 3 9.9 8.1 8z"/><path d="M17.6 14.2l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9z"/></symbol>
+      <symbol id="i-book" viewBox="0 0 24 24"><path d="M4.4 3.4h11.8a3 3 0 0 1 3 3v14.2H7.4a3 3 0 0 0-3 3z"/><path d="M8 7.6h7.6M8 11.2h7.6M8 14.8h4.6"/></symbol>
+      <symbol id="i-frame" viewBox="0 0 24 24"><rect x="3" y="4.2" width="18" height="15.6" rx="1.6"/><circle cx="8.6" cy="9.4" r="1.7"/><path d="M3.4 17.2 9 11.8l4.4 4.2 3-2.6 4.2 3.8"/></symbol>
+      <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.4 12s3.6-6.4 9.6-6.4S21.6 12 21.6 12s-3.6 6.4-9.6 6.4S2.4 12 2.4 12z"/><circle cx="12" cy="12" r="3.1"/></symbol>
+      <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.6 2.4 4.8 13.8h6.1l-1.3 7.8 9-11.6h-6z"/></symbol>
+      <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.2" y="2.4" width="11.6" height="19.2" rx="2.4"/><path d="M10.4 5.2h3.2"/><path d="M12 18.4h.02"/></symbol>
+      <symbol id="i-pen" viewBox="0 0 24 24"><path d="M3.4 20.6l1.2-4.2L16.2 4.8a2.2 2.2 0 0 1 3.1 3.1L7.6 19.4z"/><path d="M14.8 6.6l2.9 2.9"/></symbol>
+    </defs>
+  </svg>
 
   <!-- SPIRAL BINDING -->
   <div class="spiral-binding" aria-hidden="true" id="spiralBinding"></div>
@@ -838,10 +875,14 @@
   <nav class="topnav">
     <div class="topnav-in">
       <a href="../index.html" class="logo">Inayat</a>
-      <ul class="nav-links">
+      <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
         <li><a href="../index.html">Home</a></li>
         <li><a href="../About.html">About</a></li>
         <li><a href="../Projects.html">Projects</a></li>
+        <li><a href="../Playground.html">Playground</a></li>
         <li><a href="../Resume.html">Résumé</a></li>
         <li><a href="../index.html#contact">Contact</a></li>
       </ul>
@@ -866,17 +907,17 @@
       </nav>
     </div>
 
-    <!-- Small doodle at bottom of sidenav -->
+    <!-- district map doodle — drawn star, no emoji -->
     <div class="side-doodle">
       <svg viewBox="0 0 80 70" style="width:70px">
-        <!-- simplified district map doodle -->
         <rect x="8" y="8" width="28" height="18" stroke="#1a1612" stroke-width="1" fill="none"/>
         <rect x="42" y="8" width="30" height="12" stroke="#1a1612" stroke-width="1" fill="none"/>
         <rect x="8" y="32" width="18" height="22" stroke="#1a1612" stroke-width="1" fill="none"/>
         <rect x="32" y="32" width="22" height="14" stroke="#1a1612" stroke-width="1" fill="none"/>
         <rect x="58" y="26" width="14" height="28" stroke="#1a1612" stroke-width="1" fill="none"/>
         <line x1="6" y1="58" x2="76" y2="58" stroke="#1a1612" stroke-width="1.5"/>
-        <text x="10" y="68" font-family="Reenie Beanie, cursive" font-size="9" fill="#b5416b">✦ isola</text>
+        <path d="M12 68.5 13.1 65.4 16.2 64.3 13.1 63.2 12 60.1 10.9 63.2 7.8 64.3 10.9 65.4z" fill="#b5416b" stroke="none"/>
+        <text x="20" y="68" font-family="Reenie Beanie, cursive" font-size="10" fill="#b5416b">isola</text>
       </svg>
     </div>
   </aside>
@@ -937,26 +978,11 @@
       </div>
 
       <div class="meta">
-        <div>
-          <div class="m-k">Timeline</div>
-          <div class="m-v">Nov '23 – Dec '23</div>
-        </div>
-        <div>
-          <div class="m-k">My Role</div>
-          <div class="m-v">UX/UI Designer</div>
-        </div>
-        <div>
-          <div class="m-k">Client</div>
-          <div class="m-v">Fuorisalone<br/>Design Festival</div>
-        </div>
-        <div>
-          <div class="m-k">Team</div>
-          <div class="m-v">Collaborative<br/>Design Project</div>
-        </div>
-        <div>
-          <div class="m-k">Tools</div>
-          <div class="m-v">Figma, After Effects<br/>GIS Mapping</div>
-        </div>
+        <div><div class="m-k">Timeline</div><div class="m-v">Nov '23 – Dec '23</div></div>
+        <div><div class="m-k">My Role</div><div class="m-v">UX/UI Designer</div></div>
+        <div><div class="m-k">Client</div><div class="m-v">Fuorisalone<br/>Design Festival</div></div>
+        <div><div class="m-k">Team</div><div class="m-v">Collaborative<br/>Design Project</div></div>
+        <div><div class="m-k">Tools</div><div class="m-v">Figma, After Effects<br/>GIS Mapping</div></div>
       </div>
     </header>
 
@@ -971,22 +997,22 @@
 
       <div class="g2" style="margin-bottom:2rem">
         <div class="nc">
-          <div class="nc-n" style="font-size:1.4rem; margin-bottom:6px">Microsite</div>
+          <div class="nc-n word">Microsite</div>
           <div class="nc-t">Interactive digital experience</div>
           <div class="nc-d">An intuitive interface where visitors could navigate the district, discover exhibitions, and plan their route — all in one place.</div>
         </div>
         <div class="nc">
-          <div class="nc-n" style="font-size:1.4rem; margin-bottom:6px">Poster</div>
+          <div class="nc-n word">Poster</div>
           <div class="nc-t">Print-to-digital bridge</div>
           <div class="nc-d">A graphic design system that mirrored the microsite's visual language — creating a seamless transition between physical and digital touchpoints.</div>
         </div>
         <div class="nc">
-          <div class="nc-n" style="font-size:1.4rem; margin-bottom:6px">Isola</div>
+          <div class="nc-n word">Isola</div>
           <div class="nc-t">Milan's design district</div>
           <div class="nc-d">The Isola neighbourhood during Fuorisalone — one of Milan's most vibrant creative hubs with exhibitions, installations, and local venues.</div>
         </div>
         <div class="nc">
-          <div class="nc-n" style="font-size:1.4rem; margin-bottom:6px">Mission</div>
+          <div class="nc-n word">Mission</div>
           <div class="nc-t">Wayfinding + discovery</div>
           <div class="nc-d">Create an engaging digital platform that enhances exploration of the district while promoting local tourism and art exhibitions to festival visitors.</div>
         </div>
@@ -1034,17 +1060,17 @@
 
       <div class="sub">Core Interactions</div>
       <div class="flist" style="margin-bottom:2rem">
-        <div class="fr"><div class="fr-i">🗺</div><div><div class="fr-t">Interactive guide map</div><div class="fr-d">Navigate through the district using a spatial, interactive map that places exhibitions and venues in their real geographic context.</div></div></div>
-        <div class="fr"><div class="fr-i">🎨</div><div><div class="fr-t">Exhibition discovery</div><div class="fr-d">Discover art exhibitions and local attractions through browseable cards — each linked to location previews and venue details.</div></div></div>
-        <div class="fr"><div class="fr-i">🎞</div><div><div class="fr-t">Atmosphere preview videos</div><div class="fr-d">Experience the district's energy through embedded preview videos — giving visitors a feel for each space before arriving.</div></div></div>
-        <div class="fr"><div class="fr-i">📏</div><div><div class="fr-t">Distance calculator</div><div class="fr-d">Calculate distances between locations to help visitors plan efficient routes through the district across a busy festival day.</div></div></div>
-        <div class="fr"><div class="fr-i">ℹ️</div><div><div class="fr-t">Venue information</div><div class="fr-d">Access detailed information about venues and events — opening hours, exhibition descriptions, and practical visitor details.</div></div></div>
+        <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-map"/></svg></div><div><div class="fr-t">Interactive guide map</div><div class="fr-d">Navigate through the district using a spatial, interactive map that places exhibitions and venues in their real geographic context.</div></div></div>
+        <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-palette"/></svg></div><div><div class="fr-t">Exhibition discovery</div><div class="fr-d">Discover art exhibitions and local attractions through browseable cards — each linked to location previews and venue details.</div></div></div>
+        <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-film"/></svg></div><div><div class="fr-t">Atmosphere preview videos</div><div class="fr-d">Experience the district's energy through embedded preview videos — giving visitors a feel for each space before arriving.</div></div></div>
+        <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-ruler"/></svg></div><div><div class="fr-t">Distance calculator</div><div class="fr-d">Calculate distances between locations to help visitors plan efficient routes through the district across a busy festival day.</div></div></div>
+        <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-info"/></svg></div><div><div class="fr-t">Venue information</div><div class="fr-d">Access detailed information about venues and events — opening hours, exhibition descriptions, and practical visitor details.</div></div></div>
       </div>
 
       <div class="imgs c1">
         <div class="iw">
-          <img src="https://framerusercontent.com/images/HUaa0HUx0GrTDk9osIOxwvHQhY.png" alt="Interactive Map Interface"/>
-          <div class="icap">Interactive map interface — the core navigation experience for the Isola district</div>
+          <img src="https://framerusercontent.com/images/HUaa0HUx0GrTDk9osIOxwvHQhY.png" alt="Interactive Map Interface" class="zoomable" data-cap="Interactive map interface — the core navigation experience for the Isola district."/>
+          <div class="icap">Interactive map interface — the core navigation experience for the Isola district. Click to enlarge.</div>
         </div>
       </div>
     </section>
@@ -1058,23 +1084,22 @@
       </p>
       <div class="rule"></div>
 
-      <!-- Isola colour palette as notebook colour strip -->
       <div class="sub">Project Colour Palette</div>
       <div class="palette-strip" style="margin-bottom:2rem">
         <div class="swatch" style="background:#b5416b"><span class="swatch-lbl">Pink</span></div>
         <div class="swatch" style="background:#6b4fa8"><span class="swatch-lbl">Purple</span></div>
-        <div class="swatch" style="background:#a3c430"><span class="swatch-lbl">Lime</span></div>
+        <div class="swatch" style="background:var(--isola-lime-l)"><span class="swatch-lbl on-light">Lime</span></div>
         <div class="swatch" style="background:#1a1612"><span class="swatch-lbl">Ink</span></div>
-        <div class="swatch" style="background:#faf8f2"><span class="swatch-lbl" style="color:var(--ink-faint)">Paper</span></div>
+        <div class="swatch" style="background:#faf8f2"><span class="swatch-lbl on-light">Paper</span></div>
       </div>
 
       <div class="g3">
-        <div class="ic"><div class="ic-ico">⬛</div><div class="ic-t">Visual Sync</div><div class="ic-d">Sliding bars that mirror the microsite's loading animation — the poster physically enacts the transition from static to digital.</div></div>
-        <div class="ic"><div class="ic-ico">🎨</div><div class="ic-t">Colour Palette</div><div class="ic-d">Pink, purple, and lime green — a vibrant palette that captures Isola's energy while maintaining consistency across print and digital formats.</div></div>
-        <div class="ic"><div class="ic-ico">⊞</div><div class="ic-t">Layout</div><div class="ic-d">Dynamic grid with district imagery — a flexible structure that shifts between the fixed proportions of print and the fluid layout of the microsite.</div></div>
-        <div class="ic"><div class="ic-ico">Aa</div><div class="ic-t">Typography</div><div class="ic-d">Suisse Int'l Bold paired with IBM Plex Mono — editorial strength balanced with technical precision, used consistently across both mediums.</div></div>
-        <div class="ic"><div class="ic-ico">🔗</div><div class="ic-t">Interactivity Bridge</div><div class="ic-d">The static poster acts as a visual entry point — its geometric elements and colour system directly translate into animated, interactive components on the microsite.</div></div>
-        <div class="ic"><div class="ic-ico">✦</div><div class="ic-t">Geometric Elements</div><div class="ic-d">Unified geometric shapes appear in both poster and microsite — creating visual continuity and reinforcing the district's design-forward identity.</div></div>
+        <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-bars"/></svg></div><div class="ic-t">Visual Sync</div><div class="ic-d">Sliding bars that mirror the microsite's loading animation — the poster physically enacts the transition from static to digital.</div></div>
+        <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-palette"/></svg></div><div class="ic-t">Colour Palette</div><div class="ic-d">Pink, purple, and lime green — a vibrant palette that captures Isola's energy while maintaining consistency across print and digital formats.</div></div>
+        <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-grid"/></svg></div><div class="ic-t">Layout</div><div class="ic-d">Dynamic grid with district imagery — a flexible structure that shifts between the fixed proportions of print and the fluid layout of the microsite.</div></div>
+        <div class="ic"><div class="ic-ico"><span class="ic-aa">Aa</span></div><div class="ic-t">Typography</div><div class="ic-d">Suisse Int'l Bold paired with IBM Plex Mono — editorial strength balanced with technical precision, used consistently across both mediums.</div></div>
+        <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-link"/></svg></div><div class="ic-t">Interactivity Bridge</div><div class="ic-d">The static poster acts as a visual entry point — its geometric elements and colour system directly translate into animated, interactive components on the microsite.</div></div>
+        <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-spark"/></svg></div><div class="ic-t">Geometric Elements</div><div class="ic-d">Unified geometric shapes appear in both poster and microsite — creating visual continuity and reinforcing the district's design-forward identity.</div></div>
       </div>
     </section>
 
@@ -1083,25 +1108,25 @@
       <div class="phase"><div class="p-dot">4</div><span class="p-txt">Design System</span></div>
       <h2 class="sec-h">A System Built for Both Mediums</h2>
       <p class="sec-lead">
-        The design system was carefully crafted to work across print and digital — ensuring visual elements from the poster could be animated in the digital space without losing coherence.
+        The design system was carefully crafted to work across print and digital — ensuring visual elements from the poster could be animated in the digital space without losing coherence. Every board below opens full size.
       </p>
       <div class="rule"></div>
 
       <div class="imgs c1" style="margin-bottom:1rem">
         <div class="iw">
-          <img src="https://framerusercontent.com/images/MBQM5eJgPjJo6MrxjTsPfUSm0i8.png" alt="Design System 1"/>
+          <img src="https://framerusercontent.com/images/MBQM5eJgPjJo6MrxjTsPfUSm0i8.png" alt="Design System 1" class="zoomable" data-cap="Design system — colour, typography, and component overview."/>
           <div class="icap">Design system — colour, typography, and component overview</div>
         </div>
       </div>
       <div class="imgs c1" style="margin-bottom:1rem">
         <div class="iw">
-          <img src="https://framerusercontent.com/images/iLhai8smOLlTUbBVp52E7lS88ZQ.png" alt="Design System 2"/>
+          <img src="https://framerusercontent.com/images/iLhai8smOLlTUbBVp52E7lS88ZQ.png" alt="Design System 2" class="zoomable" data-cap="Design system — grid structure and layout principles."/>
           <div class="icap">Design system — grid structure and layout principles</div>
         </div>
       </div>
       <div class="imgs c1" style="margin-bottom:2rem">
         <div class="iw">
-          <img src="https://framerusercontent.com/images/ZtumSL7BtKXUw3iaoNv7JjGviMk.png" alt="Full Design System"/>
+          <img src="https://framerusercontent.com/images/ZtumSL7BtKXUw3iaoNv7JjGviMk.png" alt="Full Design System" class="zoomable" data-cap="Full design system — complete component library and visual language."/>
           <div class="icap">Full design system — complete component library and visual language</div>
         </div>
       </div>
@@ -1136,15 +1161,15 @@
       <div class="rule"></div>
 
       <div class="flist" style="margin-bottom:2rem">
-        <div class="fr"><div class="fr-i">✦</div><div><div class="fr-t">Animatable poster elements</div><div class="fr-d">Every visual element in the poster was designed with digital animation in mind — shapes, bars, and grids that could move and respond to user interaction.</div></div></div>
-        <div class="fr"><div class="fr-i">🎨</div><div><div class="fr-t">Vibrant colour consistency</div><div class="fr-d">The pink, purple, and lime green palette remained consistent and legible across both ink-on-paper and screen — tested across multiple contexts and light conditions.</div></div></div>
-        <div class="fr"><div class="fr-i">📖</div><div><div class="fr-t">Readability across formats</div><div class="fr-d">Typography choices were validated for legibility against vibrant backgrounds in both print and on-screen contexts.</div></div></div>
-        <div class="fr"><div class="fr-i">⊞</div><div><div class="fr-t">Flexible grid system</div><div class="fr-d">The underlying grid structure flexed between the fixed poster format and the dynamic, responsive layout of the microsite without breaking visual coherence.</div></div></div>
+        <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-spark"/></svg></div><div><div class="fr-t">Animatable poster elements</div><div class="fr-d">Every visual element in the poster was designed with digital animation in mind — shapes, bars, and grids that could move and respond to user interaction.</div></div></div>
+        <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-palette"/></svg></div><div><div class="fr-t">Vibrant colour consistency</div><div class="fr-d">The pink, purple, and lime green palette remained consistent and legible across both ink-on-paper and screen — tested across multiple contexts and light conditions.</div></div></div>
+        <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-book"/></svg></div><div><div class="fr-t">Readability across formats</div><div class="fr-d">Typography choices were validated for legibility against vibrant backgrounds in both print and on-screen contexts.</div></div></div>
+        <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-grid"/></svg></div><div><div class="fr-t">Flexible grid system</div><div class="fr-d">The underlying grid structure flexed between the fixed poster format and the dynamic, responsive layout of the microsite without breaking visual coherence.</div></div></div>
       </div>
 
       <div class="imgs c1">
         <div class="iw">
-          <img src="https://framerusercontent.com/images/Rs8uaZGhauqfAZkXRynKMlmCdM.png" alt="Integration Example"/>
+          <img src="https://framerusercontent.com/images/Rs8uaZGhauqfAZkXRynKMlmCdM.png" alt="Integration Example" class="zoomable" data-cap="Integration example — print and digital elements sharing the same visual system."/>
           <div class="icap">Integration example — print and digital elements sharing the same visual system</div>
         </div>
       </div>
@@ -1161,23 +1186,23 @@
 
       <div class="sub">Visual Integration</div>
       <div class="flist" style="margin-bottom:2rem">
-        <div class="fr"><div class="fr-i">🖼</div><div><div class="fr-t">Finding the right imagery</div><div class="fr-d">Sourcing photography that authentically captured Isola's neighbourhood character and Milan's broader design culture — without feeling generic or touristic.</div></div></div>
-        <div class="fr"><div class="fr-i">🔗</div><div><div class="fr-t">Coherent visual language across formats</div><div class="fr-d">Creating a design system that worked equally well as static ink on paper and as animated, interactive components on screen — a constraint that shaped every element.</div></div></div>
-        <div class="fr"><div class="fr-i">👁</div><div><div class="fr-t">Text contrast on vibrant backgrounds</div><div class="fr-d">Maintaining readable typography against the pink, purple, and lime green palette required careful contrast testing across both print and digital colour profiles.</div></div></div>
+        <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-frame"/></svg></div><div><div class="fr-t">Finding the right imagery</div><div class="fr-d">Sourcing photography that authentically captured Isola's neighbourhood character and Milan's broader design culture — without feeling generic or touristic.</div></div></div>
+        <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-link"/></svg></div><div><div class="fr-t">Coherent visual language across formats</div><div class="fr-d">Creating a design system that worked equally well as static ink on paper and as animated, interactive components on screen — a constraint that shaped every element.</div></div></div>
+        <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-eye"/></svg></div><div><div class="fr-t">Text contrast on vibrant backgrounds</div><div class="fr-d">Maintaining readable typography against the pink, purple, and lime green palette required careful contrast testing across both print and digital colour profiles.</div></div></div>
       </div>
 
       <div class="sub">Technical Implementation</div>
       <div class="flist" style="margin-bottom:2rem">
-        <div class="fr"><div class="fr-i">⚡</div><div><div class="fr-t">Smooth interaction transitions</div><div class="fr-d">Developing fluid transitions between different interactive states — map views, venue previews, distance calculations — without jarring jumps or loading delays.</div></div></div>
-        <div class="fr"><div class="fr-i">🗺</div><div><div class="fr-t">Guide map + location previews</div><div class="fr-d">Integrating GIS-based map functionality with real-time location previews required careful coordination between geographic data layers and the visual interface.</div></div></div>
-        <div class="fr"><div class="fr-i">📱</div><div><div class="fr-t">Cross-device performance</div><div class="fr-d">Ensuring consistent performance and visual fidelity across different devices and screen sizes — from desktop browsers to mobile phones used during festival navigation.</div></div></div>
+        <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-bolt"/></svg></div><div><div class="fr-t">Smooth interaction transitions</div><div class="fr-d">Developing fluid transitions between different interactive states — map views, venue previews, distance calculations — without jarring jumps or loading delays.</div></div></div>
+        <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-map"/></svg></div><div><div class="fr-t">Guide map + location previews</div><div class="fr-d">Integrating GIS-based map functionality with real-time location previews required careful coordination between geographic data layers and the visual interface.</div></div></div>
+        <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg></div><div><div class="fr-t">Cross-device performance</div><div class="fr-d">Ensuring consistent performance and visual fidelity across different devices and screen sizes — from desktop browsers to mobile phones used during festival navigation.</div></div></div>
       </div>
 
       <div class="sub">Design Balance</div>
       <div class="flist">
-        <div class="fr"><div class="fr-i">🎨</div><div><div class="fr-t">Harmonising the vibrant palette</div><div class="fr-d">Applying a high-energy colour system across all elements without creating visual fatigue or reducing the legibility of practical information.</div></div></div>
-        <div class="fr"><div class="fr-i">✨</div><div><div class="fr-t">Engaging without overwhelming</div><div class="fr-d">Balancing rich interactions and visual interest with clarity of purpose — visitors needed to find exhibitions and navigate efficiently, not just admire the interface.</div></div></div>
-        <div class="fr"><div class="fr-i">⊞</div><div><div class="fr-t">Hierarchy with dynamic elements</div><div class="fr-d">Maintaining clear visual hierarchy while incorporating animated and interactive components — ensuring the most important information always read first.</div></div></div>
+        <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-palette"/></svg></div><div><div class="fr-t">Harmonising the vibrant palette</div><div class="fr-d">Applying a high-energy colour system across all elements without creating visual fatigue or reducing the legibility of practical information.</div></div></div>
+        <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-sparkles"/></svg></div><div><div class="fr-t">Engaging without overwhelming</div><div class="fr-d">Balancing rich interactions and visual interest with clarity of purpose — visitors needed to find exhibitions and navigate efficiently, not just admire the interface.</div></div></div>
+        <div class="fr"><div class="fr-i"><svg class="ico" aria-hidden="true"><use href="#i-grid"/></svg></div><div><div class="fr-t">Hierarchy with dynamic elements</div><div class="fr-d">Maintaining clear visual hierarchy while incorporating animated and interactive components — ensuring the most important information always read first.</div></div></div>
       </div>
     </section>
 
@@ -1191,9 +1216,9 @@
       <div class="rule"></div>
 
       <div class="g3">
-        <div class="ic"><div class="ic-ico">🎨</div><div class="ic-t">Figma</div><div class="ic-d">Prototyping the interactive microsite and designing the poster — including the full component library, interaction flows, and cross-medium design system.</div></div>
-        <div class="ic"><div class="ic-ico">🎞</div><div class="ic-t">After Effects</div><div class="ic-d">Designing smooth transitions between interactive states — animating the geometric elements from the poster into motion for the digital microsite experience.</div></div>
-        <div class="ic"><div class="ic-ico">🗺</div><div class="ic-t">GIS Mapping</div><div class="ic-d">Geographic Information Systems for the interactive guide map — placing exhibitions and venues in accurate spatial context for visitor wayfinding across the district.</div></div>
+        <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-palette"/></svg></div><div class="ic-t">Figma</div><div class="ic-d">Prototyping the interactive microsite and designing the poster — including the full component library, interaction flows, and cross-medium design system.</div></div>
+        <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-film"/></svg></div><div class="ic-t">After Effects</div><div class="ic-d">Designing smooth transitions between interactive states — animating the geometric elements from the poster into motion for the digital microsite experience.</div></div>
+        <div class="ic"><div class="ic-ico"><svg class="ico" aria-hidden="true"><use href="#i-map"/></svg></div><div class="ic-t">GIS Mapping</div><div class="ic-d">Geographic Information Systems for the interactive guide map — placing exhibitions and venues in accurate spatial context for visitor wayfinding across the district.</div></div>
       </div>
     </section>
 
@@ -1208,7 +1233,7 @@
 
       <div class="imgs c1" style="margin-bottom:2rem">
         <div class="iw">
-          <img src="https://framerusercontent.com/images/BHu0QIsaGS7LP7JACfPPmAXjik.jpg" alt="Final Design"/>
+          <img src="https://framerusercontent.com/images/BHu0QIsaGS7LP7JACfPPmAXjik.jpg" alt="Final Design" class="zoomable" data-cap="Final design — Discover Isola microsite and poster system."/>
           <div class="icap">Final design — Discover Isola microsite and poster system</div>
         </div>
       </div>
@@ -1228,37 +1253,173 @@
       <!-- Closing scrawl note -->
       <div style="margin-top:3rem; padding:1.5rem; border:1.5px solid rgba(26,22,18,0.12); background:var(--paper-dark); position:relative; transform:rotate(-0.3deg)">
         <div style="position:absolute; top:-11px; left:20px; width:40px; height:20px; background:rgba(107,79,168,0.28); border-top:1px solid rgba(107,79,168,0.4); border-bottom:1px solid rgba(107,79,168,0.4); transform:rotate(1.5deg)"></div>
-        <p style="font-family:var(--font-serif); font-size:1.1rem; font-style:italic; color:var(--ink-light); line-height:1.7">
+        <p style="font-family:var(--font-serif); font-size:var(--fs-quote); font-style:italic; color:var(--ink-light); line-height:1.6">
           Designing across mediums forced every decision to be <span class="hl-y">intentional</span> — a constraint that made the work sharper, not harder.
         </p>
-        <p style="font-family:var(--font-scrawl); font-size:18px; color:var(--isola-pink); margin-top:0.75rem; transform:rotate(-1deg); display:inline-block">— Inayat ✏️</p>
+        <p style="font-family:var(--font-scrawl); font-size:var(--fs-scrawl); color:var(--isola-pink); margin-top:0.75rem; transform:rotate(-1deg); display:inline-flex; align-items:center; gap:7px">
+          — Inayat
+          <svg class="ico" aria-hidden="true" style="stroke:var(--isola-pink); width:1.05em; height:1.05em"><use href="#i-pen"/></svg>
+        </p>
         <div class="corner-fold"></div>
       </div>
     </section>
 
   </main>
 
+  <!-- LIGHTBOX -->
+  <div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged image">
+    <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+    <div class="lb-zoom" id="lbZoom">
+      <button id="lbOut" aria-label="Zoom out">−</button>
+      <span class="lb-lvl" id="lbLvl">FIT</span>
+      <button id="lbIn" aria-label="Zoom in">+</button>
+    </div>
+    <div class="lb-stage" id="lbStage"></div>
+    <div class="lb-cap" id="lbCap"></div>
+  </div>
+
   <footer>© 2025 Inayat Gulati &nbsp;·&nbsp; Vancouver, BC &nbsp;·&nbsp; UX/UI · Graphic Design · Interactive</footer>
 
   <script>
-    // Spiral holes
+    /* ---- spiral binding, redrawn on resize so it never runs short ---- */
     const spiral = document.getElementById('spiralBinding');
-    const count = Math.floor(window.innerHeight / 44) + 2;
-    for (let i = 0; i < count; i++) {
-      const h = document.createElement('div');
-      h.className = 'spiral-hole';
-      spiral.appendChild(h);
+    function drawSpiral() {
+      const count = Math.floor(window.innerHeight / 44) + 2;
+      if (spiral.childElementCount === count) return;
+      spiral.innerHTML = '';
+      for (let i = 0; i < count; i++) {
+        const h = document.createElement('div');
+        h.className = 'spiral-hole';
+        spiral.appendChild(h);
+      }
     }
+    drawSpiral();
 
-    // Scroll reveal
+    /* ---- mobile menu ---- */
+    const navToggle = document.getElementById('navToggle');
+    const navLinks  = document.getElementById('navLinks');
+    navToggle.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    }));
+
+    /* ============================================================
+       LIGHTBOX
+       Fit to screen first, then levels above it. A full component
+       library shrunk into a text column is a picture of a system,
+       not a readable one.
+       ============================================================ */
+    const lb      = document.getElementById('lightbox');
+    const lbStage = document.getElementById('lbStage');
+    const lbCap   = document.getElementById('lbCap');
+    const lbZoom  = document.getElementById('lbZoom');
+    const lbLvl   = document.getElementById('lbLvl');
+    const lbIn    = document.getElementById('lbIn');
+    const lbOut   = document.getElementById('lbOut');
+    const lbClose = document.getElementById('lbClose');
+    const LEVELS  = [0, 1, 1.5, 2];   /* 0 = fit; the rest are multiples of the file's own size */
+    let lastFocus = null, natW = 0, natH = 0, fitW = 0, zi = 0, capText = '', node = null;
+
+    function widthAt(i) { return natW * LEVELS[i]; }
+    function canZoom()  { return widthAt(LEVELS.length - 1) > fitW * 1.05; }
+    /* skip any level that would not actually be bigger than the fit */
+    function nextLevel() {
+      for (let i = zi + 1; i < LEVELS.length; i++) if (widthAt(i) > fitW * 1.05) return i;
+      return 0;
+    }
+    function render(ox, oy) {
+      if (zi === 0) {
+        lb.classList.remove('zoomed');
+        lbLvl.textContent = 'FIT';
+        node.style.width = ''; node.style.height = '';
+      } else {
+        lb.classList.add('zoomed');
+        lbLvl.textContent = Math.round(LEVELS[zi] * 100) + '%';
+        node.style.width  = Math.round(natW * LEVELS[zi]) + 'px';
+        node.style.height = Math.round(natH * LEVELS[zi]) + 'px';
+        const x = ox === undefined ? 0.5 : ox, y = oy === undefined ? 0.5 : oy;
+        lbStage.scrollLeft = node.offsetWidth  * x - lbStage.clientWidth  / 2;
+        lbStage.scrollTop  = node.offsetHeight * y - lbStage.clientHeight / 2;
+      }
+      lbIn.disabled  = nextLevel() <= zi;
+      lbOut.disabled = zi <= 0;
+    }
+    function measure(cap) {
+      if (cap !== undefined) capText = cap;
+      zi = 0; render();
+      fitW = node.getBoundingClientRect().width;
+      const z = canZoom();
+      lbZoom.classList.toggle('on', z);
+      node.classList.toggle('can-zoom', z);
+      lbCap.innerHTML = (capText || '') + '<span class="lb-hint">' +
+        (z ? 'Click the image to zoom in · drag to pan · Esc to close'
+           : 'Click anywhere or press Esc to close') + '</span>';
+      lbIn.disabled = !z; lbOut.disabled = true;
+    }
+    function openImg(img) {
+      lastFocus = document.activeElement;
+      const el = new Image();
+      el.src = img.currentSrc || img.src;
+      el.alt = img.alt || '';
+      lbStage.innerHTML = ''; lbStage.appendChild(el);
+      node = el;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      lbClose.focus();
+      const go = () => {
+        natW = el.naturalWidth  || node.getBoundingClientRect().width  || 1200;
+        natH = el.naturalHeight || node.getBoundingClientRect().height || 800;
+        measure(img.dataset.cap || img.alt);
+      };
+      if (el.complete && el.naturalWidth) go(); else el.addEventListener('load', go, { once: true });
+    }
+    function closeLB() {
+      lb.classList.remove('open', 'zoomed');
+      lbStage.innerHTML = '';
+      node = null; zi = 0;
+      document.body.style.overflow = '';
+      if (lastFocus) lastFocus.focus();
+    }
+    document.querySelectorAll('img.zoomable').forEach(img => {
+      img.addEventListener('click', () => openImg(img));
+    });
+    lbStage.addEventListener('click', e => {
+      if (!node || e.target !== node || !canZoom()) return;
+      const r = node.getBoundingClientRect();
+      zi = nextLevel();
+      render((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+    });
+    lbIn.addEventListener('click', () => { const n = nextLevel(); if (n > zi) { zi = n; render(); } });
+    lbOut.addEventListener('click', () => { if (zi > 0) { zi--; render(); } });
+    lbClose.addEventListener('click', closeLB);
+    lb.addEventListener('click', e => { if (e.target === lb || e.target === lbCap) closeLB(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('open')) closeLB(); });
+    /* drag to pan while zoomed (touch pans natively) */
+    let drag = null;
+    lbStage.addEventListener('pointerdown', e => {
+      if (zi === 0 || e.pointerType === 'touch') return;
+      drag = { x: e.clientX, y: e.clientY, l: lbStage.scrollLeft, t: lbStage.scrollTop };
+      lbStage.classList.add('dragging');
+      lbStage.setPointerCapture(e.pointerId);
+    });
+    lbStage.addEventListener('pointermove', e => {
+      if (!drag) return;
+      lbStage.scrollLeft = drag.l - (e.clientX - drag.x);
+      lbStage.scrollTop  = drag.t - (e.clientY - drag.y);
+    });
+    ['pointerup', 'pointercancel'].forEach(ev =>
+      lbStage.addEventListener(ev, () => { drag = null; lbStage.classList.remove('dragging'); }));
+
+    /* ---- scroll reveal + active sidenav ---- */
     const ro = new IntersectionObserver(es => es.forEach(e => {
       if (e.isIntersecting) e.target.classList.add('in');
     }), { threshold: 0.06 });
     document.querySelectorAll('.rev').forEach(el => ro.observe(el));
-
-    // Active sidenav
     const links = document.querySelectorAll('.side-a');
-    const secs = document.querySelectorAll('.sec');
     const so = new IntersectionObserver(es => {
       es.forEach(e => {
         if (e.isIntersecting) {
@@ -1268,7 +1429,17 @@
         }
       });
     }, { rootMargin: '-15% 0px -65% 0px' });
-    secs.forEach(s => so.observe(s));
+    document.querySelectorAll('.sec').forEach(s => so.observe(s));
+
+    /* keep the binding and any open lightbox correct through a resize */
+    let rt;
+    window.addEventListener('resize', () => {
+      clearTimeout(rt);
+      rt = setTimeout(() => {
+        drawSpiral();
+        if (lb.classList.contains('open') && node) measure();
+      }, 140);
+    });
   </script>
 </body>
 </html>
