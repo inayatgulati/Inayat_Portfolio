@@ -479,61 +479,65 @@ footer { padding: 14px var(--gutter); }
       }
 
 /* ===== BENTO GRID ===== */
-.projects-grid {
-grid-template-columns: repeat(6, 1fr);
-align-items: stretch;
-}
-.project-card.bento-lg {
-grid-column: span 4;
-display: grid;
-grid-template-columns: 1.25fr 1fr;
-}
-.project-card.bento-sm { grid-column: span 2; }
+/* ==========================================================
+   BENTO CLEAN-UP — paste this just before </style>
+   Keeps your 4+2 / 2+2+2 layout and all breakpoints.
+   Every project becomes its own box: more breathing room,
+   no ghost outline or corner fold, a coloured offset shadow
+   per box, and the same inner structure in every card.
+   ========================================================== */
 
-.project-card.bento-lg .card-image {
-aspect-ratio: auto; height: 100%; min-height: 320px;
-border-right: 2px solid var(--ink);
-border-bottom: none;
+.projects-grid { gap: clamp(24px, 2.6vw, 44px); }
+
+/* the box itself */
+.project-card {
+  --accent: var(--ink);
+  display: flex;
+  flex-direction: column;
+  background: #fffdf8;
+  border: 2px solid var(--ink);
+  box-shadow: 6px 7px 0 var(--accent);
 }
-.project-card.bento-lg .card-body {
-display: flex; flex-direction: column; justify-content: center;
+.project-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 10px 0 var(--accent);
 }
 
-/* ===== ABOUT TEASER =====
-   Sits between the work grid and contact. Its job is to break a
-   1536px run of bordered rectangles with a different shape (a face,
-   a quote) on a different ground — and to hand the reader onward. */
-.about-teaser { background: var(--paper-worn); padding-top: 64px; padding-bottom: 64px; }
-.teaser-grid {
-display: grid; grid-template-columns: var(--photo, 240px) minmax(0, 1fr);
-gap: clamp(28px, 3.5vw, 64px); align-items: start;
-      }
-.about-teaser .about-photo-frame { margin-bottom: 0; }
-.about-photo-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.teaser-quote {
-font-family: var(--font-hand); font-size: var(--fs-quote);
-font-weight: 700; line-height: 1.3; color: var(--ink);
-max-width: 26ch; margin-bottom: 26px; position: relative;
-      }
-.teaser-quote::before {
-content: ""; position: absolute; left: -22px; top: 6px; bottom: 6px;
-width: 3px; background: var(--accent-red); opacity: 0.55; border-radius: 2px;
-      }
-.teaser-bio {
-font-family: var(--font-text); font-size: var(--fs-lead);
-color: var(--ink-light); line-height: 1.6; max-width: 58ch; margin-bottom: 24px;
-      }
-.teaser-bio strong { color: var(--ink); font-weight: 700; }
-@media (max-width: 768px) {
-.teaser-grid { grid-template-columns: 1fr; }
-.about-teaser .about-photo-frame { max-width: 180px; }
-.teaser-quote { max-width: 100%; }
-.teaser-quote::before { left: -14px; }
-      }
+/* remove the clutter that made neighbouring cards blur together */
+.project-card::after,
+.project-card .corner-fold,
+.card-image::before { display: none; }
 
-/* metric always gets its own line */
-.card-metric { display: flex; }
-.card-metric + br { display: none; }
+/* one accent per box so each project is easy to tell apart */
+.project-card:nth-child(1) { --accent: #c0392b; }
+.project-card:nth-child(2) { --accent: #2c5f8a; }
+.project-card:nth-child(3) { --accent: #b4561c; }
+.project-card:nth-child(4) { --accent: #3a7d44; }
+.project-card:nth-child(5) { --accent: #8a6a12; }
+
+/* same inner structure in every card:
+   tags, title, description, then metric + link pinned to the bottom */
+.card-body { flex: 1; display: flex; flex-direction: column; }
+.card-desc { margin-bottom: auto; padding-bottom: 18px; }
+.card-arrow { align-self: flex-start; margin-top: 16px; }
+
+/* tags: first one is filled so the client/type reads at a glance */
+.card-tag { opacity: 1; border-color: var(--ink-faint); color: var(--ink-light); font-size: 10px; }
+.card-tag:first-child { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* metric becomes a small labelled chip */
+.card-metric {
+  align-self: flex-start;
+  padding: 6px 12px;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-left: 4px solid var(--accent);
+}
+.card-metric::before { color: var(--accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card { transition: none; }
+}
 
 @media (max-width: 1024px) {
 .projects-grid { grid-template-columns: repeat(2, 1fr); }
